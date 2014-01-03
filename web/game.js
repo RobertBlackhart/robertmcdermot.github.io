@@ -2260,18 +2260,8 @@ y=C.T1.f0(y)
 z=new W.Ov(0,y.uv,y.Ph,W.aF(new B.fr()),y.Sg)
 H.VM(z,[H.ip(y,"RO",0)])
 z.Zz()
-z=document.querySelector("#FullscreenGlyph")
-z.toString
-z=C.T1.f0(z)
-y=new W.Ov(0,z.uv,z.Ph,W.aF(new B.Iz()),z.Sg)
-H.VM(y,[H.ip(z,"RO",0)])
-y.Zz()
-y=document.querySelector("#FullscreenResetGlyph")
-y.toString
-y=C.T1.f0(y)
-z=new W.Ov(0,y.uv,y.Ph,W.aF(new B.Bm()),y.Sg)
-H.VM(z,[H.ip(y,"RO",0)])
-z.Zz()
+C.T1.Uh(W.Ao(document.querySelectorAll(".FullscreenGlyph"),null)).yI(new B.Iz())
+C.T1.Uh(W.Ao(document.querySelectorAll(".FullscreenResetGlyph"),null)).yI(new B.Bm())
 C.Xz.aM(document).yI(new B.na())
 z=document.querySelector("#AudioGlyph")
 z.toString
@@ -2403,11 +2393,16 @@ call$1:function(a){document.documentElement.webkitRequestFullscreen()},
 $is_aB:true},Bm:{"":"Tp;",
 call$1:function(a){document.webkitExitFullscreen()},
 $is_aB:true},na:{"":"Tp;",
-call$1:function(a){if(document.webkitFullscreenElement!=null){B.VD("System: FullScreen = true")
-J.oH(document.querySelector("#FullscreenGlyph").style,"none")
-J.oH(document.querySelector("#FullscreenResetGlyph").style,"inline")}else{B.VD("System: FullScreen = false")
-J.oH(document.querySelector("#FullscreenGlyph").style,"inline")
-J.oH(document.querySelector("#FullscreenResetGlyph").style,"none")}},
+call$1:function(a){var z
+if(document.webkitFullscreenElement!=null){B.VD("System: FullScreen = true")
+z=W.HD(W.Ao(document.querySelectorAll(".FullscreenGlyph"),null).Sc)
+z.suL(z,"none")
+z=W.HD(W.Ao(document.querySelectorAll(".FullscreenResetGlyph"),null).Sc)
+z.suL(z,"inline")}else{B.VD("System: FullScreen = false")
+z=W.HD(W.Ao(document.querySelectorAll(".FullscreenGlyph"),null).Sc)
+z.suL(z,"inline")
+z=W.HD(W.Ao(document.querySelectorAll(".FullscreenResetGlyph"),null).Sc)
+z.suL(z,"none")}},
 $is_aB:true},xhV:{"":"Tp;",
 call$1:function(a){var z=$.jI().getItem("isMuted")==="0"?"1":"0"
 $.Uz().G8(z)},
@@ -7151,7 +7146,7 @@ y=z.xd
 z.wx(y.t(y,J.GC(a)),a)},
 $is_aB:true},dL:{"":"Tp;a,b",
 call$2:function(a,b){if(!this.a.B6(this.b,a))P.JS("Did not find "+H.d(a))},
-$is_bh:true}}],["glitchTime","package:coUlib/glitch-time.dart",,G,{zK:function(){var z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k
+$is_bh:true}}],["glitchTime","package:glitchTime/glitch-time.dart",,G,{zK:function(){var z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k
 z=C.CD.yu(Math.floor(P.Gi().y3*0.001))-1238562000
 y=C.CD.yu(Math.floor(z/4435200))
 z-=y*4435200
