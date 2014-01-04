@@ -1143,7 +1143,8 @@ textarea{resize: none;}
 }
 .Conversation {
 	position: absolute;
-	top: calc(2em + 17px);
+	top: calc(2em + 19px);
+	width: 100%;
 	bottom: calc(2em + 16px);
 	overflow-y: scroll;
 	background: white;
@@ -1298,6 +1299,7 @@ textarea{resize: none;}
 {
 	#PlayerPortraitDiv {
 		top: 13px;
+		left: 4px;
 	}
 	#PlayerName {
 		left: 150px;

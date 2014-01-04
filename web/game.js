@@ -3631,7 +3631,7 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B.TabContent_setupWebSocket_closure1(this, chatHistory, channelName));
   },
   _addmessage$1: function(map) {
-    var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, rowSpacer, chatLine, chatRow;
+    var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, rowSpacer, t3, chatLine, chatRow, conversation;
     t1 = [];
     H.setRuntimeTypeInfo(t1, [W.NodeValidator]);
     validator = new W.NodeValidatorBuilder(t1);
@@ -3648,7 +3648,6 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
         t1.removeAt$1(t1, 0);
       }
     }
-    this.chatHistory.scrollHeight;
     if ($.get$chat()._playMentionSound === true && C.JSString_methods.contains$1(J.toLowerCase$0$s(J.$index$asx(map, "message")), J.toLowerCase$0$s($.get$chat().username)) && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = $.ui_sounds.assets;
       mentionSound = t1.$index(t1, "mention");
@@ -3714,29 +3713,39 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     rowSpacer = document.createElement("div", null);
     rowSpacer.className = "RowSpacer";
     J.set$paddingRight$x(chatString.style, "2px");
-    t1 = J.get$children$x(this.chatHistory);
-    t1.add$1(t1, chatString);
-    t1 = J.get$children$x(this.chatHistory);
-    t1.add$1(t1, rowSpacer);
-    t1 = this.chatHistory;
-    t1.scrollTop = t1.scrollHeight;
+    t2 = J.get$children$x(this.chatHistory);
+    t2.add$1(t2, chatString);
+    t2 = J.get$children$x(this.chatHistory);
+    t2.add$1(t2, rowSpacer);
+    t2 = this.chatHistory;
+    t3 = t2.scrollTop;
+    t2 = t2.scrollHeight;
+    if ((t3 == null ? t2 == null : t3 === t2) || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username)) {
+      t2 = this.chatHistory;
+      t2.scrollTop = t2.scrollHeight;
+    }
     chatLine = document.createElement("div", null);
     chatLine.className = "bubble";
-    t1 = J.getInterceptor$x(chatLine);
-    t1.setInnerHtml$2$treeSanitizer(chatLine, J.get$innerHtml$x(chatString), new B.NullTreeSanitizer());
+    t2 = J.getInterceptor$x(chatLine);
+    t2.setInnerHtml$2$treeSanitizer(chatLine, J.get$innerHtml$x(chatString), new B.NullTreeSanitizer());
     if (J.startsWith$1$s(chatString.textContent, $.get$chat().username)) {
-      t1 = t1.get$classes(chatLine);
-      t1.add$1(t1, "me");
+      t2 = t2.get$classes(chatLine);
+      t2.add$1(t2, "me");
     } else {
-      t1 = t1.get$classes(chatLine);
-      t1.add$1(t1, "you");
+      t2 = t2.get$classes(chatLine);
+      t2.add$1(t2, "you");
     }
     chatRow = document.createElement("div", null);
     chatRow.className = "bubbleRow";
-    t1 = J.get$children$x(chatRow);
-    t1.add$1(t1, chatLine);
-    t1 = "#conversation-" + H.stringReplaceAllUnchecked(this.channelName, " ", "_");
-    t1 = J.get$children$x(document.querySelector(t1));
+    t2 = J.get$children$x(chatRow);
+    t2.add$1(t2, chatLine);
+    t2 = "#conversation-" + H.stringReplaceAllUnchecked(this.channelName, " ", "_");
+    conversation = document.querySelector(t2);
+    t2 = conversation.scrollTop;
+    t3 = conversation.scrollHeight;
+    if ((t2 == null ? t3 == null : t2 === t3) || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username))
+      conversation.scrollTop = conversation.scrollHeight;
+    t1 = J.get$children$x(conversation);
     t1.add$1(t1, chatRow);
   },
   _parseForUrls$1: function(message) {
@@ -4178,6 +4187,7 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2._tryResume$0();
     t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
     t2.forEach$1(t2, new B.Input_init_closure17());
+    B.TouchScroller$(document.querySelector("#InventoryBar"));
     t2 = document.body;
     t2.toString;
     t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
@@ -4565,19 +4575,21 @@ Joystick$: function(_joystick, _knob) {
 Joystick_closure: {"": "Closure;this_0",
   call$1: function($event) {
     var t1, t2;
-    t1 = this.this_0;
-    t2 = J.get$first$ax(J.get$touches$x($event));
-    t2 = new P.Point(t2.clientX, t2.clientY);
-    H.setRuntimeTypeInfo(t2, [null]);
-    t1._initialTouchX = t2.x;
-    t2 = J.get$first$ax($event.touches);
-    t2 = new P.Point(t2.clientX, t2.clientY);
-    H.setRuntimeTypeInfo(t2, [null]);
-    t1._initialTouchY = t2.y;
-    t1 = t1._moveController;
-    if (t1._state >= 4)
-      H.throwExpression(t1._addEventError$0());
-    t1._sendData$1(new B.JoystickEvent());
+    t1 = J.getInterceptor$x($event);
+    t1.preventDefault$0($event);
+    t2 = this.this_0;
+    t1 = J.get$first$ax(t1.get$touches($event));
+    t1 = new P.Point(t1.clientX, t1.clientY);
+    H.setRuntimeTypeInfo(t1, [null]);
+    t2._initialTouchX = t1.x;
+    t1 = J.get$first$ax($event.touches);
+    t1 = new P.Point(t1.clientX, t1.clientY);
+    H.setRuntimeTypeInfo(t1, [null]);
+    t2._initialTouchY = t1.y;
+    t2 = t2._moveController;
+    if (t2._state >= 4)
+      H.throwExpression(t2._addEventError$0());
+    t2._sendData$1(new B.JoystickEvent());
   },
   $is_args1: true
 },
@@ -4686,6 +4698,7 @@ Joystick_closure0: {"": "Closure;this_1",
 Joystick_closure1: {"": "Closure;this_2",
   call$1: function($event) {
     var t1, t2;
+    J.preventDefault$0$x($event);
     t1 = this.this_2;
     t2 = t1._knob;
     J.set$left$x(t2.style, J.toString$0(t1._neutralX) + "px");
@@ -4703,6 +4716,43 @@ Joystick_closure1: {"": "Closure;this_2",
 },
 
 JoystickEvent: {"": "Object;"},
+
+TouchScroller: {"": "Object;_scrollDiv,_startX,_startY",
+  TouchScroller$1: function(_scrollDiv) {
+    var t1, t2;
+    t1 = this._scrollDiv;
+    t1.toString;
+    t1 = C.EventStreamProvider_touchstart.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.TouchScroller_closure(this)), t1._useCapture);
+    H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
+    t2._tryResume$0();
+  },
+  static: {
+TouchScroller$: function(_scrollDiv) {
+  var t1 = new B.TouchScroller(_scrollDiv, null, null);
+  t1.TouchScroller$1(_scrollDiv);
+  return t1;
+}}
+
+},
+
+TouchScroller_closure: {"": "Closure;this_0",
+  call$1: function($event) {
+    var t1, t2;
+    t1 = J.getInterceptor$x($event);
+    t1.preventDefault$0($event);
+    t2 = this.this_0;
+    t1 = J.get$first$ax(t1.get$changedTouches($event));
+    t1 = new P.Point(t1.clientX, t1.clientY);
+    H.setRuntimeTypeInfo(t1, [null]);
+    t2._startX = t1.x;
+    t1 = J.get$first$ax($event.changedTouches);
+    t1 = new P.Point(t1.clientX, t1.clientY);
+    H.setRuntimeTypeInfo(t1, [null]);
+    t2._startY = t1.y;
+  },
+  $is_args1: true
+},
 
 UserInterface: {"": "Object;commaFormatter,nameMeter,currantMeter,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent",
   init$0: function() {
@@ -15145,9 +15195,6 @@ J.get$text$x = function(receiver) {
 };
 J.get$timeStamp$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$timeStamp(receiver);
-};
-J.get$touches$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$touches(receiver);
 };
 J.get$type$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$type(receiver);
