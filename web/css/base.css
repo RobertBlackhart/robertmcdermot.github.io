@@ -1235,7 +1235,6 @@ textarea{resize: none;}
 		white-space: nowrap;
 		overflow-y: hidden;
 		overflow-x: scroll;
-		-webkit-overflow-scrolling: touch;
 		-moz-border-radius: 4px;
 		border-radius: 4px;
 	}
