@@ -2193,6 +2193,7 @@ static:{Rx:function(a,b){var z=new B.yO(a,b,null,null,null,null,!1,!1,!1,!1,P.bK
 z.Hl(a,b)
 return z}}},Xf:{"":"Tp;a",
 call$1:function(a){var z,y
+P.JS("touchStart")
 z=this.a
 y=J.iN(J.m5(a))
 y=new P.hL(y.clientX,y.clientY)
