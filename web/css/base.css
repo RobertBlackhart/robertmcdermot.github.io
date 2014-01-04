@@ -1285,7 +1285,7 @@ textarea{resize: none;}
 	}
 }
 
-@media (max-device-height: 324px) and (orientation: portrait) /* mobile device in portrait */
+@media (orientation: portrait) /* mobile device in portrait */
 {
 	#PlayerPortraitDiv {
 		top: 13px;
