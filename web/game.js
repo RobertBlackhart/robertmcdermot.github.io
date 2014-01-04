@@ -3411,9 +3411,13 @@ load_audio___closure: {"": "Closure;song_2",
   $is_args1: true
 },
 
-Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap",
+Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
   init$0: function() {
     var chatMenu, t1, t2;
+    if ($.get$localStorage().getItem("username") != null)
+      this.username = $.get$localStorage().getItem("username");
+    else
+      this.username = J.$add$ns(this.username, C.JSInt_methods.toString$0(C.C__Random.nextInt$1(10000)));
     chatMenu = document.querySelector("#ChatSettingsMenu");
     t1 = document.querySelector("#ChatSettingsIcon");
     t1.toString;
@@ -3518,7 +3522,7 @@ Chat_init_closure0: {"": "Closure;this_1",
   $is_args1: true
 },
 
-TabContent: {"": "Object;connectedUsers,_username,channelName,lastWord,useSpanForTitle,tabInserted,webSocket,chatDiv,chatHistory,unreadMessages,tabSearchIndex,numMessages,_chatServerUrl",
+TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tabInserted,webSocket,chatDiv,chatHistory,unreadMessages,tabSearchIndex,numMessages,_chatServerUrl",
   resetMessages$1: function($event) {
     var t1, selector;
     this.unreadMessages = 0;
@@ -3586,28 +3590,27 @@ TabContent: {"": "Object;connectedUsers,_username,channelName,lastWord,useSpanFo
     return this.processInput$2(input, null);
   },
   parseInput$1: function(input) {
-    var map, t1, t2;
+    var map, t1;
     map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
     t1 = J.getInterceptor$s(input).split$1(input, " ");
     if (0 >= t1.length)
       throw H.ioore(t1, 0);
     if (J.$eq(t1[0], "/setname")) {
       map.$indexSet(map, "statusMessage", "changeName");
-      map.$indexSet(map, "username", this._username);
+      map.$indexSet(map, "username", $.get$chat().username);
       map.$indexSet(map, "newUsername", C.JSString_methods.substring$1(input, 9));
       map.$indexSet(map, "channel", this.channelName);
     } else {
-      t1 = this._username;
-      t2 = this.channelName;
+      t1 = this.channelName;
       if (input === "/list") {
-        map.$indexSet(map, "username", t1);
+        map.$indexSet(map, "username", $.get$chat().username);
         map.$indexSet(map, "statusMessage", "list");
-        map.$indexSet(map, "channel", t2);
+        map.$indexSet(map, "channel", t1);
       } else {
-        map.$indexSet(map, "username", t1);
+        map.$indexSet(map, "username", $.get$chat().username);
         map.$indexSet(map, "message", input);
-        map.$indexSet(map, "channel", t2);
-        if (t2 === "Local Chat")
+        map.$indexSet(map, "channel", t1);
+        if (t1 === "Local Chat")
           map.$indexSet(map, "street", "Groddle Forest Junction");
         this._addmessage$1(map);
       }
@@ -3646,7 +3649,7 @@ TabContent: {"": "Object;connectedUsers,_username,channelName,lastWord,useSpanFo
       }
     }
     this.chatHistory.scrollHeight;
-    if ($.get$chat()._playMentionSound === true && C.JSString_methods.contains$1(J.toLowerCase$0$s(J.$index$asx(map, "message")), J.toLowerCase$0$s(this._username)) && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+    if ($.get$chat()._playMentionSound === true && C.JSString_methods.contains$1(J.toLowerCase$0$s(J.$index$asx(map, "message")), J.toLowerCase$0$s($.get$chat().username)) && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = $.ui_sounds.assets;
       mentionSound = t1.$index(t1, "mention");
       t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
@@ -3687,9 +3690,9 @@ TabContent: {"": "Object;connectedUsers,_username,channelName,lastWord,useSpanFo
         t2.add$1(t2, oldUsername);
         t2.add$1(t2, text);
         t2.add$1(t2, newUsername);
-        if (J.$eq(t1.$index(map, "username"), this._username)) {
-          this._username = t1.$index(map, "newUsername");
-          $.get$localStorage().setItem("username", this._username);
+        if (J.$eq(t1.$index(map, "username"), $.get$chat().username)) {
+          $.get$chat().username = t1.$index(map, "newUsername");
+          $.get$localStorage().setItem("username", $.get$chat().username);
         }
         J.remove$1$ax(this.connectedUsers, t1.$index(map, "username"));
         J.add$1$ax(this.connectedUsers, t1.$index(map, "newUsername"));
@@ -3721,7 +3724,7 @@ TabContent: {"": "Object;connectedUsers,_username,channelName,lastWord,useSpanFo
     chatLine.className = "bubble";
     t1 = J.getInterceptor$x(chatLine);
     t1.setInnerHtml$2$treeSanitizer(chatLine, J.get$innerHtml$x(chatString), new B.NullTreeSanitizer());
-    if (J.startsWith$1$s(chatString.textContent, this._username)) {
+    if (J.startsWith$1$s(chatString.textContent, $.get$chat().username)) {
       t1 = t1.get$classes(chatLine);
       t1.add$1(t1, "me");
     } else {
@@ -3768,10 +3771,6 @@ TabContent: {"": "Object;connectedUsers,_username,channelName,lastWord,useSpanFo
     t1 = $.get$chat().tabContentMap;
     t2 = this.channelName;
     t1.$indexSet(t1, t2, this);
-    if ($.get$localStorage().getItem("username") != null)
-      this._username = $.get$localStorage().getItem("username");
-    else
-      this._username = J.$add$ns(this._username, C.JSInt_methods.toString$0(C.C__Random.nextInt$1(10000)));
     conversationStack = document.querySelector("#ConversationStack");
     conversation = document.createElement("div", null);
     conversation.className = "Conversation";
@@ -3788,7 +3787,7 @@ TabContent: {"": "Object;connectedUsers,_username,channelName,lastWord,useSpanFo
   static: {
 "": "TabContent__COLORS",
 TabContent$: function(channelName, useSpanForTitle) {
-  var t1 = new B.TabContent(P.List_List(null, null), "testUser", channelName, "", useSpanForTitle, false, null, null, null, 0, 0, 0, "ws://couchatserver.herokuapp.com");
+  var t1 = new B.TabContent(P.List_List(null, null), channelName, "", useSpanForTitle, false, null, null, null, 0, 0, 0, "ws://couchatserver.herokuapp.com");
   t1.TabContent$2(channelName, useSpanForTitle);
   return t1;
 }}
@@ -3877,19 +3876,19 @@ TabContent_setupWebSocket_closure: {"": "Closure;this_0,channelName_1",
     var map, t1, t2;
     document.querySelector("#ChatDisconnected").hidden = true;
     map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
-    t1 = this.this_0;
-    map.$indexSet(map, "message", C.JSString_methods.$add("userName=", t1._username));
-    t2 = this.channelName_1;
-    map.$indexSet(map, "channel", t2);
-    if (t2 === "Local Chat")
+    map.$indexSet(map, "message", C.JSString_methods.$add("userName=", $.get$chat().username));
+    t1 = this.channelName_1;
+    map.$indexSet(map, "channel", t1);
+    if (t1 === "Local Chat")
       map.$indexSet(map, "street", "Groddle Forest Junction");
-    t1.webSocket.send(C.C_JsonCodec.encode$1(map));
+    t2 = this.this_0;
+    t2.webSocket.send(C.C_JsonCodec.encode$1(map));
     map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
     map.$indexSet(map, "hide", "true");
-    map.$indexSet(map, "username", t1._username);
+    map.$indexSet(map, "username", $.get$chat().username);
     map.$indexSet(map, "statusMessage", "list");
-    map.$indexSet(map, "channel", t2);
-    t1.webSocket.send(C.C_JsonCodec.encode$1(map));
+    map.$indexSet(map, "channel", t1);
+    t2.webSocket.send(C.C_JsonCodec.encode$1(map));
   },
   $is_args1: true
 },
@@ -3915,15 +3914,12 @@ TabContent_setupWebSocket_closure0: {"": "Closure;this_2,channelName_3",
     }
     if (J.$eq(t1.$index(map, "channel"), "all"))
       this.this_2._addmessage$1(map);
-    else if (J.$eq(t1.$index(map, "channel"), "Local Chat") && J.$eq(t1.$index(map, "channel"), this.channelName_3))
+    else if (J.$eq(t1.$index(map, "channel"), "Local Chat") && J.$eq(t1.$index(map, "channel"), this.channelName_3)) {
       if (t1.$index(map, "statusMessage") != null)
         this.this_2._addmessage$1(map);
-      else {
-        t2 = this.this_2;
-        if (!J.$eq(t1.$index(map, "username"), t2._username) && J.$eq(t1.$index(map, "street"), "Groddle Forest Junction"))
-          t2._addmessage$1(map);
-      }
-    else {
+      else if (!J.$eq(t1.$index(map, "username"), $.get$chat().username) && J.$eq(t1.$index(map, "street"), "Groddle Forest Junction"))
+        this.this_2._addmessage$1(map);
+    } else {
       t2 = this.channelName_3;
       if (J.$eq(t1.$index(map, "channel"), t2))
         if (t1.$index(map, "statusMessage") == null) {
@@ -3936,9 +3932,8 @@ TabContent_setupWebSocket_closure0: {"": "Closure;this_2,channelName_3",
             selector = "#label-" + H.stringReplaceAllUnchecked(t2, " ", "_");
             J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t3.unreadMessages) + "</span>" + " " + t2);
           }
-          t2 = this.this_2;
-          if (!J.$eq(t1.$index(map, "username"), t2._username))
-            t2._addmessage$1(map);
+          if (!J.$eq(t1.$index(map, "username"), $.get$chat().username))
+            this.this_2._addmessage$1(map);
         } else
           this.this_2._addmessage$1(map);
     }
@@ -4570,7 +4565,6 @@ Joystick$: function(_joystick, _knob) {
 Joystick_closure: {"": "Closure;this_0",
   call$1: function($event) {
     var t1, t2;
-    P.print("touchStart");
     t1 = this.this_0;
     t2 = J.get$first$ax(J.get$touches$x($event));
     t2 = new P.Point(t2.clientX, t2.clientY);
@@ -15380,7 +15374,7 @@ Isolate.$lazy($, "ui", "ui", "get$ui", function() {
   return t1;
 });
 Isolate.$lazy($, "chat", "chat", "get$chat", function() {
-  return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null));
+  return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
 });
 Isolate.$lazy($, "localStorage", "localStorage", "get$localStorage", function() {
   return window.localStorage;
