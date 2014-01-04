@@ -1956,59 +1956,53 @@ C.vr.Uh(w).yI(new B.na(this))
 C.wt.Uh(w).yI(new B.xhV(this))
 C.rl.aM(document).yI(new B.zKp(this))
 C.Z4.aM(document).yI(new B.OFU(this))
-z=document.body
-z.toString
-z=C.BD.f0(z)
-y=new W.Ov(0,z.uv,z.Ph,W.aF(new B.J5Y()),z.Sg)
-H.VM(y,[H.ip(z,"RO",0)])
-y.Zz()
 v=B.Rx(document.querySelector("#Joystick"),document.querySelector("#Knob"))
-y=v.jo
-z=new P.Gm(y)
-H.VM(z,[H.ip(y,"WV",0)])
-z.yI(new B.frh(this,v))
-z=v.Fj
+z=v.jo
 y=new P.Gm(z)
 H.VM(y,[H.ip(z,"WV",0)])
-y.yI(new B.E3j(this))
+y.yI(new B.J5Y(this,v))
+y=v.Fj
+z=new P.Gm(y)
+H.VM(z,[H.ip(y,"WV",0)])
+z.yI(new B.frh(this))
+z=document.querySelector("#AButton")
+z.toString
+z=C.BD.f0(z)
+y=new W.Ov(0,z.uv,z.Ph,W.aF(new B.E3j(this)),z.Sg)
+H.VM(y,[H.ip(z,"RO",0)])
+y.Zz()
 y=document.querySelector("#AButton")
 y.toString
-y=C.BD.f0(y)
+y=C.Yg.f0(y)
 z=new W.Ov(0,y.uv,y.Ph,W.aF(new B.Izb(this)),y.Sg)
 H.VM(z,[H.ip(y,"RO",0)])
 z.Zz()
-z=document.querySelector("#AButton")
+z=document.querySelector("#ChatBubble")
 z.toString
-z=C.Yg.f0(z)
-y=new W.Ov(0,z.uv,z.Ph,W.aF(new B.Bma(this)),z.Sg)
+z=C.T1.f0(z)
+y=new W.Ov(0,z.uv,z.Ph,W.aF(new B.Bma()),z.Sg)
 H.VM(y,[H.ip(z,"RO",0)])
 y.Zz()
-y=document.querySelector("#ChatBubble")
+y=document.querySelector("#BackFromChannelSelector")
 y.toString
 y=C.T1.f0(y)
 z=new W.Ov(0,y.uv,y.Ph,W.aF(new B.Pba()),y.Sg)
 H.VM(z,[H.ip(y,"RO",0)])
 z.Zz()
-z=document.querySelector("#BackFromChannelSelector")
+z=document.querySelector("#BackFromChat")
 z.toString
 z=C.T1.f0(z)
 y=new W.Ov(0,z.uv,z.Ph,W.aF(new B.naa()),z.Sg)
 H.VM(y,[H.ip(z,"RO",0)])
 y.Zz()
-y=document.querySelector("#BackFromChat")
+y=W.Ao(document.querySelectorAll(".ChannelName"),null)
+y.aN(y,new B.x0())
+y=document.body
 y.toString
-y=C.T1.f0(y)
-z=new W.Ov(0,y.uv,y.Ph,W.aF(new B.x0()),y.Sg)
+y=C.BC.f0(y)
+z=new W.Ov(0,y.uv,y.Ph,W.aF(new B.x3(this)),y.Sg)
 H.VM(z,[H.ip(y,"RO",0)])
 z.Zz()
-z=W.Ao(document.querySelectorAll(".ChannelName"),null)
-z.aN(z,new B.x3())
-z=document.body
-z.toString
-z=C.BC.f0(z)
-y=new W.Ov(0,z.uv,z.Ph,W.aF(new B.x4(this)),z.Sg)
-H.VM(y,[H.ip(z,"RO",0)])
-y.Zz()
 $.Lo=this},
 ky:function(){if(document.querySelector("#RightClickMenu")!=null)J.Mp(document.querySelector("#RightClickMenu"))},
 C4:function(a,b,c,d){var z,y,x,w,v,u,t,s,r,q
@@ -2114,9 +2108,7 @@ if((z===37||z===65)&&!this.e.uJ)this.e.Mt=!1
 z=a.keyCode
 if((z===39||z===68)&&!this.e.uJ)this.e.dX=!1
 if(a.keyCode===32&&!this.e.uJ)this.e.HF=!1},
-$is_aB:true},J5Y:{"":"Tp;",
-call$1:function(a){return J.Kr(a)},
-$is_aB:true},frh:{"":"Tp;f,g",
+$is_aB:true},J5Y:{"":"Tp;f,g",
 call$1:function(a){var z,y
 z=this.g
 y=this.f
@@ -2131,26 +2123,26 @@ else y.Mt=!1
 y=this.f
 if(z.pi)y.dX=!0
 else y.dX=!1},
-$is_aB:true},E3j:{"":"Tp;h",
+$is_aB:true},frh:{"":"Tp;h",
 call$1:function(a){var z=this.h
 z.rh=!1
 z.qA=!1
 z.dX=!1
 z.Mt=!1},
-$is_aB:true},Izb:{"":"Tp;i",
+$is_aB:true},E3j:{"":"Tp;i",
 call$1:function(a){this.i.HF=!0},
-$is_aB:true},Bma:{"":"Tp;j",
+$is_aB:true},Izb:{"":"Tp;j",
 call$1:function(a){this.j.HF=!1},
-$is_aB:true},Pba:{"":"Tp;",
+$is_aB:true},Bma:{"":"Tp;",
 call$1:function(a){document.querySelector("#ChannelSelectorScreen").hidden=!1
 document.querySelector("#MainScreen").hidden=!0},
-$is_aB:true},naa:{"":"Tp;",
+$is_aB:true},Pba:{"":"Tp;",
 call$1:function(a){document.querySelector("#ChannelSelectorScreen").hidden=!0
 document.querySelector("#MainScreen").hidden=!1},
-$is_aB:true},x0:{"":"Tp;",
+$is_aB:true},naa:{"":"Tp;",
 call$1:function(a){document.querySelector("#ChatScreen").hidden=!0
 document.querySelector("#ChannelSelectorScreen").hidden=!1},
-$is_aB:true},x3:{"":"Tp;",
+$is_aB:true},x0:{"":"Tp;",
 call$1:function(a){J.Vg(a).yI(new B.WW(a))},
 $is_aB:true},WW:{"":"Tp;k",
 call$1:function(a){var z,y,x,w
@@ -2167,7 +2159,7 @@ x=H.Go(document.querySelector("#MobileChatInput"),"$isje")
 w=H.Go(document.querySelector("#SendButton"),"$isWy")
 y=$.Rg().NA
 y.t(y,z).UA(x,w)},
-$is_aB:true},x4:{"":"Tp;l",
+$is_aB:true},x3:{"":"Tp;l",
 call$1:function(a){return this.l.C4(a,"Testing Right Click","this is a demo",[])},
 $is_aB:true},W4:{"":"Tp;a",
 call$1:function(a){B.aB(J.UQ(this.a,2))},
@@ -5823,7 +5815,7 @@ v=P.A(null,B.QJ)
 H.VM(v,[B.QJ])
 v=new G.Fk(a,0,!1,!1,null,0,!1,0,0.03,0,0,0,0.05,null,null,null,null,z,null,null,y,x,w,null,null,null,null,null,null,null,0.015,0.03,v,null)
 v.td(a)
-return v}}},U8:{"":"wO;jp,H4,e0",static:{"":"Dq,Uc,BZ,aA,bg,yQ,pD,uk,v0,UC,Vi,wh,De,on,c9,GQ,vq,VJ,T5,mz,ER,J4,cw,Gj,n0,r5,hN,QU,Co,yZ,bD,Nx,RF,AQ,oF,EF,Yk,rv,Xo,jF,VZ,pk,PS,Bw,j7,Pk,p7,RR,aT,EZ,qd,Ro,tf,Pj,wo,WX,Ze,j1,uw,vQ,v2,xu,m3,T7,c4,HI,DM,YG,pX,KZ,u4,jM,RQ,V8,Ys,bt,FN,FC,Bx,NI,n7,Ni,Wz,x6,Yl,hc,oQ,wE,TG,hA,xK,Gg,aZ,zs,Ol,Lz,fV,t8,Nv,y9,Qw,we,Ep,PD,AU,Cu,fE,Ci,y8,tq,xa,TY,uE,nY,Zg,K7,pU,qu,eh,MV,eR,hD,qp,Ho",}},um:{"":"a;x>,y>,ZB,Gp,Yg,lg,Fl,YN,M6"},iX:{"":"wO;iB,Tx,Nh,aw,jA,KI,Sx,Xa,yp,hz,pr,jp,H4,e0",
+return v}}},U8:{"":"wO;jp,H4,e0",static:{"":"Dq,Uc,BZ,aA,bg,yQ,pD,uk,v0,UC,Vi,wh,De,on,c9,GQ,vq,VJ,T5,mz,ER,J4,cw,Gj,n0,r5,hN,QU,Co,yZ,bD,Nx,RF,AQ,oF,EF,Yk,rv,Xo,jF,VZ,pk,PS,Bw,j7,Pk,p7,RR,aT,EZ,qd,Ro,tf,Pj,wo,WX,Ze,j1,uw,vQ,v2,xu,m3,T7,c4,x4,DM,YG,pX,KZ,u4,jM,RQ,V8,Ys,bt,FN,FC,Bx,NI,n7,Ni,Wz,x6,Yl,hc,oQ,wE,TG,hA,xK,Gg,aZ,zs,Ol,Lz,fV,t8,Nv,y9,Qw,we,Ep,PD,AU,Cu,fE,Ci,y8,tq,xa,TY,uE,nY,Zg,K7,pU,qu,eh,MV,eR,hD,qp,Ho",}},um:{"":"a;x>,y>,ZB,Gp,Yg,lg,Fl,YN,M6"},iX:{"":"wO;iB,Tx,Nh,aw,jA,KI,Sx,Xa,yp,hz,pr,jp,H4,e0",
 gx:function(a){return this.Nh},
 gy:function(a){return this.aw},
 DV:function(a){var z,y
