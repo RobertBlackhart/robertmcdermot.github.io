@@ -1191,6 +1191,15 @@ textarea{resize: none;}
 		top: 50px;
 		width: calc(100% - 110px);
 	}
+	#CurrantBack {
+		left: 10px;
+	}
+	#CurrantText {
+		left: 50px;
+	}
+	#CurrantEmblem {
+		left: 16px;
+	}
 	#Joystick {
 		display: block;
 		width: 100px;
@@ -1295,19 +1304,33 @@ textarea{resize: none;}
 	}
 	#EnergyText {
 		top: 50px;
+		left: 120px;
 	}
 	#EnergyIndicator, #EnergyIndicatorRed {
 		top: -7px;
+		left: -18px;
 	}
 	#EnergyEmblem {
 		top: 98px;
+		left: 15px;
 	}
 	#TopLeftCorner {
 		top: -17px;
+		left: -28px;
 	}
 	#GameScreen {
 		top: 50px;
-		width: calc(100% - 110px);
+		width: calc(100% - 45px);
+		left: 25px;
+	}
+	#CurrantBack {
+		left: 0px;
+	}
+	#CurrantText {
+		left: 40px;
+	}
+	#CurrantEmblem {
+		left: 6px;
 	}
 	#Joystick {
 		display: block;
@@ -1317,7 +1340,7 @@ textarea{resize: none;}
 		border-radius: 50%;
 		position: absolute;
 		bottom: 20px;
-		left: 40px;
+		left: 15px;
 	}
 	#Knob {
 		position: absolute;
@@ -1352,8 +1375,8 @@ textarea{resize: none;}
 		position: absolute;
 		background-color: #e9f0f0;
 		bottom: 40px;
-		right: 200px;
-		left: 200px;
+		right: 160px;
+		left: 130px;
 		white-space: nowrap;
 		overflow-y: hidden;
 		overflow-x: scroll;
@@ -1362,7 +1385,7 @@ textarea{resize: none;}
 	}
 	#ChatBubble {
 		position: absolute;
-		right: 0px;
+		right: -40px;
 		top: 35px;
 	}
 	#AButton {
@@ -1374,8 +1397,8 @@ textarea{resize: none;}
 		border: 1px solid;
 		border-radius: 50%;
 		position: absolute;
-		right: 20px;
-		bottom: 70px;
+		right: 10px;
+		bottom: 65px;
 	}
 	#BButton {
 		display: block;
@@ -1386,7 +1409,7 @@ textarea{resize: none;}
 		border: 1px solid;
 		border-radius: 50%;
 		position: absolute;
-		right: 100px;
+		right: 75px;
 		bottom: 30px;
 	}
 	#MobileFullscreen {
