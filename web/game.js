@@ -4538,7 +4538,7 @@ Input_init_closure18: {"": "Closure;",
 
 Input_init_closure19: {"": "Closure;",
   call$1: function(_) {
-    return P.print("blah");
+    return P.print("blah ");
   },
   $is_args1: true
 },
