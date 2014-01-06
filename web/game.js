@@ -4190,8 +4190,6 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
     t2.forEach$1(t2, new B.Input_init_closure17());
     B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
-    J.click$0$x(document.querySelector("#InventoryTitle"));
-    J.click$0$x(document.querySelector("#InventoryTitle"));
     t2 = document.querySelector("#InventoryTitle");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
@@ -4601,21 +4599,19 @@ Joystick_closure: {"": "Closure;this_0",
   call$1: function($event) {
     var t1, t2;
     P.print("onTouchStart");
-    t1 = J.getInterceptor$x($event);
-    t1.stopPropagation$0($event);
-    t2 = this.this_0;
-    t1 = J.get$first$ax(t1.get$touches($event));
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t2._initialTouchX = t1.x;
-    t1 = J.get$first$ax($event.touches);
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t2._initialTouchY = t1.y;
-    t2 = t2._moveController;
-    if (t2._state >= 4)
-      H.throwExpression(t2._addEventError$0());
-    t2._sendData$1(new B.JoystickEvent());
+    t1 = this.this_0;
+    t2 = J.get$first$ax(J.get$touches$x($event));
+    t2 = new P.Point(t2.clientX, t2.clientY);
+    H.setRuntimeTypeInfo(t2, [null]);
+    t1._initialTouchX = t2.x;
+    t2 = J.get$first$ax($event.touches);
+    t2 = new P.Point(t2.clientX, t2.clientY);
+    H.setRuntimeTypeInfo(t2, [null]);
+    t1._initialTouchY = t2.y;
+    t1 = t1._moveController;
+    if (t1._state >= 4)
+      H.throwExpression(t1._addEventError$0());
+    t1._sendData$1(new B.JoystickEvent());
   },
   $is_args1: true
 },
@@ -4624,100 +4620,98 @@ Joystick_closure0: {"": "Closure;this_1",
   call$1: function($event) {
     var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
     P.print("onTouchMove");
-    t1 = J.getInterceptor$x($event);
-    t1.preventDefault$0($event);
-    t2 = this.this_1;
-    t3 = t2._neutralX;
-    t1 = J.get$first$ax(t1.get$touches($event));
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t1 = t1.x;
-    t4 = t2._initialTouchX;
-    if (typeof t1 !== "number")
-      throw t1.$sub();
+    t1 = this.this_1;
+    t2 = t1._neutralX;
+    t3 = J.get$first$ax(J.get$touches$x($event));
+    t3 = new P.Point(t3.clientX, t3.clientY);
+    H.setRuntimeTypeInfo(t3, [null]);
+    t3 = t3.x;
+    t4 = t1._initialTouchX;
+    if (typeof t3 !== "number")
+      throw t3.$sub();
     if (typeof t4 !== "number")
       throw H.iae(t4);
+    if (typeof t2 !== "number")
+      throw t2.$add();
+    x = t2 + (t3 - t4);
+    t4 = t1._neutralY;
+    t3 = J.get$first$ax($event.touches);
+    t3 = new P.Point(t3.clientX, t3.clientY);
+    H.setRuntimeTypeInfo(t3, [null]);
+    t3 = t3.y;
+    t2 = t1._initialTouchY;
     if (typeof t3 !== "number")
-      throw t3.$add();
-    x = t3 + (t1 - t4);
-    t4 = t2._neutralY;
-    t1 = J.get$first$ax($event.touches);
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t1 = t1.y;
-    t3 = t2._initialTouchY;
-    if (typeof t1 !== "number")
-      throw t1.$sub();
-    if (typeof t3 !== "number")
-      throw H.iae(t3);
+      throw t3.$sub();
+    if (typeof t2 !== "number")
+      throw H.iae(t2);
     if (typeof t4 !== "number")
       throw t4.$add();
-    y = t4 + (t1 - t3);
-    t3 = t2._joystick.clientWidth;
-    if (typeof t3 !== "number")
-      throw t3.$tdiv();
-    t3 = C.JSInt_methods.$tdiv(t3, 2);
-    if (!t2.inCircle$5(t2._neutralX, t2._neutralY, t3, x, y)) {
-      t1 = t2._neutralY;
-      if (typeof t1 !== "number")
-        throw H.iae(t1);
-      t4 = t2._neutralX;
+    y = t4 + (t3 - t2);
+    t2 = t1._joystick.clientWidth;
+    if (typeof t2 !== "number")
+      throw t2.$tdiv();
+    t2 = C.JSInt_methods.$tdiv(t2, 2);
+    if (!t1.inCircle$5(t1._neutralX, t1._neutralY, t2, x, y)) {
+      t3 = t1._neutralY;
+      if (typeof t3 !== "number")
+        throw H.iae(t3);
+      t4 = t1._neutralX;
       if (typeof t4 !== "number")
         throw H.iae(t4);
-      angle = Math.atan((y - t1) / (x - t4));
-      t1 = t2._neutralX;
-      if (typeof t1 !== "number")
-        throw H.iae(t1);
-      if (x - t1 < 0)
+      angle = Math.atan((y - t3) / (x - t4));
+      t3 = t1._neutralX;
+      if (typeof t3 !== "number")
+        throw H.iae(t3);
+      if (x - t3 < 0)
         angle += 3.141592653589793;
-      t1 = t2._neutralY;
-      t4 = C.JSNumber_methods.toInt$0(Math.floor(Math.sin(angle) * t3));
-      if (typeof t1 !== "number")
-        throw t1.$add();
-      yOnCircle = t1 + t4;
-      t4 = t2._neutralX;
-      t1 = C.JSNumber_methods.toInt$0(Math.floor(Math.cos(angle) * t3));
+      t3 = t1._neutralY;
+      t4 = C.JSNumber_methods.toInt$0(Math.floor(Math.sin(angle) * t2));
+      if (typeof t3 !== "number")
+        throw t3.$add();
+      yOnCircle = t3 + t4;
+      t4 = t1._neutralX;
+      t2 = C.JSNumber_methods.toInt$0(Math.floor(Math.cos(angle) * t2));
       if (typeof t4 !== "number")
         throw t4.$add();
-      xOnCircle = t4 + t1;
+      xOnCircle = t4 + t2;
       y = yOnCircle;
       x = xOnCircle;
     }
-    t1 = t2._neutralX;
-    if (typeof t1 !== "number")
-      throw H.iae(t1);
-    if (x < t1)
-      t2.LEFT = true;
+    t2 = t1._neutralX;
+    if (typeof t2 !== "number")
+      throw H.iae(t2);
+    if (x < t2)
+      t1.LEFT = true;
     else
-      t2.LEFT = false;
-    t1 = t2._neutralX;
-    if (typeof t1 !== "number")
-      throw H.iae(t1);
-    if (x > t1)
-      t2.RIGHT = true;
+      t1.LEFT = false;
+    t2 = t1._neutralX;
+    if (typeof t2 !== "number")
+      throw H.iae(t2);
+    if (x > t2)
+      t1.RIGHT = true;
     else
-      t2.RIGHT = false;
-    t1 = t2._neutralY;
-    if (typeof t1 !== "number")
-      throw H.iae(t1);
-    if (y > t1)
-      t2.DOWN = true;
+      t1.RIGHT = false;
+    t2 = t1._neutralY;
+    if (typeof t2 !== "number")
+      throw H.iae(t2);
+    if (y > t2)
+      t1.DOWN = true;
     else
-      t2.DOWN = false;
-    t1 = t2._neutralY;
-    if (typeof t1 !== "number")
-      throw H.iae(t1);
-    if (y < t1)
-      t2.UP = true;
+      t1.DOWN = false;
+    t2 = t1._neutralY;
+    if (typeof t2 !== "number")
+      throw H.iae(t2);
+    if (y < t2)
+      t1.UP = true;
     else
-      t2.UP = false;
-    t1 = t2._knob;
-    J.set$left$x(t1.style, C.JSNumber_methods.toString$0(x) + "px");
-    J.set$top$x(t1.style, C.JSNumber_methods.toString$0(y) + "px");
-    t2 = t2._moveController;
-    if (t2._state >= 4)
-      H.throwExpression(t2._addEventError$0());
-    t2._sendData$1(new B.JoystickEvent());
+      t1.UP = false;
+    t2 = t1._knob;
+    J.set$left$x(t2.style, C.JSNumber_methods.toString$0(x) + "px");
+    J.set$top$x(t2.style, C.JSNumber_methods.toString$0(y) + "px");
+    t1 = t1._moveController;
+    if (t1._state >= 4)
+      H.throwExpression(t1._addEventError$0());
+    t1._sendData$1(new B.JoystickEvent());
   },
   $is_args1: true
 },
@@ -10214,9 +10208,6 @@ Element: {"": "Node;className%,id=,style=",
   get$innerHtml: function(receiver) {
     return receiver.innerHTML;
   },
-  click$0: function(receiver) {
-    return receiver.click();
-  },
   get$onClick: function(receiver) {
     return C.EventStreamProvider_click.forElement$1(receiver);
   },
@@ -12093,9 +12084,6 @@ SvgElement: {"": "Element;",
     for (; t1 = root.firstChild, t1 != null;)
       svgFragment.appendChild(t1);
     return svgFragment;
-  },
-  click$0: function(receiver) {
-    throw H.wrapException(P.UnsupportedError$("Cannot invoke click SVG."));
   },
   $isSvgElement: true,
   "%": "SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGAnimationElement|SVGComponentTransferFunctionElement|SVGCursorElement|SVGDescElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement|SVGFEMergeNodeElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGHKernElement|SVGLinearGradientElement|SVGMPathElement|SVGMarkerElement|SVGMetadataElement|SVGMissingGlyphElement|SVGRadialGradientElement|SVGSetElement|SVGStopElement|SVGSymbolElement|SVGTitleElement|SVGVKernElement|SVGViewElement;SVGElement"
@@ -15195,9 +15183,6 @@ J.addAll$1$ax = function(receiver, a0) {
 J.addEventListener$3$x = function(receiver, a0, a1, a2) {
   return J.getInterceptor$x(receiver).addEventListener$3(receiver, a0, a1, a2);
 };
-J.click$0$x = function(receiver) {
-  return J.getInterceptor$x(receiver).click$0(receiver);
-};
 J.clone$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).clone$1(receiver, a0);
 };
@@ -15317,6 +15302,9 @@ J.get$text$x = function(receiver) {
 };
 J.get$timeStamp$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$timeStamp(receiver);
+};
+J.get$touches$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$touches(receiver);
 };
 J.get$type$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$type(receiver);
