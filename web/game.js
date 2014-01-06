@@ -4543,10 +4543,9 @@ Input_init_closure19: {"": "Closure;",
   call$1: function(_) {
     var bagBar, t1, t2;
     bagBar = document.querySelector("#MobileInventoryBag");
-    P.print(C.JSString_methods.$add("bagBar display style: ", J.get$display$x(bagBar.style)));
-    t1 = J.get$display$x(bagBar.style);
+    t1 = J.get$display$x(bagBar.style) === "none" || J.get$display$x(bagBar.style) === "";
     t2 = bagBar.style;
-    if (t1 === "none")
+    if (t1)
       J.get$display$x(t2);
     else
       J.set$display$x(t2, "none");
