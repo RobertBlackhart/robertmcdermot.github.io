@@ -4590,15 +4590,15 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     this._neutralX = t1.offsetLeft;
     this._neutralY = t1.offsetTop;
     t1.toString;
-    t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
+    t2 = C.EventStreamProvider_mousedown.forElement$1(t1);
     t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t3._tryResume$0();
-    t3 = C.EventStreamProvider_touchmove.forElement$1(t1);
+    t3 = C.EventStreamProvider_mousemove.forElement$1(t1);
     t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
     t2._tryResume$0();
-    t1 = C.EventStreamProvider_touchend.forElement$1(t1);
+    t1 = C.EventStreamProvider_mouseup.forElement$1(t1);
     t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
@@ -4620,12 +4620,8 @@ Joystick_closure: {"": "Closure;this_0",
     t1.preventDefault$0($event);
     t1.stopPropagation$0($event);
     t2 = this.this_0;
-    t1 = J.get$first$ax(t1.get$changedTouches($event));
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t2._initialTouchX = t1.x;
-    t1 = J.get$first$ax($event.changedTouches);
-    t1 = new P.Point(t1.clientX, t1.clientY);
+    t2._initialTouchX = t1.get$client($event).x;
+    t1 = new P.Point($event.clientX, $event.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
     t2._initialTouchY = t1.y;
     t2 = t2._moveController;
@@ -4644,10 +4640,7 @@ Joystick_closure0: {"": "Closure;this_1",
     t1.preventDefault$0($event);
     t2 = this.this_1;
     t3 = t2._neutralX;
-    t1 = J.get$first$ax(t1.get$changedTouches($event));
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t1 = t1.x;
+    t1 = t1.get$client($event).x;
     t4 = t2._initialTouchX;
     if (typeof t1 !== "number")
       throw t1.$sub();
@@ -4657,8 +4650,7 @@ Joystick_closure0: {"": "Closure;this_1",
       throw t3.$add();
     x = t3 + (t1 - t4);
     t4 = t2._neutralY;
-    t1 = J.get$first$ax($event.changedTouches);
-    t1 = new P.Point(t1.clientX, t1.clientY);
+    t1 = new P.Point($event.clientX, $event.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
     t1 = t1.y;
     t3 = t2._initialTouchY;
