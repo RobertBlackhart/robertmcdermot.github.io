@@ -4196,11 +4196,11 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure18()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    J.click$0$x(document.querySelector("#Knob"));
+    C.EventStreamProvider_mousedown.forTarget$1(document).listen$1(new B.Input_init_closure19());
     t1 = document.body;
     t1.toString;
     t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19(this)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure20(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     $.playerInput = this;
@@ -4536,7 +4536,14 @@ Input_init_closure18: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure19: {"": "Closure;this_11",
+Input_init_closure19: {"": "Closure;",
+  call$1: function(_) {
+    return P.print("blah");
+  },
+  $is_args1: true
+},
+
+Input_init_closure20: {"": "Closure;this_11",
   call$1: function(e) {
     return this.this_11.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
   },
@@ -10215,9 +10222,6 @@ Element: {"": "Node;className%,id=,style=",
   get$innerHtml: function(receiver) {
     return receiver.innerHTML;
   },
-  click$0: function(receiver) {
-    return receiver.click();
-  },
   get$onClick: function(receiver) {
     return C.EventStreamProvider_click.forElement$1(receiver);
   },
@@ -12094,9 +12098,6 @@ SvgElement: {"": "Element;",
     for (; t1 = root.firstChild, t1 != null;)
       svgFragment.appendChild(t1);
     return svgFragment;
-  },
-  click$0: function(receiver) {
-    throw H.wrapException(P.UnsupportedError$("Cannot invoke click SVG."));
   },
   $isSvgElement: true,
   "%": "SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGAnimationElement|SVGComponentTransferFunctionElement|SVGCursorElement|SVGDescElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement|SVGFEMergeNodeElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGHKernElement|SVGLinearGradientElement|SVGMPathElement|SVGMarkerElement|SVGMetadataElement|SVGMissingGlyphElement|SVGRadialGradientElement|SVGSetElement|SVGStopElement|SVGSymbolElement|SVGTitleElement|SVGVKernElement|SVGViewElement;SVGElement"
@@ -15195,9 +15196,6 @@ J.addAll$1$ax = function(receiver, a0) {
 };
 J.addEventListener$3$x = function(receiver, a0, a1, a2) {
   return J.getInterceptor$x(receiver).addEventListener$3(receiver, a0, a1, a2);
-};
-J.click$0$x = function(receiver) {
-  return J.getInterceptor$x(receiver).click$0(receiver);
 };
 J.clone$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).clone$1(receiver, a0);
