@@ -3460,6 +3460,7 @@ Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
     this.addChatTab$2("Other Chat", false);
     t1 = J.get$children$x(document.querySelector("#ChatPane"));
     t1.add$1(t1, B.TabContent$("Local Chat", true).getDiv$0());
+    B.TouchScroller$(document.querySelector("#ChannelList"), $.TouchScroller_VERTICAL);
   },
   addChatTab$2: function(channelName, checked) {
     var tabContent, $content, tab, radioButton, t1, t2, label;
@@ -3784,6 +3785,7 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     conversation = document.createElement("div", null);
     conversation.className = "Conversation";
     conversation.id = "conversation-" + H.stringReplaceAllUnchecked(t2, " ", "_");
+    B.TouchScroller$(conversation, $.TouchScroller_VERTICAL);
     t1 = J.get$children$x(conversationStack);
     t1.add$1(t1, conversation);
     channelList = document.querySelector("#ChannelList");
@@ -4187,7 +4189,7 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2._tryResume$0();
     t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
     t2.forEach$1(t2, new B.Input_init_closure17());
-    B.TouchScroller$(document.querySelector("#InventoryBar"));
+    B.TouchScroller$(document.querySelector("#InventoryBar"), $.TouchScroller_HORIZONTAL);
     t2 = document.body;
     t2.toString;
     t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
@@ -4717,20 +4719,25 @@ Joystick_closure1: {"": "Closure;this_2",
 
 JoystickEvent: {"": "Object;"},
 
-TouchScroller: {"": "Object;_scrollDiv,_startX,_startY",
-  TouchScroller$1: function(_scrollDiv) {
-    var t1, t2;
+TouchScroller: {"": "Object;_scrollDiv,_startX,_startY,_lastX,_lastY,_direction",
+  TouchScroller$2: function(_scrollDiv, _direction) {
+    var t1, t2, t3;
     t1 = this._scrollDiv;
     t1.toString;
-    t1 = C.EventStreamProvider_touchstart.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.TouchScroller_closure(this)), t1._useCapture);
-    H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
-    t2._tryResume$0();
+    t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
+    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.TouchScroller_closure(this)), t2._useCapture);
+    H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
+    t3._tryResume$0();
+    t1 = C.EventStreamProvider_touchmove.forElement$1(t1);
+    t3 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.TouchScroller_closure0(this)), t1._useCapture);
+    H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
+    t3._tryResume$0();
   },
   static: {
-TouchScroller$: function(_scrollDiv) {
-  var t1 = new B.TouchScroller(_scrollDiv, null, null);
-  t1.TouchScroller$1(_scrollDiv);
+"": "TouchScroller_HORIZONTAL,TouchScroller_VERTICAL,TouchScroller_BOTH",
+TouchScroller$: function(_scrollDiv, _direction) {
+  var t1 = new B.TouchScroller(_scrollDiv, null, null, null, null, _direction);
+  t1.TouchScroller$2(_scrollDiv, _direction);
   return t1;
 }}
 
@@ -4740,7 +4747,7 @@ TouchScroller_closure: {"": "Closure;this_0",
   call$1: function($event) {
     var t1, t2;
     t1 = J.getInterceptor$x($event);
-    t1.preventDefault$0($event);
+    t1.stopPropagation$0($event);
     t2 = this.this_0;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
@@ -4750,6 +4757,59 @@ TouchScroller_closure: {"": "Closure;this_0",
     t1 = new P.Point(t1.clientX, t1.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
     t2._startY = t1.y;
+    t2._lastX = t2._startX;
+    t2._lastY = t2._startY;
+  },
+  $is_args1: true
+},
+
+TouchScroller_closure0: {"": "Closure;this_1",
+  call$1: function($event) {
+    var t1, t2, t3, t4, t5, t6, t7, t8;
+    t1 = J.getInterceptor$x($event);
+    t1.preventDefault$0($event);
+    t2 = this.this_1;
+    t3 = t2._lastX;
+    t1 = J.get$single$ax(t1.get$changedTouches($event));
+    t1 = new P.Point(t1.clientX, t1.clientY);
+    H.setRuntimeTypeInfo(t1, [null]);
+    t1 = t1.x;
+    if (typeof t3 !== "number")
+      throw t3.$sub();
+    if (typeof t1 !== "number")
+      throw H.iae(t1);
+    t4 = t2._lastY;
+    t5 = J.get$single$ax($event.changedTouches);
+    t5 = new P.Point(t5.clientX, t5.clientY);
+    H.setRuntimeTypeInfo(t5, [null]);
+    t5 = t5.y;
+    if (typeof t4 !== "number")
+      throw t4.$sub();
+    if (typeof t5 !== "number")
+      throw H.iae(t5);
+    t6 = J.get$single$ax($event.changedTouches);
+    t6 = new P.Point(t6.clientX, t6.clientY);
+    H.setRuntimeTypeInfo(t6, [null]);
+    t2._lastX = t6.x;
+    t6 = J.get$single$ax($event.changedTouches);
+    t6 = new P.Point(t6.clientX, t6.clientY);
+    H.setRuntimeTypeInfo(t6, [null]);
+    t2._lastY = t6.y;
+    t6 = t2._direction;
+    if (t6 === $.TouchScroller_HORIZONTAL || t6 === $.TouchScroller_BOTH) {
+      t7 = t2._scrollDiv;
+      t8 = t7.scrollLeft;
+      if (typeof t8 !== "number")
+        throw t8.$add();
+      t7.scrollLeft = t8 + (t3 - t1);
+    }
+    if (t6 === $.TouchScroller_VERTICAL || t6 === $.TouchScroller_BOTH) {
+      t1 = t2._scrollDiv;
+      t2 = t1.scrollTop;
+      if (typeof t2 !== "number")
+        throw t2.$add();
+      t1.scrollTop = t2 + (t4 - t5);
+    }
   },
   $is_args1: true
 },
@@ -10151,6 +10211,9 @@ Event: {"": "Interceptor;timeStamp=,type=",
   preventDefault$0: function(receiver) {
     return receiver.preventDefault();
   },
+  stopPropagation$0: function(receiver) {
+    return receiver.stopPropagation();
+  },
   $isEvent: true,
   "%": "AudioProcessingEvent|AutocompleteErrorEvent|BeforeLoadEvent|CSSFontFaceLoadEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|HashChangeEvent|IDBVersionChangeEvent|MIDIConnectionEvent|MediaKeyEvent|MediaKeyMessageEvent|MediaKeyNeededEvent|MediaStreamEvent|MediaStreamTrackEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|RTCDTMFToneChangeEvent|RTCDataChannelEvent|RTCIceCandidateEvent|SecurityPolicyViolationEvent|SpeechInputEvent|SpeechRecognitionEvent|SpeechSynthesisEvent|StorageEvent|TrackEvent|TransitionEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent;Event"
 },
@@ -10588,6 +10651,14 @@ TouchList: {"": "Interceptor_ListMixin_ImmutableListMixin1;",
     if (receiver.length > 0)
       return receiver[0];
     throw H.wrapException(new P.StateError("No elements"));
+  },
+  get$single: function(receiver) {
+    var len = receiver.length;
+    if (len === 1)
+      return receiver[0];
+    if (len === 0)
+      throw H.wrapException(new P.StateError("No elements"));
+    throw H.wrapException(new P.StateError("More than one element"));
   },
   elementAt$1: function(receiver, index) {
     if (index < 0 || index >= receiver.length)
@@ -11722,6 +11793,9 @@ _WrappedEvent: {"": "Object;",
   },
   preventDefault$0: function(_) {
     J.preventDefault$0$x(this.wrapped);
+  },
+  stopPropagation$0: function(_) {
+    J.stopPropagation$0$x(this.wrapped);
   },
   $isEvent: true
 },
@@ -15007,6 +15081,9 @@ $.initNativeDispatchFlag = null;
 $.ui_sounds = null;
 $.consolelistener = null;
 $.playerInput = null;
+$.TouchScroller_HORIZONTAL = 0;
+$.TouchScroller_VERTICAL = 1;
+$.TouchScroller_BOTH = 2;
 $.currentStreet = null;
 $.printToZone = null;
 $._callbacksAreEnqueued = false;
@@ -15184,6 +15261,9 @@ J.get$remove$ax = function(receiver) {
 J.get$responseText$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$responseText(receiver);
 };
+J.get$single$ax = function(receiver) {
+  return J.getInterceptor$ax(receiver).get$single(receiver);
+};
 J.get$style$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$style(receiver);
 };
@@ -15321,6 +15401,9 @@ J.splitMapJoin$3$onMatch$onNonMatch$s = function(receiver, a0, a1, a2) {
 };
 J.startsWith$1$s = function(receiver, a0) {
   return J.getInterceptor$s(receiver).startsWith$1(receiver, a0);
+};
+J.stopPropagation$0$x = function(receiver) {
+  return J.getInterceptor$x(receiver).stopPropagation$0(receiver);
 };
 J.substring$1$s = function(receiver, a0) {
   return J.getInterceptor$s(receiver).substring$1(receiver, a0);

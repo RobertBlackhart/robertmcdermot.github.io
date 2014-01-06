@@ -1167,6 +1167,10 @@ textarea{resize: none;}
 .ChannelName {
 	font-size: 2em;
 }
+#ChannelList {
+	overflow-y: scroll;
+	height: 87vh;
+}
 
 @media (max-device-width: 1307px) and (orientation: landscape) /* mobile device in landscape */
 {
