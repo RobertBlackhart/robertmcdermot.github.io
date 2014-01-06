@@ -4578,7 +4578,7 @@ Joystick_closure: {"": "Closure;this_0",
   call$1: function($event) {
     var t1, t2;
     t1 = J.getInterceptor$x($event);
-    t1.preventDefault$0($event);
+    t1.stopPropagation$0($event);
     t2 = this.this_0;
     t1 = J.get$first$ax(t1.get$touches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
@@ -4700,7 +4700,6 @@ Joystick_closure0: {"": "Closure;this_1",
 Joystick_closure1: {"": "Closure;this_2",
   call$1: function($event) {
     var t1, t2;
-    J.preventDefault$0$x($event);
     t1 = this.this_2;
     t2 = t1._knob;
     J.set$left$x(t2.style, J.toString$0(t1._neutralX) + "px");
