@@ -4572,6 +4572,16 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     t1 = this._knob;
     this._neutralX = t1.offsetLeft;
     this._neutralY = t1.offsetTop;
+    t2 = document.body;
+    t3 = document.body.scrollLeft;
+    if (typeof t3 !== "number")
+      throw t3.$add();
+    t2.scrollLeft = t3 + 1;
+    t3 = document.body;
+    t2 = document.body.scrollLeft;
+    if (typeof t2 !== "number")
+      throw t2.$sub();
+    t3.scrollLeft = t2 - 1;
     t1.toString;
     t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
     t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
