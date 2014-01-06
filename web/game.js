@@ -4601,6 +4601,7 @@ Joystick_closure: {"": "Closure;this_0",
     P.print("onTouchStart");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
+    t1.stopPropagation$0($event);
     t2 = this.this_0;
     t1 = J.get$first$ax(t1.get$touches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
