@@ -4189,13 +4189,19 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2._tryResume$0();
     t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
     t2.forEach$1(t2, new B.Input_init_closure17());
-    B.TouchScroller$(document.querySelector("#InventoryBar"), $.TouchScroller_HORIZONTAL);
-    t2 = document.body;
+    B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
+    t2 = document.querySelector("#InventoryTitle");
     t2.toString;
-    t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure18(this)), t2._useCapture);
+    t2 = C.EventStreamProvider_click.forElement$1(t2);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure18()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
+    t1 = document.body;
+    t1.toString;
+    t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19(this)), t1._useCapture);
+    H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
+    t2._tryResume$0();
     $.playerInput = this;
   },
   hideClickMenu$0: function() {
@@ -4514,7 +4520,21 @@ Input_init__closure: {"": "Closure;element_10",
   $is_args1: true
 },
 
-Input_init_closure18: {"": "Closure;this_11",
+Input_init_closure18: {"": "Closure;",
+  call$1: function(_) {
+    var drawer, t1, t2;
+    drawer = document.querySelector("#InventoryDrawer");
+    t1 = J.get$bottom$x(drawer.style);
+    t2 = drawer.style;
+    if (t1 === "0px")
+      J.set$bottom$x(t2, "-75px");
+    else
+      J.set$bottom$x(t2, "0px");
+  },
+  $is_args1: true
+},
+
+Input_init_closure19: {"": "Closure;this_11",
   call$1: function(e) {
     return this.this_11.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
   },
@@ -10916,6 +10936,12 @@ _CssStyleDeclarationSet_setProperty_closure: {"": "Closure;propertyName_0,value_
 },
 
 CssStyleDeclarationBase: {"": "Object;",
+  get$bottom: function(receiver) {
+    return this.getPropertyValue$1(receiver, "bottom");
+  },
+  set$bottom: function(receiver, value) {
+    this.setProperty$3(receiver, "bottom", value, "");
+  },
   set$color: function(receiver, value) {
     this.setProperty$3(receiver, "color", value, "");
   },
@@ -15185,6 +15211,9 @@ J.forEach$1$ax = function(receiver, a0) {
 J.get$_key$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$_key(receiver);
 };
+J.get$bottom$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$bottom(receiver);
+};
 J.get$changedTouches$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$changedTouches(receiver);
 };
@@ -15334,6 +15363,9 @@ J.replaceWith$1$x = function(receiver, a0) {
 };
 J.send$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).send$1(receiver, a0);
+};
+J.set$bottom$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$bottom(receiver, value);
 };
 J.set$checked$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$checked(receiver, value);
