@@ -4159,55 +4159,49 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1.listen$1(new B.Input_init_closure11(this));
     t1 = document.querySelector("#AButton");
     t1.toString;
-    t1 = C.EventStreamProvider_touchstart.forElement$1(t1);
+    t1 = C.EventStreamProvider_mousedown.forElement$1(t1);
     t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure12(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.querySelector("#AButton");
     t2.toString;
-    t2 = C.EventStreamProvider_mousedown.forElement$1(t2);
+    t2 = C.EventStreamProvider_mouseup.forElement$1(t2);
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure13(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    t1 = document.querySelector("#AButton");
+    t1 = document.querySelector("#ChatBubble");
     t1.toString;
-    t1 = C.EventStreamProvider_touchend.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure14(this)), t1._useCapture);
+    t1 = C.EventStreamProvider_click.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure14()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
-    t2 = document.querySelector("#ChatBubble");
+    t2 = document.querySelector("#BackFromChannelSelector");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure15()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    t1 = document.querySelector("#BackFromChannelSelector");
+    t1 = document.querySelector("#BackFromChat");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
     t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure16()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
-    t2 = document.querySelector("#BackFromChat");
+    t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
+    t2.forEach$1(t2, new B.Input_init_closure17());
+    B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
+    t2 = document.querySelector("#InventoryTitle");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure17()), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure18()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    t1 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
-    t1.forEach$1(t1, new B.Input_init_closure18());
-    B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
-    t1 = document.querySelector("#InventoryTitle");
+    t1 = document.body;
     t1.toString;
-    t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19()), t1._useCapture);
+    t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
-    t2 = document.body;
-    t2.toString;
-    t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure20(this)), t2._useCapture);
-    H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
-    t1._tryResume$0();
     $.playerInput = this;
   },
   hideClickMenu$0: function() {
@@ -4464,29 +4458,20 @@ Input_init_closure11: {"": "Closure;this_7",
 Input_init_closure12: {"": "Closure;this_8",
   call$1: function($event) {
     J.preventDefault$0$x($event);
-    P.print("AButton touch");
+    P.print("AButton mouse");
     this.this_8.spaceKey = true;
   },
   $is_args1: true
 },
 
 Input_init_closure13: {"": "Closure;this_9",
-  call$1: function($event) {
-    J.preventDefault$0$x($event);
-    P.print("AButton mouse");
-    this.this_9.spaceKey = true;
-  },
-  $is_args1: true
-},
-
-Input_init_closure14: {"": "Closure;this_10",
   call$1: function(_) {
-    this.this_10.spaceKey = false;
+    this.this_9.spaceKey = false;
   },
   $is_args1: true
 },
 
-Input_init_closure15: {"": "Closure;",
+Input_init_closure14: {"": "Closure;",
   call$1: function(_) {
     document.querySelector("#ChannelSelectorScreen").hidden = false;
     document.querySelector("#MainScreen").hidden = true;
@@ -4494,7 +4479,7 @@ Input_init_closure15: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure16: {"": "Closure;",
+Input_init_closure15: {"": "Closure;",
   call$1: function(_) {
     document.querySelector("#ChannelSelectorScreen").hidden = true;
     document.querySelector("#MainScreen").hidden = false;
@@ -4502,7 +4487,7 @@ Input_init_closure16: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure17: {"": "Closure;",
+Input_init_closure16: {"": "Closure;",
   call$1: function(_) {
     document.querySelector("#ChatScreen").hidden = true;
     document.querySelector("#ChannelSelectorScreen").hidden = false;
@@ -4510,19 +4495,19 @@ Input_init_closure17: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure18: {"": "Closure;",
+Input_init_closure17: {"": "Closure;",
   call$1: function(element) {
     J.get$onClick$x(element).listen$1(new B.Input_init__closure(element));
   },
   $is_args1: true
 },
 
-Input_init__closure: {"": "Closure;element_11",
+Input_init__closure: {"": "Closure;element_10",
   call$1: function(_) {
     var channelName, t1, input, sendButton;
     document.querySelector("#ChatScreen").hidden = false;
     document.querySelector("#ChannelSelectorScreen").hidden = true;
-    channelName = J.get$text$x(this.element_11);
+    channelName = J.get$text$x(this.element_10);
     document.querySelector("#ChatChannelTitle").textContent = channelName;
     t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
     t1.set$zIndex(t1, "0");
@@ -4537,7 +4522,7 @@ Input_init__closure: {"": "Closure;element_11",
   $is_args1: true
 },
 
-Input_init_closure19: {"": "Closure;",
+Input_init_closure18: {"": "Closure;",
   call$1: function(_) {
     var drawer, t1, t2;
     drawer = document.querySelector("#InventoryDrawer");
@@ -4551,9 +4536,9 @@ Input_init_closure19: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure20: {"": "Closure;this_12",
+Input_init_closure19: {"": "Closure;this_11",
   call$1: function(e) {
-    return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
+    return this.this_11.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
   },
   $is_args1: true
 },
@@ -4589,15 +4574,15 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     this._neutralX = t1.offsetLeft;
     this._neutralY = t1.offsetTop;
     t1.toString;
-    t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
+    t2 = C.EventStreamProvider_mousedown.forElement$1(t1);
     t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t3._tryResume$0();
-    t3 = C.EventStreamProvider_touchmove.forElement$1(t1);
+    t3 = C.EventStreamProvider_mousemove.forElement$1(t1);
     t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
     t2._tryResume$0();
-    t1 = C.EventStreamProvider_touchend.forElement$1(t1);
+    t1 = C.EventStreamProvider_mouseup.forElement$1(t1);
     t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
@@ -4619,12 +4604,8 @@ Joystick_closure: {"": "Closure;this_0",
     t1.preventDefault$0($event);
     t1.stopPropagation$0($event);
     t2 = this.this_0;
-    t1 = J.get$first$ax(t1.get$touches($event));
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t2._initialTouchX = t1.x;
-    t1 = J.get$first$ax($event.touches);
-    t1 = new P.Point(t1.clientX, t1.clientY);
+    t2._initialTouchX = t1.get$client($event).x;
+    t1 = new P.Point($event.clientX, $event.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
     t2._initialTouchY = t1.y;
     t2 = t2._moveController;
@@ -4643,10 +4624,7 @@ Joystick_closure0: {"": "Closure;this_1",
     t1.preventDefault$0($event);
     t2 = this.this_1;
     t3 = t2._neutralX;
-    t1 = J.get$first$ax(t1.get$touches($event));
-    t1 = new P.Point(t1.clientX, t1.clientY);
-    H.setRuntimeTypeInfo(t1, [null]);
-    t1 = t1.x;
+    t1 = t1.get$client($event).x;
     t4 = t2._initialTouchX;
     if (typeof t1 !== "number")
       throw t1.$sub();
@@ -4656,8 +4634,7 @@ Joystick_closure0: {"": "Closure;this_1",
       throw t3.$add();
     x = t3 + (t1 - t4);
     t4 = t2._neutralY;
-    t1 = J.get$first$ax($event.touches);
-    t1 = new P.Point(t1.clientX, t1.clientY);
+    t1 = new P.Point($event.clientX, $event.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
     t1 = t1.y;
     t3 = t2._initialTouchY;
@@ -10669,7 +10646,7 @@ Touch: {"": "Interceptor;identifier=",
   "%": "Touch"
 },
 
-TouchEvent: {"": "UIEvent;changedTouches=,touches=", $isTouchEvent: true, "%": "TouchEvent"},
+TouchEvent: {"": "UIEvent;changedTouches=", $isTouchEvent: true, "%": "TouchEvent"},
 
 TouchList: {"": "Interceptor_ListMixin_ImmutableListMixin1;",
   get$length: function(receiver) {
