@@ -4196,7 +4196,7 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure18()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    window.alert("message");
+    document.querySelector("#Knob").focus();
     t1 = document.body;
     t1.toString;
     t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
