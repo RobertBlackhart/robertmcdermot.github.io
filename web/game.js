@@ -4456,7 +4456,8 @@ Input_init_closure11: {"": "Closure;this_7",
 },
 
 Input_init_closure12: {"": "Closure;this_8",
-  call$1: function(_) {
+  call$1: function($event) {
+    J.preventDefault$0$x($event);
     this.this_8.spaceKey = true;
   },
   $is_args1: true
@@ -4597,6 +4598,7 @@ Joystick$: function(_joystick, _knob) {
 Joystick_closure: {"": "Closure;this_0",
   call$1: function($event) {
     var t1, t2;
+    P.print("onTouchStart");
     t1 = J.getInterceptor$x($event);
     t1.stopPropagation$0($event);
     t2 = this.this_0;
@@ -4619,6 +4621,7 @@ Joystick_closure: {"": "Closure;this_0",
 Joystick_closure0: {"": "Closure;this_1",
   call$1: function($event) {
     var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
+    P.print("onTouchMove");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
     t2 = this.this_1;
