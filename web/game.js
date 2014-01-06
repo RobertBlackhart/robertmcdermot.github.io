@@ -4555,14 +4555,18 @@ Input_init_closure19: {"": "Closure;",
 
 Input_init_closure20: {"": "Closure;",
   call$1: function(_) {
-    var drawer, t1, t2;
+    var drawer, bagBar, t1, t2;
     drawer = document.querySelector("#InventoryDrawer");
-    t1 = J.get$bottom$x(drawer.style);
-    t2 = drawer.style;
-    if (t1 === "0px")
-      J.set$bottom$x(t2, "-75px");
-    else
-      J.set$bottom$x(t2, "0px");
+    bagBar = document.querySelector("#MobileInventoryBag");
+    if (J.get$bottom$x(drawer.style) === "0px") {
+      t1 = J.get$display$x(bagBar.style);
+      t2 = drawer.style;
+      if (t1 === "none")
+        J.set$bottom$x(t2, "-75px");
+      else
+        J.set$bottom$x(t2, "-135px");
+    } else
+      J.set$bottom$x(drawer.style, "0px");
   },
   $is_args1: true
 },
