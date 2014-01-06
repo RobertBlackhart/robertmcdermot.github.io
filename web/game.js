@@ -4540,18 +4540,14 @@ Input_init__closure: {"": "Closure;element_11",
 
 Input_init_closure19: {"": "Closure;",
   call$1: function(_) {
-    var drawer, bagBar, t1, t2;
+    var drawer, t1, t2;
     drawer = document.querySelector("#InventoryDrawer");
-    bagBar = document.querySelector("#MobileInventoryBag");
-    if (J.get$bottom$x(drawer.style) === "0px") {
-      t1 = J.get$display$x(bagBar.style);
-      t2 = drawer.style;
-      if (t1 === "none")
-        J.set$bottom$x(t2, "-75px");
-      else
-        J.set$bottom$x(t2, "-135px");
-    } else
-      J.set$bottom$x(drawer.style, "0px");
+    t1 = J.get$bottom$x(drawer.style);
+    t2 = drawer.style;
+    if (t1 === "0px")
+      J.set$bottom$x(t2, "-75px");
+    else
+      J.set$bottom$x(t2, "0px");
   },
   $is_args1: true
 },
@@ -10974,9 +10970,6 @@ CssStyleDeclarationBase: {"": "Object;",
   set$cursor: function(receiver, value) {
     this.setProperty$3(receiver, "cursor", value, "");
   },
-  get$display: function(receiver) {
-    return this.getPropertyValue$1(receiver, "display");
-  },
   set$display: function(receiver, value) {
     this.setProperty$3(receiver, "display", value, "");
   },
@@ -15263,9 +15256,6 @@ J.get$content$x = function(receiver) {
 };
 J.get$data$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$data(receiver);
-};
-J.get$display$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$display(receiver);
 };
 J.get$error$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$error(receiver);
