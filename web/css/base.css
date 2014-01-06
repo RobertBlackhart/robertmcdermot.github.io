@@ -1197,6 +1197,15 @@ textarea{resize: none;}
 	white-space: nowrap;
 	overflow-x: scroll;
 }
+#MobileInventoryBag {
+	display: none;
+	background: white;
+	padding: 3px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	white-space: nowrap;
+	overflow-x: scroll;
+}
 
 @media (max-device-width: 1307px) and (orientation: landscape) /* mobile device in landscape */
 {
@@ -1242,13 +1251,13 @@ textarea{resize: none;}
 		border: 1px solid;
 		border-radius: 50%;
 		position: absolute;
-		bottom: 20px;
+		bottom: 5px;
 		left: 40px;
 	}
 	#Knob {
 		position: absolute;
-		top: 10px;
-		left: 10px;
+		top: 9px;
+		left: 9px;
 		width: 30px;
 		height: 30px;
 		border: 1px solid;
@@ -1287,9 +1296,9 @@ textarea{resize: none;}
 	#AButton {
 		display: block;
 		text-align: center;
-		line-height: 60px;
-		width: 60px;
-		height: 60px;
+		line-height: 50px;
+		width: 50px;
+		height: 50px;
 		border: 1px solid;
 		border-radius: 50%;
 		position: absolute;
@@ -1299,9 +1308,9 @@ textarea{resize: none;}
 	#BButton {
 		display: block;
 		text-align: center;
-		line-height: 60px;
-		width: 60px;
-		height: 60px;
+		line-height: 50px;
+		width: 50px;
+		height: 50px;
 		border: 1px solid;
 		border-radius: 50%;
 		position: absolute;

@@ -4196,16 +4196,18 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
     t1.forEach$1(t1, new B.Input_init_closure18());
     B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
+    B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
+    C.EventStreamProvider_click._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll("#MobileInventory .InventoryBox"), null)).listen$1(new B.Input_init_closure19());
     t1 = document.querySelector("#InventoryTitle");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure20()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.body;
     t2.toString;
     t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure20(this)), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure21(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     $.playerInput = this;
@@ -4539,6 +4541,20 @@ Input_init__closure: {"": "Closure;element_11",
 
 Input_init_closure19: {"": "Closure;",
   call$1: function(_) {
+    var bagBar, t1, t2;
+    bagBar = document.querySelector("#MobileInventoryBag");
+    t1 = J.get$display$x(bagBar.style);
+    t2 = bagBar.style;
+    if (t1 === "none")
+      J.get$display$x(t2);
+    else
+      J.set$display$x(t2, "none");
+  },
+  $is_args1: true
+},
+
+Input_init_closure20: {"": "Closure;",
+  call$1: function(_) {
     var drawer, t1, t2;
     drawer = document.querySelector("#InventoryDrawer");
     t1 = J.get$bottom$x(drawer.style);
@@ -4551,7 +4567,7 @@ Input_init_closure19: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure20: {"": "Closure;this_12",
+Input_init_closure21: {"": "Closure;this_12",
   call$1: function(e) {
     return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
   },
@@ -10969,6 +10985,9 @@ CssStyleDeclarationBase: {"": "Object;",
   set$cursor: function(receiver, value) {
     this.setProperty$3(receiver, "cursor", value, "");
   },
+  get$display: function(receiver) {
+    return this.getPropertyValue$1(receiver, "display");
+  },
   set$display: function(receiver, value) {
     this.setProperty$3(receiver, "display", value, "");
   },
@@ -15255,6 +15274,9 @@ J.get$content$x = function(receiver) {
 };
 J.get$data$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$data(receiver);
+};
+J.get$display$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$display(receiver);
 };
 J.get$error$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$error(receiver);
