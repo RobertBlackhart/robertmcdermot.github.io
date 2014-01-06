@@ -4190,6 +4190,8 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
     t2.forEach$1(t2, new B.Input_init_closure17());
     B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
+    J.click$0$x(document.querySelector("#InventoryTitle"));
+    J.click$0$x(document.querySelector("#InventoryTitle"));
     t2 = document.querySelector("#InventoryTitle");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
@@ -4573,7 +4575,7 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     this._neutralX = t1.offsetLeft;
     this._neutralY = t1.offsetTop;
     t1.toString;
-    t2 = C.EventStreamProvider_mousedown.forElement$1(t1);
+    t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
     t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t3._tryResume$0();
@@ -4602,8 +4604,12 @@ Joystick_closure: {"": "Closure;this_0",
     t1 = J.getInterceptor$x($event);
     t1.stopPropagation$0($event);
     t2 = this.this_0;
-    t2._initialTouchX = t1.get$client($event).x;
-    t1 = new P.Point($event.clientX, $event.clientY);
+    t1 = J.get$first$ax(t1.get$touches($event));
+    t1 = new P.Point(t1.clientX, t1.clientY);
+    H.setRuntimeTypeInfo(t1, [null]);
+    t2._initialTouchX = t1.x;
+    t1 = J.get$first$ax($event.touches);
+    t1 = new P.Point(t1.clientX, t1.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
     t2._initialTouchY = t1.y;
     t2 = t2._moveController;
@@ -10208,6 +10214,9 @@ Element: {"": "Node;className%,id=,style=",
   get$innerHtml: function(receiver) {
     return receiver.innerHTML;
   },
+  click$0: function(receiver) {
+    return receiver.click();
+  },
   get$onClick: function(receiver) {
     return C.EventStreamProvider_click.forElement$1(receiver);
   },
@@ -12084,6 +12093,9 @@ SvgElement: {"": "Element;",
     for (; t1 = root.firstChild, t1 != null;)
       svgFragment.appendChild(t1);
     return svgFragment;
+  },
+  click$0: function(receiver) {
+    throw H.wrapException(P.UnsupportedError$("Cannot invoke click SVG."));
   },
   $isSvgElement: true,
   "%": "SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGAnimationElement|SVGComponentTransferFunctionElement|SVGCursorElement|SVGDescElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement|SVGFEMergeNodeElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGHKernElement|SVGLinearGradientElement|SVGMPathElement|SVGMarkerElement|SVGMetadataElement|SVGMissingGlyphElement|SVGRadialGradientElement|SVGSetElement|SVGStopElement|SVGSymbolElement|SVGTitleElement|SVGVKernElement|SVGViewElement;SVGElement"
@@ -15182,6 +15194,9 @@ J.addAll$1$ax = function(receiver, a0) {
 };
 J.addEventListener$3$x = function(receiver, a0, a1, a2) {
   return J.getInterceptor$x(receiver).addEventListener$3(receiver, a0, a1, a2);
+};
+J.click$0$x = function(receiver) {
+  return J.getInterceptor$x(receiver).click$0(receiver);
 };
 J.clone$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).clone$1(receiver, a0);
