@@ -4196,11 +4196,10 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure18()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    C.EventStreamProvider_mousedown.forTarget$1(document).listen$1(new B.Input_init_closure19());
     t1 = document.body;
     t1.toString;
     t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure20(this)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     $.playerInput = this;
@@ -4459,6 +4458,7 @@ Input_init_closure11: {"": "Closure;this_7",
 Input_init_closure12: {"": "Closure;this_8",
   call$1: function($event) {
     J.preventDefault$0$x($event);
+    P.print("a touched");
     this.this_8.spaceKey = true;
   },
   $is_args1: true
@@ -4536,14 +4536,7 @@ Input_init_closure18: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure19: {"": "Closure;",
-  call$1: function(_) {
-    return P.print("blah ");
-  },
-  $is_args1: true
-},
-
-Input_init_closure20: {"": "Closure;this_11",
+Input_init_closure19: {"": "Closure;this_11",
   call$1: function(e) {
     return this.this_11.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
   },
