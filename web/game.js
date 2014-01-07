@@ -4637,8 +4637,6 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
   Joystick$2: function(_joystick, _knob) {
     var t1, t2, t3;
     t1 = this._knob;
-    this._neutralX = t1.offsetLeft;
-    this._neutralY = t1.offsetTop;
     t1.toString;
     t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
     t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
@@ -4664,12 +4662,15 @@ Joystick$: function(_joystick, _knob) {
 
 Joystick_closure: {"": "Closure;this_0",
   call$1: function($event) {
-    var t1, t2;
+    var t1, t2, t3;
     P.print("onTouchStart");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
     t1.stopPropagation$0($event);
     t2 = this.this_0;
+    t3 = t2._knob;
+    t2._neutralX = t3.offsetLeft;
+    t2._neutralY = t3.offsetTop;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
