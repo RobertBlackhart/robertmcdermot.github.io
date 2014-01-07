@@ -3968,14 +3968,16 @@ TabContent_setupWebSocket_closure0: {"": "Closure;this_3,channelName_4",
             selector = "#label-" + H.stringReplaceAllUnchecked(t3, " ", "_");
             J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>" + " " + t3);
           }
-          selector = "#channelName-" + H.stringReplaceAllUnchecked(t3, " ", "_");
           t4 = this.this_3;
-          J.set$innerHtml$x(document.querySelector(selector), t3 + " " + "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>");
-          t1.totalUnread_0 = 0;
-          t3 = $.get$chat().tabContentMap;
-          t3 = t3.get$values(t3);
-          t3.forEach$1(t3, new B.TabContent_setupWebSocket__closure0(t1));
-          document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
+          if (t4.unreadMessages > 0) {
+            selector = "#channelName-" + H.stringReplaceAllUnchecked(t3, " ", "_");
+            J.set$innerHtml$x(document.querySelector(selector), t3 + " " + "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>");
+            t1.totalUnread_0 = 0;
+            t3 = $.get$chat().tabContentMap;
+            t3 = t3.get$values(t3);
+            t3.forEach$1(t3, new B.TabContent_setupWebSocket__closure0(t1));
+            document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
+          }
           if (!J.$eq(t2.$index(map, "username"), $.get$chat().username))
             t4._addmessage$1(map);
         } else
@@ -4648,14 +4650,10 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
     t2._tryResume$0();
-    t2 = C.EventStreamProvider_touchend.forElement$1(t1);
-    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure1(this)), t2._useCapture);
-    H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
-    t3._tryResume$0();
-    t1 = C.EventStreamProvider_mouseup.forElement$1(t1);
-    t3 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure2()), t1._useCapture);
-    H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
-    t3._tryResume$0();
+    t1 = C.EventStreamProvider_touchend.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
+    H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
+    t2._tryResume$0();
   },
   static: {
 Joystick$: function(_joystick, _knob) {
@@ -4672,7 +4670,6 @@ Joystick_closure: {"": "Closure;this_0",
     P.print("onTouchStart");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
-    t1.stopPropagation$0($event);
     t2 = this.this_0;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
@@ -4696,7 +4693,6 @@ Joystick_closure0: {"": "Closure;this_1",
     P.print("onTouchMove");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
-    t1.stopPropagation$0($event);
     t2 = this.this_1;
     t3 = t2._neutralX;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
@@ -4796,6 +4792,7 @@ Joystick_closure0: {"": "Closure;this_1",
 Joystick_closure1: {"": "Closure;this_2",
   call$1: function($event) {
     var t1, t2, t3;
+    J.preventDefault$0$x($event);
     t1 = this.this_2;
     t2 = t1._knob;
     t2.toString;
@@ -4820,13 +4817,6 @@ Joystick__closure: {"": "Closure;",
     P.print("key:" + H.S(key) + ", value:" + H.S(value));
   },
   $is_args2: true
-},
-
-Joystick_closure2: {"": "Closure;",
-  call$1: function($event) {
-    P.print("mouse up");
-  },
-  $is_args1: true
 },
 
 JoystickEvent: {"": "Object;"},
