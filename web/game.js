@@ -4796,7 +4796,7 @@ Joystick_closure1: {"": "Closure;this_2",
     t2 = t1._knob;
     t2.toString;
     t2 = new W._ElementAttributeMap(t2);
-    t2.remove$1(t2, "style");
+    P.print(t2.remove$1(t2, "style"));
     t1.UP = false;
     t1.DOWN = false;
     t1.LEFT = false;
