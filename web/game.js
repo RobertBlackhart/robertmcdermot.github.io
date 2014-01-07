@@ -4692,6 +4692,7 @@ Joystick_closure0: {"": "Closure;this_1",
     P.print("onTouchMove");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
+    t1.stopPropagation$0($event);
     t2 = this.this_1;
     t3 = t2._neutralX;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
