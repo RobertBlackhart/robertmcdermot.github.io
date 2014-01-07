@@ -4654,6 +4654,7 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
+    C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Joystick_closure2());
   },
   static: {
 Joystick$: function(_joystick, _knob) {
@@ -4817,6 +4818,13 @@ Joystick__closure: {"": "Closure;",
     P.print("key:" + H.S(key) + ", value:" + H.S(value));
   },
   $is_args2: true
+},
+
+Joystick_closure2: {"": "Closure;",
+  call$1: function(_) {
+    return P.print("document touch end");
+  },
+  $is_args1: true
 },
 
 JoystickEvent: {"": "Object;"},
