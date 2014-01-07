@@ -653,6 +653,9 @@ JSString: {"": "String/Interceptor;",
       throw H.wrapException(P.RangeError$range(start, 0, receiver.length));
     return receiver.indexOf(pattern, start);
   },
+  indexOf$1: function($receiver, pattern) {
+    return this.indexOf$2($receiver, pattern, 0);
+  },
   lastIndexOf$2: function(receiver, pattern, start) {
     var t1, t2;
     start = receiver.length;
@@ -3523,13 +3526,19 @@ Chat_init_closure0: {"": "Closure;this_1",
   $is_args1: true
 },
 
-TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tabInserted,webSocket,chatDiv,chatHistory,unreadMessages,tabSearchIndex,numMessages,_chatServerUrl",
+TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tabInserted,webSocket,chatDiv,chatHistory,unreadMessages<,tabSearchIndex,numMessages,_chatServerUrl",
   resetMessages$1: function($event) {
-    var t1, selector;
+    var t1, t2, selector;
+    t1 = {};
     this.unreadMessages = 0;
-    t1 = this.channelName;
-    selector = "#label-" + H.stringReplaceAllUnchecked(t1, " ", "_");
-    document.querySelector(selector).textContent = t1;
+    t2 = this.channelName;
+    selector = "#label-" + H.stringReplaceAllUnchecked(t2, " ", "_");
+    document.querySelector(selector).textContent = t2;
+    t1.totalUnread_0 = 0;
+    t2 = $.get$chat().tabContentMap;
+    t2 = t2.get$values(t2);
+    t2.forEach$1(t2, new B.TabContent_resetMessages_closure(t1));
+    document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
   },
   get$resetMessages: function() {
     return new H.BoundClosure$1(this, B.TabContent.prototype.resetMessages$1, null, "resetMessages$1");
@@ -3648,6 +3657,10 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
         t1 = J.get$children$x(this.chatHistory);
         t1.removeAt$1(t1, 0);
       }
+      t1 = "#conversation-" + H.stringReplaceAllUnchecked(this.channelName, " ", "_");
+      t1 = J.get$children$x(document.querySelector(t1));
+      t1.removeAt$1(t1, 0);
+      this.numMessages = this.numMessages - 1;
     }
     if ($.get$chat()._playMentionSound === true && C.JSString_methods.contains$1(J.toLowerCase$0$s(J.$index$asx(map, "message")), J.toLowerCase$0$s($.get$chat().username)) && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = $.ui_sounds.assets;
@@ -3792,8 +3805,9 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     channel = document.createElement("div", null);
     channel.className = "ChannelName";
     channel.textContent = t2;
-    t2 = J.get$children$x(channelList);
-    t2.add$1(t2, channel);
+    channel.id = "channelName-" + H.stringReplaceAllUnchecked(t2, " ", "_");
+    t1 = J.get$children$x(channelList);
+    t1.add$1(t1, channel);
   },
   static: {
 "": "TabContent__COLORS",
@@ -3803,6 +3817,14 @@ TabContent$: function(channelName, useSpanForTitle) {
   return t1;
 }}
 
+},
+
+TabContent_resetMessages_closure: {"": "Closure;box_0",
+  call$1: function(tabContent) {
+    var t1 = this.box_0;
+    t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
+  },
+  $is_args1: true
 },
 
 TabContent_processInput_closure: {"": "Closure;this_0,input_1",
@@ -3882,17 +3904,21 @@ TabContent_processInput_closure1: {"": "Closure;this_4,input_5",
   $is_args1: true
 },
 
-TabContent_setupWebSocket_closure: {"": "Closure;this_0,channelName_1",
+TabContent_setupWebSocket_closure: {"": "Closure;this_1,channelName_2",
   call$1: function(_) {
-    var map, t1, t2;
+    var t1, map, t2;
     document.querySelector("#ChatDisconnected").hidden = true;
+    J.set$display$x(document.querySelector("#ChatBubbleDisconnect").style, "none");
+    t1 = document.querySelector("#ChatBubbleText");
+    t1.textContent = "0";
+    t1.hidden = false;
     map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
     map.$indexSet(map, "message", C.JSString_methods.$add("userName=", $.get$chat().username));
-    t1 = this.channelName_1;
+    t1 = this.channelName_2;
     map.$indexSet(map, "channel", t1);
     if (t1 === "Local Chat")
       map.$indexSet(map, "street", "Groddle Forest Junction");
-    t2 = this.this_0;
+    t2 = this.this_1;
     t2.webSocket.send(C.C_JsonCodec.encode$1(map));
     map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
     map.$indexSet(map, "hide", "true");
@@ -3904,67 +3930,84 @@ TabContent_setupWebSocket_closure: {"": "Closure;this_0,channelName_1",
   $is_args1: true
 },
 
-TabContent_setupWebSocket_closure0: {"": "Closure;this_2,channelName_3",
+TabContent_setupWebSocket_closure0: {"": "Closure;this_3,channelName_4",
   call$1: function(messageEvent) {
-    var map, t1, t2, selector, t3;
+    var t1, map, t2, t3, selector, t4;
+    t1 = {};
     map = C.C_JsonCodec.decode$1(J.get$data$x(messageEvent));
-    t1 = J.getInterceptor$asx(map);
-    if (J.$eq(t1.$index(map, "message"), "ping"))
+    t2 = J.getInterceptor$asx(map);
+    if (J.$eq(t2.$index(map, "message"), "ping"))
       return;
-    if (J.$eq(t1.$index(map, "message"), " joined.")) {
-      t2 = this.this_2;
-      if (J.contains$1$asx(t2.connectedUsers, t1.$index(map, "username")) !== true)
-        J.add$1$ax(t2.connectedUsers, t1.$index(map, "username"));
+    if (J.$eq(t2.$index(map, "message"), " joined.")) {
+      t3 = this.this_3;
+      if (J.contains$1$asx(t3.connectedUsers, t2.$index(map, "username")) !== true)
+        J.add$1$ax(t3.connectedUsers, t2.$index(map, "username"));
       if ($.get$chat()._showJoinMessages !== true)
         return;
     }
-    if (J.$eq(t1.$index(map, "message"), " left.")) {
-      J.remove$1$ax(this.this_2.connectedUsers, t1.$index(map, "username"));
+    if (J.$eq(t2.$index(map, "message"), " left.")) {
+      J.remove$1$ax(this.this_3.connectedUsers, t2.$index(map, "username"));
       if ($.get$chat()._showJoinMessages !== true)
         return;
     }
-    if (J.$eq(t1.$index(map, "channel"), "all"))
-      this.this_2._addmessage$1(map);
-    else if (J.$eq(t1.$index(map, "channel"), "Local Chat") && J.$eq(t1.$index(map, "channel"), this.channelName_3)) {
-      if (t1.$index(map, "statusMessage") != null)
-        this.this_2._addmessage$1(map);
-      else if (!J.$eq(t1.$index(map, "username"), $.get$chat().username) && J.$eq(t1.$index(map, "street"), "Groddle Forest Junction"))
-        this.this_2._addmessage$1(map);
+    if (J.$eq(t2.$index(map, "channel"), "all"))
+      this.this_3._addmessage$1(map);
+    else if (J.$eq(t2.$index(map, "channel"), "Local Chat") && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
+      if (t2.$index(map, "statusMessage") != null)
+        this.this_3._addmessage$1(map);
+      else if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "street"), "Groddle Forest Junction"))
+        this.this_3._addmessage$1(map);
     } else {
-      t2 = this.channelName_3;
-      if (J.$eq(t1.$index(map, "channel"), t2))
-        if (t1.$index(map, "statusMessage") == null) {
-          selector = "#tab-" + H.stringReplaceAllUnchecked(t2, " ", "_");
-          t3 = "#tab-" + t2;
-          H.interceptedTypeCast(document.querySelector(t3), "$isRadioButtonInputElement");
+      t3 = this.channelName_4;
+      if (J.$eq(t2.$index(map, "channel"), t3))
+        if (t2.$index(map, "statusMessage") == null) {
+          selector = "#tab-" + H.stringReplaceAllUnchecked(t3, " ", "_");
           if (J.get$checked$x(H.interceptedTypeCast(document.querySelector(selector), "$isRadioButtonInputElement")) !== true) {
-            t3 = this.this_2;
-            t3.unreadMessages = t3.unreadMessages + 1;
-            selector = "#label-" + H.stringReplaceAllUnchecked(t2, " ", "_");
-            J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t3.unreadMessages) + "</span>" + " " + t2);
+            t4 = this.this_3;
+            t4.unreadMessages = t4.unreadMessages + 1;
+            selector = "#label-" + H.stringReplaceAllUnchecked(t3, " ", "_");
+            J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>" + " " + t3);
           }
-          if (!J.$eq(t1.$index(map, "username"), $.get$chat().username))
-            this.this_2._addmessage$1(map);
+          selector = "#channelName-" + H.stringReplaceAllUnchecked(t3, " ", "_");
+          t4 = this.this_3;
+          J.set$innerHtml$x(document.querySelector(selector), t3 + " " + "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>");
+          t1.totalUnread_0 = 0;
+          t3 = $.get$chat().tabContentMap;
+          t3 = t3.get$values(t3);
+          t3.forEach$1(t3, new B.TabContent_setupWebSocket__closure0(t1));
+          document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
+          if (!J.$eq(t2.$index(map, "username"), $.get$chat().username))
+            t4._addmessage$1(map);
         } else
-          this.this_2._addmessage$1(map);
+          this.this_3._addmessage$1(map);
     }
   },
   $is_args1: true
 },
 
-TabContent_setupWebSocket_closure1: {"": "Closure;this_4,chatHistory_5,channelName_6",
+TabContent_setupWebSocket__closure0: {"": "Closure;box_0",
+  call$1: function(tabContent) {
+    var t1 = this.box_0;
+    t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
+  },
+  $is_args1: true
+},
+
+TabContent_setupWebSocket_closure1: {"": "Closure;this_5,chatHistory_6,channelName_7",
   call$1: function(_) {
     var t1 = document.querySelector("#ChatDisconnected");
     t1.hidden = false;
     t1.textContent = "Disconnected from Chat, attempting to reconnect...";
-    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 5), new B.TabContent_setupWebSocket__closure(this.this_4, this.chatHistory_5, this.channelName_6));
+    J.set$display$x(document.querySelector("#ChatBubbleDisconnect").style, "inline-block");
+    document.querySelector("#ChatBubbleText").hidden = true;
+    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 5), new B.TabContent_setupWebSocket__closure(this.this_5, this.chatHistory_6, this.channelName_7));
   },
   $is_args1: true
 },
 
-TabContent_setupWebSocket__closure: {"": "Closure;this_7,chatHistory_8,channelName_9",
+TabContent_setupWebSocket__closure: {"": "Closure;this_8,chatHistory_9,channelName_10",
   call$0: function() {
-    this.this_7.setupWebSocket$2(this.chatHistory_8, this.channelName_9);
+    this.this_8.setupWebSocket$2(this.chatHistory_9, this.channelName_10);
   },
   $is_void_: true
 },
@@ -4489,6 +4532,8 @@ Input_init_closure14: {"": "Closure;this_10",
 
 Input_init_closure15: {"": "Closure;",
   call$1: function(_) {
+    if (J.get$display$x(document.querySelector("#ChatBubbleDisconnect").style) === "inline-block")
+      return;
     document.querySelector("#ChannelSelectorScreen").hidden = false;
     document.querySelector("#MainScreen").hidden = true;
   },
@@ -4519,15 +4564,20 @@ Input_init_closure18: {"": "Closure;",
 },
 
 Input_init__closure: {"": "Closure;element_11",
-  call$1: function(_) {
-    var channelName, t1, input, sendButton;
+  call$1: function($event) {
+    var t1, t2, channelName, input, sendButton;
+    t1 = this.element_11;
+    t2 = J.get$id$x(t1);
+    t2 = C.JSString_methods.substring$1(t2, J.getInterceptor$asx(t2).indexOf$1(t2, "-") + 1);
+    channelName = H.stringReplaceAllUnchecked(t2, "_", " ");
+    document.querySelector("#ChatChannelTitle").textContent = channelName;
+    t2 = $.get$chat().tabContentMap;
+    t2.$index(t2, channelName).resetMessages$1($event);
+    t1.textContent = channelName;
     document.querySelector("#ChatScreen").hidden = false;
     document.querySelector("#ChannelSelectorScreen").hidden = true;
-    channelName = J.get$text$x(this.element_11);
-    document.querySelector("#ChatChannelTitle").textContent = channelName;
     t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
     t1.set$zIndex(t1, "0");
-    channelName.toString;
     t1 = "#conversation-" + H.stringReplaceAllUnchecked(channelName, " ", "_");
     J.set$zIndex$x(document.querySelector(t1).style, "1");
     input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
@@ -10424,7 +10474,7 @@ MouseEvent: {"": "UIEvent;button=,_clientX:clientX=",
   "%": ";DragEvent|MSPointerEvent|MouseEvent|PointerEvent"
 },
 
-Node: {"": "EventTarget;lastChild=,nodeType=,text:textContent=",
+Node: {"": "EventTarget;lastChild=,nodeType=",
   get$nodes: function(receiver) {
     return new W._ChildNodeListLazy(receiver);
   },
@@ -10969,6 +11019,9 @@ CssStyleDeclarationBase: {"": "Object;",
   },
   set$cursor: function(receiver, value) {
     this.setProperty$3(receiver, "cursor", value, "");
+  },
+  get$display: function(receiver) {
+    return this.getPropertyValue$1(receiver, "display");
   },
   set$display: function(receiver, value) {
     this.setProperty$3(receiver, "display", value, "");
@@ -14759,6 +14812,8 @@ P._BroadcastSubscription.$is_BufferingStreamSubscription = true;
 P._BroadcastSubscription.$is_EventSink = true;
 P._BroadcastSubscription.$isStreamSubscription = true;
 P._BroadcastSubscription.$isObject = true;
+B.TabContent.$isTabContent = true;
+B.TabContent.$isObject = true;
 P.Function.$isFunction = true;
 P.Function.$isObject = true;
 W._Html5NodeValidator.$is_Html5NodeValidator = true;
@@ -15257,6 +15312,9 @@ J.get$content$x = function(receiver) {
 J.get$data$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$data(receiver);
 };
+J.get$display$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$display(receiver);
+};
 J.get$error$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$error(receiver);
 };
@@ -15319,9 +15377,6 @@ J.get$style$x = function(receiver) {
 };
 J.get$target$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$target(receiver);
-};
-J.get$text$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$text(receiver);
 };
 J.get$timeStamp$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$timeStamp(receiver);
