@@ -4790,11 +4790,13 @@ Joystick_closure0: {"": "Closure;this_1",
 
 Joystick_closure1: {"": "Closure;this_2",
   call$1: function($event) {
-    var t1, t2;
+    var t1, t2, t3;
     J.preventDefault$0$x($event);
     t1 = this.this_2;
     t2 = t1._knob;
     t2.toString;
+    t3 = new W._ElementAttributeMap(t2);
+    t3.forEach$1(t3, new B.Joystick__closure());
     t2 = new W._ElementAttributeMap(t2);
     P.print(t2.remove$1(t2, "style"));
     t1.UP = false;
@@ -4807,6 +4809,13 @@ Joystick_closure1: {"": "Closure;this_2",
     t1._sendData$1(new B.JoystickEvent());
   },
   $is_args1: true
+},
+
+Joystick__closure: {"": "Closure;",
+  call$2: function(key, value) {
+    P.print("key:" + H.S(key) + ", value:" + H.S(value));
+  },
+  $is_args2: true
 },
 
 JoystickEvent: {"": "Object;"},
