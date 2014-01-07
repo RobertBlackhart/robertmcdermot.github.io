@@ -4638,18 +4638,19 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
   },
   Joystick$2: function(_joystick, _knob) {
     var t1, t2, t3;
+    C.EventStreamProvider_resize.forTarget$1(window).listen$1(new B.Joystick_closure(this));
     t1 = this._knob;
     t1.toString;
     t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
-    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
+    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure0(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t3._tryResume$0();
     t3 = C.EventStreamProvider_touchmove.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
+    t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure1(this)), t3._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
     t2._tryResume$0();
     t1 = C.EventStreamProvider_touchend.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure2(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
   },
@@ -4663,13 +4664,22 @@ Joystick$: function(_joystick, _knob) {
 },
 
 Joystick_closure: {"": "Closure;this_0",
+  call$1: function(_) {
+    var t1 = this.this_0._knob;
+    J.set$left$x(t1.style, "");
+    J.set$top$x(t1.style, "");
+  },
+  $is_args1: true
+},
+
+Joystick_closure0: {"": "Closure;this_1",
   call$1: function($event) {
     var t1, t2, t3, t4;
     P.print("onTouchStart");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
     t1.stopPropagation$0($event);
-    t2 = this.this_0;
+    t2 = this.this_1;
     t3 = t2._knob;
     t4 = J.get$left$x(t3.style);
     t4.toString;
@@ -4693,13 +4703,13 @@ Joystick_closure: {"": "Closure;this_0",
   $is_args1: true
 },
 
-Joystick_closure0: {"": "Closure;this_1",
+Joystick_closure1: {"": "Closure;this_2",
   call$1: function($event) {
     var t1, t2, t3, t4, x, y, t5, angle, yOnCircle, xOnCircle;
     P.print("onTouchMove");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
-    t2 = this.this_1;
+    t2 = this.this_2;
     t3 = t2._neutralX;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
@@ -4773,11 +4783,11 @@ Joystick_closure0: {"": "Closure;this_1",
   $is_args1: true
 },
 
-Joystick_closure1: {"": "Closure;this_2",
+Joystick_closure2: {"": "Closure;this_3",
   call$1: function($event) {
     var t1, t2;
     J.preventDefault$0$x($event);
-    t1 = this.this_2;
+    t1 = this.this_3;
     t2 = t1._knob;
     J.set$left$x(t2.style, J.$add$ns(J.toString$0(t1._neutralX), "px"));
     J.set$top$x(t2.style, J.$add$ns(J.toString$0(t1._neutralY), "px"));
