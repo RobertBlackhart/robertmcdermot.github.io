@@ -4648,10 +4648,14 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
     t2._tryResume$0();
-    t1 = C.EventStreamProvider_touchend.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
-    H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
-    t2._tryResume$0();
+    t2 = C.EventStreamProvider_touchend.forElement$1(t1);
+    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure1(this)), t2._useCapture);
+    H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
+    t3._tryResume$0();
+    t1 = C.EventStreamProvider_mouseup.forElement$1(t1);
+    t3 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure2()), t1._useCapture);
+    H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
+    t3._tryResume$0();
   },
   static: {
 Joystick$: function(_joystick, _knob) {
@@ -4819,6 +4823,13 @@ Joystick__closure: {"": "Closure;",
     P.print("key:" + H.S(key) + ", value:" + H.S(value));
   },
   $is_args2: true
+},
+
+Joystick_closure2: {"": "Closure;",
+  call$1: function($event) {
+    P.print("mouse up");
+  },
+  $is_args1: true
 },
 
 JoystickEvent: {"": "Object;"},
