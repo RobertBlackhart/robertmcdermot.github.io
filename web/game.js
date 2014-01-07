@@ -4794,8 +4794,9 @@ Joystick_closure1: {"": "Closure;this_2",
     J.preventDefault$0$x($event);
     t1 = this.this_2;
     t2 = t1._knob;
-    J.set$left$x(t2.style, "");
-    J.set$top$x(t2.style, "");
+    t2.toString;
+    t2 = new W._ElementAttributeMap(t2);
+    t2.remove$1(t2, "style");
     t1.UP = false;
     t1.DOWN = false;
     t1.LEFT = false;
