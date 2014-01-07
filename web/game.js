@@ -3906,8 +3906,12 @@ TabContent_processInput_closure1: {"": "Closure;this_4,input_5",
 
 TabContent_setupWebSocket_closure: {"": "Closure;this_1,channelName_2",
   call$1: function(_) {
-    var map, t1, t2;
+    var t1, map, t2;
     document.querySelector("#ChatDisconnected").hidden = true;
+    J.set$display$x(document.querySelector("#ChatBubbleDisconnect").style, "none");
+    t1 = document.querySelector("#ChatBubbleText");
+    t1.textContent = "0";
+    t1.hidden = false;
     map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
     map.$indexSet(map, "message", C.JSString_methods.$add("userName=", $.get$chat().username));
     t1 = this.channelName_2;
@@ -3994,6 +3998,8 @@ TabContent_setupWebSocket_closure1: {"": "Closure;this_5,chatHistory_6,channelNa
     var t1 = document.querySelector("#ChatDisconnected");
     t1.hidden = false;
     t1.textContent = "Disconnected from Chat, attempting to reconnect...";
+    J.set$display$x(document.querySelector("#ChatBubbleDisconnect").style, "inline-block");
+    document.querySelector("#ChatBubbleText").hidden = true;
     P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 5), new B.TabContent_setupWebSocket__closure(this.this_5, this.chatHistory_6, this.channelName_7));
   },
   $is_args1: true
