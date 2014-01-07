@@ -3532,7 +3532,7 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     t1 = {};
     this.unreadMessages = 0;
     t2 = this.channelName;
-    selector = "#label-" + H.stringReplaceAllUnchecked(t2, " ", "_");
+    selector = "#channelName-" + H.stringReplaceAllUnchecked(t2, " ", "_");
     document.querySelector(selector).textContent = t2;
     t1.totalUnread_0 = 0;
     t2 = $.get$chat().tabContentMap;
@@ -3577,7 +3577,7 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     this.processInput$1(input);
     return this.chatDiv;
   },
-  processInput$2: function(input, sendButton) {
+  processInput$1: function(input) {
     var t1, t2;
     input.toString;
     t1 = C.EventStreamProvider_keydown.forElement$1(input);
@@ -3588,16 +3588,6 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.TabContent_processInput_closure0(this, input)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    if (sendButton != null) {
-      sendButton.toString;
-      t1 = C.EventStreamProvider_click.forElement$1(sendButton);
-      t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.TabContent_processInput_closure1(this, input)), t1._useCapture);
-      H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
-      t2._tryResume$0();
-    }
-  },
-  processInput$1: function(input) {
-    return this.processInput$2(input, null);
   },
   parseInput$1: function(input) {
     var map, t1;
@@ -3641,7 +3631,7 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B.TabContent_setupWebSocket_closure1(this, chatHistory, channelName));
   },
   _addmessage$1: function(map) {
-    var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, rowSpacer, t3, chatLine, chatRow, conversation;
+    var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, rowSpacer, t3, t4, t5, chatLine, chatRow, conversation;
     t1 = [];
     H.setRuntimeTypeInfo(t1, [W.NodeValidator]);
     validator = new W.NodeValidatorBuilder(t1);
@@ -3727,14 +3717,19 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     rowSpacer = document.createElement("div", null);
     rowSpacer.className = "RowSpacer";
     J.set$paddingRight$x(chatString.style, "2px");
-    t2 = J.get$children$x(this.chatHistory);
+    t2 = this.chatHistory;
+    t3 = t2.scrollTop;
+    t4 = t2.scrollHeight;
+    t5 = t2.offsetHeight;
+    if (typeof t4 !== "number")
+      throw t4.$sub();
+    if (typeof t5 !== "number")
+      throw H.iae(t5);
+    t2 = J.get$children$x(t2);
     t2.add$1(t2, chatString);
     t2 = J.get$children$x(this.chatHistory);
     t2.add$1(t2, rowSpacer);
-    t2 = this.chatHistory;
-    t3 = t2.scrollTop;
-    t2 = t2.scrollHeight;
-    if ((t3 == null ? t2 == null : t3 === t2) || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username)) {
+    if (t3 === t4 - t5 || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username)) {
       t2 = this.chatHistory;
       t2.scrollTop = t2.scrollHeight;
     }
@@ -3757,10 +3752,15 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     conversation = document.querySelector(t2);
     t2 = conversation.scrollTop;
     t3 = conversation.scrollHeight;
-    if ((t2 == null ? t3 == null : t2 === t3) || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username))
+    t4 = conversation.offsetHeight;
+    if (typeof t3 !== "number")
+      throw t3.$sub();
+    if (typeof t4 !== "number")
+      throw H.iae(t4);
+    t5 = J.get$children$x(conversation);
+    t5.add$1(t5, chatRow);
+    if (t2 === t3 - t4 || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username))
       conversation.scrollTop = conversation.scrollHeight;
-    t1 = J.get$children$x(conversation);
-    t1.add$1(t1, chatRow);
   },
   _parseForUrls$1: function(message) {
     var t1 = {};
@@ -3891,19 +3891,6 @@ TabContent_processInput_closure0: {"": "Closure;this_2,input_3",
   $is_args1: true
 },
 
-TabContent_processInput_closure1: {"": "Closure;this_4,input_5",
-  call$1: function(_) {
-    var t1, t2;
-    t1 = this.input_5;
-    t2 = J.getInterceptor$x(t1);
-    if (J.trim$0$s(t2.get$value(t1)).length === 0)
-      return;
-    this.this_4.parseInput$1(t2.get$value(t1));
-    t2.set$value(t1, "");
-  },
-  $is_args1: true
-},
-
 TabContent_setupWebSocket_closure: {"": "Closure;this_1,channelName_2",
   call$1: function(_) {
     var t1, map, t2;
@@ -3932,7 +3919,7 @@ TabContent_setupWebSocket_closure: {"": "Closure;this_1,channelName_2",
 
 TabContent_setupWebSocket_closure0: {"": "Closure;this_3,channelName_4",
   call$1: function(messageEvent) {
-    var t1, map, t2, t3, selector, t4;
+    var t1, map, t2, t3, t4, t5, selector;
     t1 = {};
     map = C.C_JsonCodec.decode$1(J.get$data$x(messageEvent));
     t2 = J.getInterceptor$asx(map);
@@ -3950,6 +3937,21 @@ TabContent_setupWebSocket_closure0: {"": "Closure;this_3,channelName_4",
       if ($.get$chat()._showJoinMessages !== true)
         return;
     }
+    if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
+      t3 = this.channelName_4;
+      t4 = "#conversation-" + H.stringReplaceAllUnchecked(t3, " ", "_");
+      if (J.get$zIndex$x(document.querySelector(t4).style) !== "1") {
+        t4 = this.this_3;
+        t4.unreadMessages = t4.unreadMessages + 1;
+        t5 = "#channelName-" + H.stringReplaceAllUnchecked(t3, " ", "_");
+        J.set$innerHtml$x(document.querySelector(t5), t3 + " " + "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>");
+      }
+      t1.totalUnread_0 = 0;
+      t3 = $.get$chat().tabContentMap;
+      t3 = t3.get$values(t3);
+      t3.forEach$1(t3, new B.TabContent_setupWebSocket__closure0(t1));
+      document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
+    }
     if (J.$eq(t2.$index(map, "channel"), "all"))
       this.this_3._addmessage$1(map);
     else if (J.$eq(t2.$index(map, "channel"), "Local Chat") && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
@@ -3958,28 +3960,18 @@ TabContent_setupWebSocket_closure0: {"": "Closure;this_3,channelName_4",
       else if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "street"), "Groddle Forest Junction"))
         this.this_3._addmessage$1(map);
     } else {
-      t3 = this.channelName_4;
-      if (J.$eq(t2.$index(map, "channel"), t3))
+      t1 = this.channelName_4;
+      if (J.$eq(t2.$index(map, "channel"), t1))
         if (t2.$index(map, "statusMessage") == null) {
-          selector = "#tab-" + H.stringReplaceAllUnchecked(t3, " ", "_");
+          selector = "#tab-" + H.stringReplaceAllUnchecked(t1, " ", "_");
           if (J.get$checked$x(H.interceptedTypeCast(document.querySelector(selector), "$isRadioButtonInputElement")) !== true) {
-            t4 = this.this_3;
-            t4.unreadMessages = t4.unreadMessages + 1;
-            selector = "#label-" + H.stringReplaceAllUnchecked(t3, " ", "_");
-            J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>" + " " + t3);
-          }
-          t4 = this.this_3;
-          if (t4.unreadMessages > 0) {
-            selector = "#channelName-" + H.stringReplaceAllUnchecked(t3, " ", "_");
-            J.set$innerHtml$x(document.querySelector(selector), t3 + " " + "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>");
-            t1.totalUnread_0 = 0;
-            t3 = $.get$chat().tabContentMap;
-            t3 = t3.get$values(t3);
-            t3.forEach$1(t3, new B.TabContent_setupWebSocket__closure0(t1));
-            document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
+            t3 = this.this_3;
+            t3.unreadMessages = t3.unreadMessages + 1;
+            selector = "#label-" + H.stringReplaceAllUnchecked(t1, " ", "_");
+            J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t3.unreadMessages) + "</span>" + " " + t1);
           }
           if (!J.$eq(t2.$index(map, "username"), $.get$chat().username))
-            t4._addmessage$1(map);
+            this.this_3._addmessage$1(map);
         } else
           this.this_3._addmessage$1(map);
     }
@@ -4246,20 +4238,26 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2._tryResume$0();
     t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
     t2.forEach$1(t2, new B.Input_init_closure19());
-    B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
-    B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
-    t2 = document.querySelector("#InventoryTitle");
+    t2 = document.querySelector("#SendButton");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure20()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    t1 = document.body;
+    B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
+    B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
+    t1 = document.querySelector("#InventoryTitle");
     t1.toString;
-    t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure21(this)), t1._useCapture);
+    t1 = C.EventStreamProvider_click.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure21()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
+    t2 = document.body;
+    t2.toString;
+    t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure22(this)), t2._useCapture);
+    H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
+    t1._tryResume$0();
     $.playerInput = this;
   },
   hideClickMenu$0: function() {
@@ -4561,6 +4559,8 @@ Input_init_closure17: {"": "Closure;",
 
 Input_init_closure18: {"": "Closure;",
   call$1: function(_) {
+    var t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
+    t1.set$zIndex(t1, "0");
     document.querySelector("#ChatScreen").hidden = true;
     document.querySelector("#ChannelSelectorScreen").hidden = false;
   },
@@ -4576,30 +4576,40 @@ Input_init_closure19: {"": "Closure;",
 
 Input_init__closure: {"": "Closure;element_10",
   call$1: function($event) {
-    var t1, t2, channelName, input, sendButton;
-    t1 = this.element_10;
-    t2 = J.get$id$x(t1);
-    t2 = C.JSString_methods.substring$1(t2, J.getInterceptor$asx(t2).indexOf$1(t2, "-") + 1);
-    channelName = H.stringReplaceAllUnchecked(t2, "_", " ");
+    var t1, channelName;
+    t1 = J.get$id$x(this.element_10);
+    t1 = C.JSString_methods.substring$1(t1, J.getInterceptor$asx(t1).indexOf$1(t1, "-") + 1);
+    channelName = H.stringReplaceAllUnchecked(t1, "_", " ");
     document.querySelector("#ChatChannelTitle").textContent = channelName;
-    t2 = $.get$chat().tabContentMap;
-    t2.$index(t2, channelName).resetMessages$1($event);
-    t1.textContent = channelName;
+    t1 = $.get$chat().tabContentMap;
+    t1.$index(t1, channelName).resetMessages$1($event);
     document.querySelector("#ChatScreen").hidden = false;
     document.querySelector("#ChannelSelectorScreen").hidden = true;
     t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
     t1.set$zIndex(t1, "0");
     t1 = "#conversation-" + H.stringReplaceAllUnchecked(channelName, " ", "_");
     J.set$zIndex$x(document.querySelector(t1).style, "1");
-    input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
-    sendButton = H.interceptedTypeCast(document.querySelector("#SendButton"), "$isDivElement");
-    t1 = $.get$chat().tabContentMap;
-    t1.$index(t1, channelName).processInput$2(input, sendButton);
   },
   $is_args1: true
 },
 
 Input_init_closure20: {"": "Closure;",
+  call$1: function(_) {
+    var channelName, input, t1;
+    channelName = document.querySelector("#ChatChannelTitle").textContent;
+    input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
+    t1 = $.get$chat().tabContentMap;
+    t1.$index(t1, channelName).processInput$1(input);
+    if (J.trim$0$s(J.get$value$x(input)).length === 0)
+      return;
+    t1 = $.get$chat().tabContentMap;
+    t1.$index(t1, channelName).parseInput$1(input.value);
+    input.value = "";
+  },
+  $is_args1: true
+},
+
+Input_init_closure21: {"": "Closure;",
   call$1: function(_) {
     var drawer, t1, t2;
     drawer = document.querySelector("#InventoryDrawer");
@@ -4613,7 +4623,7 @@ Input_init_closure20: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure21: {"": "Closure;this_11",
+Input_init_closure22: {"": "Closure;this_11",
   call$1: function(e) {
     return this.this_11.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
   },
@@ -10112,7 +10122,7 @@ _wrapZone: function(callback) {
   return t1.bindUnaryCallback$2$runGuarded(callback, true);
 },
 
-HtmlElement: {"": "Element;", "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLCanvasElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"},
+HtmlElement: {"": "Element;", "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLCanvasElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLDivElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"},
 
 AnchorElement: {"": "HtmlElement;hostname=,href},port=,protocol=,target=,type%",
   toString$0: function(receiver) {
@@ -10165,8 +10175,6 @@ CssStyleDeclaration: {"": "Interceptor_CssStyleDeclarationBase;length=",
   },
   "%": "CSS2Properties|CSSStyleDeclaration|MSStyleCSSProperties"
 },
-
-DivElement: {"": "HtmlElement;", $isDivElement: true, "%": "HTMLDivElement"},
 
 Document: {"": "Node;",
   get$onClick: function(receiver) {
@@ -11058,6 +11066,9 @@ CssStyleDeclarationBase: {"": "Object;",
   },
   set$transform: function(receiver, value) {
     this.setProperty$3(receiver, P.Device_cssPrefix() + "transform", value, "");
+  },
+  get$zIndex: function(receiver) {
+    return this.getPropertyValue$1(receiver, "z-index");
   },
   set$zIndex: function(receiver, value) {
     this.setProperty$3(receiver, "z-index", value, "");
@@ -15407,6 +15418,9 @@ J.get$x$x = function(receiver) {
 };
 J.get$y$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$y(receiver);
+};
+J.get$zIndex$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$zIndex(receiver);
 };
 J.getPropertyValue$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).getPropertyValue$1(receiver, a0);
