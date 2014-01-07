@@ -4626,31 +4626,30 @@ Input_showClickMenu_closure0: {"": "Closure;this_1",
 Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initialTouchY,UP,DOWN,LEFT,RIGHT,_moveController,_releaseController",
   inCircle$5: function(center_x, center_y, radius, x, y) {
     var t1, t2;
-    t1 = J.$sub$n(center_x, x);
-    if (typeof t1 !== "number")
-      H.throwExpression(new P.ArgumentError(t1));
-    t1 = Math.pow(t1, 2);
-    t2 = J.$sub$n(center_y, y);
-    if (typeof t2 !== "number")
-      H.throwExpression(new P.ArgumentError(t2));
-    t2 = Math.pow(t2, 2);
+    if (typeof center_x !== "number")
+      throw center_x.$sub();
+    t1 = Math.pow(center_x - x, 2);
+    if (typeof center_y !== "number")
+      throw center_y.$sub();
+    t2 = Math.pow(center_y - y, 2);
     return t1 + t2 <= Math.pow(radius, 2);
   },
   Joystick$2: function(_joystick, _knob) {
     var t1, t2, t3;
-    C.EventStreamProvider_resize.forTarget$1(window).listen$1(new B.Joystick_closure(this));
     t1 = this._knob;
+    this._neutralX = t1.offsetLeft;
+    this._neutralY = t1.offsetTop;
     t1.toString;
     t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
-    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure0(this)), t2._useCapture);
+    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t3._tryResume$0();
     t3 = C.EventStreamProvider_touchmove.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure1(this)), t3._useCapture);
+    t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
     t2._tryResume$0();
     t1 = C.EventStreamProvider_touchend.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure2(this)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
   },
@@ -4664,29 +4663,13 @@ Joystick$: function(_joystick, _knob) {
 },
 
 Joystick_closure: {"": "Closure;this_0",
-  call$1: function(_) {
-    var t1 = this.this_0._knob;
-    J.set$left$x(t1.style, "");
-    J.set$top$x(t1.style, "");
-  },
-  $is_args1: true
-},
-
-Joystick_closure0: {"": "Closure;this_1",
   call$1: function($event) {
-    var t1, t2, t3, t4;
+    var t1, t2;
     P.print("onTouchStart");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
     t1.stopPropagation$0($event);
-    t2 = this.this_1;
-    t3 = t2._knob;
-    t4 = J.get$left$x(t3.style);
-    t4.toString;
-    t2._neutralX = H.Primitives_parseInt(H.stringReplaceAllUnchecked(t4, "px", ""), null, null);
-    t3 = J.get$top$x(t3.style);
-    t3.toString;
-    t2._neutralY = H.Primitives_parseInt(H.stringReplaceAllUnchecked(t3, "px", ""), null, null);
+    t2 = this.this_0;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
     H.setRuntimeTypeInfo(t1, [null]);
@@ -4703,13 +4686,13 @@ Joystick_closure0: {"": "Closure;this_1",
   $is_args1: true
 },
 
-Joystick_closure1: {"": "Closure;this_2",
+Joystick_closure0: {"": "Closure;this_1",
   call$1: function($event) {
-    var t1, t2, t3, t4, x, y, t5, angle, yOnCircle, xOnCircle;
+    var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
     P.print("onTouchMove");
     t1 = J.getInterceptor$x($event);
     t1.preventDefault$0($event);
-    t2 = this.this_2;
+    t2 = this.this_1;
     t3 = t2._neutralX;
     t1 = J.get$first$ax(t1.get$changedTouches($event));
     t1 = new P.Point(t1.clientX, t1.clientY);
@@ -4720,7 +4703,9 @@ Joystick_closure1: {"": "Closure;this_2",
       throw t1.$sub();
     if (typeof t4 !== "number")
       throw H.iae(t4);
-    x = J.$add$ns(t3, t1 - t4);
+    if (typeof t3 !== "number")
+      throw t3.$add();
+    x = t3 + (t1 - t4);
     t4 = t2._neutralY;
     t1 = J.get$first$ax($event.changedTouches);
     t1 = new P.Point(t1.clientX, t1.clientY);
@@ -4731,50 +4716,70 @@ Joystick_closure1: {"": "Closure;this_2",
       throw t1.$sub();
     if (typeof t3 !== "number")
       throw H.iae(t3);
-    y = J.$add$ns(t4, t1 - t3);
+    if (typeof t4 !== "number")
+      throw t4.$add();
+    y = t4 + (t1 - t3);
     t3 = t2._joystick.clientWidth;
     if (typeof t3 !== "number")
       throw t3.$tdiv();
     t3 = C.JSInt_methods.$tdiv(t3, 2);
     if (!t2.inCircle$5(t2._neutralX, t2._neutralY, t3, x, y)) {
-      t1 = J.$sub$n(y, t2._neutralY);
-      t4 = J.getInterceptor$n(x);
-      t5 = t4.$sub(x, t2._neutralX);
+      t1 = t2._neutralY;
       if (typeof t1 !== "number")
-        throw t1.$div();
-      if (typeof t5 !== "number")
-        throw H.iae(t5);
-      angle = Math.atan(t1 / t5);
-      if (J.$lt$n(t4.$sub(x, t2._neutralX), 0))
+        throw H.iae(t1);
+      t4 = t2._neutralX;
+      if (typeof t4 !== "number")
+        throw H.iae(t4);
+      angle = Math.atan((y - t1) / (x - t4));
+      t1 = t2._neutralX;
+      if (typeof t1 !== "number")
+        throw H.iae(t1);
+      if (x - t1 < 0)
         angle += 3.141592653589793;
       t1 = t2._neutralY;
-      yOnCircle = J.$add$ns(t1, C.JSNumber_methods.toInt$0(Math.floor(Math.sin(angle) * t3)));
-      t1 = t2._neutralX;
-      xOnCircle = J.$add$ns(t1, C.JSNumber_methods.toInt$0(Math.floor(Math.cos(angle) * t3)));
+      t4 = C.JSNumber_methods.toInt$0(Math.floor(Math.sin(angle) * t3));
+      if (typeof t1 !== "number")
+        throw t1.$add();
+      yOnCircle = t1 + t4;
+      t4 = t2._neutralX;
+      t1 = C.JSNumber_methods.toInt$0(Math.floor(Math.cos(angle) * t3));
+      if (typeof t4 !== "number")
+        throw t4.$add();
+      xOnCircle = t4 + t1;
       y = yOnCircle;
       x = xOnCircle;
     }
-    t1 = J.getInterceptor$n(x);
-    if (t1.$lt(x, t2._neutralX))
+    t1 = t2._neutralX;
+    if (typeof t1 !== "number")
+      throw H.iae(t1);
+    if (x < t1)
       t2.LEFT = true;
     else
       t2.LEFT = false;
-    if (t1.$gt(x, t2._neutralX))
+    t1 = t2._neutralX;
+    if (typeof t1 !== "number")
+      throw H.iae(t1);
+    if (x > t1)
       t2.RIGHT = true;
     else
       t2.RIGHT = false;
-    t3 = J.getInterceptor$n(y);
-    if (t3.$gt(y, t2._neutralY))
+    t1 = t2._neutralY;
+    if (typeof t1 !== "number")
+      throw H.iae(t1);
+    if (y > t1)
       t2.DOWN = true;
     else
       t2.DOWN = false;
-    if (t3.$lt(y, t2._neutralY))
+    t1 = t2._neutralY;
+    if (typeof t1 !== "number")
+      throw H.iae(t1);
+    if (y < t1)
       t2.UP = true;
     else
       t2.UP = false;
-    t4 = t2._knob;
-    J.set$left$x(t4.style, t1.toString$0(x) + "px");
-    J.set$top$x(t4.style, t3.toString$0(y) + "px");
+    t1 = t2._knob;
+    J.set$left$x(t1.style, C.JSNumber_methods.toString$0(x) + "px");
+    J.set$top$x(t1.style, C.JSNumber_methods.toString$0(y) + "px");
     t2 = t2._moveController;
     if (t2._state >= 4)
       H.throwExpression(t2._addEventError$0());
@@ -4783,14 +4788,14 @@ Joystick_closure1: {"": "Closure;this_2",
   $is_args1: true
 },
 
-Joystick_closure2: {"": "Closure;this_3",
+Joystick_closure1: {"": "Closure;this_2",
   call$1: function($event) {
     var t1, t2;
     J.preventDefault$0$x($event);
-    t1 = this.this_3;
+    t1 = this.this_2;
     t2 = t1._knob;
-    J.set$left$x(t2.style, J.$add$ns(J.toString$0(t1._neutralX), "px"));
-    J.set$top$x(t2.style, J.$add$ns(J.toString$0(t1._neutralY), "px"));
+    J.set$left$x(t2.style, "");
+    J.set$top$x(t2.style, "");
     t1.UP = false;
     t1.DOWN = false;
     t1.LEFT = false;
@@ -9649,10 +9654,10 @@ Duration: {"": "Object;_duration<",
     return P.Duration$(0, 0, this._duration - other.get$_duration(), 0, 0, 0);
   },
   $lt: function(_, other) {
-    return this._duration < other.get$_duration();
+    return C.JSNumber_methods.$lt(this._duration, other.get$_duration());
   },
   $gt: function(_, other) {
-    return this._duration > other.get$_duration();
+    return C.JSNumber_methods.$gt(this._duration, other.get$_duration());
   },
   $le: function(_, other) {
     return C.JSNumber_methods.$le(this._duration, other.get$_duration());
@@ -11021,9 +11026,6 @@ CssStyleDeclarationBase: {"": "Object;",
   set$display: function(receiver, value) {
     this.setProperty$3(receiver, "display", value, "");
   },
-  get$left: function(receiver) {
-    return this.getPropertyValue$1(receiver, "left");
-  },
   set$left: function(receiver, value) {
     this.setProperty$3(receiver, "left", value, "");
   },
@@ -11038,9 +11040,6 @@ CssStyleDeclarationBase: {"": "Object;",
   },
   set$position: function(receiver, value) {
     this.setProperty$3(receiver, "position", value, "");
-  },
-  get$top: function(receiver) {
-    return this.getPropertyValue$1(receiver, "top");
   },
   set$top: function(receiver, value) {
     this.setProperty$3(receiver, "top", value, "");
@@ -15242,11 +15241,6 @@ J.$le$n = function(receiver, a0) {
     return receiver <= a0;
   return J.getInterceptor$n(receiver).$le(receiver, a0);
 };
-J.$lt$n = function(receiver, a0) {
-  if (typeof receiver == "number" && typeof a0 == "number")
-    return receiver < a0;
-  return J.getInterceptor$n(receiver).$lt(receiver, a0);
-};
 J.$sub$n = function(receiver, a0) {
   if (typeof receiver == "number" && typeof a0 == "number")
     return receiver - a0;
@@ -15354,9 +15348,6 @@ J.get$keys$x = function(receiver) {
 J.get$lastChild$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$lastChild(receiver);
 };
-J.get$left$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$left(receiver);
-};
 J.get$length$asx = function(receiver) {
   return J.getInterceptor$asx(receiver).get$length(receiver);
 };
@@ -15389,9 +15380,6 @@ J.get$target$x = function(receiver) {
 };
 J.get$timeStamp$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$timeStamp(receiver);
-};
-J.get$top$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$top(receiver);
 };
 J.get$type$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$type(receiver);
