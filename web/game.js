@@ -4796,9 +4796,6 @@ Joystick_closure0: {"": "Closure;this_1",
 Joystick_closure1: {"": "Closure;this_2",
   call$1: function($event) {
     var t1, t2, t3;
-    t1 = J.getInterceptor$x($event);
-    t1.preventDefault$0($event);
-    t1.stopPropagation$0($event);
     t1 = this.this_2;
     t2 = t1._knob;
     t2.toString;
