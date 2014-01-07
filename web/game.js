@@ -4210,50 +4210,44 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2._tryResume$0();
     t2 = document.querySelector("#AButton");
     t2.toString;
-    t2 = C.EventStreamProvider_mousedown.forElement$1(t2);
+    t2 = C.EventStreamProvider_touchend.forElement$1(t2);
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure13(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    t1 = document.querySelector("#AButton");
+    t1 = document.querySelector("#ChatBubble");
     t1.toString;
-    t1 = C.EventStreamProvider_touchend.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure14(this)), t1._useCapture);
+    t1 = C.EventStreamProvider_click.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure14()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
-    t2 = document.querySelector("#ChatBubble");
+    t2 = document.querySelector("#BackFromChannelSelector");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
     t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure15()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
-    t1 = document.querySelector("#BackFromChannelSelector");
+    t1 = document.querySelector("#BackFromChat");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
     t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure16()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
-    t2 = document.querySelector("#BackFromChat");
-    t2.toString;
-    t2 = C.EventStreamProvider_click.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure17()), t2._useCapture);
-    H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
-    t1._tryResume$0();
-    t1 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
-    t1.forEach$1(t1, new B.Input_init_closure18());
+    t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
+    t2.forEach$1(t2, new B.Input_init_closure17());
     B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
     B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
-    t1 = document.querySelector("#InventoryTitle");
-    t1.toString;
-    t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19()), t1._useCapture);
-    H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
-    t2._tryResume$0();
-    t2 = document.body;
+    t2 = document.querySelector("#InventoryTitle");
     t2.toString;
-    t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure20(this)), t2._useCapture);
+    t2 = C.EventStreamProvider_click.forElement$1(t2);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure18()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
+    t1 = document.body;
+    t1.toString;
+    t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure19(this)), t1._useCapture);
+    H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
+    t2._tryResume$0();
     $.playerInput = this;
   },
   hideClickMenu$0: function() {
@@ -4517,22 +4511,14 @@ Input_init_closure12: {"": "Closure;this_8",
 },
 
 Input_init_closure13: {"": "Closure;this_9",
-  call$1: function($event) {
-    J.preventDefault$0$x($event);
-    P.print("AButton mouse");
-    this.this_9.spaceKey = true;
-  },
-  $is_args1: true
-},
-
-Input_init_closure14: {"": "Closure;this_10",
   call$1: function(_) {
-    this.this_10.spaceKey = false;
+    P.print("AButton touchEnd");
+    this.this_9.spaceKey = false;
   },
   $is_args1: true
 },
 
-Input_init_closure15: {"": "Closure;",
+Input_init_closure14: {"": "Closure;",
   call$1: function(_) {
     if (J.get$display$x(document.querySelector("#ChatBubbleDisconnect").style) === "inline-block")
       return;
@@ -4542,7 +4528,7 @@ Input_init_closure15: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure16: {"": "Closure;",
+Input_init_closure15: {"": "Closure;",
   call$1: function(_) {
     document.querySelector("#ChannelSelectorScreen").hidden = true;
     document.querySelector("#MainScreen").hidden = false;
@@ -4550,7 +4536,7 @@ Input_init_closure16: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure17: {"": "Closure;",
+Input_init_closure16: {"": "Closure;",
   call$1: function(_) {
     document.querySelector("#ChatScreen").hidden = true;
     document.querySelector("#ChannelSelectorScreen").hidden = false;
@@ -4558,17 +4544,17 @@ Input_init_closure17: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure18: {"": "Closure;",
+Input_init_closure17: {"": "Closure;",
   call$1: function(element) {
     J.get$onClick$x(element).listen$1(new B.Input_init__closure(element));
   },
   $is_args1: true
 },
 
-Input_init__closure: {"": "Closure;element_11",
+Input_init__closure: {"": "Closure;element_10",
   call$1: function($event) {
     var t1, t2, channelName, input, sendButton;
-    t1 = this.element_11;
+    t1 = this.element_10;
     t2 = J.get$id$x(t1);
     t2 = C.JSString_methods.substring$1(t2, J.getInterceptor$asx(t2).indexOf$1(t2, "-") + 1);
     channelName = H.stringReplaceAllUnchecked(t2, "_", " ");
@@ -4590,7 +4576,7 @@ Input_init__closure: {"": "Closure;element_11",
   $is_args1: true
 },
 
-Input_init_closure19: {"": "Closure;",
+Input_init_closure18: {"": "Closure;",
   call$1: function(_) {
     var drawer, t1, t2;
     drawer = document.querySelector("#InventoryDrawer");
@@ -4604,9 +4590,9 @@ Input_init_closure19: {"": "Closure;",
   $is_args1: true
 },
 
-Input_init_closure20: {"": "Closure;this_12",
+Input_init_closure19: {"": "Closure;this_11",
   call$1: function(e) {
-    return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
+    return this.this_11.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
   },
   $is_args1: true
 },
