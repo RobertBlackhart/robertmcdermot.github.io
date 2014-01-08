@@ -3416,20 +3416,25 @@ load_audio___closure: {"": "Closure;song_2",
 
 Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
   init$0: function() {
-    var chatMenu, t1, t2;
+    var t1, t2;
     if ($.get$localStorage().getItem("username") != null)
       this.username = $.get$localStorage().getItem("username");
     else
       this.username = J.$add$ns(this.username, C.JSInt_methods.toString$0(C.C__Random.nextInt$1(10000)));
-    chatMenu = document.querySelector("#ChatSettingsMenu");
     t1 = document.querySelector("#ChatSettingsIcon");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Chat_init_closure(chatMenu)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Chat_init_closure()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
-    C.EventStreamProvider_change._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null)).listen$1(new B.Chat_init_closure0(this));
-    if ($.get$localStorage().getItem("showJoinMessages") != null) {
+    t2 = document.querySelector("#MobileChatSettingsIcon");
+    t2.toString;
+    t2 = C.EventStreamProvider_click.forElement$1(t2);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Chat_init_closure0()), t2._useCapture);
+    H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
+    t1._tryResume$0();
+    C.EventStreamProvider_change._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null)).listen$1(new B.Chat_init_closure1(this));
+    if ($.get$localStorage().getItem("showJoinMessages") != null)
       if ($.get$localStorage().getItem("showJoinMessages") === "true") {
         this._showJoinMessages = true;
         $.get$localStorage().setItem("showJoinMessages", C.JSBool_methods.toString$0(true));
@@ -3437,14 +3442,14 @@ Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
         this._showJoinMessages = false;
         $.get$localStorage().setItem("showJoinMessages", C.JSBool_methods.toString$0(false));
       }
-      J.set$checked$x(H.interceptedTypeCast(document.querySelector("#ShowJoinMessages"), "$isCheckboxInputElement"), this._showJoinMessages);
-    } else {
+    else {
       $.get$localStorage().setItem("showJoinMessages", "false");
       this._showJoinMessages = false;
       $.get$localStorage().setItem("showJoinMessages", C.JSBool_methods.toString$0(false));
-      J.set$checked$x(H.interceptedTypeCast(document.querySelector("#ShowJoinMessages"), "$isCheckboxInputElement"), this._showJoinMessages);
     }
-    if ($.get$localStorage().getItem("playMentionSound") != null) {
+    t1 = W._FrozenElementList$_wrap(document.querySelectorAll("#ShowJoinMessages"), null);
+    t1.forEach$1(t1, new B.Chat_init_closure2(this));
+    if ($.get$localStorage().getItem("playMentionSound") != null)
       if ($.get$localStorage().getItem("playMentionSound") === "true") {
         this._playMentionSound = true;
         $.get$localStorage().setItem("playMentionSound", C.JSBool_methods.toString$0(true));
@@ -3452,13 +3457,13 @@ Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
         this._playMentionSound = false;
         $.get$localStorage().setItem("playMentionSound", C.JSBool_methods.toString$0(false));
       }
-      J.set$checked$x(H.interceptedTypeCast(document.querySelector("#PlayMentionSound"), "$isCheckboxInputElement"), this._playMentionSound);
-    } else {
+    else {
       $.get$localStorage().setItem("playMentionSound", "true");
       this._showJoinMessages = true;
       $.get$localStorage().setItem("showJoinMessages", C.JSBool_methods.toString$0(true));
-      J.set$checked$x(H.interceptedTypeCast(document.querySelector("#ShowJoinMessages"), "$isCheckboxInputElement"), this._showJoinMessages);
     }
+    t1 = W._FrozenElementList$_wrap(document.querySelectorAll("#PlayMentionSound"), null);
+    t1.forEach$1(t1, new B.Chat_init_closure3(this));
     this.addChatTab$2("Global Chat", true);
     this.addChatTab$2("Other Chat", false);
     t1 = J.get$children$x(document.querySelector("#ChatPane"));
@@ -3497,31 +3502,56 @@ Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
   }
 },
 
-Chat_init_closure: {"": "Closure;chatMenu_0",
+Chat_init_closure: {"": "Closure;",
   call$1: function(click) {
-    var t1 = this.chatMenu_0;
-    if (t1.hidden === true)
-      t1.hidden = false;
+    var chatMenu = document.querySelector("#ChatSettingsMenu");
+    if (chatMenu.hidden === true)
+      chatMenu.hidden = false;
     else
-      t1.hidden = true;
+      chatMenu.hidden = true;
   },
   $is_args1: true
 },
 
-Chat_init_closure0: {"": "Closure;this_1",
+Chat_init_closure0: {"": "Closure;",
+  call$1: function(click) {
+    var chatMenu = document.querySelector("#MobileChatSettingsMenu");
+    if (chatMenu.hidden === true)
+      chatMenu.hidden = false;
+    else
+      chatMenu.hidden = true;
+  },
+  $is_args1: true
+},
+
+Chat_init_closure1: {"": "Closure;this_0",
   call$1: function($event) {
     var checkbox, t1;
     checkbox = H.interceptedTypeCast(J.get$target$x($event), "$isCheckboxInputElement");
     if (J.get$id$x(checkbox) === "ShowJoinMessages") {
       t1 = checkbox.checked;
-      this.this_1._showJoinMessages = t1;
+      this.this_0._showJoinMessages = t1;
       $.get$localStorage().setItem("showJoinMessages", J.toString$0(t1));
     }
     if (checkbox.id === "PlayMentionSound") {
       t1 = checkbox.checked;
-      this.this_1._playMentionSound = t1;
+      this.this_0._playMentionSound = t1;
       $.get$localStorage().setItem("playMentionSound", J.toString$0(t1));
     }
+  },
+  $is_args1: true
+},
+
+Chat_init_closure2: {"": "Closure;this_1",
+  call$1: function(element) {
+    J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_1._showJoinMessages);
+  },
+  $is_args1: true
+},
+
+Chat_init_closure3: {"": "Closure;this_2",
+  call$1: function(element) {
+    J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_2._playMentionSound);
   },
   $is_args1: true
 },
@@ -4528,22 +4558,7 @@ Input_init_closure13: {"": "Closure;this_9",
 
 Input_init_closure14: {"": "Closure;",
   call$1: function($event) {
-    var t1, mentionSound;
     J.preventDefault$0$x($event);
-    t1 = $.ui_sounds.assets;
-    mentionSound = t1.$index(t1, "mention");
-    t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
-    if (typeof t1 !== "number")
-      throw t1.$div();
-    J.set$volume$x(mentionSound, t1 / 100);
-    mentionSound.play();
-    t1 = $.ui_sounds.assets;
-    mentionSound = t1.$index(t1, "game_loaded");
-    t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
-    if (typeof t1 !== "number")
-      throw t1.$div();
-    J.set$volume$x(mentionSound, t1 / 100);
-    mentionSound.play();
   },
   $is_args1: true
 },

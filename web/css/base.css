@@ -1206,6 +1206,27 @@ textarea{resize: none;}
 	white-space: nowrap;
 	overflow-x: scroll;
 }
+#MobileChatSettingsIcon {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+#MobileChatSettingsMenu {
+	text-align: left;
+	font-size: 1.5em;
+	position: absolute;
+	right: 5px;
+	top: 40px;
+	background-color: #fff;
+	border: 1px solid;
+	padding: 0px 5px;
+}
+#MobileChatSettingsMenu input[type=checkbox] {
+  -ms-transform: scale(2);
+  -moz-transform: scale(2);
+  -webkit-transform: scale(2);
+  -o-transform: scale(2);
+}
 
 @media (max-device-width: 1307px) and (orientation: landscape) /* mobile device in landscape */
 {
