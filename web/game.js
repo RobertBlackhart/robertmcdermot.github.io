@@ -3302,7 +3302,7 @@ setVolume: function(value) {
 main: function() {
   B.init_audio();
   var t1 = new E.Asset(null, false, null);
-  t1._uri = "./assets/system/loading.mp3";
+  t1._uri = "./assets/system/loading.ogg";
   t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
 },
 
@@ -4528,7 +4528,15 @@ Input_init_closure13: {"": "Closure;this_9",
 
 Input_init_closure14: {"": "Closure;",
   call$1: function($event) {
+    var t1, mentionSound;
     J.preventDefault$0$x($event);
+    t1 = $.ui_sounds.assets;
+    mentionSound = t1.$index(t1, "mention");
+    t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
+    if (typeof t1 !== "number")
+      throw t1.$div();
+    J.set$volume$x(mentionSound, t1 / 100);
+    mentionSound.play();
   },
   $is_args1: true
 },
