@@ -3302,7 +3302,7 @@ setVolume: function(value) {
 main: function() {
   B.init_audio();
   var t1 = new E.Asset(null, false, null);
-  t1._uri = "./assets/system/loading.ogg";
+  t1._uri = "./assets/system/loading.mp3";
   t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
 },
 
