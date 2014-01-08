@@ -4537,6 +4537,13 @@ Input_init_closure14: {"": "Closure;",
       throw t1.$div();
     J.set$volume$x(mentionSound, t1 / 100);
     mentionSound.play();
+    t1 = $.ui_sounds.assets;
+    mentionSound = t1.$index(t1, "game_loaded");
+    t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
+    if (typeof t1 !== "number")
+      throw t1.$div();
+    J.set$volume$x(mentionSound, t1 / 100);
+    mentionSound.play();
   },
   $is_args1: true
 },
