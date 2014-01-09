@@ -3303,6 +3303,13 @@ setVolume: function(value) {
   }
 },
 
+toggleFps: function(nothing) {
+  if ($.showFps)
+    $.showFps = false;
+  else
+    $.showFps = true;
+},
+
 main: function() {
   B.init_audio();
   var t1 = new E.Asset(null, false, null, null);
@@ -3311,7 +3318,13 @@ main: function() {
 },
 
 render: function() {
-  var t1, t2;
+  var now, t1, t2, t3;
+  now = P.DateTime$_now();
+  t1 = C.JSNumber_methods.$tdiv(now.difference$1($.get$last())._duration, 1000);
+  t2 = $.get$fpsDisplay();
+  t3 = $.get$twoDigit();
+  t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
+  $.last = now;
   B.refreshClock();
   t1 = $.currentStreet;
   t2 = J.getInterceptor(t1);
@@ -9795,12 +9808,15 @@ DateTime: {"": "Object;millisecondsSinceEpoch,isUtc",
   add$1: function(_, duration) {
     return P.DateTime$fromMillisecondsSinceEpoch(this.millisecondsSinceEpoch + duration.get$inMilliseconds(), this.isUtc);
   },
-  DateTime$_now$0: function() {
-    H.Primitives_lazyAsJsDate(this);
+  difference$1: function(other) {
+    return P.Duration$(0, 0, 0, this.millisecondsSinceEpoch - other.millisecondsSinceEpoch, 0, 0);
   },
   DateTime$fromMillisecondsSinceEpoch$2$isUtc: function(millisecondsSinceEpoch, isUtc) {
     if (Math.abs(millisecondsSinceEpoch) > 8640000000000000)
       throw H.wrapException(new P.ArgumentError(millisecondsSinceEpoch));
+  },
+  DateTime$_now$0: function() {
+    H.Primitives_lazyAsJsDate(this);
   },
   $isDateTime: true,
   static: {
@@ -14918,6 +14934,7 @@ init.globalFunctions.setImg$closure = B.setImg$closure = new H.Closure$1(B.setIm
 init.globalFunctions.setName$closure = B.setName$closure = new H.Closure$1(B.setName, "setName$closure");
 init.globalFunctions.setSong$closure = B.setSong$closure = new H.Closure$1(B.setSong, "setSong$closure");
 init.globalFunctions.setVolume$closure = B.setVolume$closure = new H.Closure$1(B.setVolume, "setVolume$closure");
+init.globalFunctions.toggleFps$closure = B.toggleFps$closure = new H.Closure$1(B.toggleFps, "toggleFps$closure");
 init.globalFunctions.main$closure = B.main$closure = new H.Closure$0(B.main, "main$closure");
 init.globalFunctions.setStreetLoadBar$closure = B.setStreetLoadBar$closure = new H.Closure$1(B.setStreetLoadBar, "setStreetLoadBar$closure");
 init.globalFunctions._asyncRunCallback$closure = P._asyncRunCallback$closure = new H.Closure$0(P._asyncRunCallback, "_asyncRunCallback$closure");
@@ -15031,10 +15048,10 @@ P.Future.$isFuture = true;
 P.Future.$isObject = true;
 P._DelayedEvent.$is_DelayedEvent = true;
 P._DelayedEvent.$isObject = true;
-P._EventSink.$is_EventSink = true;
-P._EventSink.$isObject = true;
 P.DateTime.$isDateTime = true;
 P.DateTime.$isObject = true;
+P._EventSink.$is_EventSink = true;
+P._EventSink.$isObject = true;
 // getInterceptor methods
 J.getInterceptor = function(receiver) {
   if (typeof receiver == "number") {
@@ -15391,6 +15408,7 @@ $.initNativeDispatchFlag = null;
 $.ui_sounds = null;
 $.consolelistener = null;
 $.playerInput = null;
+$.showFps = false;
 $.TouchScroller_HORIZONTAL = 0;
 $.TouchScroller_VERTICAL = 1;
 $.TouchScroller_BOTH = 2;
@@ -15827,7 +15845,17 @@ Isolate.$lazy($, "COMMANDS", "COMMANDS", "get$COMMANDS", function() {
   t1.push(["setname", "\"setname <value>\" Changes the players displayed name", B.setName$closure]);
   t1.push(["setsong", "\"setsong <value>\" Changes the currently playing song", B.setSong$closure]);
   t1.push(["setvolume", "\"setvolume <1-100>\" Changes the volume of the current song", B.setVolume$closure]);
+  t1.push(["togglefps", "show or hide the fps display\"", B.toggleFps$closure]);
   return t1;
+});
+Isolate.$lazy($, "last", "last", "get$last", function() {
+  return P.DateTime$_now();
+});
+Isolate.$lazy($, "fpsDisplay", "fpsDisplay", "get$fpsDisplay", function() {
+  return document.querySelector("#fps");
+});
+Isolate.$lazy($, "twoDigit", "twoDigit", "get$twoDigit", function() {
+  return T.NumberFormat_NumberFormat("#0", null);
 });
 Isolate.$lazy($, "ui", "ui", "get$ui", function() {
   var t1 = new B.UserInterface(T.NumberFormat_NumberFormat("#,###", null), document.querySelector("#PlayerName"), document.querySelector("#CurrCurrants"), document.querySelector("#CurrImagination"), document.querySelector("#TrackTitle"), document.querySelector("#TrackArtist"), new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, document.querySelector("#EnergyIndicator"), document.querySelector("#EnergyIndicatorRed"), document.querySelector("#CurrEnergy"), document.querySelector("#MaxEnergy"), 100, 100, 10, 120, document.querySelector("#MoodCircleRed"), document.querySelector("#MoodCircleEmpty"), 100, 100, document.querySelector("#CurrMood"), document.querySelector("#MaxMood"), document.querySelector("#MoodPercent"));
