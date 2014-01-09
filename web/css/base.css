@@ -294,6 +294,7 @@ textarea{resize: none;}
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*The display div that depicts gameplay*/
 #GameScreen {
+    max-height:900px;
     background-color:#fff;
     position:absolute;
     width:calc(100% - 290px - 40px - 18px - 20px);
@@ -309,11 +310,11 @@ textarea{resize: none;}
 .streetcanvas {
     transition-property: top right;
     transition-duration: 0.5s;
-    transition-timing-function: linear;
+    transition-timing-function: ease-in-out;
     transition-delay: 0s;
     -webkit-transition-property: top right;
     -webkit-transition-duration:0.5s;
-    -webkit-transition-timing-function:linear;
+    -webkit-transition-timing-function:ease-in-out;
     -webkit-transition-delay:0s;    
 }
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -1255,15 +1256,15 @@ textarea{resize: none;}
 	}
 	#CurrantBack {
 		left: 10px;
-		bottom: 100px;
+		bottom: 76px;
 	}
 	#CurrantText {
 		left: 50px;
-		bottom: 100px;
+		bottom: 80px;
 	}
 	#CurrantEmblem {
 		left: 16px;
-		bottom: 104px;
+		bottom: 80px;
 	}
 	#Joystick {
 		display: block;
@@ -1387,12 +1388,15 @@ textarea{resize: none;}
 	}
 	#CurrantBack {
 		left: 0px;
+		bottom: 151px;
 	}
 	#CurrantText {
 		left: 40px;
+		bottom: 155px;
 	}
 	#CurrantEmblem {
 		left: 6px;
+		bottom: 155px
 	}
 	#Joystick {
 		display: block;

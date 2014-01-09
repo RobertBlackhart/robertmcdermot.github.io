@@ -260,7 +260,7 @@ Interceptor: {"": "Object;",
   toString$0: function(receiver) {
     return H.Primitives_objectToString(receiver);
   },
-  "%": "ArrayBuffer|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
+  "%": "ArrayBuffer|CanvasGradient|CanvasPattern|CanvasRenderingContext|CanvasRenderingContext2D|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
 },
 
 JSBool: {"": "bool/Interceptor;",
@@ -432,6 +432,9 @@ JSNumber: {"": "num/Interceptor;",
     }
     throw H.wrapException(P.UnsupportedError$('' + receiver));
   },
+  floor$0: function(receiver) {
+    return this.toInt$0(Math.floor(receiver));
+  },
   roundToDouble$0: function(receiver) {
     if (receiver < 0)
       return -Math.round(-receiver);
@@ -475,6 +478,8 @@ JSNumber: {"": "num/Interceptor;",
       return this._slowTdiv$1(receiver, other);
   },
   _slowTdiv$1: function(receiver, other) {
+    if (typeof other !== "number")
+      throw H.wrapException(P.ArgumentError$(other));
     return this.toInt$0(receiver / other);
   },
   $shr: function(receiver, other) {
@@ -1014,7 +1019,7 @@ _Manager$: function(entry) {
 
 },
 
-_IsolateContext: {"": "Object;id,ports,isolateStatics<",
+_IsolateContext: {"": "Object;id>,ports,isolateStatics<",
   eval$1: function(code) {
     var old, result;
     old = $globalState.currentContext;
@@ -2652,9 +2657,9 @@ ConstantStringMap_values_closure: {"": "Closure;this_0",
   $is_args1: true
 },
 
-_ConstantMapKeyIterable: {"": "IterableBase;_map",
+_ConstantMapKeyIterable: {"": "IterableBase;__js_helper$_map",
   get$iterator: function(_) {
-    return J.get$iterator$ax(this._map._keys);
+    return J.get$iterator$ax(this.__js_helper$_map._keys);
   },
   $asIterableBase: null
 },
@@ -3102,18 +3107,17 @@ init_audio: function() {
 },
 
 load_audio: function() {
-  var t1, c, t2, t3;
+  var t1, c, t2;
   t1 = null;
   c = new P._AsyncCompleter(P._Future$(t1));
   H.setRuntimeTypeInfo(c, [t1]);
-  t1 = new E.Asset(null, false, null);
+  t1 = new E.Asset(null, false, null, null);
   t1._uri = "./assets/system/mention.ogg";
-  t2 = new E.Asset(null, false, null);
+  t2 = new E.Asset(null, false, null, null);
   t2._uri = "./assets/system/game_loaded.ogg";
-  t3 = new E.Batch(H.fillLiteralMap([], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null)), [], 0);
-  t3._toLoad = [t1, t2];
-  t3.load$1(t3, P.print$closure).then$1(new B.load_audio_closure(c));
-  $.ui_sounds = t3;
+  t2 = new E.Batch([t1, t2], 0);
+  t2.load$1(t2, P.print$closure).then$1(new B.load_audio_closure(c));
+  $.ui_sounds = t2;
   return c.future;
 },
 
@@ -3301,9 +3305,18 @@ setVolume: function(value) {
 
 main: function() {
   B.init_audio();
-  var t1 = new E.Asset(null, false, null);
+  var t1 = new E.Asset(null, false, null, null);
   t1._uri = "./assets/system/loading.ogg";
   t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
+},
+
+render: function() {
+  var t1, t2;
+  B.refreshClock();
+  t1 = $.currentStreet;
+  t2 = J.getInterceptor(t1);
+  if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
+    t1.render$0();
 },
 
 resize: function() {
@@ -3356,20 +3369,26 @@ refreshClock: function() {
 },
 
 load_streets: function() {
-  var t1, c;
   $.get$jsonExtensions().push("street");
-  t1 = null;
-  c = new P._AsyncCompleter(P._Future$(t1));
-  H.setRuntimeTypeInfo(c, [t1]);
-  t1 = new E.Asset(null, false, null);
+  var t1 = new E.Asset(null, false, null, null);
   t1._uri = "./assets/streets.json";
-  t1.load$0(t1).then$1(new B.load_streets_closure(c));
-  return c.future;
+  t1.load$0(t1).then$1(new B.load_streets_closure());
+},
+
+setStreetLoadBar: function(percent) {
+  var t1;
+  document.querySelector("#StreetLoadingStatus").textContent = "loading decos...";
+  t1 = J.getInterceptor$ns(percent);
+  J.set$width$x(document.querySelector("#MapLoadingBar").style, J.toString$0(t1.$add(percent, 1)) + "%");
+  if (t1.$ge(percent, 99)) {
+    document.querySelector("#StreetLoadingStatus").textContent = "...done";
+    J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
+  }
 },
 
 load_audio_closure: {"": "Closure;c_0",
   call$1: function(_) {
-    var soundCloudSongs = new E.Asset(null, false, null);
+    var soundCloudSongs = new E.Asset(null, false, null, null);
     soundCloudSongs._uri = "./assets/music.json";
     soundCloudSongs.load$0(soundCloudSongs).then$1(new B.load_audio__closure(this.c_0));
   },
@@ -3683,8 +3702,8 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
       this.numMessages = this.numMessages - 1;
     }
     if ($.get$chat()._playMentionSound === true && C.JSString_methods.contains$1(J.toLowerCase$0$s(J.$index$asx(map, "message")), J.toLowerCase$0$s($.get$chat().username)) && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
-      t1 = $.ui_sounds.assets;
-      mentionSound = t1.$index(t1, "mention");
+      t1 = $.get$ASSET();
+      mentionSound = t1.$index(t1, "mention").get$0();
       t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
       if (typeof t1 !== "number")
         throw t1.$div();
@@ -4142,11 +4161,9 @@ main_closure2: {"": "Closure;",
     B.updateConsole("");
     B.updateConsole("COU DEVELOPMENT CONSOLE");
     B.updateConsole("For a list of commands type \"help\"");
-    t1 = new E.Asset(null, false, null);
+    t1 = new E.Asset(null, false, null, null);
     t1._uri = "./assets/system/game_loaded.ogg";
-    t1.load$0(t1).then$1(new B.main__closure()).then$1(new B.main__closure0());
-    t1 = $.get$game();
-    t1.start$0(t1);
+    t1.load$0(t1).then$1(new B.main__closure()).then$1(new B.main__closure0()).then$1(new B.main__closure1());
   },
   $is_args1: true
 },
@@ -4173,8 +4190,16 @@ main__closure: {"": "Closure;",
 
 main__closure0: {"": "Closure;",
   call$1: function(_) {
-    $.currentStreet = new B.Street(null, null, null, null, null, null, null, null, null);
-    return;
+    var t1 = B.Street$("test");
+    return t1.load$0(t1);
+  },
+  $is_args1: true
+},
+
+main__closure1: {"": "Closure;",
+  call$1: function(_) {
+    var t1 = $.get$game();
+    return t1.start$0(t1);
   },
   $is_args1: true
 },
@@ -5072,22 +5097,195 @@ UserInterface__setMood_closure: {"": "Closure;this_0",
   $is_void_: true
 },
 
-load_streets_closure: {"": "Closure;c_0",
-  call$1: function(streetList) {
-    var t1;
-    P.print(streetList.get$0());
-    t1 = this.c_0.future;
-    if (t1._state !== 0)
-      H.throwExpression(P.StateError$("Future already completed"));
-    t1._asyncComplete$1(streetList);
+Camera: {"": "Object;x>,y>,zoom",
+  setCamera$1: function(xy) {
+    var t1 = J.split$1$s(xy, ",");
+    if (0 >= t1.length)
+      throw H.ioore(t1, 0);
+    this.x = H.Primitives_parseInt(t1[0], null, null);
+    t1 = xy.split(",");
+    if (1 >= t1.length)
+      throw H.ioore(t1, 1);
+    this.y = H.Primitives_parseInt(t1[1], null, null);
+  },
+  get$setCamera: function() {
+    return new H.BoundClosure$1(this, B.Camera.prototype.setCamera$1, null, "setCamera$1");
+  }
+},
+
+Street: {"": "Object;label,_data,bounds",
+  load$0: function(_) {
+    var decosToLoad, t1, t2, deco, t3, assetsToLoad, decos;
+    $.currentStreet = null;
+    if (J.$index$asx(this._data, "music") != null)
+      B.setSong(J.$index$asx(this._data, "music"));
+    decosToLoad = [];
+    for (t1 = J.get$iterator$ax(J.get$values$x(J.$index$asx(J.$index$asx(this._data, "dynamic"), "layers"))); t1.moveNext$0();)
+      for (t2 = J.get$iterator$ax(J.$index$asx(t1.get$current(), "decos")); t2.moveNext$0();) {
+        deco = t2.get$current();
+        t3 = J.getInterceptor$asx(deco);
+        if (!C.JSArray_methods.contains$1(decosToLoad, C.JSString_methods.$add("http://revdancatt.github.io/CAT422-glitch-location-viewer/img/scenery/", t3.$index(deco, "filename")) + ".png"))
+          decosToLoad.push(C.JSString_methods.$add("http://revdancatt.github.io/CAT422-glitch-location-viewer/img/scenery/", t3.$index(deco, "filename")) + ".png");
+      }
+    assetsToLoad = [];
+    for (t1 = new H.ListIterator(decosToLoad, decosToLoad.length, 0, null); t1.moveNext$0();) {
+      t2 = new E.Asset(null, false, null, null);
+      t2._uri = t1._dev$_current;
+      assetsToLoad.push(t2);
+    }
+    decos = new E.Batch(assetsToLoad, 0);
+    decos.load$1(decos, B.setStreetLoadBar$closure).then$1(new B.Street_load_closure(this));
+  },
+  render$0: function() {
+    var t1, t2, t3, t4, t5, t6, t7, canvas, t8;
+    t1 = $.get$camera().x;
+    t2 = this.bounds.width;
+    t3 = $.get$gameScreen().clientWidth;
+    if (typeof t2 !== "number")
+      throw t2.$sub();
+    if (typeof t3 !== "number")
+      throw H.iae(t3);
+    if (typeof t1 !== "number")
+      throw t1.$div();
+    t4 = $.get$camera().y;
+    t5 = this.bounds.height;
+    t6 = $.get$gameScreen().clientHeight;
+    if (typeof t5 !== "number")
+      throw t5.$sub();
+    if (typeof t6 !== "number")
+      throw H.iae(t6);
+    if (typeof t4 !== "number")
+      throw t4.$div();
+    for (t7 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll("canvas"), null), t7 = t7.get$iterator(t7), t3 = -(t1 / (t2 - t3)), t6 = -(t4 / (t5 - t6)); t7.moveNext$0();) {
+      canvas = t7._dev$_current;
+      t1 = J.getInterceptor$x(canvas);
+      if (t1.get$id(canvas) === "gradient") {
+        t2 = t1.get$style(canvas);
+        t1 = t1.get$height(canvas);
+        t4 = $.get$gameScreen().clientHeight;
+        if (typeof t1 !== "number")
+          throw t1.$sub();
+        if (typeof t4 !== "number")
+          throw H.iae(t4);
+        J.set$top$x(t2, C.JSNumber_methods.toString$0((t1 - t4) * t6) + "px");
+      } else {
+        t2 = t1.get$width(canvas);
+        t4 = $.get$gameScreen().clientWidth;
+        if (typeof t2 !== "number")
+          throw t2.$sub();
+        if (typeof t4 !== "number")
+          throw H.iae(t4);
+        t5 = t1.get$height(canvas);
+        t8 = $.get$gameScreen().clientHeight;
+        if (typeof t5 !== "number")
+          throw t5.$sub();
+        if (typeof t8 !== "number")
+          throw H.iae(t8);
+        J.set$position$x(t1.get$style(canvas), "absolute");
+        J.set$left$x(t1.get$style(canvas), C.JSNumber_methods.toString$0((t2 - t4) * t3) + "px");
+        J.set$top$x(t1.get$style(canvas), C.JSNumber_methods.toString$0((t5 - t8) * t6) + "px");
+      }
+    }
+  },
+  Street$1: function(streetName) {
+    var t1 = $.get$ASSET();
+    this._data = t1.$index(t1, streetName).get$0();
+    this.label = J.$index$asx(this._data, "label");
+    t1 = new P.Rectangle(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l"), J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l")) + J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "r")), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "t")));
+    H.setRuntimeTypeInfo(t1, [null]);
+    this.bounds = t1;
+  },
+  $isStreet: true,
+  static: {
+Street$: function(streetName) {
+  var t1 = new B.Street(null, null, null);
+  t1.Street$1(streetName);
+  return t1;
+}}
+
+},
+
+Street_load_closure: {"": "Closure;this_0",
+  call$1: function(_) {
+    var t1, gradientCanvas, t2, g, t3, layer, e, t4, t5, deco, t6, t7, t8, t9, x, y, w, h;
+    t1 = this.this_0;
+    $.currentStreet = t1;
+    gradientCanvas = W.CanvasElement_CanvasElement(null, null);
+    gradientCanvas.id = "gradient";
+    J.set$zIndex$x(gradientCanvas.style, C.JSInt_methods.toString$0(-100));
+    t2 = J.getInterceptor$x(gradientCanvas);
+    t2.set$width(gradientCanvas, t1.bounds.width);
+    t2.set$height(gradientCanvas, t1.bounds.height);
+    J.set$position$x(gradientCanvas.style, "absolute");
+    J.set$left$x(gradientCanvas.style, "0 px");
+    J.set$top$x(gradientCanvas.style, "0 px");
+    g = t2.get$context2D(gradientCanvas).createLinearGradient(0, 0, 0, t1.bounds.height);
+    g.addColorStop(0, C.JSString_methods.$add("#", J.$index$asx(J.$index$asx(t1._data, "gradient"), "top")));
+    g.addColorStop(1, C.JSString_methods.$add("#", J.$index$asx(J.$index$asx(t1._data, "gradient"), "bottom")));
+    gradientCanvas.getContext("2d").fillStyle = g;
+    t2 = gradientCanvas.getContext("2d");
+    t3 = t1.bounds;
+    t2.fillRect(0, 0, t3.width, t3.height);
+    $.get$gameScreen().appendChild(gradientCanvas);
+    for (t2 = J.$index$asx(J.$index$asx(t1._data, "dynamic"), "layers"), t3 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), t3.addAll$1(t3, t2), t3 = t3.get$values(t3), t2 = t3._iterable, t2 = t2.get$iterator(t2), t2 = new H.MappedIterator(null, t2, t3._f), H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "MappedIterable", 0), H.getRuntimeTypeArgument(t3, "MappedIterable", 1)]); t2.moveNext$0();) {
+      layer = t2._dev$_current;
+      e = document.createElement("canvas", null);
+      t3 = J.getInterceptor$x(e);
+      t4 = t3.get$classes(e);
+      t4.add$1(t4, "streetcanvas");
+      t4 = J.getInterceptor$asx(layer);
+      e.id = t4.$index(layer, "name");
+      J.set$zIndex$x(e.style, J.toString$0(t4.$index(layer, "z")));
+      t3.set$width(e, t4.$index(layer, "w"));
+      t3.set$height(e, t4.$index(layer, "h"));
+      J.set$position$x(e.style, "absolute");
+      J.set$left$x(e.style, "0 px");
+      J.set$top$x(e.style, "0 px");
+      for (t5 = J.get$iterator$ax(t4.$index(layer, "decos")); t5.moveNext$0();) {
+        deco = t5.get$current();
+        t6 = J.getInterceptor$asx(deco);
+        t7 = t6.$index(deco, "x");
+        t8 = t1.bounds.width;
+        t9 = $.get$gameScreen().clientWidth;
+        if (typeof t8 !== "number")
+          throw t8.$tdiv();
+        if (typeof t9 !== "number")
+          throw H.iae(t9);
+        x = J.$add$ns(t7, C.JSNumber_methods.$tdiv(t8, t9));
+        y = J.$add$ns(J.$sub$n(t6.$index(deco, "y"), t6.$index(deco, "h")), J.$index$asx(J.$index$asx(t1._data, "dynamic"), "ground_y"));
+        w = t6.$index(deco, "w");
+        h = t6.$index(deco, "h");
+        t6.$index(deco, "z");
+        t7 = $.get$ASSET();
+        if (t7.$index(t7, t6.$index(deco, "filename")) != null)
+          if (J.$eq(t4.$index(layer, "name"), "middleground")) {
+            t7 = t3.get$context2D(e);
+            t8 = $.get$ASSET();
+            t7.drawImage(t8.$index(t8, t6.$index(deco, "filename")).get$0(), x, J.$add$ns(y, t4.$index(layer, "h")), w, h);
+          } else {
+            t7 = t3.get$context2D(e);
+            t8 = $.get$ASSET();
+            t7.drawImage(t8.$index(t8, t6.$index(deco, "filename")).get$0(), x, y, w, h);
+          }
+        $.get$gameScreen().appendChild(e);
+      }
+    }
   },
   $is_args1: true
 },
 
-Street: {"": "Object;label,width,height,top,bottom,left,right,gradientTop,gradientBottom",
-  load$0: function(_) {
-    $.currentStreet = this;
-  }
+load_streets_closure: {"": "Closure;",
+  call$1: function(streetList) {
+    var toLoad, t1, t2;
+    toLoad = [];
+    for (t1 = J.get$iterator$ax(J.get$values$x(streetList.get$0())); t1.moveNext$0();) {
+      t2 = new E.Asset(null, false, null, null);
+      t2._uri = t1.get$current();
+      toLoad.push(t2.load$0(t2));
+    }
+    return P.Future_wait(toLoad);
+  },
+  $is_args1: true
 },
 
 closure: {"": "Closure;",
@@ -5098,7 +5296,7 @@ closure: {"": "Closure;",
 
 closure0: {"": "Closure;",
   call$1: function(gameLoop) {
-    B.refreshClock();
+    B.render();
   },
   $is_args1: true
 }},
@@ -5447,21 +5645,6 @@ _registerErrorHandler: function(errorHandler, zone) {
     return errorHandler;
 },
 
-Future_Future$sync: function(computation, $T) {
-  var result, T0, error, stackTrace, t1, exception;
-  try {
-    result = computation.call$0();
-    t1 = P._Future$immediate(result, T0);
-    return t1;
-  } catch (exception) {
-    t1 = H.unwrapException(exception);
-    error = t1;
-    stackTrace = new H._StackTrace(exception, null);
-    return P._Future$immediateError(error, stackTrace, T0);
-  }
-
-},
-
 Future_wait: function(futures) {
   var t1, t2, t3, future, pos, t4, t5, result, completer;
   t1 = {};
@@ -5489,12 +5672,6 @@ Future_wait: function(futures) {
   H.setRuntimeTypeInfo(completer, [t2]);
   t1.completer_0 = completer;
   return t1.completer_0.future;
-},
-
-Future_forEach: function(input, f) {
-  var doneSignal = P._Future$(null);
-  new P.Future_forEach_nextElement(f, doneSignal, new H.ListIterator(input, input.length, 0, null)).call$1(null);
-  return doneSignal;
 },
 
 _asyncRunCallback: function() {
@@ -5984,26 +6161,6 @@ Future_wait_closure: {"": "Closure;box_0,pos_1",
   $is_args1: true
 },
 
-Future_forEach_nextElement: {"": "Closure;f_0,doneSignal_1,iterator_2",
-  call$1: function(_) {
-    var t1, t2;
-    t1 = this.iterator_2;
-    t2 = this.doneSignal_1;
-    if (t1.moveNext$0())
-      P.Future_Future$sync(new P.Future_forEach_nextElement_closure(this.f_0, t1), null).then$2$onError(this, t2.get$_completeError());
-    else
-      t2._complete$1(null);
-  },
-  $is_args1: true
-},
-
-Future_forEach_nextElement_closure: {"": "Closure;f_3,iterator_4",
-  call$0: function() {
-    return this.f_3.call$1(this.iterator_4._dev$_current);
-  },
-  $is_void_: true
-},
-
 _Completer: {"": "Object;"},
 
 _AsyncCompleter: {"": "_Completer;future",
@@ -6156,9 +6313,6 @@ _Future: {"": "Object;_state,_zone<,_resultOrListeners,_nextListener<,_onValueCa
   _async$_Future$immediate$1: function(value, $T) {
     this._asyncComplete$1(value);
   },
-  _async$_Future$immediateError$2: function(error, stackTrace, $T) {
-    this._asyncCompleteError$2(error, stackTrace);
-  },
   $is_Future: true,
   $isFuture: true,
   static: {
@@ -6173,13 +6327,6 @@ _Future$immediate: function(value, $T) {
   var t1 = new P._Future(0, $.Zone__current, null, null, null, null, null, null);
   H.setRuntimeTypeInfo(t1, [$T]);
   t1._async$_Future$immediate$1(value, $T);
-  return t1;
-},
-
-_Future$immediateError: function(error, stackTrace, $T) {
-  var t1 = new P._Future(0, $.Zone__current, null, null, null, null, null, null);
-  H.setRuntimeTypeInfo(t1, [$T]);
-  t1._async$_Future$immediateError$2(error, stackTrace, $T);
   return t1;
 },
 
@@ -7201,7 +7348,7 @@ _DelayedDone: {"": "Object;",
     return;
   },
   set$next: function(_) {
-    throw H.wrapException(new P.StateError("No events after a done."));
+    throw H.wrapException(P.StateError$("No events after a done."));
   }
 },
 
@@ -7946,24 +8093,24 @@ _HashMap_values_closure: {"": "Closure;this_0",
   $is_args1: true
 },
 
-HashMapKeyIterable: {"": "IterableBase;_collection$_map",
+HashMapKeyIterable: {"": "IterableBase;_map",
   get$length: function(_) {
-    return this._collection$_map._collection$_length;
+    return this._map._collection$_length;
   },
   get$isEmpty: function(_) {
-    return this._collection$_map._collection$_length === 0;
+    return this._map._collection$_length === 0;
   },
   get$iterator: function(_) {
-    var t1 = this._collection$_map;
+    var t1 = this._map;
     return new P.HashMapKeyIterator(t1, t1._computeKeys$0(), 0, null);
   },
   contains$1: function(_, element) {
-    var t1 = this._collection$_map;
+    var t1 = this._map;
     return t1.containsKey$1(t1, element);
   },
   forEach$1: function(_, f) {
     var t1, keys, $length, i;
-    t1 = this._collection$_map;
+    t1 = this._map;
     keys = t1._computeKeys$0();
     for ($length = keys.length, i = 0; i < $length; ++i) {
       f.call$1(keys[i]);
@@ -7975,7 +8122,7 @@ HashMapKeyIterable: {"": "IterableBase;_collection$_map",
   $isEfficientLength: true
 },
 
-HashMapKeyIterator: {"": "Object;_collection$_map,_collection$_keys,_offset,_collection$_current",
+HashMapKeyIterator: {"": "Object;_map,_collection$_keys,_offset,_collection$_current",
   get$current: function() {
     return this._collection$_current;
   },
@@ -7983,7 +8130,7 @@ HashMapKeyIterator: {"": "Object;_collection$_map,_collection$_keys,_offset,_col
     var keys, offset, t1;
     keys = this._collection$_keys;
     offset = this._offset;
-    t1 = this._collection$_map;
+    t1 = this._map;
     if (keys !== t1._collection$_keys)
       throw H.wrapException(P.ConcurrentModificationError$(t1));
     else if (offset >= keys.length) {
@@ -8032,6 +8179,9 @@ _LinkedHashMap: {"": "Object;_collection$_length,_strings,_nums,_rest,_first,_la
         return false;
       return this._findBucketIndex$2(rest[this._computeHashCode$1(key)], key) >= 0;
     }
+  },
+  addAll$1: function(_, other) {
+    J.forEach$1$ax(other, new P._LinkedHashMap_addAll_closure(this));
   },
   $index: function(_, key) {
     var strings, cell, nums, rest, bucket, index;
@@ -8219,6 +8369,14 @@ _LinkedHashMap_values_closure: {"": "Closure;this_0",
   $is_args1: true
 },
 
+_LinkedHashMap_addAll_closure: {"": "Closure;this_0",
+  call$2: function(key, value) {
+    var t1 = this.this_0;
+    t1.$indexSet(t1, key, value);
+  },
+  $is_args2: true
+},
+
 _LinkedIdentityHashMap: {"": "_LinkedHashMap;_collection$_length,_strings,_nums,_rest,_first,_last,_modifications",
   _computeHashCode$1: function(key) {
     return H.objectHashCode(key) & 0x3ffffff;
@@ -8299,26 +8457,26 @@ _LinkedCustomHashMap_closure: {"": "Closure;K_0",
 
 LinkedHashMapCell: {"": "Object;_key>,_collection$_value@,_next@,_previous@"},
 
-LinkedHashMapKeyIterable: {"": "IterableBase;_collection$_map",
+LinkedHashMapKeyIterable: {"": "IterableBase;_map",
   get$length: function(_) {
-    return this._collection$_map._collection$_length;
+    return this._map._collection$_length;
   },
   get$isEmpty: function(_) {
-    return this._collection$_map._collection$_length === 0;
+    return this._map._collection$_length === 0;
   },
   get$iterator: function(_) {
-    var t1 = this._collection$_map;
+    var t1 = this._map;
     t1 = new P.LinkedHashMapKeyIterator(t1, t1._modifications, null, null);
-    t1._cell = t1._collection$_map._first;
+    t1._cell = t1._map._first;
     return t1;
   },
   contains$1: function(_, element) {
-    var t1 = this._collection$_map;
+    var t1 = this._map;
     return t1.containsKey$1(t1, element);
   },
   forEach$1: function(_, f) {
     var t1, cell, modifications;
-    t1 = this._collection$_map;
+    t1 = this._map;
     cell = t1._first;
     modifications = t1._modifications;
     for (; cell != null;) {
@@ -8332,12 +8490,12 @@ LinkedHashMapKeyIterable: {"": "IterableBase;_collection$_map",
   $isEfficientLength: true
 },
 
-LinkedHashMapKeyIterator: {"": "Object;_collection$_map,_modifications,_cell,_collection$_current",
+LinkedHashMapKeyIterator: {"": "Object;_map,_modifications,_cell,_collection$_current",
   get$current: function() {
     return this._collection$_current;
   },
   moveNext$0: function() {
-    var t1 = this._collection$_map;
+    var t1 = this._map;
     if (this._modifications !== t1._modifications)
       throw H.wrapException(P.ConcurrentModificationError$(t1));
     else {
@@ -9637,12 +9795,12 @@ DateTime: {"": "Object;millisecondsSinceEpoch,isUtc",
   add$1: function(_, duration) {
     return P.DateTime$fromMillisecondsSinceEpoch(this.millisecondsSinceEpoch + duration.get$inMilliseconds(), this.isUtc);
   },
+  DateTime$_now$0: function() {
+    H.Primitives_lazyAsJsDate(this);
+  },
   DateTime$fromMillisecondsSinceEpoch$2$isUtc: function(millisecondsSinceEpoch, isUtc) {
     if (Math.abs(millisecondsSinceEpoch) > 8640000000000000)
       throw H.wrapException(new P.ArgumentError(millisecondsSinceEpoch));
-  },
-  DateTime$_now$0: function() {
-    H.Primitives_lazyAsJsDate(this);
   },
   $isDateTime: true,
   static: {
@@ -10152,7 +10310,7 @@ _wrapZone: function(callback) {
   return t1.bindUnaryCallback$2$runGuarded(callback, true);
 },
 
-HtmlElement: {"": "Element;", "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLCanvasElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLDivElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"},
+HtmlElement: {"": "Element;", "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLDivElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"},
 
 AnchorElement: {"": "HtmlElement;hostname=,href},port=,protocol=,target=,type%",
   toString$0: function(receiver) {
@@ -10178,6 +10336,13 @@ BodyElement: {"": "HtmlElement;",
 },
 
 ButtonElement: {"": "HtmlElement;name%,type%,value%", "%": "HTMLButtonElement"},
+
+CanvasElement: {"": "HtmlElement;height%,width%",
+  get$context2D: function(receiver) {
+    return receiver.getContext("2d");
+  },
+  "%": "HTMLCanvasElement"
+},
 
 CharacterData: {"": "Node;data=,length=", "%": "CDATASection|Comment|Text;CharacterData"},
 
@@ -10341,7 +10506,7 @@ Element: {"": "Node;className%,id=,style=",
   "%": ";Element"
 },
 
-EmbedElement: {"": "HtmlElement;name%,src},type%", "%": "HTMLEmbedElement"},
+EmbedElement: {"": "HtmlElement;height%,name%,src},type%,width%", "%": "HTMLEmbedElement"},
 
 ErrorEvent: {"": "Event;error=", "%": "ErrorEvent"},
 
@@ -10367,7 +10532,7 @@ EventTarget: {"": "Interceptor;",
     return receiver.removeEventListener(type, H.convertDartClosureToJS(listener, 1), useCapture);
   },
   $isEventTarget: true,
-  "%": "MediaStream;EventTarget"
+  "%": ";EventTarget"
 },
 
 FieldSetElement: {"": "HtmlElement;name%,type=", "%": "HTMLFieldSetElement"},
@@ -10425,11 +10590,11 @@ HttpRequestEventTarget: {"": "EventTarget;",
   "%": ";XMLHttpRequestEventTarget"
 },
 
-IFrameElement: {"": "HtmlElement;name%,src}", "%": "HTMLIFrameElement"},
+IFrameElement: {"": "HtmlElement;height%,name%,src},width%", "%": "HTMLIFrameElement"},
 
-ImageElement: {"": "HtmlElement;src}", "%": "HTMLImageElement"},
+ImageElement: {"": "HtmlElement;height%,src},width%", "%": "HTMLImageElement"},
 
-InputElement: {"": "HtmlElement;checked%,name%,src},type%,value%", $isInputElement: true, $isElement: true, $isNode: true, $isEventTarget: true, $isRadioButtonInputElement: true, $isCheckboxInputElement: true, $isTextInputElement: true, "%": "HTMLInputElement"},
+InputElement: {"": "HtmlElement;checked%,height%,name%,src},type%,value%,width%", $isInputElement: true, $isElement: true, $isNode: true, $isEventTarget: true, $isRadioButtonInputElement: true, $isCheckboxInputElement: true, $isTextInputElement: true, "%": "HTMLInputElement"},
 
 KeyboardEvent: {"": "UIEvent;",
   get$keyCode: function(receiver) {
@@ -10480,8 +10645,10 @@ MediaElement: {"": "HtmlElement;error=,loop},src},volume}",
   get$onPlay: function(receiver) {
     return C.EventStreamProvider_play.forElement$1(receiver);
   },
-  "%": "HTMLAudioElement|HTMLMediaElement|HTMLVideoElement"
+  "%": "HTMLAudioElement;HTMLMediaElement"
 },
+
+MediaStream: {"": "EventTarget;id=", "%": "MediaStream"},
 
 MessageEvent: {"": "Event;",
   get$data: function(receiver) {
@@ -10507,7 +10674,7 @@ MidiOutput: {"": "MidiPort;",
   "%": "MIDIOutput"
 },
 
-MidiPort: {"": "EventTarget;type=", "%": "MIDIInput;MIDIPort"},
+MidiPort: {"": "EventTarget;id=,type=", "%": "MIDIInput;MIDIPort"},
 
 MouseEvent: {"": "UIEvent;button=,_clientX:clientX=",
   get$client: function(receiver) {
@@ -10599,7 +10766,7 @@ NodeList: {"": "Interceptor_ListMixin_ImmutableListMixin0;",
 
 OListElement: {"": "HtmlElement;type%", "%": "HTMLOListElement"},
 
-ObjectElement: {"": "HtmlElement;data=,name%,type%", "%": "HTMLObjectElement"},
+ObjectElement: {"": "HtmlElement;data=,height%,name%,type%,width%", "%": "HTMLObjectElement"},
 
 OptionElement: {"": "HtmlElement;value%", "%": "HTMLOptionElement"},
 
@@ -10825,6 +10992,8 @@ UIEvent: {"": "Event;",
   },
   "%": "FocusEvent|SVGZoomEvent;UIEvent"
 },
+
+VideoElement: {"": "MediaElement;height%,width%", "%": "HTMLVideoElement"},
 
 WebSocket: {"": "EventTarget;",
   send$1: function(receiver, data) {
@@ -11076,6 +11245,9 @@ CssStyleDeclarationBase: {"": "Object;",
   set$display: function(receiver, value) {
     this.setProperty$3(receiver, "display", value, "");
   },
+  get$height: function(receiver) {
+    return this.getPropertyValue$1(receiver, "height");
+  },
   set$left: function(receiver, value) {
     this.setProperty$3(receiver, "left", value, "");
   },
@@ -11096,6 +11268,12 @@ CssStyleDeclarationBase: {"": "Object;",
   },
   set$transform: function(receiver, value) {
     this.setProperty$3(receiver, P.Device_cssPrefix() + "transform", value, "");
+  },
+  get$width: function(receiver) {
+    return this.getPropertyValue$1(receiver, "width");
+  },
+  set$width: function(receiver, value) {
+    this.setProperty$3(receiver, "width", value, "");
   },
   get$zIndex: function(receiver) {
     return this.getPropertyValue$1(receiver, "z-index");
@@ -11545,11 +11723,11 @@ _ElementListEventStreamImpl: {"": "Stream;_targetList,_useCapture,_eventType",
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_BroadcastStreamController", 0)]);
     return t2.listen$4$cancelOnError$onDone$onError(onData, cancelOnError, onDone, onError);
   },
-  listen$1: function(onData) {
-    return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
-  },
   listen$3$onDone$onError: function(onData, onDone, onError) {
     return this.listen$4$cancelOnError$onDone$onError(onData, null, onDone, onError);
+  },
+  listen$1: function(onData) {
+    return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
   },
   $asStream: null,
   $isStream: true
@@ -12113,55 +12291,55 @@ _ValidatingTreeSanitizer_sanitizeTree_walk: {"": "Closure;this_0",
 ["dart.dom.svg", "dart:svg", , P, {
 AElement: {"": "GraphicsElement;target=", "%": "SVGAElement"},
 
-FEBlendElement: {"": "SvgElement;x=,y=", "%": "SVGFEBlendElement"},
+FEBlendElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEBlendElement"},
 
-FEColorMatrixElement: {"": "SvgElement;type=,x=,y=", "%": "SVGFEColorMatrixElement"},
+FEColorMatrixElement: {"": "SvgElement;type=,values=,height=,width=,x=,y=", "%": "SVGFEColorMatrixElement"},
 
-FEComponentTransferElement: {"": "SvgElement;x=,y=", "%": "SVGFEComponentTransferElement"},
+FEComponentTransferElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEComponentTransferElement"},
 
-FECompositeElement: {"": "SvgElement;x=,y=", "%": "SVGFECompositeElement"},
+FECompositeElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFECompositeElement"},
 
-FEConvolveMatrixElement: {"": "SvgElement;x=,y=", "%": "SVGFEConvolveMatrixElement"},
+FEConvolveMatrixElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEConvolveMatrixElement"},
 
-FEDiffuseLightingElement: {"": "SvgElement;x=,y=", "%": "SVGFEDiffuseLightingElement"},
+FEDiffuseLightingElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEDiffuseLightingElement"},
 
-FEDisplacementMapElement: {"": "SvgElement;x=,y=", "%": "SVGFEDisplacementMapElement"},
+FEDisplacementMapElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEDisplacementMapElement"},
 
-FEFloodElement: {"": "SvgElement;x=,y=", "%": "SVGFEFloodElement"},
+FEFloodElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEFloodElement"},
 
-FEGaussianBlurElement: {"": "SvgElement;x=,y=", "%": "SVGFEGaussianBlurElement"},
+FEGaussianBlurElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEGaussianBlurElement"},
 
-FEImageElement: {"": "SvgElement;x=,y=", "%": "SVGFEImageElement"},
+FEImageElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEImageElement"},
 
-FEMergeElement: {"": "SvgElement;x=,y=", "%": "SVGFEMergeElement"},
+FEMergeElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEMergeElement"},
 
-FEMorphologyElement: {"": "SvgElement;x=,y=", "%": "SVGFEMorphologyElement"},
+FEMorphologyElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEMorphologyElement"},
 
-FEOffsetElement: {"": "SvgElement;x=,y=", "%": "SVGFEOffsetElement"},
+FEOffsetElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFEOffsetElement"},
 
 FEPointLightElement: {"": "SvgElement;x=,y=", "%": "SVGFEPointLightElement"},
 
-FESpecularLightingElement: {"": "SvgElement;x=,y=", "%": "SVGFESpecularLightingElement"},
+FESpecularLightingElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFESpecularLightingElement"},
 
 FESpotLightElement: {"": "SvgElement;x=,y=", "%": "SVGFESpotLightElement"},
 
-FETileElement: {"": "SvgElement;x=,y=", "%": "SVGFETileElement"},
+FETileElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFETileElement"},
 
-FETurbulenceElement: {"": "SvgElement;type=,x=,y=", "%": "SVGFETurbulenceElement"},
+FETurbulenceElement: {"": "SvgElement;type=,height=,width=,x=,y=", "%": "SVGFETurbulenceElement"},
 
-FilterElement: {"": "SvgElement;x=,y=", "%": "SVGFilterElement"},
+FilterElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGFilterElement"},
 
-ForeignObjectElement: {"": "GraphicsElement;x=,y=", "%": "SVGForeignObjectElement"},
+ForeignObjectElement: {"": "GraphicsElement;height=,width=,x=,y=", "%": "SVGForeignObjectElement"},
 
 GraphicsElement: {"": "SvgElement;", "%": "SVGCircleElement|SVGClipPathElement|SVGDefsElement|SVGEllipseElement|SVGGElement|SVGLineElement|SVGPathElement|SVGPolygonElement|SVGPolylineElement|SVGSwitchElement;SVGGraphicsElement"},
 
-ImageElement0: {"": "GraphicsElement;x=,y=", "%": "SVGImageElement"},
+ImageElement0: {"": "GraphicsElement;height=,width=,x=,y=", "%": "SVGImageElement"},
 
-MaskElement: {"": "SvgElement;x=,y=", "%": "SVGMaskElement"},
+MaskElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGMaskElement"},
 
-PatternElement: {"": "SvgElement;x=,y=", "%": "SVGPatternElement"},
+PatternElement: {"": "SvgElement;height=,width=,x=,y=", "%": "SVGPatternElement"},
 
-RectElement: {"": "GraphicsElement;x=,y=", "%": "SVGRectElement"},
+RectElement: {"": "GraphicsElement;height=,width=,x=,y=", "%": "SVGRectElement"},
 
 ScriptElement: {"": "SvgElement;type%", $isScriptElement: true, "%": "SVGScriptElement"},
 
@@ -12218,13 +12396,13 @@ SvgElement: {"": "Element;",
   "%": "SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGAnimationElement|SVGComponentTransferFunctionElement|SVGCursorElement|SVGDescElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement|SVGFEMergeNodeElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGHKernElement|SVGLinearGradientElement|SVGMPathElement|SVGMarkerElement|SVGMetadataElement|SVGMissingGlyphElement|SVGRadialGradientElement|SVGSetElement|SVGStopElement|SVGSymbolElement|SVGTitleElement|SVGVKernElement|SVGViewElement;SVGElement"
 },
 
-SvgSvgElement: {"": "GraphicsElement;x=,y=", "%": "SVGSVGElement"},
+SvgSvgElement: {"": "GraphicsElement;height=,width=,x=,y=", "%": "SVGSVGElement"},
 
 TextContentElement: {"": "GraphicsElement;", "%": "SVGTextPathElement;SVGTextContentElement"},
 
 TextPositioningElement: {"": "TextContentElement;x=,y=", "%": "SVGAltGlyphElement|SVGTSpanElement|SVGTextElement|SVGTextPositioningElement"},
 
-UseElement: {"": "GraphicsElement;x=,y=", "%": "SVGUseElement"},
+UseElement: {"": "GraphicsElement;height=,width=,x=,y=", "%": "SVGUseElement"},
 
 _AttributeClassSet: {"": "CssClassSetImpl;_svg$_element",
   readClasses$0: function() {
@@ -12373,12 +12551,8 @@ _RectangleBase: {"": "Object;",
     t1 = J.getInterceptor$x(other);
     if (typeof other !== "object" || other === null || !t1.$isRectangle)
       return false;
-    t2 = this.get$left(this);
-    t3 = t1.get$left(other);
-    if (t2 == null ? t3 == null : t2 === t3) {
-      t2 = this.top;
-      t3 = t1.get$top(other);
-      if (t2 == null ? t3 == null : t2 === t3) {
+    if (J.$eq(this.get$left(this), t1.get$left(other)))
+      if (J.$eq(this.top, t1.get$top(other))) {
         t2 = this.width;
         t3 = t1.get$width(other);
         if (t2 == null ? t3 == null : t2 === t3) {
@@ -12389,7 +12563,7 @@ _RectangleBase: {"": "Object;",
           t1 = false;
       } else
         t1 = false;
-    } else
+    else
       t1 = false;
     return t1;
   },
@@ -12763,6 +12937,18 @@ GameLoopGamepad: {"": "Object;gameLoop,buttons,sticks", static: {
 },
 
 GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_previousFrameTime,_frameTime,_resizePending,_nextResize,maxAccumulatedTime,_accumulatedTime,_gameTime,_renderInterpolationFactor,resizeLimit,_pointerLock,_keyboard,_mouse,_gamepad0,_lastMousePos,_touchSet,_rafId,_touchEvents,_keyboardEvents,_mouseEvents,onRender,onResize,onFullscreenChange,onPointerLockChange,onTouchStart,onTouchEnd,onKeyDown,updateTimeStep,game_loop_common$GameLoop$maxAccumulatedTime,_timers,onUpdate",
+  get$width: function(_) {
+    var t1 = this.element;
+    t1 = new P.Rectangle(t1.clientLeft, t1.clientTop, t1.clientWidth, t1.clientHeight);
+    t1.$builtinTypeInfo = [null];
+    return t1.width;
+  },
+  get$height: function(_) {
+    var t1 = this.element;
+    t1 = new P.Rectangle(t1.clientLeft, t1.clientTop, t1.clientWidth, t1.clientHeight);
+    t1.$builtinTypeInfo = [null];
+    return t1.height;
+  },
   _processKeyboardEvents$0: function() {
     var t1, t2, keyboardEvent, t3, t4, t5, buttonId;
     for (t1 = this._keyboardEvents, t2 = new H.ListIterator(t1, t1.length, 0, null); t2.moveNext$0();) {
@@ -12779,32 +12965,14 @@ GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_prev
     C.JSArray_methods.set$length(t1, 0);
   },
   _processMouseEvents$0: function() {
-    var docElem, t1, box, t2, t3, t4, t5, canvasX, canvasY, mouseEvent, t6, t7, t8, time, mouseX, mouseY, x, y, clampX, withinCanvas, clampY, dx, dy, buttonId;
+    var docElem, t1, box, t2, canvasX, canvasY, t3, mouseEvent, t4, t5, t6, t7, t8, time, mouseX, mouseY, x, y, clampX, withinCanvas, clampY, dx, dy, buttonId;
     this._mouse._resetAccumulators$0();
     docElem = document.documentElement;
     t1 = this.element;
     box = t1.getBoundingClientRect();
     t2 = J.getInterceptor$x(box);
-    t3 = t2.get$left(box);
-    t4 = window.pageXOffset;
-    if (typeof t3 !== "number")
-      throw t3.$add();
-    if (typeof t4 !== "number")
-      throw H.iae(t4);
-    t5 = docElem.clientLeft;
-    if (typeof t5 !== "number")
-      throw H.iae(t5);
-    canvasX = C.JSNumber_methods.toInt$0(Math.floor(t3 + t4 - t5));
-    t2 = t2.get$top(box);
-    t5 = window.pageYOffset;
-    if (typeof t2 !== "number")
-      throw t2.$add();
-    if (typeof t5 !== "number")
-      throw H.iae(t5);
-    t4 = docElem.clientTop;
-    if (typeof t4 !== "number")
-      throw H.iae(t4);
-    canvasY = C.JSNumber_methods.toInt$0(Math.floor(t2 + t5 - t4));
+    canvasX = J.floor$0$n(J.$sub$n(J.$add$ns(t2.get$left(box), window.pageXOffset), docElem.clientLeft));
+    canvasY = J.floor$0$n(J.$sub$n(J.$add$ns(t2.get$top(box), window.pageYOffset), docElem.clientTop));
     for (t2 = this._mouseEvents, t3 = new H.ListIterator(t2, t2.length, 0, null); t3.moveNext$0();) {
       mouseEvent = t3._dev$_current;
       t4 = J.getInterceptor$x(mouseEvent);
@@ -12934,7 +13102,7 @@ GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_prev
           this._touchSet._move$1(touchEvent.get$event());
           break;
         default:
-          throw H.wrapException(P.StateError$("Invalid _GameLoopTouchEven type."));
+          throw H.wrapException(new P.StateError("Invalid _GameLoopTouchEven type."));
       }
     }
     C.JSArray_methods.set$length(t1, 0);
@@ -13257,7 +13425,7 @@ _GameLoopTouchEvent: {"": "Object;event<,type>", $is_GameLoopTouchEvent: true, s
 
 GameLoopTouchPosition: {"": "Object;x>,y>,dx,dy,time,frame", $isGameLoopTouchPosition: true},
 
-GameLoopTouch: {"": "Object;id,positions<", $isGameLoopTouch: true},
+GameLoopTouch: {"": "Object;id>,positions<", $isGameLoopTouch: true},
 
 GameLoopTouchSet: {"": "Object;activeTouches,gameLoop",
   _addPosition$2: function(glTouch, touch) {
@@ -14462,98 +14630,70 @@ _StringIterator: {"": "Object;input,index",
   }
 }}],
 ["loadie", "package:loadie/loadie.dart", , E, {
-Batch: {"": "Object;assets,_toLoad,_percentDone",
+Batch: {"": "Object;_toLoad,_percentDone",
   load$1: function(_, callback) {
-    var t1, c, t2, percentEach, toLoad;
-    t1 = null;
-    c = new P._AsyncCompleter(P._Future$(t1));
-    H.setRuntimeTypeInfo(c, [t1]);
+    var t1, t2, percentEach, futures, $arguments, t3, t4, result;
     t1 = this._toLoad;
     t2 = t1.length;
-    percentEach = C.JSInt_methods.$tdiv(100, t2);
-    toLoad = [];
-    for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();)
-      toLoad.push(J.load$0$x(t1._dev$_current));
-    P.Future_forEach(toLoad, new E.Batch_load_closure(this, callback, percentEach)).then$1(new E.Batch_load_closure0(c));
-    return c.future;
+    percentEach = 100 / t2;
+    futures = [];
+    for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();) {
+      t2 = J.load$0$x(t1._dev$_current);
+      t2.toString;
+      $arguments = H.substitute(t2.$as_Future, H.getRuntimeTypeInfo(t2));
+      t3 = $arguments == null ? null : $arguments[0];
+      t4 = $.Zone__current;
+      t4.toString;
+      result = new P._Future(0, t4, null, null, null, null, null, new E.Batch_load_closure(this, callback, percentEach));
+      result.$builtinTypeInfo = [t3];
+      t2._addListener$1(result);
+      futures.push(result);
+    }
+    return P.Future_wait(futures);
   }
 },
 
 Batch_load_closure: {"": "Closure;this_0,callback_1,percentEach_2",
-  call$1: function(futureAsset) {
-    futureAsset.then$1(new E.Batch_load__closure(this.this_0, this.callback_1, this.percentEach_2));
+  call$0: function() {
+    var t1 = this.this_0;
+    t1._percentDone = t1._percentDone + this.percentEach_2;
+    this.callback_1.call$1(C.JSNumber_methods.toInt$0(Math.floor(t1._percentDone)));
   },
-  $is_args1: true
+  $is_void_: true
 },
 
-Batch_load__closure: {"": "Closure;this_3,callback_4,percentEach_5",
-  call$1: function(newAsset) {
-    var t1, t2, t3, filename, result;
-    t1 = this.this_3;
-    t1._percentDone = t1._percentDone + this.percentEach_5;
-    this.callback_4.call$1(t1._percentDone);
-    t2 = newAsset.get$_uri().split("/");
-    t3 = newAsset._uri.split("/").length - 1;
-    if (t3 < 0 || t3 >= t2.length)
-      throw H.ioore(t2, t3);
-    t3 = J.split$1$s(t2[t3], ".");
-    if (0 >= t3.length)
-      throw H.ioore(t3, 0);
-    filename = t3[0];
-    t1 = t1.assets;
-    if (t1.containsKey$1(t1, filename))
-      throw H.wrapException("Filename already in use!");
-    else {
-      if (!newAsset.loaded) {
-        H.throwExpression("Asset not yet loaded!");
-        result = null;
-      } else
-        result = newAsset._asset;
-      t1.$indexSet(t1, filename, result);
-    }
-  },
-  $is_args1: true
-},
-
-Batch_load_closure0: {"": "Closure;c_6",
-  call$1: function(_) {
-    var t1 = this.c_6.future;
-    if (t1._state !== 0)
-      H.throwExpression(P.StateError$("Future already completed"));
-    t1._asyncComplete$1(null);
-    return;
-  },
-  $is_args1: true
-},
-
-Asset: {"": "Object;_asset,loaded,_uri<",
+Asset: {"": "Object;_asset,loaded,_uri,name",
   load$0: function(_) {
-    var t1, c, ext, t2, t3, audio, $arguments, result;
-    P.print(C.JSString_methods.$add("Started:", this._uri));
-    t1 = null;
-    c = new P._AsyncCompleter(P._Future$(t1));
-    H.setRuntimeTypeInfo(c, [t1]);
+    var t1, t2, c, loading, ext, audio, $arguments, t3, result;
+    t1 = J.split$1$s(this._uri, "/");
+    t2 = J.split$1$s(this._uri, "/").length - 1;
+    if (t2 < 0 || t2 >= t1.length)
+      throw H.ioore(t1, t2);
+    t2 = J.split$1$s(t1[t2], ".");
+    if (0 >= t2.length)
+      throw H.ioore(t2, 0);
+    this.name = t2[0];
+    t2 = null;
+    c = new P._AsyncCompleter(P._Future$(t2));
+    H.setRuntimeTypeInfo(c, [t2]);
     if (!this.loaded) {
-      for (t1 = new H.ListIterator($.get$imageExtensions(), 6, 0, null); t1.moveNext$0();) {
+      for (t1 = new H.ListIterator($.get$imageExtensions(), 6, 0, null), loading = false; t1.moveNext$0();) {
         ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           t2 = W.ImageElement_ImageElement(null, null, null);
-          t3 = J.getInterceptor$x(t2);
-          t3.set$src(t2, this._uri);
-          t3 = t3.get$classes(t2);
-          t3.add$1(t3, "!-autogenerated-!");
+          J.set$src$x(t2, this._uri);
           this._asset = t2;
           J.get$onLoad$x(this._asset).listen$1(new E.Asset_load_closure(this, c));
+          loading = true;
         }
       }
-      for (t1 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); t1.moveNext$0();) {
+      if (loading)
+        return c.future;
+      for (t1 = new H.ListIterator($.get$audioExtensions(), 2, 0, null), loading = false; t1.moveNext$0();) {
         ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           audio = W.AudioElement_AudioElement(null);
           audio.src = this._uri;
-          t2 = new W._ElementCssClassSet(audio);
-          t2.add$1(t2, "!-autogenerated-!");
-          document.body.appendChild(audio);
           t2 = C.EventStreamProvider_canplay.forElement$1(audio);
           $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
           t3 = $arguments == null ? null : $arguments[0];
@@ -14562,9 +14702,12 @@ Asset: {"": "Object;_asset,loaded,_uri<",
           t3 = t2._onData;
           if (t3 != null && t2._pauseCount <= 0)
             J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
+          loading = true;
         }
       }
-      for (t1 = new H.ListIterator($.get$textExtensions(), 1, 0, null); t1.moveNext$0();) {
+      if (loading)
+        return c.future;
+      for (t1 = new H.ListIterator($.get$textExtensions(), 1, 0, null), loading = false; t1.moveNext$0();) {
         ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           t2 = W.HttpRequest_getString(this._uri, null, null);
@@ -14573,9 +14716,12 @@ Asset: {"": "Object;_asset,loaded,_uri<",
           result = new P._Future(0, t3, null, null, new E.Asset_load_closure1(this, c), null, P._registerErrorHandler(null, t3), null);
           result.$builtinTypeInfo = [null];
           t2._addListener$1(result);
+          loading = true;
         }
       }
-      for (t1 = $.get$jsonExtensions(), t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
+      if (loading)
+        return c.future;
+      for (t1 = $.get$jsonExtensions(), t1 = new H.ListIterator(t1, t1.length, 0, null), loading = false; t1.moveNext$0();) {
         ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           t2 = W.HttpRequest_getString(this._uri, null, null);
@@ -14584,9 +14730,13 @@ Asset: {"": "Object;_asset,loaded,_uri<",
           result = new P._Future(0, t3, null, null, new E.Asset_load_closure2(this, c), null, P._registerErrorHandler(null, t3), null);
           result.$builtinTypeInfo = [null];
           t2._addListener$1(result);
+          loading = true;
         }
       }
-      return c.future;
+      if (loading)
+        return c.future;
+      else
+        throw H.wrapException("nothing is being loaded!");
     }
   },
   get$0: function() {
@@ -14600,13 +14750,14 @@ Asset: {"": "Object;_asset,loaded,_uri<",
 Asset_load_closure: {"": "Closure;this_0,c_1",
   call$1: function(_) {
     var t1, t2;
-    t1 = this.this_0;
-    P.print(C.JSString_methods.$add("Finished:", t1._uri));
-    t1.loaded = true;
-    t2 = this.c_1.future;
-    if (t2._state !== 0)
+    t1 = $.get$ASSET();
+    t2 = this.this_0;
+    t1.$indexSet(t1, t2.name, t2);
+    t2.loaded = true;
+    t1 = this.c_1.future;
+    if (t1._state !== 0)
       H.throwExpression(new P.StateError("Future already completed"));
-    t2._asyncComplete$1(t1);
+    t1._asyncComplete$1(t2);
   },
   $is_args1: true
 },
@@ -14614,14 +14765,15 @@ Asset_load_closure: {"": "Closure;this_0,c_1",
 Asset_load_closure0: {"": "Closure;this_2,c_3,audio_4",
   call$1: function(_) {
     var t1, t2;
-    t1 = this.this_2;
-    P.print(C.JSString_methods.$add("Finished:", t1._uri));
-    t1._asset = this.audio_4;
-    t1.loaded = true;
-    t2 = this.c_3.future;
-    if (t2._state !== 0)
+    t1 = $.get$ASSET();
+    t2 = this.this_2;
+    t1.$indexSet(t1, t2.name, t2);
+    t2._asset = this.audio_4;
+    t2.loaded = true;
+    t1 = this.c_3.future;
+    if (t1._state !== 0)
       H.throwExpression(new P.StateError("Future already completed"));
-    t2._asyncComplete$1(t1);
+    t1._asyncComplete$1(t2);
   },
   $is_args1: true
 },
@@ -14632,7 +14784,8 @@ Asset_load_closure1: {"": "Closure;this_5,c_6",
     t1 = this.this_5;
     t1._asset = string;
     t1.loaded = true;
-    P.print(C.JSString_methods.$add("Finished:", t1._uri));
+    t2 = $.get$ASSET();
+    t2.$indexSet(t2, t1.name, t1);
     t2 = this.c_6.future;
     if (t2._state !== 0)
       H.throwExpression(new P.StateError("Future already completed"));
@@ -14644,14 +14797,15 @@ Asset_load_closure1: {"": "Closure;this_5,c_6",
 Asset_load_closure2: {"": "Closure;this_7,c_8",
   call$1: function(string) {
     var t1, t2;
-    t1 = this.this_7;
-    P.print(C.JSString_methods.$add("Finished:", t1._uri));
-    t1._asset = C.C_JsonCodec.decode$1(string);
-    t1.loaded = true;
-    t2 = this.c_8.future;
-    if (t2._state !== 0)
+    t1 = $.get$ASSET();
+    t2 = this.this_7;
+    t1.$indexSet(t1, t2.name, t2);
+    t2._asset = C.C_JsonCodec.decode$1(string);
+    t2.loaded = true;
+    t1 = this.c_8.future;
+    if (t1._state !== 0)
       H.throwExpression(new P.StateError("Future already completed"));
-    t2._asyncComplete$1(t1);
+    t1._asyncComplete$1(t2);
   },
   $is_args1: true
 }}],
@@ -14765,6 +14919,7 @@ init.globalFunctions.setName$closure = B.setName$closure = new H.Closure$1(B.set
 init.globalFunctions.setSong$closure = B.setSong$closure = new H.Closure$1(B.setSong, "setSong$closure");
 init.globalFunctions.setVolume$closure = B.setVolume$closure = new H.Closure$1(B.setVolume, "setVolume$closure");
 init.globalFunctions.main$closure = B.main$closure = new H.Closure$0(B.main, "main$closure");
+init.globalFunctions.setStreetLoadBar$closure = B.setStreetLoadBar$closure = new H.Closure$1(B.setStreetLoadBar, "setStreetLoadBar$closure");
 init.globalFunctions._asyncRunCallback$closure = P._asyncRunCallback$closure = new H.Closure$0(P._asyncRunCallback, "_asyncRunCallback$closure");
 init.globalFunctions._nullDataHandler$closure = P._nullDataHandler$closure = new H.Closure$1(P._nullDataHandler, "_nullDataHandler$closure");
 init.globalFunctions._nullErrorHandler$closure = P._nullErrorHandler$closure = new P.Closure$21(P._nullErrorHandler, "_nullErrorHandler$closure");
@@ -14784,15 +14939,15 @@ init.globalFunctions.NumberFormat_localeExists$closure = T.NumberFormat_localeEx
 W.Node.$isNode = true;
 W.Node.$isEventTarget = true;
 W.Node.$isObject = true;
+W.Touch.$isTouch = true;
+W.Touch.$isObject = true;
 J.JSInt.$isint = true;
 J.JSInt.$isnum = true;
 J.JSInt.$isObject = true;
-W.Touch.$isTouch = true;
-W.Touch.$isObject = true;
-J.JSString.$isString = true;
-J.JSString.$isObject = true;
 J.JSDouble.$isnum = true;
 J.JSDouble.$isObject = true;
+J.JSString.$isString = true;
+J.JSString.$isObject = true;
 J.JSNumber.$isnum = true;
 J.JSNumber.$isObject = true;
 P.Duration.$isDuration = true;
@@ -14815,27 +14970,23 @@ W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
 W.Event.$isEvent = true;
 W.Event.$isObject = true;
-W.TouchEvent.$isTouchEvent = true;
-W.TouchEvent.$isEvent = true;
-W.TouchEvent.$isObject = true;
-W.KeyboardEvent.$isKeyboardEvent = true;
-W.KeyboardEvent.$isEvent = true;
-W.KeyboardEvent.$isObject = true;
 W.MouseEvent.$isMouseEvent = true;
 W.MouseEvent.$isEvent = true;
 W.MouseEvent.$isObject = true;
-W.WheelEvent.$isMouseEvent = true;
-W.WheelEvent.$isEvent = true;
-W.WheelEvent.$isObject = true;
-G._GameLoopTouchEvent.$isObject = true;
-B.GameLoopTimer.$isObject = true;
-B.DigitalButton.$isObject = true;
-G.GameLoopTouch.$isObject = true;
-G.GameLoopTouchPosition.$isObject = true;
+W.KeyboardEvent.$isKeyboardEvent = true;
+W.KeyboardEvent.$isEvent = true;
+W.KeyboardEvent.$isObject = true;
+W.TouchEvent.$isTouchEvent = true;
+W.TouchEvent.$isEvent = true;
+W.TouchEvent.$isObject = true;
 P.Stream.$isStream = true;
 P.Stream.$isObject = true;
 P.StreamSubscription.$isStreamSubscription = true;
 P.StreamSubscription.$isObject = true;
+G._GameLoopTouchEvent.$isObject = true;
+B.GameLoopTimer.$isObject = true;
+B.DigitalButton.$isObject = true;
+G.GameLoopTouch.$isObject = true;
 W.MessageEvent.$isMessageEvent = true;
 W.MessageEvent.$isEvent = true;
 W.MessageEvent.$isObject = true;
@@ -14843,6 +14994,10 @@ W.CloseEvent.$isEvent = true;
 W.CloseEvent.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
+W.WheelEvent.$isMouseEvent = true;
+W.WheelEvent.$isEvent = true;
+W.WheelEvent.$isObject = true;
+G.GameLoopTouchPosition.$isObject = true;
 P.ReceivePort.$isStream = true;
 P.ReceivePort.$asStream = [null];
 P.ReceivePort.$isObject = true;
@@ -14850,8 +15005,6 @@ H._IsolateEvent.$isObject = true;
 H._IsolateContext.$isObject = true;
 E.Asset.$isAsset = true;
 E.Asset.$isObject = true;
-P.Future.$isFuture = true;
-P.Future.$isObject = true;
 P.Symbol.$isSymbol = true;
 P.Symbol.$isObject = true;
 P.StackTrace.$isStackTrace = true;
@@ -14874,10 +15027,12 @@ W._Html5NodeValidator.$isNodeValidator = true;
 W._Html5NodeValidator.$isObject = true;
 W.EventTarget.$isEventTarget = true;
 W.EventTarget.$isObject = true;
-P._EventSink.$is_EventSink = true;
-P._EventSink.$isObject = true;
+P.Future.$isFuture = true;
+P.Future.$isObject = true;
 P._DelayedEvent.$is_DelayedEvent = true;
 P._DelayedEvent.$isObject = true;
+P._EventSink.$is_EventSink = true;
+P._EventSink.$isObject = true;
 P.DateTime.$isDateTime = true;
 P.DateTime.$isObject = true;
 // getInterceptor methods
@@ -15335,6 +15490,9 @@ J.elementAt$1$ax = function(receiver, a0) {
 J.endsWith$1$s = function(receiver, a0) {
   return J.getInterceptor$s(receiver).endsWith$1(receiver, a0);
 };
+J.floor$0$n = function(receiver) {
+  return J.getInterceptor$n(receiver).floor$0(receiver);
+};
 J.forEach$1$ax = function(receiver, a0) {
   return J.getInterceptor$ax(receiver).forEach$1(receiver, a0);
 };
@@ -15536,6 +15694,12 @@ J.set$opacity$x = function(receiver, value) {
 J.set$paddingRight$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$paddingRight(receiver, value);
 };
+J.set$position$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$position(receiver, value);
+};
+J.set$src$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$src(receiver, value);
+};
 J.set$top$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$top(receiver, value);
 };
@@ -15547,6 +15711,9 @@ J.set$type$x = function(receiver, value) {
 };
 J.set$volume$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$volume(receiver, value);
+};
+J.set$width$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$width(receiver, value);
 };
 J.set$zIndex$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$zIndex(receiver, value);
@@ -15670,6 +15837,14 @@ Isolate.$lazy($, "ui", "ui", "get$ui", function() {
 Isolate.$lazy($, "chat", "chat", "get$chat", function() {
   return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
 });
+Isolate.$lazy($, "camera", "camera", "get$camera", function() {
+  var t1 = new B.Camera(500, 500, 0);
+  $.get$COMMANDS().push(["camera", "sets the cameras position \"camera x,y\"", t1.get$setCamera()]);
+  return t1;
+});
+Isolate.$lazy($, "gameScreen", "gameScreen", "get$gameScreen", function() {
+  return document.querySelector("#GameScreen");
+});
 Isolate.$lazy($, "localStorage", "localStorage", "get$localStorage", function() {
   return window.localStorage;
 });
@@ -15716,6 +15891,9 @@ Isolate.$lazy($, "Months", "Months", "get$Months", function() {
 });
 Isolate.$lazy($, "Days_of_Week", "Days_of_Week", "get$Days_of_Week", function() {
   return ["Hairday", "Moonday", "Twoday", "Weddingday", "Theday", "Fryday", "Standday", "Fabday"];
+});
+Isolate.$lazy($, "ASSET", "ASSET", "get$ASSET", function() {
+  return H.fillLiteralMap([], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null));
 });
 Isolate.$lazy($, "textExtensions", "textExtensions", "get$textExtensions", function() {
   return ["txt"];
