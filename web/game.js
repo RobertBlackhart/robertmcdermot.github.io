@@ -3660,7 +3660,7 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
         map.$indexSet(map, "message", input);
         map.$indexSet(map, "channel", t1);
         if (t1 === "Local Chat")
-          map.$indexSet(map, "street", "Groddle Forest Junction");
+          map.$indexSet(map, "street", $.currentStreet.label);
         this._addmessage$1(map);
       }
     }
@@ -3953,7 +3953,7 @@ TabContent_setupWebSocket_closure: {"": "Closure;this_1,channelName_2",
     t1 = this.channelName_2;
     map.$indexSet(map, "channel", t1);
     if (t1 === "Local Chat")
-      map.$indexSet(map, "street", "Groddle Forest Junction");
+      map.$indexSet(map, "street", $.currentStreet.label);
     t2 = this.this_1;
     t2.webSocket.send(C.C_JsonCodec.encode$1(map));
     map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
@@ -4006,7 +4006,7 @@ TabContent_setupWebSocket_closure0: {"": "Closure;this_3,channelName_4",
     else if (J.$eq(t2.$index(map, "channel"), "Local Chat") && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
       if (t2.$index(map, "statusMessage") != null)
         this.this_3._addmessage$1(map);
-      else if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "street"), "Groddle Forest Junction"))
+      else if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "street"), $.currentStreet.label))
         this.this_3._addmessage$1(map);
     } else {
       t1 = this.channelName_4;
