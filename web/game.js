@@ -4970,18 +4970,10 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           audio = W.AudioElement_AudioElement(null);
           audio.src = this._uri;
-          t2 = C.EventStreamProvider_error0.forElement$1(audio);
-          $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
-          t3 = $arguments == null ? null : $arguments[0];
-          t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Asset_load_closure0(c)), t2._useCapture);
-          t2.$builtinTypeInfo = [t3];
-          t3 = t2._onData;
-          if (t3 != null && t2._pauseCount <= 0)
-            J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
           t2 = C.EventStreamProvider_canplay.forElement$1(audio);
           $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
           t3 = $arguments == null ? null : $arguments[0];
-          t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Asset_load_closure1(this, c, audio)), t2._useCapture);
+          t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Asset_load_closure0(this, c, audio)), t2._useCapture);
           t2.$builtinTypeInfo = [t3];
           t3 = t2._onData;
           if (t3 != null && t2._pauseCount <= 0)
@@ -4997,7 +4989,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
           t2 = W.HttpRequest_getString(this._uri, null, null);
           t3 = $.Zone__current;
           t3.toString;
-          result = new P._Future(0, t3, null, null, new B.Asset_load_closure2(this, c), null, P._registerErrorHandler(null, t3), null);
+          result = new P._Future(0, t3, null, null, new B.Asset_load_closure1(this, c), null, P._registerErrorHandler(null, t3), null);
           result.$builtinTypeInfo = [null];
           t2._addListener$1(result);
           loading = true;
@@ -5011,7 +5003,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
           t2 = W.HttpRequest_getString(this._uri, null, null);
           t3 = $.Zone__current;
           t3.toString;
-          result = new P._Future(0, t3, null, null, new B.Asset_load_closure3(this, c), null, P._registerErrorHandler(null, t3), null);
+          result = new P._Future(0, t3, null, null, new B.Asset_load_closure2(this, c), null, P._registerErrorHandler(null, t3), null);
           result.$builtinTypeInfo = [null];
           t2._addListener$1(result);
           loading = true;
@@ -5046,23 +5038,15 @@ Asset_load_closure: {"": "Closure;this_0,c_1",
   $is_args1: true
 },
 
-Asset_load_closure0: {"": "Closure;c_2",
-  call$1: function(_) {
-    P.print("error");
-    this.c_2.completeError$1("couldn't load");
-  },
-  $is_args1: true
-},
-
-Asset_load_closure1: {"": "Closure;this_3,c_4,audio_5",
+Asset_load_closure0: {"": "Closure;this_2,c_3,audio_4",
   call$1: function(_) {
     var t1, t2;
     t1 = $.get$ASSET();
-    t2 = this.this_3;
+    t2 = this.this_2;
     t1.$indexSet(t1, t2.name, t2);
-    t2._asset = this.audio_5;
+    t2._asset = this.audio_4;
     t2.loaded = true;
-    t1 = this.c_4.future;
+    t1 = this.c_3.future;
     if (t1._state !== 0)
       H.throwExpression(new P.StateError("Future already completed"));
     t1._asyncComplete$1(t2);
@@ -5070,7 +5054,15 @@ Asset_load_closure1: {"": "Closure;this_3,c_4,audio_5",
   $is_args1: true
 },
 
-Asset_load_closure2: {"": "Closure;this_6,c_7",
+Asset_load_closure3: {"": "Closure;c_5",
+  call$1: function(error) {
+    P.print(J.toString$0(error));
+    this.c_5.completeError$1(error);
+  },
+  $is_args1: true
+},
+
+Asset_load_closure1: {"": "Closure;this_6,c_7",
   call$1: function(string) {
     var t1, t2;
     t1 = this.this_6;
@@ -5086,7 +5078,7 @@ Asset_load_closure2: {"": "Closure;this_6,c_7",
   $is_args1: true
 },
 
-Asset_load_closure3: {"": "Closure;this_8,c_9",
+Asset_load_closure2: {"": "Closure;this_8,c_9",
   call$1: function(string) {
     var t1, t2;
     t1 = $.get$ASSET();
@@ -15171,7 +15163,6 @@ C.EventStreamProvider_close = new W.EventStreamProvider("close");
 C.EventStreamProvider_contextmenu = new W.EventStreamProvider("contextmenu");
 C.EventStreamProvider_ended = new W.EventStreamProvider("ended");
 C.EventStreamProvider_error = new W.EventStreamProvider("error");
-C.EventStreamProvider_error0 = new W.EventStreamProvider("error");
 C.EventStreamProvider_focus = new W.EventStreamProvider("focus");
 C.EventStreamProvider_keydown = new W.EventStreamProvider("keydown");
 C.EventStreamProvider_keyup = new W.EventStreamProvider("keyup");
