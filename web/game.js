@@ -4972,7 +4972,6 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           H.printToConsole("loading audio extension");
           audio = W.AudioElement_AudioElement(null);
-          audio.src = this._uri;
           t2 = C.EventStreamProvider_canplay.forElement$1(audio);
           $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
           t3 = $arguments == null ? null : $arguments[0];
@@ -4981,6 +4980,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
           t3 = t2._onData;
           if (t3 != null && t2._pauseCount <= 0)
             J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
+          audio.src = this._uri;
           loading = true;
         }
       }
