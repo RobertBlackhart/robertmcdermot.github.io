@@ -3313,7 +3313,7 @@ toggleFps: function(nothing) {
 main: function() {
   B.init_audio();
   var t1 = new B.Asset(null, false, null, null);
-  t1._uri = "./assets/system/loading.ogg";
+  t1._uri = "http://robertmcdermot.github.io/web/assets/system/loading.ogg";
   t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
 },
 
@@ -4948,7 +4948,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
     if (0 >= t2.length)
       throw H.ioore(t2, 0);
     this.name = t2[0];
-    P.print("loading " + H.S(this.name));
+    P.print("loading " + H.S(this.name) + " from " + H.S(this._uri));
     t2 = null;
     c = new P._AsyncCompleter(P._Future$(t2));
     H.setRuntimeTypeInfo(c, [t2]);
