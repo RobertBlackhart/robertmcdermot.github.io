@@ -65,37 +65,37 @@ var $$ = {};
 
 // Native classes
 // Method closures
-$$.BoundClosure$i0 = [W, {"": "BoundClosure;_self,__js_helper$_target,_receiver,__js_helper$_name",
+$$.BoundClosure$i0 = [W, {"": "BoundClosure;_self,_target,_receiver,__js_helper$_name",
   call$0: function() {
-    return this.__js_helper$_target.call(this._self, this._receiver);
+    return this._target.call(this._self, this._receiver);
   },
   $is_void_: true
 }];
 
-$$.BoundClosure$1 = [H, {"": "BoundClosure;_self,__js_helper$_target,_receiver,__js_helper$_name",
+$$.BoundClosure$1 = [H, {"": "BoundClosure;_self,_target,_receiver,__js_helper$_name",
   call$1: function(p0) {
-    return this.__js_helper$_target.call(this._self, p0);
+    return this._target.call(this._self, p0);
   },
   $is_args1: true
 }];
 
-$$.BoundClosure$0 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,__js_helper$_name",
+$$.BoundClosure$0 = [P, {"": "BoundClosure;_self,_target,_receiver,__js_helper$_name",
   call$0: function() {
-    return this.__js_helper$_target.call(this._self);
+    return this._target.call(this._self);
   },
   $is_void_: true
 }];
 
-$$.BoundClosure$i1 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,__js_helper$_name",
+$$.BoundClosure$i1 = [P, {"": "BoundClosure;_self,_target,_receiver,__js_helper$_name",
   call$1: function(p0) {
-    return this.__js_helper$_target.call(this._self, this._receiver, p0);
+    return this._target.call(this._self, this._receiver, p0);
   },
   $is_args1: true
 }];
 
-$$.BoundClosure$2 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,__js_helper$_name",
+$$.BoundClosure$2 = [P, {"": "BoundClosure;_self,_target,_receiver,__js_helper$_name",
   call$2: function(p0, p1) {
-    return this.__js_helper$_target.call(this._self, p0, p1);
+    return this._target.call(this._self, p0, p1);
   },
   call$1: function(p0) {
     return this.call$2(p0, null);
@@ -104,9 +104,9 @@ $$.BoundClosure$2 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,_
   $is_args1: true
 }];
 
-$$.BoundClosure$20 = [P, {"": "BoundClosure;_self,__js_helper$_target,_receiver,__js_helper$_name",
+$$.BoundClosure$20 = [P, {"": "BoundClosure;_self,_target,_receiver,__js_helper$_name",
   call$2: function(p0, p1) {
-    return this.__js_helper$_target.call(this._self, p0, p1);
+    return this._target.call(this._self, p0, p1);
   },
   $is_args2: true
 }];
@@ -496,12 +496,12 @@ JSNumber: {"": "num/Interceptor;",
   },
   $lt: function(receiver, other) {
     if (typeof other !== "number")
-      throw H.wrapException(new P.ArgumentError(other));
+      throw H.wrapException(P.ArgumentError$(other));
     return receiver < other;
   },
   $gt: function(receiver, other) {
     if (typeof other !== "number")
-      throw H.wrapException(new P.ArgumentError(other));
+      throw H.wrapException(P.ArgumentError$(other));
     return receiver > other;
   },
   $le: function(receiver, other) {
@@ -511,7 +511,7 @@ JSNumber: {"": "num/Interceptor;",
   },
   $ge: function(receiver, other) {
     if (typeof other !== "number")
-      throw H.wrapException(new P.ArgumentError(other));
+      throw H.wrapException(P.ArgumentError$(other));
     return receiver >= other;
   },
   $isnum: true,
@@ -1737,7 +1737,7 @@ Primitives_parseInt: function(source, radix, handleError) {
   var match, t1;
   handleError = H.Primitives__throwFormatException$closure;
   if (typeof source !== "string")
-    H.throwExpression(new P.ArgumentError(source));
+    H.throwExpression(P.ArgumentError$(source));
   match = /^\s*[+-]?((0x[a-f0-9]+)|(\d+)|([a-z0-9]+))\s*$/i.exec(source);
   if (match != null) {
     t1 = match.length;
@@ -1800,7 +1800,7 @@ Primitives_stringFromCodePoints: function(codePoints) {
   a = [];
   a.$builtinTypeInfo = [J.JSInt];
   for (t1 = new H.ListIterator(codePoints, codePoints.length, 0, null); t1.moveNext$0();) {
-    i = t1._current;
+    i = t1._dev$_current;
     if (typeof i !== "number" || Math.floor(i) !== i)
       throw H.wrapException(P.ArgumentError$(i));
     if (i <= 65535)
@@ -1817,7 +1817,7 @@ Primitives_stringFromCodePoints: function(codePoints) {
 Primitives_stringFromCharCodes: function(charCodes) {
   var t1, i;
   for (t1 = new H.ListIterator(charCodes, charCodes.length, 0, null); t1.moveNext$0();) {
-    i = t1._current;
+    i = t1._dev$_current;
     if (typeof i !== "number" || Math.floor(i) !== i)
       throw H.wrapException(P.ArgumentError$(i));
     if (i < 0)
@@ -2875,7 +2875,7 @@ Closure: {"": "Object;",
   }
 },
 
-BoundClosure: {"": "Closure;_self,__js_helper$_target,_receiver,__js_helper$_name",
+BoundClosure: {"": "Closure;_self,_target,_receiver,__js_helper$_name",
   $eq: function(_, other) {
     var t1;
     if (other == null)
@@ -2885,7 +2885,7 @@ BoundClosure: {"": "Closure;_self,__js_helper$_target,_receiver,__js_helper$_nam
     t1 = J.getInterceptor(other);
     if (typeof other !== "object" || other === null || !t1.$isBoundClosure)
       return false;
-    return this._self === other._self && this.__js_helper$_target === other.__js_helper$_target && this._receiver === other._receiver;
+    return this._self === other._self && this._target === other._target && this._receiver === other._receiver;
   },
   get$hashCode: function(_) {
     var t1, receiverHashCode;
@@ -2894,7 +2894,7 @@ BoundClosure: {"": "Closure;_self,__js_helper$_target,_receiver,__js_helper$_nam
       receiverHashCode = H.Primitives_objectHashCode(this._self);
     else
       receiverHashCode = typeof t1 !== "object" ? J.get$hashCode$(t1) : H.Primitives_objectHashCode(t1);
-    return (receiverHashCode ^ H.Primitives_objectHashCode(this.__js_helper$_target)) >>> 0;
+    return (receiverHashCode ^ H.Primitives_objectHashCode(this._target)) >>> 0;
   },
   $isBoundClosure: true
 },
@@ -3124,7 +3124,7 @@ load_audio: function() {
 runCommand: function(commandToRun) {
   var t1, t2, syntaxParts, t3, action, commandID;
   for (t1 = $.get$COMMANDS(), t1 = new H.ListIterator(t1, t1.length, 0, null), t2 = J.getInterceptor$s(commandToRun); t1.moveNext$0();) {
-    syntaxParts = t1._current;
+    syntaxParts = t1._dev$_current;
     t3 = J.getInterceptor$asx(syntaxParts);
     if (t2.startsWith$1(commandToRun, t3.$index(syntaxParts, 0))) {
       action = t3.$index(syntaxParts, 2);
@@ -3159,7 +3159,7 @@ showConsole: function() {
   t1 = document.querySelector(".ConsoleInput");
   t1.toString;
   t1 = C.EventStreamProvider_keyup.forElement$1(t1);
-  t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.showConsole_closure()), t1._useCapture);
+  t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.showConsole_closure()), t1._useCapture);
   H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
   t2._tryResume$0();
   $.consolelistener = t2;
@@ -3190,7 +3190,7 @@ printHelp: function(nothing) {
   var t1, command, t2;
   B.updateConsole("List of Commands:");
   for (t1 = $.get$COMMANDS(), t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
-    command = t1._current;
+    command = t1._dev$_current;
     t2 = J.getInterceptor$asx(command);
     B.updateConsole(J.$add$ns(J.$add$ns(t2.$index(command, 0), " : "), t2.$index(command, 1)));
   }
@@ -3312,7 +3312,9 @@ toggleFps: function(nothing) {
 
 main: function() {
   B.init_audio();
-  B.load_audio().then$1(new B.main_closure()).then$1(new B.main_closure0());
+  var t1 = new B.Asset(null, false, null, null);
+  t1._uri = "./assets/system/loading.ogg";
+  t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
 },
 
 render: function() {
@@ -3433,7 +3435,7 @@ load_audio__closure: {"": "Closure;c_1",
     t1 = P.Future_wait(songsToLoad);
     t2 = this.c_1.future;
     if (t2._state !== 0)
-      H.throwExpression(new P.StateError("Future already completed"));
+      H.throwExpression(P.StateError$("Future already completed"));
     t2._asyncComplete$1(t1);
   },
   $is_args1: true
@@ -3458,13 +3460,13 @@ Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
     t1 = document.querySelector("#ChatSettingsIcon");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Chat_init_closure()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Chat_init_closure()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.querySelector("#MobileChatSettingsIcon");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Chat_init_closure0()), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Chat_init_closure0()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     C.EventStreamProvider_change._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null)).listen$1(new B.Chat_init_closure1(this));
@@ -3518,7 +3520,7 @@ Chat: {"": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
     t1.set$checked(radioButton, checked);
     t1 = C.EventStreamProvider_click.forElement$1(radioButton);
     t2 = tabContent.get$resetMessages();
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(t2), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(t2), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     label = document.createElement("label", null);
@@ -3645,11 +3647,11 @@ TabContent: {"": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tab
     var t1, t2;
     input.toString;
     t1 = C.EventStreamProvider_keydown.forElement$1(input);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.TabContent_processInput_closure(this, input)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.TabContent_processInput_closure(this, input)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = C.EventStreamProvider_keyup.forElement$1(input);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.TabContent_processInput_closure0(this, input)), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.TabContent_processInput_closure0(this, input)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
   },
@@ -4122,13 +4124,48 @@ showConsole_closure: {"": "Closure;",
 },
 
 main_closure: {"": "Closure;",
+  call$1: function(Loading) {
+    var t1, t2, result;
+    P.print("playing loading song");
+    if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+      t1 = Loading.get$0();
+      t2 = H.Primitives_parseInt($.get$prevVolume(), null, null);
+      if (typeof t2 !== "number")
+        throw t2.$div();
+      J.set$volume$x(t1, t2 / 100);
+      t2 = document.querySelector("#LoadingScreen");
+      if (!Loading.loaded) {
+        H.throwExpression("Asset not yet loaded!");
+        result = null;
+      } else
+        result = Loading._asset;
+      t2.appendChild(result);
+      if (!Loading.loaded) {
+        H.throwExpression("Asset not yet loaded!");
+        result = null;
+      } else
+        result = Loading._asset;
+      J.play$0$x(result);
+    }
+  },
+  $is_args1: true
+},
+
+main_closure0: {"": "Closure;",
+  call$1: function(_) {
+    return B.load_audio();
+  },
+  $is_args1: true
+},
+
+main_closure1: {"": "Closure;",
   call$1: function(_) {
     return B.load_streets();
   },
   $is_args1: true
 },
 
-main_closure0: {"": "Closure;",
+main_closure2: {"": "Closure;",
   call$1: function(_) {
     var t1;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
@@ -4192,13 +4229,13 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = document.querySelector("#ConsoleGlyph");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.querySelector("#CloseConsole");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_init_closure0()), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure0()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     C.EventStreamProvider_click._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".FullscreenGlyph"), null)).listen$1(new B.Input_init_closure1());
@@ -4207,13 +4244,13 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = document.querySelector("#AudioGlyph");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure4()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure4()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     volumeSlider = document.querySelector("#VolumeSlider");
     volumeSlider.toString;
     t2 = C.EventStreamProvider_change.forElement$1(volumeSlider);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_init_closure5(volumeSlider)), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure5(volumeSlider)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     chatInputs = W._FrozenElementList$_wrap(document.querySelectorAll(".Typing"), null);
@@ -4233,43 +4270,43 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = document.querySelector("#AButton");
     t1.toString;
     t1 = C.EventStreamProvider_touchstart.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure12(this)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure12(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.querySelector("#AButton");
     t2.toString;
     t2 = C.EventStreamProvider_touchend.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_init_closure13(this)), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure13(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     t1 = document.querySelector("#BButton");
     t1.toString;
     t1 = C.EventStreamProvider_touchstart.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure14()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure14()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.querySelector("#BButton");
     t2.toString;
     t2 = C.EventStreamProvider_touchend.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_init_closure15()), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure15()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     t1 = document.querySelector("#ChatBubble");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure16()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure16()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.querySelector("#BackFromChannelSelector");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_init_closure17()), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure17()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     t1 = document.querySelector("#BackFromChat");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure18()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure18()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = W._FrozenElementList$_wrap(document.querySelectorAll(".ChannelName"), null);
@@ -4277,7 +4314,7 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t2 = document.querySelector("#SendButton");
     t2.toString;
     t2 = C.EventStreamProvider_click.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_init_closure20()), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure20()), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
@@ -4285,13 +4322,13 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     t1 = document.querySelector("#InventoryTitle");
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure21()), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Input_init_closure21()), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     t2 = document.body;
     t2.toString;
     t2 = C.EventStreamProvider_contextmenu.forElement$1(t2);
-    t1 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_init_closure22(this)), t2._useCapture);
+    t1 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_init_closure22(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t1._tryResume$0();
     $.playerInput = this;
@@ -4344,7 +4381,7 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
     document.querySelector("#ClickDesc").textContent = description;
     newOptions = P.List_List(null, null);
     for (t1 = new H.ListIterator(options, 0, 0, null); t1.moveNext$0();) {
-      option = t1._current;
+      option = t1._dev$_current;
       menuitem = document.createElement("div", null);
       t2 = J.get$classes$x(menuitem);
       t2.add$1(t2, "RCItem");
@@ -4352,11 +4389,11 @@ Input: {"": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
       t2 = C.EventStreamProvider_click.forElement$1(menuitem);
       $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
       t3 = $arguments == null ? null : $arguments[0];
-      t2 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_showClickMenu_closure(option)), t2._useCapture);
+      t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Input_showClickMenu_closure(option)), t2._useCapture);
       t2.$builtinTypeInfo = [t3];
       t3 = t2._onData;
       if (t3 != null && t2._pauseCount <= 0)
-        J.addEventListener$3$x(t2._target, t2._eventType, t3, t2._useCapture);
+        J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
       newOptions.push(menuitem);
     }
     t1 = J.get$children$x(document.querySelector("#RCActionList"));
@@ -4696,15 +4733,15 @@ Joystick: {"": "Object;_joystick,_knob,_neutralX,_neutralY,_initialTouchX,_initi
     t1 = this._knob;
     t1.toString;
     t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
-    t3 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
+    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t3._tryResume$0();
     t3 = C.EventStreamProvider_touchmove.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
+    t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(new B.Joystick_closure0(this)), t3._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
     t2._tryResume$0();
     t1 = C.EventStreamProvider_touchend.forElement$1(t1);
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
   },
@@ -4876,7 +4913,7 @@ Batch: {"": "Object;_toLoad,_percentDone",
     percentEach = 100 / t2;
     futures = [];
     for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();) {
-      t2 = J.load$0$x(t1._current);
+      t2 = J.load$0$x(t1._dev$_current);
       t2.toString;
       $arguments = H.substitute(t2.$as_Future, H.getRuntimeTypeInfo(t2));
       t3 = $arguments == null ? null : $arguments[0];
@@ -4917,7 +4954,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
     H.setRuntimeTypeInfo(c, [t2]);
     if (!this.loaded) {
       for (t1 = new H.ListIterator($.get$imageExtensions(), 6, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._current;
+        ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           t2 = W.ImageElement_ImageElement(null, null, null);
           J.set$src$x(t2, this._uri);
@@ -4929,30 +4966,38 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
       if (loading)
         return c.future;
       for (t1 = new H.ListIterator($.get$audioExtensions(), 2, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._current;
+        ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           audio = W.AudioElement_AudioElement(null);
           audio.src = this._uri;
-          t2 = C.EventStreamProvider_canplay.forElement$1(audio);
+          t2 = C.EventStreamProvider_error0.forElement$1(audio);
           $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
           t3 = $arguments == null ? null : $arguments[0];
-          t2 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Asset_load_closure0(this, c, audio)), t2._useCapture);
+          t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Asset_load_closure0(c)), t2._useCapture);
           t2.$builtinTypeInfo = [t3];
           t3 = t2._onData;
           if (t3 != null && t2._pauseCount <= 0)
-            J.addEventListener$3$x(t2._target, t2._eventType, t3, t2._useCapture);
+            J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
+          t2 = C.EventStreamProvider_canplay.forElement$1(audio);
+          $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
+          t3 = $arguments == null ? null : $arguments[0];
+          t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Asset_load_closure1(this, c, audio)), t2._useCapture);
+          t2.$builtinTypeInfo = [t3];
+          t3 = t2._onData;
+          if (t3 != null && t2._pauseCount <= 0)
+            J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
           loading = true;
         }
       }
       if (loading)
         return c.future;
       for (t1 = new H.ListIterator($.get$textExtensions(), 1, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._current;
+        ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           t2 = W.HttpRequest_getString(this._uri, null, null);
           t3 = $.Zone__current;
           t3.toString;
-          result = new P._Future(0, t3, null, null, new B.Asset_load_closure1(this, c), null, P._registerErrorHandler(null, t3), null);
+          result = new P._Future(0, t3, null, null, new B.Asset_load_closure2(this, c), null, P._registerErrorHandler(null, t3), null);
           result.$builtinTypeInfo = [null];
           t2._addListener$1(result);
           loading = true;
@@ -4961,12 +5006,12 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
       if (loading)
         return c.future;
       for (t1 = $.get$jsonExtensions(), t1 = new H.ListIterator(t1, t1.length, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._current;
+        ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           t2 = W.HttpRequest_getString(this._uri, null, null);
           t3 = $.Zone__current;
           t3.toString;
-          result = new P._Future(0, t3, null, null, new B.Asset_load_closure2(this, c), null, P._registerErrorHandler(null, t3), null);
+          result = new P._Future(0, t3, null, null, new B.Asset_load_closure3(this, c), null, P._registerErrorHandler(null, t3), null);
           result.$builtinTypeInfo = [null];
           t2._addListener$1(result);
           loading = true;
@@ -4995,55 +5040,63 @@ Asset_load_closure: {"": "Closure;this_0,c_1",
     t2.loaded = true;
     t1 = this.c_1.future;
     if (t1._state !== 0)
-      H.throwExpression(P.StateError$("Future already completed"));
+      H.throwExpression(new P.StateError("Future already completed"));
     t1._asyncComplete$1(t2);
   },
   $is_args1: true
 },
 
-Asset_load_closure0: {"": "Closure;this_2,c_3,audio_4",
+Asset_load_closure0: {"": "Closure;c_2",
+  call$1: function(_) {
+    P.print("error");
+    this.c_2.completeError$1("couldn't load");
+  },
+  $is_args1: true
+},
+
+Asset_load_closure1: {"": "Closure;this_3,c_4,audio_5",
   call$1: function(_) {
     var t1, t2;
     t1 = $.get$ASSET();
-    t2 = this.this_2;
+    t2 = this.this_3;
     t1.$indexSet(t1, t2.name, t2);
-    t2._asset = this.audio_4;
+    t2._asset = this.audio_5;
     t2.loaded = true;
-    t1 = this.c_3.future;
+    t1 = this.c_4.future;
     if (t1._state !== 0)
-      H.throwExpression(P.StateError$("Future already completed"));
+      H.throwExpression(new P.StateError("Future already completed"));
     t1._asyncComplete$1(t2);
   },
   $is_args1: true
 },
 
-Asset_load_closure1: {"": "Closure;this_5,c_6",
+Asset_load_closure2: {"": "Closure;this_6,c_7",
   call$1: function(string) {
     var t1, t2;
-    t1 = this.this_5;
+    t1 = this.this_6;
     t1._asset = string;
     t1.loaded = true;
     t2 = $.get$ASSET();
     t2.$indexSet(t2, t1.name, t1);
-    t2 = this.c_6.future;
+    t2 = this.c_7.future;
     if (t2._state !== 0)
-      H.throwExpression(P.StateError$("Future already completed"));
+      H.throwExpression(new P.StateError("Future already completed"));
     t2._asyncComplete$1(t1);
   },
   $is_args1: true
 },
 
-Asset_load_closure2: {"": "Closure;this_7,c_8",
+Asset_load_closure3: {"": "Closure;this_8,c_9",
   call$1: function(string) {
     var t1, t2;
     t1 = $.get$ASSET();
-    t2 = this.this_7;
+    t2 = this.this_8;
     t1.$indexSet(t1, t2.name, t2);
     t2._asset = C.C_JsonCodec.decode$1(string);
     t2.loaded = true;
-    t1 = this.c_8.future;
+    t1 = this.c_9.future;
     if (t1._state !== 0)
-      H.throwExpression(P.StateError$("Future already completed"));
+      H.throwExpression(new P.StateError("Future already completed"));
     t1._asyncComplete$1(t2);
   },
   $is_args1: true
@@ -5055,11 +5108,11 @@ TouchScroller: {"": "Object;_scrollDiv,_startX,_startY,_lastX,_lastY,_direction"
     t1 = this._scrollDiv;
     t1.toString;
     t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
-    t3 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.TouchScroller_closure(this)), t2._useCapture);
+    t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.TouchScroller_closure(this)), t2._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
     t3._tryResume$0();
     t1 = C.EventStreamProvider_touchmove.forElement$1(t1);
-    t3 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.TouchScroller_closure0(this)), t1._useCapture);
+    t3 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new B.TouchScroller_closure0(this)), t1._useCapture);
     H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t3._tryResume$0();
   },
@@ -5292,7 +5345,7 @@ Street: {"": "Object;label,_data,bounds",
     assetsToLoad = [];
     for (t1 = new H.ListIterator(decosToLoad, decosToLoad.length, 0, null); t1.moveNext$0();) {
       t2 = new B.Asset(null, false, null, null);
-      t2._uri = t1._current;
+      t2._uri = t1._dev$_current;
       assetsToLoad.push(t2);
     }
     decos = new B.Batch(assetsToLoad, 0);
@@ -5319,7 +5372,7 @@ Street: {"": "Object;label,_data,bounds",
     if (typeof t4 !== "number")
       throw t4.$div();
     for (t7 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll("canvas"), null), t7 = t7.get$iterator(t7), t3 = -(t1 / (t2 - t3)), t6 = -(t4 / (t5 - t6)); t7.moveNext$0();) {
-      canvas = t7._current;
+      canvas = t7._dev$_current;
       t1 = J.getInterceptor$x(canvas);
       if (t1.get$id(canvas) === "gradient") {
         t2 = t1.get$style(canvas);
@@ -5390,7 +5443,7 @@ Street_load_closure: {"": "Closure;this_0",
     t2.fillRect(0, 0, t3.width, t3.height);
     $.get$gameScreen().appendChild(gradientCanvas);
     for (t2 = J.$index$asx(J.$index$asx(t1._data, "dynamic"), "layers"), t3 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), t3.addAll$1(t3, t2), t3 = t3.get$values(t3), t2 = t3._iterable, t2 = t2.get$iterator(t2), t2 = new H.MappedIterator(null, t2, t3._f), H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "MappedIterable", 0), H.getRuntimeTypeArgument(t3, "MappedIterable", 1)]); t2.moveNext$0();) {
-      layer = t2._current;
+      layer = t2._dev$_current;
       e = document.createElement("canvas", null);
       t3 = J.getInterceptor$x(e);
       t4 = t3.get$classes(e);
@@ -5483,13 +5536,13 @@ Arrays_copy: function(src, srcStart, dst, dstStart, count) {
 IterableMixinWorkaround_forEach: function(iterable, f) {
   var t1;
   for (t1 = new H.ListIterator(iterable, iterable.length, 0, null); t1.moveNext$0();)
-    f.call$1(t1._current);
+    f.call$1(t1._dev$_current);
 },
 
 IterableMixinWorkaround_any: function(iterable, f) {
   var t1;
   for (t1 = new H.ListIterator(iterable, iterable.length, 0, null); t1.moveNext$0();)
-    if (f.call$1(t1._current) === true)
+    if (f.call$1(t1._dev$_current) === true)
       return true;
   return false;
 },
@@ -5617,9 +5670,9 @@ ListIterable: {"": "IterableBase;",
   $isEfficientLength: true
 },
 
-ListIterator: {"": "Object;_iterable,_dev$_length,_index,_current",
+ListIterator: {"": "Object;_iterable,_dev$_length,_index,_dev$_current",
   get$current: function() {
-    return this._current;
+    return this._dev$_current;
   },
   moveNext$0: function() {
     var t1, t2, $length, t3;
@@ -5630,10 +5683,10 @@ ListIterator: {"": "Object;_iterable,_dev$_length,_index,_current",
       throw H.wrapException(P.ConcurrentModificationError$(t1));
     t3 = this._index;
     if (t3 >= $length) {
-      this._current = null;
+      this._dev$_current = null;
       return false;
     }
-    this._current = t2.elementAt$1(t1, t3);
+    this._dev$_current = t2.elementAt$1(t1, t3);
     this._index = this._index + 1;
     return true;
   }
@@ -5682,21 +5735,21 @@ MappedIterable_MappedIterable: function(iterable, $function, $S, $T) {
 
 EfficientLengthMappedIterable: {"": "MappedIterable;_iterable,_f", $asMappedIterable: null, $isEfficientLength: true},
 
-MappedIterator: {"": "Iterator;_current,_iterator,_f",
+MappedIterator: {"": "Iterator;_dev$_current,_iterator,_f",
   _f$1: function(arg0) {
     return this._f.call$1(arg0);
   },
   moveNext$0: function() {
     var t1 = this._iterator;
     if (t1.moveNext$0()) {
-      this._current = this._f$1(t1.get$current());
+      this._dev$_current = this._f$1(t1.get$current());
       return true;
     }
-    this._current = null;
+    this._dev$_current = null;
     return false;
   },
   get$current: function() {
-    return this._current;
+    return this._dev$_current;
   },
   $asIterator: function($S, $T) {
     return [$T];
@@ -5815,7 +5868,7 @@ Future_wait: function(futures) {
   t2 = new P.Future_wait_handleError(t1);
   t1.remaining_2 = 0;
   for (t3 = new H.ListIterator(futures, futures.length, 0, null); t3.moveNext$0();) {
-    future = t3._current;
+    future = t3._dev$_current;
     pos = t1.remaining_2;
     t1.remaining_2 = pos + 1;
     t4 = future.catchError$1(t2);
@@ -6329,7 +6382,7 @@ _AsyncCompleter: {"": "_Completer;future",
   completeError$2: function(error, stackTrace) {
     var t1;
     if (error == null)
-      throw H.wrapException(P.ArgumentError$("Error must not be null"));
+      throw H.wrapException(new P.ArgumentError("Error must not be null"));
     t1 = this.future;
     if (t1._state !== 0)
       throw H.wrapException(P.StateError$("Future already completed"));
@@ -7032,7 +7085,7 @@ _StreamController: {"": "Object;",
   _subscribe$1: function(cancelOnError) {
     var t1, t2, subscription, pendingEvents, addState;
     if ((this._state & 3) !== 0)
-      throw H.wrapException(new P.StateError("Stream has already been listened to."));
+      throw H.wrapException(P.StateError$("Stream has already been listened to."));
     t1 = $.Zone__current;
     t2 = cancelOnError ? 1 : 0;
     subscription = new P._ControllerSubscription(this, null, null, null, t1, t2, null, null);
@@ -7510,7 +7563,7 @@ _DelayedDone: {"": "Object;",
     return;
   },
   set$next: function(_) {
-    throw H.wrapException(new P.StateError("No events after a done."));
+    throw H.wrapException(P.StateError$("No events after a done."));
   }
 },
 
@@ -9181,10 +9234,10 @@ IterableBase: {"": "Object;",
     var it, result;
     it = this.get$iterator(this);
     if (!it.moveNext$0())
-      throw H.wrapException(new P.StateError("No elements"));
+      throw H.wrapException(P.StateError$("No elements"));
     result = it.get$current();
     if (it.moveNext$0())
-      throw H.wrapException(new P.StateError("More than one element"));
+      throw H.wrapException(P.StateError$("More than one element"));
     return result;
   },
   elementAt$1: function(_, index) {
@@ -9224,7 +9277,7 @@ ListMixin: {"": "Object;",
   },
   get$first: function(receiver) {
     if (this.get$length(receiver) === 0)
-      throw H.wrapException(new P.StateError("No elements"));
+      throw H.wrapException(P.StateError$("No elements"));
     return this.$index(receiver, 0);
   },
   contains$1: function(receiver, element) {
@@ -11123,15 +11176,15 @@ TouchList: {"": "Interceptor_ListMixin_ImmutableListMixin1;",
   get$first: function(receiver) {
     if (receiver.length > 0)
       return receiver[0];
-    throw H.wrapException(P.StateError$("No elements"));
+    throw H.wrapException(new P.StateError("No elements"));
   },
   get$single: function(receiver) {
     var len = receiver.length;
     if (len === 1)
       return receiver[0];
     if (len === 0)
-      throw H.wrapException(P.StateError$("No elements"));
-    throw H.wrapException(P.StateError$("More than one element"));
+      throw H.wrapException(new P.StateError("No elements"));
+    throw H.wrapException(new P.StateError("More than one element"));
   },
   elementAt$1: function(receiver, index) {
     if (index < 0 || index >= receiver.length)
@@ -11624,9 +11677,9 @@ _ChildNodeListLazy: {"": "ListBase;_this",
     t1 = this._this;
     l = t1.childNodes.length;
     if (l === 0)
-      throw H.wrapException(new P.StateError("No elements"));
+      throw H.wrapException(P.StateError$("No elements"));
     if (l > 1)
-      throw H.wrapException(new P.StateError("More than one element"));
+      throw H.wrapException(P.StateError$("More than one element"));
     return t1.firstChild;
   },
   add$1: function(_, value) {
@@ -11718,7 +11771,7 @@ _BeforeUnloadEventStreamProvider: {"": "Object;_eventType",
     stream = new W._EventStream(e, this._eventType, useCapture);
     H.setRuntimeTypeInfo(stream, [null]);
     controller = P.StreamController_StreamController(null, null, null, null, true, null);
-    t1 = new W._EventStreamSubscription(0, stream._target, stream._eventType, W._wrapZone(new W._BeforeUnloadEventStreamProvider_forTarget_closure(controller)), stream._useCapture);
+    t1 = new W._EventStreamSubscription(0, stream._html$_target, stream._eventType, W._wrapZone(new W._BeforeUnloadEventStreamProvider_forTarget_closure(controller)), stream._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(stream, "_EventStream", 0)]);
     t1._tryResume$0();
     t1 = new P._ControllerStream(controller);
@@ -11751,7 +11804,7 @@ _AttributeMap: {"": "Object;",
   forEach$1: function(_, f) {
     var t1, key;
     for (t1 = this.get$keys(this), t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
-      key = t1._current;
+      key = t1._dev$_current;
       f.call$2(key, this.$index(this, key));
     }
   },
@@ -11816,7 +11869,7 @@ _ElementCssClassSet: {"": "CssClassSetImpl;_element",
     var s, t1, trimmed;
     s = P.LinkedHashSet_LinkedHashSet(null, null, null, J.JSString);
     for (t1 = J.get$className$x(this._element).split(" "), t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
-      trimmed = J.trim$0$s(t1._current);
+      trimmed = J.trim$0$s(t1._dev$_current);
       if (trimmed.length !== 0)
         s.add$1(s, trimmed);
     }
@@ -11855,9 +11908,9 @@ EventStreamProvider: {"": "Object;_eventType",
   }
 },
 
-_EventStream: {"": "Stream;_target,_eventType,_useCapture",
+_EventStream: {"": "Stream;_html$_target,_eventType,_useCapture",
   listen$4$cancelOnError$onDone$onError: function(onData, cancelOnError, onDone, onError) {
-    var t1 = new W._EventStreamSubscription(0, this._target, this._eventType, W._wrapZone(onData), this._useCapture);
+    var t1 = new W._EventStreamSubscription(0, this._html$_target, this._eventType, W._wrapZone(onData), this._useCapture);
     H.setRuntimeTypeInfo(t1, [H.getRuntimeTypeArgument(this, "_EventStream", 0)]);
     t1._tryResume$0();
     return t1;
@@ -11871,14 +11924,14 @@ _EventStream: {"": "Stream;_target,_eventType,_useCapture",
   $asStream: null
 },
 
-_ElementEventStreamImpl: {"": "_EventStream;_target,_eventType,_useCapture", $as_EventStream: null, $asStream: null, $isStream: true},
+_ElementEventStreamImpl: {"": "_EventStream;_html$_target,_eventType,_useCapture", $as_EventStream: null, $asStream: null, $isStream: true},
 
 _ElementListEventStreamImpl: {"": "Stream;_targetList,_useCapture,_eventType",
   listen$4$cancelOnError$onDone$onError: function(onData, cancelOnError, onDone, onError) {
     var pool, t1, t2, t3, t4;
     pool = W._StreamPool$broadcast(null);
     for (t1 = this._targetList, t1 = t1.get$iterator(t1), t2 = this._eventType, t3 = this._useCapture; t1.moveNext$0();) {
-      t4 = new W._EventStream(t1._current, t2, t3);
+      t4 = new W._EventStream(t1._dev$_current, t2, t3);
       t4.$builtinTypeInfo = [null];
       pool.add$1(pool, t4);
     }
@@ -11888,26 +11941,26 @@ _ElementListEventStreamImpl: {"": "Stream;_targetList,_useCapture,_eventType",
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_BroadcastStreamController", 0)]);
     return t2.listen$4$cancelOnError$onDone$onError(onData, cancelOnError, onDone, onError);
   },
-  listen$1: function(onData) {
-    return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
-  },
   listen$3$onDone$onError: function(onData, onDone, onError) {
     return this.listen$4$cancelOnError$onDone$onError(onData, null, onDone, onError);
+  },
+  listen$1: function(onData) {
+    return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
   },
   $asStream: null,
   $isStream: true
 },
 
-_EventStreamSubscription: {"": "StreamSubscription;_pauseCount,_target,_eventType,_onData,_useCapture",
+_EventStreamSubscription: {"": "StreamSubscription;_pauseCount,_html$_target,_eventType,_onData,_useCapture",
   cancel$0: function() {
-    if (this._target == null)
+    if (this._html$_target == null)
       return;
     this._unlisten$0();
-    this._target = null;
+    this._html$_target = null;
     this._onData = null;
   },
   pause$1: function(_, resumeSignal) {
-    if (this._target == null)
+    if (this._html$_target == null)
       return;
     this._pauseCount = this._pauseCount + 1;
     this._unlisten$0();
@@ -11916,7 +11969,7 @@ _EventStreamSubscription: {"": "StreamSubscription;_pauseCount,_target,_eventTyp
     return this.pause$1($receiver, null);
   },
   resume$0: function() {
-    if (this._target == null || this._pauseCount <= 0)
+    if (this._html$_target == null || this._pauseCount <= 0)
       return;
     this._pauseCount = this._pauseCount - 1;
     this._tryResume$0();
@@ -11924,12 +11977,12 @@ _EventStreamSubscription: {"": "StreamSubscription;_pauseCount,_target,_eventTyp
   _tryResume$0: function() {
     var t1 = this._onData;
     if (t1 != null && this._pauseCount <= 0)
-      J.addEventListener$3$x(this._target, this._eventType, t1, this._useCapture);
+      J.addEventListener$3$x(this._html$_target, this._eventType, t1, this._useCapture);
   },
   _unlisten$0: function() {
     var t1 = this._onData;
     if (t1 != null)
-      J.removeEventListener$3$x(this._target, this._eventType, t1, this._useCapture);
+      J.removeEventListener$3$x(this._html$_target, this._eventType, t1, this._useCapture);
   },
   $asStreamSubscription: null
 },
@@ -11953,7 +12006,7 @@ _StreamPool: {"": "Object;_html$_controller,_subscriptions",
   close$0: function(_) {
     var t1, t2, t3;
     for (t1 = this._subscriptions, t2 = t1.get$values(t1), t3 = t2._iterable, t3 = t3.get$iterator(t3), t3 = new H.MappedIterator(null, t3, t2._f), H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "MappedIterable", 0), H.getRuntimeTypeArgument(t2, "MappedIterable", 1)]); t3.moveNext$0();)
-      t3._current.cancel$0();
+      t3._dev$_current.cancel$0();
     t1.clear$0(t1);
     t1 = this._html$_controller;
     t1.close$0(t1);
@@ -12035,12 +12088,12 @@ _Html5NodeValidator: {"": "Object;uriPolicy<",
     t1 = $.get$_Html5NodeValidator__attributeValidators();
     if (t1.get$isEmpty(t1)) {
       for (t1 = new H.ListIterator(C.List_1GN, 261, 0, null); t1.moveNext$0();) {
-        attr = t1._current;
+        attr = t1._dev$_current;
         t2 = $.get$_Html5NodeValidator__attributeValidators();
         t2.$indexSet(t2, attr, W._Html5NodeValidator__standardAttributeValidator$closure);
       }
       for (t1 = new H.ListIterator(C.List_yrN, 12, 0, null); t1.moveNext$0();) {
-        attr = t1._current;
+        attr = t1._dev$_current;
         t2 = $.get$_Html5NodeValidator__attributeValidators();
         t2.$indexSet(t2, attr, W._Html5NodeValidator__uriAttributeValidator$closure);
       }
@@ -12296,22 +12349,22 @@ _WrappedEvent: {"": "Object;",
   $isEvent: true
 },
 
-FixedSizeListIterator: {"": "Object;_array,_length,_position,_html$_current",
+FixedSizeListIterator: {"": "Object;_array,_length,_position,_current",
   moveNext$0: function() {
     var nextPosition, t1;
     nextPosition = this._position + 1;
     t1 = this._length;
     if (nextPosition < t1) {
-      this._html$_current = J.$index$asx(this._array, nextPosition);
+      this._current = J.$index$asx(this._array, nextPosition);
       this._position = nextPosition;
       return true;
     }
-    this._html$_current = null;
+    this._current = null;
     this._position = t1;
     return false;
   },
   get$current: function() {
-    return this._html$_current;
+    return this._current;
   },
   static: {
 FixedSizeListIterator$: function(array) {
@@ -12577,7 +12630,7 @@ _AttributeClassSet: {"": "CssClassSetImpl;_svg$_element",
     if (classname == null)
       return s;
     for (t1 = classname.split(" "), t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
-      trimmed = J.trim$0$s(t1._current);
+      trimmed = J.trim$0$s(t1._dev$_current);
       if (trimmed.length !== 0)
         s.add$1(s, trimmed);
     }
@@ -12750,7 +12803,7 @@ TypedData: {"": "Interceptor;",
     if (t1.$lt(index, 0) || t1.$ge(index, $length))
       throw H.wrapException(P.RangeError$range(index, 0, $length));
     else
-      throw H.wrapException(new P.ArgumentError("Invalid list index " + H.S(index)));
+      throw H.wrapException(P.ArgumentError$("Invalid list index " + H.S(index)));
   },
   "%": "DataView;ArrayBufferView;TypedData_ListMixin|TypedData_ListMixin_FixedLengthListMixin|TypedData_ListMixin0|TypedData_ListMixin_FixedLengthListMixin0|TypedData_ListMixin1|TypedData_ListMixin_FixedLengthListMixin1|TypedData_ListMixin2|TypedData_ListMixin_FixedLengthListMixin2|TypedData_ListMixin3|TypedData_ListMixin_FixedLengthListMixin3|TypedData_ListMixin4|TypedData_ListMixin_FixedLengthListMixin4|TypedData_ListMixin5|TypedData_ListMixin_FixedLengthListMixin5|TypedData_ListMixin6|TypedData_ListMixin_FixedLengthListMixin6|TypedData_ListMixin7|TypedData_ListMixin_FixedLengthListMixin7|Int64List|Uint64List"
 },
@@ -13088,7 +13141,7 @@ DigitalInput: {"": "Object;",
   DigitalInput$2: function(gameLoop, buttonIds) {
     var t1, t2, buttonId;
     for (t1 = new H.ListIterator(buttonIds, buttonIds.length, 0, null), t2 = this.buttons; t1.moveNext$0();) {
-      buttonId = t1._current;
+      buttonId = t1._dev$_current;
       t2.$indexSet(t2, buttonId, new B.DigitalButton(buttonId, 0, 0, 0, 0));
     }
   }
@@ -13117,7 +13170,7 @@ GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_prev
   _processKeyboardEvents$0: function() {
     var t1, t2, keyboardEvent, t3, t4, t5, buttonId;
     for (t1 = this._keyboardEvents, t2 = new H.ListIterator(t1, t1.length, 0, null); t2.moveNext$0();) {
-      keyboardEvent = t2._current;
+      keyboardEvent = t2._dev$_current;
       t3 = J.getInterceptor$x(keyboardEvent);
       t4 = t3.get$type(keyboardEvent);
       t5 = t3.get$timeStamp(keyboardEvent);
@@ -13139,7 +13192,7 @@ GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_prev
     canvasX = J.floor$0$n(J.$sub$n(J.$add$ns(t2.get$left(box), window.pageXOffset), docElem.clientLeft));
     canvasY = J.floor$0$n(J.$sub$n(J.$add$ns(t2.get$top(box), window.pageYOffset), docElem.clientTop));
     for (t2 = this._mouseEvents, t3 = new H.ListIterator(t2, t2.length, 0, null); t3.moveNext$0();) {
-      mouseEvent = t3._current;
+      mouseEvent = t3._dev$_current;
       t4 = J.getInterceptor$x(mouseEvent);
       t5 = t4.get$type(mouseEvent);
       t6 = t4.get$type(mouseEvent);
@@ -13255,7 +13308,7 @@ GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_prev
   _processTouchEvents$0: function() {
     var t1, t2, touchEvent;
     for (t1 = this._touchEvents, t2 = new H.ListIterator(t1, t1.length, 0, null); t2.moveNext$0();) {
-      touchEvent = t2._current;
+      touchEvent = t2._dev$_current;
       switch (J.get$type$x(touchEvent)) {
         case 3:
           this._touchSet._start$1(touchEvent.get$event());
@@ -13418,22 +13471,22 @@ GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_prev
       t1.toString;
       t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
       t3 = this.get$_touchStartEvent();
-      t3 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(t3), t2._useCapture);
+      t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(t3), t2._useCapture);
       H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
       t3._tryResume$0();
       t3 = C.EventStreamProvider_touchend.forElement$1(t1);
       t2 = this.get$_touchEndEvent();
-      t2 = new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t2), t3._useCapture);
+      t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(t2), t3._useCapture);
       H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
       t2._tryResume$0();
       t2 = C.EventStreamProvider_touchcancel.forElement$1(t1);
       t3 = this.get$_touchEndEvent();
-      t3 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(t3), t2._useCapture);
+      t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(t3), t2._useCapture);
       H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
       t3._tryResume$0();
       t3 = C.EventStreamProvider_touchmove.forElement$1(t1);
       t2 = this.get$_touchMoveEvent();
-      t2 = new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t2), t3._useCapture);
+      t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(t2), t3._useCapture);
       H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
       t2._tryResume$0();
       C.EventStreamProvider_keydown.forTarget$1(window).listen$1(this.get$_keyDown());
@@ -13441,22 +13494,22 @@ GameLoopHtml: {"": "GameLoop;element,_frameCounter,_initialized,_interrupt,_prev
       C.EventStreamProvider_resize.forTarget$1(window).listen$1(this.get$_resize());
       t2 = C.EventStreamProvider_mousemove.forElement$1(t1);
       t3 = this.get$_mouseMove();
-      t3 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(t3), t2._useCapture);
+      t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(t3), t2._useCapture);
       H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
       t3._tryResume$0();
       t3 = C.EventStreamProvider_mousedown.forElement$1(t1);
       t2 = this.get$_mouseDown();
-      t2 = new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t2), t3._useCapture);
+      t2 = new W._EventStreamSubscription(0, t3._html$_target, t3._eventType, W._wrapZone(t2), t3._useCapture);
       H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t3, "_EventStream", 0)]);
       t2._tryResume$0();
       t2 = C.EventStreamProvider_mouseup.forElement$1(t1);
       t3 = this.get$_mouseUp();
-      t3 = new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(t3), t2._useCapture);
+      t3 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(t3), t2._useCapture);
       H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t2, "_EventStream", 0)]);
       t3._tryResume$0();
       t1 = C._CustomEventStreamProvider__determineMouseWheelEventType.forElement$1(t1);
       t3 = this.get$_mouseWheel();
-      t3 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(t3), t1._useCapture);
+      t3 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(t3), t1._useCapture);
       H.setRuntimeTypeInfo(t3, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
       t3._tryResume$0();
       this._initialized = true;
@@ -13569,7 +13622,7 @@ PointerLock: {"": "Object;gameLoop,lockOnClick",
     t1.toString;
     t1 = C.EventStreamProvider_click.forElement$1(t1);
     t2 = this.get$_onClick();
-    t2 = new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(t2), t1._useCapture);
+    t2 = new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(t2), t1._useCapture);
     H.setRuntimeTypeInfo(t2, [H.getRuntimeTypeArgument(t1, "_EventStream", 0)]);
     t2._tryResume$0();
     C.EventStreamProvider_webkitpointerlockchange.forTarget$1(document).listen$1(this.get$_onPointerLockChange());
@@ -13840,7 +13893,7 @@ convertNativeToDart_AcceptStructuredClone_walk: {"": "Closure;mustCopy_4,findSlo
       copy = H.fillLiteralMap([], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null));
       this.writeSlot_7.call$2(slot, copy);
       for (t1 = Object.keys(e), t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
-        key = t1._current;
+        key = t1._dev$_current;
         copy.$indexSet(copy, key, this.call$1(e[key]));
       }
       return copy;
@@ -14222,7 +14275,7 @@ NumberFormat: {"": "Object;_negativePrefix,_positivePrefix,_negativeSuffix,_posi
       t3._contents = t3._contents + t2;
     }
     for (t1 = new J._CodeUnits(basic), t1 = t1.get$iterator(t1), t2 = this._zero; t1.moveNext$0();) {
-      x = t1._current;
+      x = t1._dev$_current;
       t3 = this._buffer;
       t4 = new J._CodeUnits(this._symbols.get$ZERO_DIGIT());
       t4 = J.$sub$n(J.$add$ns(t4.get$first(t4), x), t2);
@@ -14873,7 +14926,7 @@ SC_load_closure: {"": "Closure;box_0,this_1,completer_2",
     t1 = Z.Scound$(t1.newAudio_1, t1.newMeta_0);
     t2 = this.completer_2.future;
     if (t2._state !== 0)
-      H.throwExpression(new P.StateError("Future already completed"));
+      H.throwExpression(P.StateError$("Future already completed"));
     t2._asyncComplete$1(t1);
   },
   $is_args1: true
@@ -14947,13 +15000,15 @@ W.BeforeUnloadEvent.$isEvent = true;
 W.BeforeUnloadEvent.$isObject = true;
 P.Match.$isMatch = true;
 P.Match.$isObject = true;
-W.Event.$isEvent = true;
-W.Event.$isObject = true;
+J.JSArray.$isObject = true;
+W.NodeValidator.$isNodeValidator = true;
+W.NodeValidator.$isObject = true;
 W.HttpRequest.$isEventTarget = true;
 W.HttpRequest.$isObject = true;
 W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
-J.JSArray.$isObject = true;
+W.Event.$isEvent = true;
+W.Event.$isObject = true;
 W.MouseEvent.$isMouseEvent = true;
 W.MouseEvent.$isEvent = true;
 W.MouseEvent.$isObject = true;
@@ -14971,8 +15026,6 @@ G._GameLoopTouchEvent.$isObject = true;
 B.GameLoopTimer.$isObject = true;
 B.DigitalButton.$isObject = true;
 G.GameLoopTouch.$isObject = true;
-W.NodeValidator.$isNodeValidator = true;
-W.NodeValidator.$isObject = true;
 W.MessageEvent.$isMessageEvent = true;
 W.MessageEvent.$isEvent = true;
 W.MessageEvent.$isObject = true;
@@ -15118,6 +15171,7 @@ C.EventStreamProvider_close = new W.EventStreamProvider("close");
 C.EventStreamProvider_contextmenu = new W.EventStreamProvider("contextmenu");
 C.EventStreamProvider_ended = new W.EventStreamProvider("ended");
 C.EventStreamProvider_error = new W.EventStreamProvider("error");
+C.EventStreamProvider_error0 = new W.EventStreamProvider("error");
 C.EventStreamProvider_focus = new W.EventStreamProvider("focus");
 C.EventStreamProvider_keydown = new W.EventStreamProvider("keydown");
 C.EventStreamProvider_keyup = new W.EventStreamProvider("keyup");
