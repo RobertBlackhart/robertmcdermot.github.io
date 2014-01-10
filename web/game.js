@@ -3111,11 +3111,11 @@ load_audio: function() {
   t1 = null;
   c = new P._AsyncCompleter(P._Future$(t1));
   H.setRuntimeTypeInfo(c, [t1]);
-  t1 = new B.Asset(null, false, null, null);
+  t1 = new E.Asset(null, false, null, null);
   t1._uri = "./assets/system/mention.ogg";
-  t2 = new B.Asset(null, false, null, null);
+  t2 = new E.Asset(null, false, null, null);
   t2._uri = "./assets/system/game_loaded.ogg";
-  t2 = new B.Batch([t1, t2], 0);
+  t2 = new E.Batch([t1, t2], 0);
   t2.load$1(t2, P.print$closure).then$1(new B.load_audio_closure(c));
   $.ui_sounds = t2;
   return c.future;
@@ -3312,7 +3312,7 @@ toggleFps: function(nothing) {
 
 main: function() {
   B.init_audio();
-  var t1 = new B.Asset(null, false, null, null);
+  var t1 = new E.Asset(null, false, null, null);
   t1._uri = "./assets/system/loading.ogg";
   t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
 },
@@ -3385,7 +3385,7 @@ refreshClock: function() {
 
 load_streets: function() {
   $.get$jsonExtensions().push("street");
-  var t1 = new B.Asset(null, false, null, null);
+  var t1 = new E.Asset(null, false, null, null);
   t1._uri = "./assets/streets.json";
   t1.load$0(t1).then$1(new B.load_streets_closure());
 },
@@ -3403,7 +3403,7 @@ setStreetLoadBar: function(percent) {
 
 load_audio_closure: {"": "Closure;c_0",
   call$1: function(_) {
-    var soundCloudSongs = new B.Asset(null, false, null, null);
+    var soundCloudSongs = new E.Asset(null, false, null, null);
     soundCloudSongs._uri = "./assets/music.json";
     soundCloudSongs.load$0(soundCloudSongs).then$1(new B.load_audio__closure(this.c_0));
   },
@@ -3412,12 +3412,10 @@ load_audio_closure: {"": "Closure;c_0",
 
 load_audio__closure: {"": "Closure;c_1",
   call$1: function(sc_list) {
-    var songsToLoad, t1, song, line, t2, result, t3;
+    var songsToLoad, t1, song, t2, result, t3;
     songsToLoad = P.List_List(null, null);
     for (t1 = J.get$iterator$ax(J.get$keys$x(sc_list.get$0())); t1.moveNext$0();) {
       song = t1.get$current();
-      line = "loading " + H.S(song);
-      H.printToConsole(line);
       t2 = $.get$ui().sc;
       if (!sc_list.loaded) {
         H.throwExpression("Asset not yet loaded!");
@@ -4126,7 +4124,6 @@ showConsole_closure: {"": "Closure;",
 main_closure: {"": "Closure;",
   call$1: function(Loading) {
     var t1, t2, result;
-    P.print("playing loading song");
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = Loading.get$0();
       t2 = H.Primitives_parseInt($.get$prevVolume(), null, null);
@@ -4179,7 +4176,7 @@ main_closure2: {"": "Closure;",
     B.updateConsole("");
     B.updateConsole("COU DEVELOPMENT CONSOLE");
     B.updateConsole("For a list of commands type \"help\"");
-    t1 = new B.Asset(null, false, null, null);
+    t1 = new E.Asset(null, false, null, null);
     t1._uri = "./assets/system/game_loaded.ogg";
     t1.load$0(t1).then$1(new B.main__closure()).then$1(new B.main__closure0()).then$1(new B.main__closure1());
   },
@@ -4907,196 +4904,6 @@ Joystick_closure1: {"": "Closure;this_2",
 
 JoystickEvent: {"": "Object;"},
 
-Batch: {"": "Object;_toLoad,_percentDone",
-  load$1: function(_, callback) {
-    var t1, t2, percentEach, futures, $arguments, t3, t4, result;
-    t1 = this._toLoad;
-    t2 = t1.length;
-    percentEach = 100 / t2;
-    futures = [];
-    for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();) {
-      t2 = J.load$0$x(t1._dev$_current);
-      t2.toString;
-      $arguments = H.substitute(t2.$as_Future, H.getRuntimeTypeInfo(t2));
-      t3 = $arguments == null ? null : $arguments[0];
-      t4 = $.Zone__current;
-      t4.toString;
-      result = new P._Future(0, t4, null, null, null, null, null, new B.Batch_load_closure(this, callback, percentEach));
-      result.$builtinTypeInfo = [t3];
-      t2._addListener$1(result);
-      futures.push(result);
-    }
-    return P.Future_wait(futures);
-  }
-},
-
-Batch_load_closure: {"": "Closure;this_0,callback_1,percentEach_2",
-  call$0: function() {
-    var t1 = this.this_0;
-    t1._percentDone = t1._percentDone + this.percentEach_2;
-    this.callback_1.call$1(C.JSNumber_methods.toInt$0(Math.floor(t1._percentDone)));
-  },
-  $is_void_: true
-},
-
-Asset: {"": "Object;_asset,loaded,_uri,name",
-  load$0: function(_) {
-    var t1, t2, c, loading, ext, audio, $arguments, t3, result;
-    t1 = J.split$1$s(this._uri, "/");
-    t2 = J.split$1$s(this._uri, "/").length - 1;
-    if (t2 < 0 || t2 >= t1.length)
-      throw H.ioore(t1, t2);
-    t2 = J.split$1$s(t1[t2], ".");
-    if (0 >= t2.length)
-      throw H.ioore(t2, 0);
-    this.name = t2[0];
-    P.print("loading " + H.S(this.name) + " from " + H.S(this._uri));
-    t2 = null;
-    c = new P._AsyncCompleter(P._Future$(t2));
-    H.setRuntimeTypeInfo(c, [t2]);
-    if (!this.loaded) {
-      for (t1 = new H.ListIterator($.get$imageExtensions(), 6, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._dev$_current;
-        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
-          t2 = W.ImageElement_ImageElement(null, null, null);
-          J.set$src$x(t2, this._uri);
-          this._asset = t2;
-          J.get$onLoad$x(this._asset).listen$1(new B.Asset_load_closure(this, c));
-          loading = true;
-        }
-      }
-      if (loading)
-        return c.future;
-      for (t1 = new H.ListIterator($.get$audioExtensions(), 2, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._dev$_current;
-        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
-          H.printToConsole("loading audio extension (canPlay)");
-          audio = W.AudioElement_AudioElement(null);
-          t2 = C.EventStreamProvider_canplay.forElement$1(audio);
-          $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
-          t3 = $arguments == null ? null : $arguments[0];
-          t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Asset_load_closure0(this, c, audio)), t2._useCapture);
-          t2.$builtinTypeInfo = [t3];
-          t3 = t2._onData;
-          if (t3 != null && t2._pauseCount <= 0)
-            J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
-          audio.src = this._uri;
-          loading = true;
-        }
-      }
-      if (loading)
-        return c.future;
-      for (t1 = new H.ListIterator($.get$textExtensions(), 1, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._dev$_current;
-        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
-          t2 = W.HttpRequest_getString(this._uri, null, null);
-          t3 = $.Zone__current;
-          t3.toString;
-          result = new P._Future(0, t3, null, null, new B.Asset_load_closure1(this, c), null, P._registerErrorHandler(null, t3), null);
-          result.$builtinTypeInfo = [null];
-          t2._addListener$1(result);
-          loading = true;
-        }
-      }
-      if (loading)
-        return c.future;
-      for (t1 = $.get$jsonExtensions(), t1 = new H.ListIterator(t1, t1.length, 0, null), loading = false; t1.moveNext$0();) {
-        ext = t1._dev$_current;
-        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
-          t2 = W.HttpRequest_getString(this._uri, null, null);
-          t3 = $.Zone__current;
-          t3.toString;
-          result = new P._Future(0, t3, null, null, new B.Asset_load_closure2(this, c), null, P._registerErrorHandler(null, t3), null);
-          result.$builtinTypeInfo = [null];
-          t2._addListener$1(result);
-          loading = true;
-        }
-      }
-      if (loading)
-        return c.future;
-      else
-        throw H.wrapException("nothing is being loaded!");
-    }
-  },
-  get$0: function() {
-    if (!this.loaded)
-      throw H.wrapException("Asset not yet loaded!");
-    else
-      return this._asset;
-  }
-},
-
-Asset_load_closure: {"": "Closure;this_0,c_1",
-  call$1: function(_) {
-    var t1, t2;
-    t1 = $.get$ASSET();
-    t2 = this.this_0;
-    t1.$indexSet(t1, t2.name, t2);
-    t2.loaded = true;
-    t1 = this.c_1.future;
-    if (t1._state !== 0)
-      H.throwExpression(new P.StateError("Future already completed"));
-    t1._asyncComplete$1(t2);
-  },
-  $is_args1: true
-},
-
-Asset_load_closure0: {"": "Closure;this_2,c_3,audio_4",
-  call$1: function(_) {
-    var t1, t2;
-    t1 = $.get$ASSET();
-    t2 = this.this_2;
-    t1.$indexSet(t1, t2.name, t2);
-    t2._asset = this.audio_4;
-    t2.loaded = true;
-    t1 = this.c_3.future;
-    if (t1._state !== 0)
-      H.throwExpression(new P.StateError("Future already completed"));
-    t1._asyncComplete$1(t2);
-  },
-  $is_args1: true
-},
-
-Asset_load_closure3: {"": "Closure;c_5",
-  call$1: function(error) {
-    P.print(J.toString$0(error));
-    this.c_5.completeError$1(error);
-  },
-  $is_args1: true
-},
-
-Asset_load_closure1: {"": "Closure;this_6,c_7",
-  call$1: function(string) {
-    var t1, t2;
-    t1 = this.this_6;
-    t1._asset = string;
-    t1.loaded = true;
-    t2 = $.get$ASSET();
-    t2.$indexSet(t2, t1.name, t1);
-    t2 = this.c_7.future;
-    if (t2._state !== 0)
-      H.throwExpression(new P.StateError("Future already completed"));
-    t2._asyncComplete$1(t1);
-  },
-  $is_args1: true
-},
-
-Asset_load_closure2: {"": "Closure;this_8,c_9",
-  call$1: function(string) {
-    var t1, t2;
-    t1 = $.get$ASSET();
-    t2 = this.this_8;
-    t1.$indexSet(t1, t2.name, t2);
-    t2._asset = C.C_JsonCodec.decode$1(string);
-    t2.loaded = true;
-    t1 = this.c_9.future;
-    if (t1._state !== 0)
-      H.throwExpression(new P.StateError("Future already completed"));
-    t1._asyncComplete$1(t2);
-  },
-  $is_args1: true
-},
-
 TouchScroller: {"": "Object;_scrollDiv,_startX,_startY,_lastX,_lastY,_direction",
   TouchScroller$2: function(_scrollDiv, _direction) {
     var t1, t2, t3;
@@ -5338,11 +5145,11 @@ Street: {"": "Object;label,_data,bounds",
       }
     assetsToLoad = [];
     for (t1 = new H.ListIterator(decosToLoad, decosToLoad.length, 0, null); t1.moveNext$0();) {
-      t2 = new B.Asset(null, false, null, null);
+      t2 = new E.Asset(null, false, null, null);
       t2._uri = t1._dev$_current;
       assetsToLoad.push(t2);
     }
-    decos = new B.Batch(assetsToLoad, 0);
+    decos = new E.Batch(assetsToLoad, 0);
     decos.load$1(decos, B.setStreetLoadBar$closure).then$1(new B.Street_load_closure(this));
   },
   render$0: function() {
@@ -5488,7 +5295,7 @@ load_streets_closure: {"": "Closure;",
     var toLoad, t1, t2;
     toLoad = [];
     for (t1 = J.get$iterator$ax(J.get$values$x(streetList.get$0())); t1.moveNext$0();) {
-      t2 = new B.Asset(null, false, null, null);
+      t2 = new E.Asset(null, false, null, null);
       t2._uri = t1.get$current();
       toLoad.push(t2.load$0(t2));
     }
@@ -14841,6 +14648,186 @@ _StringIterator: {"": "Object;input,index",
     return this;
   }
 }}],
+["loadie", "package:loadie/loadie.dart", , E, {
+Batch: {"": "Object;_toLoad,_percentDone",
+  load$1: function(_, callback) {
+    var t1, t2, percentEach, futures, $arguments, t3, t4, result;
+    t1 = this._toLoad;
+    t2 = t1.length;
+    percentEach = 100 / t2;
+    futures = [];
+    for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();) {
+      t2 = J.load$0$x(t1._dev$_current);
+      t2.toString;
+      $arguments = H.substitute(t2.$as_Future, H.getRuntimeTypeInfo(t2));
+      t3 = $arguments == null ? null : $arguments[0];
+      t4 = $.Zone__current;
+      t4.toString;
+      result = new P._Future(0, t4, null, null, null, null, null, new E.Batch_load_closure(this, callback, percentEach));
+      result.$builtinTypeInfo = [t3];
+      t2._addListener$1(result);
+      futures.push(result);
+    }
+    return P.Future_wait(futures);
+  }
+},
+
+Batch_load_closure: {"": "Closure;this_0,callback_1,percentEach_2",
+  call$0: function() {
+    var t1 = this.this_0;
+    t1._percentDone = t1._percentDone + this.percentEach_2;
+    this.callback_1.call$1(C.JSNumber_methods.toInt$0(Math.floor(t1._percentDone)));
+  },
+  $is_void_: true
+},
+
+Asset: {"": "Object;_asset,loaded,_uri,name",
+  load$0: function(_) {
+    var t1, t2, c, loading, ext, audio, $arguments, t3, result;
+    t1 = J.split$1$s(this._uri, "/");
+    t2 = J.split$1$s(this._uri, "/").length - 1;
+    if (t2 < 0 || t2 >= t1.length)
+      throw H.ioore(t1, t2);
+    t2 = J.split$1$s(t1[t2], ".");
+    if (0 >= t2.length)
+      throw H.ioore(t2, 0);
+    this.name = t2[0];
+    t2 = null;
+    c = new P._AsyncCompleter(P._Future$(t2));
+    H.setRuntimeTypeInfo(c, [t2]);
+    if (!this.loaded) {
+      for (t1 = new H.ListIterator($.get$imageExtensions(), 6, 0, null), loading = false; t1.moveNext$0();) {
+        ext = t1._dev$_current;
+        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
+          t2 = W.ImageElement_ImageElement(null, null, null);
+          J.set$src$x(t2, this._uri);
+          this._asset = t2;
+          J.get$onLoad$x(this._asset).listen$1(new E.Asset_load_closure(this, c));
+          loading = true;
+        }
+      }
+      if (loading)
+        return c.future;
+      for (t1 = new H.ListIterator($.get$audioExtensions(), 2, 0, null), loading = false; t1.moveNext$0();) {
+        ext = t1._dev$_current;
+        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
+          audio = W.AudioElement_AudioElement(null);
+          audio.src = this._uri;
+          t2 = C.EventStreamProvider_canplay.forElement$1(audio);
+          $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
+          t3 = $arguments == null ? null : $arguments[0];
+          t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new E.Asset_load_closure0(this, c, audio)), t2._useCapture);
+          t2.$builtinTypeInfo = [t3];
+          t3 = t2._onData;
+          if (t3 != null && t2._pauseCount <= 0)
+            J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
+          loading = true;
+        }
+      }
+      if (loading)
+        return c.future;
+      for (t1 = new H.ListIterator($.get$textExtensions(), 1, 0, null), loading = false; t1.moveNext$0();) {
+        ext = t1._dev$_current;
+        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
+          t2 = W.HttpRequest_getString(this._uri, null, null);
+          t3 = $.Zone__current;
+          t3.toString;
+          result = new P._Future(0, t3, null, null, new E.Asset_load_closure1(this, c), null, P._registerErrorHandler(null, t3), null);
+          result.$builtinTypeInfo = [null];
+          t2._addListener$1(result);
+          loading = true;
+        }
+      }
+      if (loading)
+        return c.future;
+      for (t1 = $.get$jsonExtensions(), t1 = new H.ListIterator(t1, t1.length, 0, null), loading = false; t1.moveNext$0();) {
+        ext = t1._dev$_current;
+        if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
+          t2 = W.HttpRequest_getString(this._uri, null, null);
+          t3 = $.Zone__current;
+          t3.toString;
+          result = new P._Future(0, t3, null, null, new E.Asset_load_closure2(this, c), null, P._registerErrorHandler(null, t3), null);
+          result.$builtinTypeInfo = [null];
+          t2._addListener$1(result);
+          loading = true;
+        }
+      }
+      if (loading)
+        return c.future;
+      else
+        throw H.wrapException("nothing is being loaded!");
+    }
+  },
+  get$0: function() {
+    if (!this.loaded)
+      throw H.wrapException("Asset not yet loaded!");
+    else
+      return this._asset;
+  }
+},
+
+Asset_load_closure: {"": "Closure;this_0,c_1",
+  call$1: function(_) {
+    var t1, t2;
+    t1 = $.get$ASSET();
+    t2 = this.this_0;
+    t1.$indexSet(t1, t2.name, t2);
+    t2.loaded = true;
+    t1 = this.c_1.future;
+    if (t1._state !== 0)
+      H.throwExpression(new P.StateError("Future already completed"));
+    t1._asyncComplete$1(t2);
+  },
+  $is_args1: true
+},
+
+Asset_load_closure0: {"": "Closure;this_2,c_3,audio_4",
+  call$1: function(_) {
+    var t1, t2;
+    t1 = $.get$ASSET();
+    t2 = this.this_2;
+    t1.$indexSet(t1, t2.name, t2);
+    t2._asset = this.audio_4;
+    t2.loaded = true;
+    t1 = this.c_3.future;
+    if (t1._state !== 0)
+      H.throwExpression(new P.StateError("Future already completed"));
+    t1._asyncComplete$1(t2);
+  },
+  $is_args1: true
+},
+
+Asset_load_closure1: {"": "Closure;this_5,c_6",
+  call$1: function(string) {
+    var t1, t2;
+    t1 = this.this_5;
+    t1._asset = string;
+    t1.loaded = true;
+    t2 = $.get$ASSET();
+    t2.$indexSet(t2, t1.name, t1);
+    t2 = this.c_6.future;
+    if (t2._state !== 0)
+      H.throwExpression(new P.StateError("Future already completed"));
+    t2._asyncComplete$1(t1);
+  },
+  $is_args1: true
+},
+
+Asset_load_closure2: {"": "Closure;this_7,c_8",
+  call$1: function(string) {
+    var t1, t2;
+    t1 = $.get$ASSET();
+    t2 = this.this_7;
+    t1.$indexSet(t1, t2.name, t2);
+    t2._asset = C.C_JsonCodec.decode$1(string);
+    t2.loaded = true;
+    t1 = this.c_8.future;
+    if (t1._state !== 0)
+      H.throwExpression(new P.StateError("Future already completed"));
+    t1._asyncComplete$1(t2);
+  },
+  $is_args1: true
+}}],
 ["number_symbols", "package:intl/number_symbols.dart", , B, {
 NumberSymbols: {"": "Object;NAME,DECIMAL_SEP<,GROUP_SEP<,PERCENT<,ZERO_DIGIT<,PLUS_SIGN<,MINUS_SIGN<,EXP_SYMBOL<,PERMILL<,INFINITY<,NAN<,DECIMAL_PATTERN,SCIENTIFIC_PATTERN,PERCENT_PATTERN,CURRENCY_PATTERN,DEF_CURRENCY_CODE<",
   toString$0: function(_) {
@@ -15036,8 +15023,8 @@ P.ReceivePort.$asStream = [null];
 P.ReceivePort.$isObject = true;
 H._IsolateEvent.$isObject = true;
 H._IsolateContext.$isObject = true;
-B.Asset.$isAsset = true;
-B.Asset.$isObject = true;
+E.Asset.$isAsset = true;
+E.Asset.$isObject = true;
 P.Symbol.$isSymbol = true;
 P.Symbol.$isObject = true;
 P.StackTrace.$isStackTrace = true;
@@ -15864,21 +15851,6 @@ Isolate.$lazy($, "COMMANDS", "COMMANDS", "get$COMMANDS", function() {
   t1.push(["togglefps", "show or hide the fps display\"", B.toggleFps$closure]);
   return t1;
 });
-Isolate.$lazy($, "ASSET", "ASSET", "get$ASSET", function() {
-  return H.fillLiteralMap([], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null));
-});
-Isolate.$lazy($, "textExtensions", "textExtensions", "get$textExtensions", function() {
-  return ["txt"];
-});
-Isolate.$lazy($, "jsonExtensions", "jsonExtensions", "get$jsonExtensions", function() {
-  return ["json"];
-});
-Isolate.$lazy($, "imageExtensions", "imageExtensions", "get$imageExtensions", function() {
-  return ["svg", "png", "jpg", "jpeg", "gif", "bmp"];
-});
-Isolate.$lazy($, "audioExtensions", "audioExtensions", "get$audioExtensions", function() {
-  return ["mp3", "ogg"];
-});
 Isolate.$lazy($, "last", "last", "get$last", function() {
   return P.DateTime$_now();
 });
@@ -15950,6 +15922,21 @@ Isolate.$lazy($, "Months", "Months", "get$Months", function() {
 });
 Isolate.$lazy($, "Days_of_Week", "Days_of_Week", "get$Days_of_Week", function() {
   return ["Hairday", "Moonday", "Twoday", "Weddingday", "Theday", "Fryday", "Standday", "Fabday"];
+});
+Isolate.$lazy($, "ASSET", "ASSET", "get$ASSET", function() {
+  return H.fillLiteralMap([], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null));
+});
+Isolate.$lazy($, "textExtensions", "textExtensions", "get$textExtensions", function() {
+  return ["txt"];
+});
+Isolate.$lazy($, "jsonExtensions", "jsonExtensions", "get$jsonExtensions", function() {
+  return ["json"];
+});
+Isolate.$lazy($, "imageExtensions", "imageExtensions", "get$imageExtensions", function() {
+  return ["svg", "png", "jpg", "jpeg", "gif", "bmp"];
+});
+Isolate.$lazy($, "audioExtensions", "audioExtensions", "get$audioExtensions", function() {
+  return ["mp3", "ogg"];
 });
 // Native classes
 
