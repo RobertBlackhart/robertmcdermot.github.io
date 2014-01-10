@@ -4972,7 +4972,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           H.printToConsole("loading audio extension");
           audio = W.AudioElement_AudioElement(null);
-          t2 = C.EventStreamProvider_canplay.forElement$1(audio);
+          t2 = C.EventStreamProvider_loadeddata.forElement$1(audio);
           $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
           t3 = $arguments == null ? null : $arguments[0];
           t2 = new W._EventStreamSubscription(0, t2._html$_target, t2._eventType, W._wrapZone(new B.Asset_load_closure0(this, c, audio)), t2._useCapture);
@@ -15158,7 +15158,6 @@ C.C__RootZone = new P._RootZone();
 C.CssStyleDeclaration_methods = W.CssStyleDeclaration.prototype;
 C.Duration_0 = new P.Duration(0);
 C.EventStreamProvider_blur = new W.EventStreamProvider("blur");
-C.EventStreamProvider_canplay = new W.EventStreamProvider("canplay");
 C.EventStreamProvider_change = new W.EventStreamProvider("change");
 C.EventStreamProvider_click = new W.EventStreamProvider("click");
 C.EventStreamProvider_close = new W.EventStreamProvider("close");
@@ -15170,6 +15169,7 @@ C.EventStreamProvider_keydown = new W.EventStreamProvider("keydown");
 C.EventStreamProvider_keyup = new W.EventStreamProvider("keyup");
 C.EventStreamProvider_load = new W.EventStreamProvider("load");
 C.EventStreamProvider_load0 = new W.EventStreamProvider("load");
+C.EventStreamProvider_loadeddata = new W.EventStreamProvider("loadeddata");
 C.EventStreamProvider_message = new W.EventStreamProvider("message");
 C.EventStreamProvider_mousedown = new W.EventStreamProvider("mousedown");
 C.EventStreamProvider_mousemove = new W.EventStreamProvider("mousemove");
