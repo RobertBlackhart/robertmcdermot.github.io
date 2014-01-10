@@ -4126,6 +4126,7 @@ showConsole_closure: {"": "Closure;",
 main_closure: {"": "Closure;",
   call$1: function(Loading) {
     var t1, t2, result;
+    P.print("playing loading song");
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = Loading.get$0();
       t2 = H.Primitives_parseInt($.get$prevVolume(), null, null);
