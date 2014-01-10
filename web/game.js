@@ -3313,7 +3313,7 @@ toggleFps: function(nothing) {
 main: function() {
   B.init_audio();
   var t1 = new B.Asset(null, false, null, null);
-  t1._uri = "http://robertmcdermot.github.io/web/assets/system/loading.ogg";
+  t1._uri = "./assets/system/loading.ogg";
   t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
 },
 
@@ -4216,8 +4216,10 @@ main__closure0: {"": "Closure;",
 
 main__closure1: {"": "Closure;",
   call$1: function(_) {
-    var t1 = $.get$game();
-    return t1.start$0(t1);
+    var t1;
+    $.get$chat().init$0();
+    t1 = $.get$game();
+    t1.start$0(t1);
   },
   $is_args1: true
 },
@@ -4968,6 +4970,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
       for (t1 = new H.ListIterator($.get$audioExtensions(), 2, 0, null), loading = false; t1.moveNext$0();) {
         ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
+          H.printToConsole("loading audio extension");
           audio = W.AudioElement_AudioElement(null);
           audio.src = this._uri;
           t2 = C.EventStreamProvider_canplay.forElement$1(audio);
@@ -5199,7 +5202,6 @@ UserInterface: {"": "Object;commaFormatter,nameMeter,currantMeter,imgMeter,title
     B.setMaxEnergy("100");
     B.setMood("100");
     B.setMaxMood("100");
-    $.get$chat().init$0();
   },
   _setEnergy$1: function(newValue) {
     var t1, t2, t3, angle;
@@ -14970,15 +14972,15 @@ init.globalFunctions.NumberFormat_localeExists$closure = T.NumberFormat_localeEx
 W.Node.$isNode = true;
 W.Node.$isEventTarget = true;
 W.Node.$isObject = true;
-W.Touch.$isTouch = true;
-W.Touch.$isObject = true;
 J.JSInt.$isint = true;
 J.JSInt.$isnum = true;
 J.JSInt.$isObject = true;
-J.JSDouble.$isnum = true;
-J.JSDouble.$isObject = true;
 J.JSString.$isString = true;
 J.JSString.$isObject = true;
+W.Touch.$isTouch = true;
+W.Touch.$isObject = true;
+J.JSDouble.$isnum = true;
+J.JSDouble.$isObject = true;
 J.JSNumber.$isnum = true;
 J.JSNumber.$isObject = true;
 P.Duration.$isDuration = true;
@@ -15018,6 +15020,10 @@ G._GameLoopTouchEvent.$isObject = true;
 B.GameLoopTimer.$isObject = true;
 B.DigitalButton.$isObject = true;
 G.GameLoopTouch.$isObject = true;
+W.WheelEvent.$isMouseEvent = true;
+W.WheelEvent.$isEvent = true;
+W.WheelEvent.$isObject = true;
+G.GameLoopTouchPosition.$isObject = true;
 W.MessageEvent.$isMessageEvent = true;
 W.MessageEvent.$isEvent = true;
 W.MessageEvent.$isObject = true;
@@ -15025,10 +15031,6 @@ W.CloseEvent.$isEvent = true;
 W.CloseEvent.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
-W.WheelEvent.$isMouseEvent = true;
-W.WheelEvent.$isEvent = true;
-W.WheelEvent.$isObject = true;
-G.GameLoopTouchPosition.$isObject = true;
 P.ReceivePort.$isStream = true;
 P.ReceivePort.$asStream = [null];
 P.ReceivePort.$isObject = true;
@@ -15058,12 +15060,12 @@ W._Html5NodeValidator.$isNodeValidator = true;
 W._Html5NodeValidator.$isObject = true;
 W.EventTarget.$isEventTarget = true;
 W.EventTarget.$isObject = true;
+P.DateTime.$isDateTime = true;
+P.DateTime.$isObject = true;
 P.Future.$isFuture = true;
 P.Future.$isObject = true;
 P._DelayedEvent.$is_DelayedEvent = true;
 P._DelayedEvent.$isObject = true;
-P.DateTime.$isDateTime = true;
-P.DateTime.$isObject = true;
 P._EventSink.$is_EventSink = true;
 P._EventSink.$isObject = true;
 // getInterceptor methods
