@@ -3319,14 +3319,12 @@ main: function() {
 
 render: function() {
   var now, t1, t2, t3;
-  if ($.showFps) {
-    now = P.DateTime$_now();
-    t1 = C.JSNumber_methods.$tdiv(now.difference$1($.get$last())._duration, 1000);
-    t2 = $.get$fpsDisplay();
-    t3 = $.get$twoDigit();
-    t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
-    $.last = now;
-  }
+  now = P.DateTime$_now();
+  t1 = C.JSNumber_methods.$tdiv(now.difference$1($.get$last())._duration, 1000);
+  t2 = $.get$fpsDisplay();
+  t3 = $.get$twoDigit();
+  t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
+  $.last = now;
   B.refreshClock();
   t1 = $.currentStreet;
   t2 = J.getInterceptor(t1);
