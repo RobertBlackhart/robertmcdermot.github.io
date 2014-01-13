@@ -3311,10 +3311,14 @@ toggleFps: function(nothing) {
 },
 
 main: function() {
+  var loadStatus, loadStatus2, t1;
+  loadStatus = document.querySelector("#LoadStatus");
+  loadStatus2 = document.querySelector("#LoadStatus2");
+  loadStatus.textContent = "Loading Audio";
   B.init_audio();
-  var t1 = new E.Asset(null, false, null, null);
+  t1 = new E.Asset(null, false, null, null);
   t1._uri = "./assets/system/loading.ogg";
-  t1.load$0(t1).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1()).then$1(new B.main_closure2());
+  t1.load$1(t1, loadStatus2).then$1(new B.main_closure()).then$1(new B.main_closure0()).then$1(new B.main_closure1(loadStatus)).then$1(new B.main_closure2(loadStatus2));
 },
 
 render: function() {
@@ -3405,7 +3409,7 @@ load_audio_closure: {"": "Closure;c_0",
   call$1: function(_) {
     var soundCloudSongs = new E.Asset(null, false, null, null);
     soundCloudSongs._uri = "./assets/music.json";
-    soundCloudSongs.load$0(soundCloudSongs).then$1(new B.load_audio__closure(this.c_0));
+    soundCloudSongs.load$1(soundCloudSongs, document.querySelector("#LoadStatus2")).then$1(new B.load_audio__closure(this.c_0));
   },
   $is_args1: true
 },
@@ -4155,14 +4159,15 @@ main_closure0: {"": "Closure;",
   $is_args1: true
 },
 
-main_closure1: {"": "Closure;",
+main_closure1: {"": "Closure;loadStatus_0",
   call$1: function(_) {
-    return B.load_streets();
+    this.loadStatus_0.textContent = "Loading Streets";
+    B.load_streets();
   },
   $is_args1: true
 },
 
-main_closure2: {"": "Closure;",
+main_closure2: {"": "Closure;loadStatus2_1",
   call$1: function(_) {
     var t1;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
@@ -4178,7 +4183,7 @@ main_closure2: {"": "Closure;",
     B.updateConsole("For a list of commands type \"help\"");
     t1 = new E.Asset(null, false, null, null);
     t1._uri = "./assets/system/game_loaded.ogg";
-    t1.load$0(t1).then$1(new B.main__closure()).then$1(new B.main__closure0()).then$1(new B.main__closure1());
+    t1.load$1(t1, this.loadStatus2_1).then$1(new B.main__closure()).then$1(new B.main__closure0()).then$1(new B.main__closure1());
   },
   $is_args1: true
 },
@@ -14682,7 +14687,7 @@ Batch_load_closure: {"": "Closure;this_0,callback_1,percentEach_2",
 },
 
 Asset: {"": "Object;_asset,loaded,_uri,name",
-  load$0: function(_) {
+  load$1: function(_, statusElement) {
     var t1, t2, c, loading, ext, audio, $arguments, t3, t4, result;
     t1 = J.split$1$s(this._uri, "/");
     t2 = J.split$1$s(this._uri, "/").length - 1;
@@ -14692,9 +14697,11 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
     if (0 >= t2.length)
       throw H.ioore(t2, 0);
     this.name = t2[0];
-    t2 = null;
-    c = new P._AsyncCompleter(P._Future$(t2));
-    H.setRuntimeTypeInfo(c, [t2]);
+    if (statusElement != null)
+      statusElement.textContent = "Loading " + H.S(this.name) + " from " + H.S(this._uri);
+    t1 = null;
+    c = new P._AsyncCompleter(P._Future$(t1));
+    H.setRuntimeTypeInfo(c, [t1]);
     if (!this.loaded) {
       for (t1 = new H.ListIterator($.get$imageExtensions(), 6, 0, null), loading = false; t1.moveNext$0();) {
         ext = t1._dev$_current;
@@ -14768,6 +14775,9 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
       else
         throw H.wrapException("nothing is being loaded!");
     }
+  },
+  load$0: function($receiver) {
+    return this.load$1($receiver, null);
   },
   get$0: function() {
     if (!this.loaded)
