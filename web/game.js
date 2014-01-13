@@ -3421,7 +3421,7 @@ load_audio__closure: {"": "Closure;c_1",
     for (t1 = J.get$iterator$ax(J.get$keys$x(sc_list.get$0())); t1.moveNext$0();) {
       song = t1.get$current();
       t2 = $.get$ui().sc;
-      if (!sc_list.loaded) {
+      if (!sc_list.loaded || sc_list._asset == null) {
         H.throwExpression("Asset not yet loaded!");
         result = null;
       } else
@@ -4127,26 +4127,15 @@ showConsole_closure: {"": "Closure;",
 
 main_closure: {"": "Closure;",
   call$1: function(Loading) {
-    var t1, t2, result;
+    var t1, t2;
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = Loading.get$0();
       t2 = H.Primitives_parseInt($.get$prevVolume(), null, null);
       if (typeof t2 !== "number")
         throw t2.$div();
       J.set$volume$x(t1, t2 / 100);
-      t2 = document.querySelector("#LoadingScreen");
-      if (!Loading.loaded) {
-        H.throwExpression("Asset not yet loaded!");
-        result = null;
-      } else
-        result = Loading._asset;
-      t2.appendChild(result);
-      if (!Loading.loaded) {
-        H.throwExpression("Asset not yet loaded!");
-        result = null;
-      } else
-        result = Loading._asset;
-      J.play$0$x(result);
+      document.querySelector("#LoadingScreen").appendChild(Loading.get$0());
+      J.play$0$x(Loading.get$0());
     }
   },
   $is_args1: true
@@ -4190,19 +4179,14 @@ main_closure2: {"": "Closure;loadStatus2_1",
 
 main__closure: {"": "Closure;",
   call$1: function(doneLoading) {
-    var t1, t2, result;
+    var t1, t2;
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = doneLoading.get$0();
       t2 = H.Primitives_parseInt($.get$prevVolume(), null, null);
       if (typeof t2 !== "number")
         throw t2.$div();
       J.set$volume$x(t1, t2 / 100);
-      if (!doneLoading.loaded) {
-        H.throwExpression("Asset not yet loaded!");
-        result = null;
-      } else
-        result = doneLoading._asset;
-      J.play$0$x(result);
+      J.play$0$x(doneLoading.get$0());
     }
   },
   $is_args1: true
@@ -14719,7 +14703,6 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
         ext = t1._dev$_current;
         if (J.endsWith$1$s(this._uri, C.JSString_methods.$add(".", ext))) {
           audio = W.AudioElement_AudioElement(null);
-          audio.src = this._uri;
           t2 = C.EventStreamProvider_error0.forElement$1(audio);
           $arguments = H.substitute(t2.$as_EventStream, H.getRuntimeTypeInfo(t2));
           t3 = $arguments == null ? null : $arguments[0];
@@ -14736,6 +14719,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
           t3 = t2._onData;
           if (t3 != null && t2._pauseCount <= 0)
             J.addEventListener$3$x(t2._html$_target, t2._eventType, t3, t2._useCapture);
+          audio.src = this._uri;
           loading = true;
         }
       }
@@ -14780,7 +14764,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
     return this.load$1($receiver, null);
   },
   get$0: function() {
-    if (!this.loaded)
+    if (!this.loaded || this._asset == null)
       throw H.wrapException("Asset not yet loaded!");
     else
       return this._asset;

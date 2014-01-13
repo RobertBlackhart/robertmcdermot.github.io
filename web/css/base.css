@@ -12,12 +12,10 @@
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
   -webkit-user-drag: none;
   -moz-user-drag: none;
   -khtml-user-drag: none;
   -webkit-user-drag: none;
-  user-drag: none;
   
 }
 html, body {
@@ -34,12 +32,11 @@ html, body {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
   -webkit-user-drag: none;
   -moz-user-drag: none;
   -khtml-user-drag: none;
   -webkit-user-drag: none;
-  user-drag: none;} 
+} 
 a{color: purple;text-decoration: none;}
 .blu, #SCLink {color: #4d8c8b;}
 .red {color: #ba381a;}
