@@ -410,29 +410,6 @@ JSFixedArray: {"": "JSMutableArray;"},
 JSExtendableArray: {"": "JSMutableArray;", $isJSExtendableArray: true},
 
 JSNumber: {"": "num/Interceptor;",
-  compareTo$1: function(receiver, b) {
-    var bIsNegative;
-    if (receiver < b)
-      return -1;
-    else if (receiver > b)
-      return 1;
-    else if (receiver === b) {
-      if (receiver === 0) {
-        bIsNegative = this.get$isNegative(b);
-        if (this.get$isNegative(receiver) === bIsNegative)
-          return 0;
-        if (this.get$isNegative(receiver))
-          return -1;
-        return 1;
-      }
-      return 0;
-    } else if (isNaN(receiver)) {
-      if (isNaN(b))
-        return 0;
-      return 1;
-    } else
-      return -1;
-  },
   get$isNegative: function(receiver) {
     return receiver === 0 ? 1 / receiver < 0 : receiver < 0;
   },
@@ -3334,6 +3311,7 @@ main: function() {
   document.querySelector("#LoadStatus2");
   loadStatus.textContent = "Loading Audio";
   B.init_audio();
+  P.print("after init_audio()");
   B.load_audio().then$1(new B.main_closure(loadStatus));
 },
 
@@ -5112,14 +5090,13 @@ Camera: {"": "Object;x>,y>,zoom",
 
 Street: {"": "Object;label,_data,bounds",
   load$0: function(_) {
-    var t1, c, start, decosToLoad, t2, deco, t3, assetsToLoad, decos;
+    var t1, c, decosToLoad, t2, deco, t3, assetsToLoad, decos;
     t1 = null;
     c = new P._AsyncCompleter(P._Future$(t1));
     H.setRuntimeTypeInfo(c, [t1]);
     $.currentStreet = null;
     if (J.$index$asx(this._data, "music") != null)
       B.setSong(J.$index$asx(this._data, "music"));
-    start = P.DateTime$_now();
     decosToLoad = [];
     for (t1 = J.get$iterator$ax(J.get$values$x(J.$index$asx(J.$index$asx(this._data, "dynamic"), "layers"))); t1.moveNext$0();)
       for (t2 = J.get$iterator$ax(J.$index$asx(t1.get$current(), "decos")); t2.moveNext$0();) {
@@ -5128,7 +5105,7 @@ Street: {"": "Object;label,_data,bounds",
         if (!C.JSArray_methods.contains$1(decosToLoad, C.JSString_methods.$add("http://revdancatt.github.io/CAT422-glitch-location-viewer/img/scenery/", t3.$index(deco, "filename")) + ".png"))
           decosToLoad.push(C.JSString_methods.$add("http://revdancatt.github.io/CAT422-glitch-location-viewer/img/scenery/", t3.$index(deco, "filename")) + ".png");
       }
-    P.print("total: " + C.JSNumber_methods.toString$0(C.JSNumber_methods.compareTo$1(P.DateTime$_now().millisecondsSinceEpoch, start.millisecondsSinceEpoch)));
+    P.DateTime$_now();
     assetsToLoad = [];
     for (t1 = new H.ListIterator(decosToLoad, decosToLoad.length, 0, null); t1.moveNext$0();)
       assetsToLoad.push(new E.Asset(null, false, t1._current, null));
