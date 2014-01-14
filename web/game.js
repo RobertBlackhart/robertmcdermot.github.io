@@ -501,7 +501,7 @@ JSNumber: {"": "num/Interceptor;",
   },
   $gt: function(receiver, other) {
     if (typeof other !== "number")
-      throw H.wrapException(new P.ArgumentError(other));
+      throw H.wrapException(P.ArgumentError$(other));
     return receiver > other;
   },
   $le: function(receiver, other) {
@@ -511,7 +511,7 @@ JSNumber: {"": "num/Interceptor;",
   },
   $ge: function(receiver, other) {
     if (typeof other !== "number")
-      throw H.wrapException(new P.ArgumentError(other));
+      throw H.wrapException(P.ArgumentError$(other));
     return receiver >= other;
   },
   $isnum: true,
@@ -14751,7 +14751,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
       if (loading)
         return c.future;
       else
-        throw H.wrapException("nothing is being loaded!");
+        c.completeError$1("nothing is being loaded!");
     }
   },
   load$0: function($receiver) {
