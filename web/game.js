@@ -14679,6 +14679,7 @@ Asset: {"": "Object;_asset,loaded,_uri,name",
     if (0 >= t3.length)
       throw H.ioore(t3, 0);
     this.name = t3[0];
+    P.print("loading " + H.S(this.name) + " from " + t1);
     if (statusElement != null)
       statusElement.textContent = "Loading " + H.S(this.name) + " from " + t1;
     t2 = null;
