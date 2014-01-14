@@ -3439,6 +3439,20 @@ var $$ = {};
     B.updateConsole("Setting name to \"" + H.S(value) + "\"");
   }, "call$1", "setName$closure", 2, 0, 0],
   setSong: [function(value) {
+    var t1, t2, t3;
+    t1 = {};
+    t1.value_0 = value;
+    value = J.replaceAll$2$s(value, " ", "");
+    t1.value_0 = value;
+    t2 = $.get$ui().jukebox;
+    t2 = t2.$index(t2, value);
+    t3 = t1.value_0;
+    if (t2 == null)
+      B.loadSong(t3).then$1(new B.setSong_closure(t1));
+    else
+      B._playSong(t3);
+  }, "call$1", "setSong$closure", 2, 0, 0],
+  _playSong: function(value) {
     var testResult, t1, t2, title, artist;
     testResult = W.AudioElement_AudioElement(null).canPlayType("audio/mp3");
     if (testResult === "") {
@@ -3446,7 +3460,6 @@ var $$ = {};
       return;
     } else if (testResult === "maybe")
       B.updateConsole("SoundCloud: Your browser may or may not fully support mp3s");
-    value = J.replaceAll$2$s(value, " ", "");
     t1 = $.get$ui().currentSong;
     if (t1 != null)
       J.pause$0$x(t1);
@@ -3461,7 +3474,7 @@ var $$ = {};
     t2.titleMeter.textContent = title;
     t2.artistMeter.textContent = artist;
     J.set$href$x(document.querySelector("#SCLink"), J.$index$asx($.get$ui().currentSong.get$meta(), "permalink_url"));
-  }, "call$1", "setSong$closure", 2, 0, 0],
+  },
   setVolume: [function(value) {
     var intvalue, volumeSlider, t1;
     intvalue = H.Primitives_parseInt(value, null, null);
@@ -4235,6 +4248,12 @@ var $$ = {};
         B.runCommand(value);
         t1.set$value(input, "");
       }
+    }
+  },
+  setSong_closure: {
+    "": "Closure:3;box_0",
+    call$1: function(_) {
+      B._playSong(this.box_0.value_0);
     }
   },
   main_closure: {
@@ -5104,7 +5123,7 @@ var $$ = {};
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       $.currentStreet = null;
       if (J.$index$asx(this._data, "music") != null)
-        B.loadSong(J.$index$asx(this._data, "music")).then$1(new B.Street_load_closure(this));
+        B.setSong(J.$index$asx(this._data, "music"));
       decosToLoad = [];
       for (t1 = J.get$iterator$ax(J.get$values$x(J.$index$asx(J.$index$asx(this._data, "dynamic"), "layers"))); t1.moveNext$0();)
         for (t2 = J.get$iterator$ax(J.$index$asx(t1.get$current(), "decos")); t2.moveNext$0();) {
@@ -5118,7 +5137,7 @@ var $$ = {};
       for (t1 = new H.ListIterator(decosToLoad, decosToLoad.length, 0, null); t1.moveNext$0();)
         assetsToLoad.push(new E.Asset(null, false, t1._current, null));
       decos = new E.Batch(assetsToLoad, 0);
-      decos.load$1(decos, B.setStreetLoadBar$closure()).then$1(new B.Street_load_closure0(this, c));
+      decos.load$1(decos, B.setStreetLoadBar$closure()).then$1(new B.Street_load_closure(this, c));
       return c.future;
     },
     render$0: function() {
@@ -5185,16 +5204,10 @@ var $$ = {};
     $isStreet: true
   },
   Street_load_closure: {
-    "": "Closure:3;this_0",
-    call$1: function(_) {
-      return B.setSong(J.$index$asx(this.this_0._data, "music"));
-    }
-  },
-  Street_load_closure0: {
-    "": "Closure:3;this_1,c_2",
+    "": "Closure:3;this_0,c_1",
     call$1: function(_) {
       var t1, gradientCanvas, t2, g, t3, layer, e, t4, t5, deco, t6, t7, t8, t9, x, y, w, h;
-      t1 = this.this_1;
+      t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = W.CanvasElement_CanvasElement(null, null);
       gradientCanvas.id = "gradient";
@@ -5256,7 +5269,7 @@ var $$ = {};
           $.get$gameScreen().appendChild(e);
         }
       }
-      t2 = this.c_2.future;
+      t2 = this.c_1.future;
       if (t2._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
