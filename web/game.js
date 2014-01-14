@@ -3108,10 +3108,12 @@ init_audio: function() {
 
 load_audio: function() {
   var t1, c;
+  P.print("in load_audio");
   t1 = null;
   c = new P._AsyncCompleter(P._Future$(t1));
   H.setRuntimeTypeInfo(c, [t1]);
   t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.ogg", null), new E.Asset(null, false, "./assets/system/mention.ogg", null), new E.Asset(null, false, "./assets/system/game_loaded.ogg", null)], 0);
+  P.print("created new batch object");
   t1.load$1(t1, P.print$closure).then$1(new B.load_audio_closure(c));
   $.ui_sounds = t1;
   return c.future;
@@ -5110,6 +5112,7 @@ Street: {"": "Object;label,_data,bounds",
     for (t1 = new H.ListIterator(decosToLoad, decosToLoad.length, 0, null); t1.moveNext$0();)
       assetsToLoad.push(new E.Asset(null, false, t1._current, null));
     decos = new E.Batch(assetsToLoad, 0);
+    P.print("created new batch object");
     decos.load$1(decos, B.setStreetLoadBar$closure).then$1(new B.Street_load_closure(this));
     t1 = c.future;
     if (t1._state !== 0)
