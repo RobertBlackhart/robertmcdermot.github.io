@@ -14625,7 +14625,10 @@ _StringIterator: {"": "Object;input,index",
 ["loadie", "package:loadie/loadie.dart", , E, {
 Batch: {"": "Object;_toLoad,_percentDone",
   load$1: function(_, callback) {
-    var t1, t2, percentEach, futures, asset, $arguments, t3, t4, result;
+    var t1, c, t2, percentEach, futures, asset, $arguments, t3, t4, result;
+    t1 = null;
+    c = new P._AsyncCompleter(P._Future$(t1));
+    H.setRuntimeTypeInfo(c, [t1]);
     P.print("in load of Batch");
     t1 = this._toLoad;
     t2 = t1.length;
@@ -14646,7 +14649,12 @@ Batch: {"": "Object;_toLoad,_percentDone",
       futures.push(result);
     }
     P.print("waiting on futures to complete");
-    return P.Future_wait(futures);
+    t1 = P.Future_wait(futures);
+    t2 = c.future;
+    if (t2._state !== 0)
+      H.throwExpression(P.StateError$("Future already completed"));
+    t2._asyncComplete$1(t1);
+    return t2;
   }
 },
 
