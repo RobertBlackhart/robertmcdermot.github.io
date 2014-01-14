@@ -14625,13 +14625,16 @@ _StringIterator: {"": "Object;input,index",
 ["loadie", "package:loadie/loadie.dart", , E, {
 Batch: {"": "Object;_toLoad,_percentDone",
   load$1: function(_, callback) {
-    var t1, t2, percentEach, futures, $arguments, t3, t4, result;
+    var t1, t2, percentEach, futures, asset, $arguments, t3, t4, result;
+    P.print("in load of Batch");
     t1 = this._toLoad;
     t2 = t1.length;
     percentEach = 100 / t2;
     futures = [];
     for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();) {
-      t2 = J.load$0$x(t1._current);
+      asset = t1._current;
+      H.printToConsole("adding asset load to futures");
+      t2 = J.load$0$x(asset);
       t2.toString;
       $arguments = H.substitute(t2.$as_Future, H.getRuntimeTypeInfo(t2));
       t3 = $arguments == null ? null : $arguments[0];
@@ -14642,6 +14645,7 @@ Batch: {"": "Object;_toLoad,_percentDone",
       t2._addListener$1(result);
       futures.push(result);
     }
+    P.print("waiting on futures to complete");
     return P.Future_wait(futures);
   }
 },
