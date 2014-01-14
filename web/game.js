@@ -14625,28 +14625,16 @@ _StringIterator: {"": "Object;input,index",
 ["loadie", "package:loadie/loadie.dart", , E, {
 Batch: {"": "Object;_toLoad,_percentDone",
   load$1: function(_, callback) {
-    var t1, c, t2, percentEach, futures, asset, $arguments, t3, t4, result;
+    var t1, c, futures, asset, t2;
     t1 = null;
     c = new P._AsyncCompleter(P._Future$(t1));
     H.setRuntimeTypeInfo(c, [t1]);
     P.print("in load of Batch");
-    t1 = this._toLoad;
-    t2 = t1.length;
-    percentEach = 100 / t2;
     futures = [];
-    for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();) {
+    for (t1 = this._toLoad, t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
       asset = t1._current;
       H.printToConsole("adding asset load to futures");
-      t2 = J.load$0$x(asset);
-      t2.toString;
-      $arguments = H.substitute(t2.$as_Future, H.getRuntimeTypeInfo(t2));
-      t3 = $arguments == null ? null : $arguments[0];
-      t4 = $.Zone__current;
-      t4.toString;
-      result = new P._Future(0, t4, null, null, null, null, null, new E.Batch_load_closure(this, callback, percentEach));
-      result.$builtinTypeInfo = [t3];
-      t2._addListener$1(result);
-      futures.push(result);
+      futures.push(J.load$0$x(asset));
     }
     P.print("waiting on futures to complete");
     t1 = P.Future_wait(futures);
@@ -14656,15 +14644,6 @@ Batch: {"": "Object;_toLoad,_percentDone",
     t2._asyncComplete$1(t1);
     return t2;
   }
-},
-
-Batch_load_closure: {"": "Closure;this_0,callback_1,percentEach_2",
-  call$0: function() {
-    var t1 = this.this_0;
-    t1._percentDone = t1._percentDone + this.percentEach_2;
-    this.callback_1.call$1(C.JSNumber_methods.toInt$0(Math.floor(t1._percentDone)));
-  },
-  $is_void_: true
 },
 
 Asset: {"": "Object;_asset,loaded,_uri,name",
