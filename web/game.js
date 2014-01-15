@@ -3513,6 +3513,53 @@ var $$ = {};
     $.get$ui()._setMute$1($.get$isMuted());
     B.load_audio().then$1(new B.main_closure());
   }, "call$0", "main$closure", 0, 0, 4],
+  start: function() {
+    var t1, t2, t3;
+    J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
+    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure());
+    $.get$ui().init$0();
+    B.updateConsole("System: Initializing..");
+    t1 = new B.Input(null, null, null, null, null, false);
+    t1.Input$0();
+    t1.init$0();
+    $.playerInput = t1;
+    B.updateConsole("System: Initialization Finished.");
+    B.updateConsole("");
+    B.updateConsole("COU DEVELOPMENT CONSOLE");
+    B.updateConsole("For a list of commands type \"help\"");
+    t1 = $.get$game();
+    if (!t1._initialized) {
+      C.EventStreamProvider_webkitfullscreenerror.forTarget$1(document).listen$1(t1.get$_fullscreenError());
+      C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(t1.get$_fullscreenChange());
+      t2 = t1.element;
+      t2.toString;
+      t3 = C.EventStreamProvider_touchstart.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchStartEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+      t3 = C.EventStreamProvider_touchend.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchEndEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+      t3 = C.EventStreamProvider_touchcancel.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchEndEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+      t3 = C.EventStreamProvider_touchmove.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchMoveEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+      C.EventStreamProvider_keydown.forTarget$1(window).listen$1(t1.get$_keyDown());
+      C.EventStreamProvider_keyup.forTarget$1(window).listen$1(t1.get$_keyUp());
+      C.EventStreamProvider_resize.forTarget$1(window).listen$1(t1.get$_resize());
+      t3 = C.EventStreamProvider_mousemove.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseMove()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+      t3 = C.EventStreamProvider_mousedown.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseDown()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+      t3 = C.EventStreamProvider_mouseup.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseUp()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+      t2 = C._CustomEventStreamProvider__determineMouseWheelEventType.forElement$1(t2);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(t1.get$_mouseWheel()), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
+      t1._initialized = true;
+    }
+    t1._interrupt = false;
+    t2 = window;
+    t3 = t1.get$_requestAnimationFrame(t1);
+    C.Window_methods._ensureRequestAnimationFrame$0(t2);
+    t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
+  },
   resize: function() {
     var warningMessage, t1;
     document.querySelector("#GameScreen").clientHeight;
@@ -4272,55 +4319,38 @@ var $$ = {};
   main__closure0: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1, t2, t3;
+      var t1, playButton;
       $.get$chat().init$0();
-      J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
-      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.main___closure());
-      $.get$ui().init$0();
-      B.updateConsole("System: Initializing..");
-      t1 = new B.Input(null, null, null, null, null, false);
-      t1.Input$0();
-      t1.init$0();
-      $.playerInput = t1;
-      B.updateConsole("System: Initialization Finished.");
-      B.updateConsole("");
-      B.updateConsole("COU DEVELOPMENT CONSOLE");
-      B.updateConsole("For a list of commands type \"help\"");
-      t1 = $.get$game();
-      if (!t1._initialized) {
-        C.EventStreamProvider_webkitfullscreenerror.forTarget$1(document).listen$1(t1.get$_fullscreenError());
-        C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(t1.get$_fullscreenChange());
-        t2 = t1.element;
-        t2.toString;
-        t3 = C.EventStreamProvider_touchstart.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchStartEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-        t3 = C.EventStreamProvider_touchend.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchEndEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-        t3 = C.EventStreamProvider_touchcancel.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchEndEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-        t3 = C.EventStreamProvider_touchmove.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchMoveEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-        C.EventStreamProvider_keydown.forTarget$1(window).listen$1(t1.get$_keyDown());
-        C.EventStreamProvider_keyup.forTarget$1(window).listen$1(t1.get$_keyUp());
-        C.EventStreamProvider_resize.forTarget$1(window).listen$1(t1.get$_resize());
-        t3 = C.EventStreamProvider_mousemove.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseMove()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-        t3 = C.EventStreamProvider_mousedown.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseDown()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-        t3 = C.EventStreamProvider_mouseup.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseUp()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-        t2 = C._CustomEventStreamProvider__determineMouseWheelEventType.forElement$1(t2);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(t1.get$_mouseWheel()), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-        t1._initialized = true;
+      t1 = window.screen;
+      t1 = H.setRuntimeTypeInfo(new P.Rectangle(t1.availLeft, t1.availTop, t1.availWidth, t1.availHeight), [null]).width;
+      if (typeof t1 !== "number")
+        return t1.$gt();
+      if (t1 > 1200) {
+        t1 = window.screen;
+        t1 = H.setRuntimeTypeInfo(new P.Rectangle(t1.availLeft, t1.availTop, t1.availWidth, t1.availHeight), [null]).height;
+        if (typeof t1 !== "number")
+          return t1.$gt();
+        t1 = t1 > 325;
+      } else
+        t1 = false;
+      if (t1)
+        B.start();
+      else {
+        playButton = document.querySelector("#PlayButton");
+        playButton.hidden = false;
+        t1 = C.EventStreamProvider_click.forElement$1(playButton);
+        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.main___closure()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       }
-      t1._interrupt = false;
-      t2 = window;
-      t3 = t1.get$_requestAnimationFrame(t1);
-      C.Window_methods._ensureRequestAnimationFrame$0(t2);
-      t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
     }
   },
   main___closure: {
+    "": "Closure:3;",
+    call$1: function(_) {
+      J.play$0$x($.get$ui().currentSong);
+      B.start();
+    }
+  },
+  start_closure: {
     "": "Closure:4;",
     call$0: function() {
       var t1, doneLoading;
@@ -10519,6 +10549,10 @@ var $$ = {};
     },
     "%": "Range"
   },
+  Screen: {
+    "": "Interceptor;height=,width=",
+    "%": "Screen"
+  },
   ScriptElement0: {
     "": "HtmlElement;src},type%",
     "%": "HTMLScriptElement"
@@ -14390,12 +14424,12 @@ Isolate.$finishClasses($$, $, null);
 $$ = null;
 
 // Runtime type support
-W.Node.$isNode = true;
-W.Node.$isEventTarget = true;
-W.Node.$isObject = true;
 J.JSInt.$isint = true;
 J.JSInt.$isnum = true;
 J.JSInt.$isObject = true;
+W.Node.$isNode = true;
+W.Node.$isEventTarget = true;
+W.Node.$isObject = true;
 J.JSString.$isString = true;
 J.JSString.$isObject = true;
 W.Touch.$isTouch = true;
@@ -14422,15 +14456,15 @@ W.HttpRequest.$isObject = true;
 W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
 J.JSArray.$isObject = true;
+W.MouseEvent.$isMouseEvent = true;
+W.MouseEvent.$isEvent = true;
+W.MouseEvent.$isObject = true;
 W.TouchEvent.$isTouchEvent = true;
 W.TouchEvent.$isEvent = true;
 W.TouchEvent.$isObject = true;
 W.KeyboardEvent.$isKeyboardEvent = true;
 W.KeyboardEvent.$isEvent = true;
 W.KeyboardEvent.$isObject = true;
-W.MouseEvent.$isMouseEvent = true;
-W.MouseEvent.$isEvent = true;
-W.MouseEvent.$isObject = true;
 W.WheelEvent.$isMouseEvent = true;
 W.WheelEvent.$isEvent = true;
 W.WheelEvent.$isObject = true;
@@ -14479,10 +14513,10 @@ W.EventTarget.$isObject = true;
 W._Html5NodeValidator.$is_Html5NodeValidator = true;
 W._Html5NodeValidator.$isNodeValidator = true;
 W._Html5NodeValidator.$isObject = true;
-P.DateTime.$isDateTime = true;
-P.DateTime.$isObject = true;
 P.Future.$isFuture = true;
 P.Future.$isObject = true;
+P.DateTime.$isDateTime = true;
+P.DateTime.$isObject = true;
 P._DelayedEvent.$is_DelayedEvent = true;
 P._DelayedEvent.$isObject = true;
 P._EventSink.$is_EventSink = true;
