@@ -827,7 +827,7 @@ var $$ = {};
       if (typeof index !== "number" || Math.floor(index) !== index)
         throw H.wrapException(new P.ArgumentError(index));
       if (index >= receiver.length || index < 0)
-        throw H.wrapException(new P.RangeError("value " + H.S(index)));
+        throw H.wrapException(P.RangeError$value(index));
       return receiver[index];
     },
     $isString: true,
@@ -3286,7 +3286,7 @@ var $$ = {};
     "": "Object;start,input,pattern",
     $index: function(_, g) {
       if (!J.$eq(g, 0))
-        H.throwExpression(new P.RangeError("value " + H.S(g)));
+        H.throwExpression(P.RangeError$value(g));
       return this.pattern;
     },
     $isMatch: true
@@ -3496,11 +3496,8 @@ var $$ = {};
       $.showFps = true;
   }, "call$1", "toggleFps$closure", 2, 0, 3],
   main: [function() {
-    var loadStatus, t1;
-    loadStatus = document.querySelector("#LoadStatus");
-    document.querySelector("#LoadStatus2");
-    loadStatus.textContent = "Loading Audio";
-    t1 = $.get$prevVolume();
+    document.querySelector("#LoadStatus").textContent = "Loading Audio";
+    var t1 = $.get$prevVolume();
     if (t1 != null) {
       B.setVolume(t1);
       H.interceptedTypeCast(document.querySelector("#VolumeSlider"), "$isInputElement").value = $.get$prevVolume();
@@ -3752,7 +3749,9 @@ var $$ = {};
       t2 = t2.get$values(t2);
       t2.forEach$1(t2, new B.TabContent_resetMessages_closure(t1));
       document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
-    }, "call$1", "get$resetMessages", 2, 0, 25],
+    }, function() {
+      return this.resetMessages$1(null);
+    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 25, 9],
     getDiv$0: function() {
       var t1, span, t2, input, t3, map;
       t1 = document.createElement("div", null);
@@ -4259,7 +4258,7 @@ var $$ = {};
   main_closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      return B.load_streets().then$1(new B.main__closure()).then$1(new B.main__closure0()).then$1(new B.main__closure1());
+      return B.load_streets().then$1(new B.main__closure()).then$1(new B.main__closure0());
     }
   },
   main__closure: {
@@ -4273,7 +4272,8 @@ var $$ = {};
   main__closure0: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1;
+      var t1, t2, t3;
+      $.get$chat().init$0();
       J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
       P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.main___closure());
       $.get$ui().init$0();
@@ -4286,29 +4286,6 @@ var $$ = {};
       B.updateConsole("");
       B.updateConsole("COU DEVELOPMENT CONSOLE");
       B.updateConsole("For a list of commands type \"help\"");
-    }
-  },
-  main___closure: {
-    "": "Closure:4;",
-    call$0: function() {
-      var t1, doneLoading;
-      J.remove$0$ax(document.querySelector("#LoadingScreen"));
-      if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
-        t1 = $.get$ASSET();
-        doneLoading = t1.$index(t1, "game_loaded").get$0();
-        t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
-        if (typeof t1 !== "number")
-          return t1.$div();
-        J.set$volume$x(doneLoading, t1 / 100);
-        doneLoading.play();
-      }
-    }
-  },
-  main__closure1: {
-    "": "Closure:3;",
-    call$1: function(_) {
-      var t1, t2, t3;
-      $.get$chat().init$0();
       t1 = $.get$game();
       if (!t1._initialized) {
         C.EventStreamProvider_webkitfullscreenerror.forTarget$1(document).listen$1(t1.get$_fullscreenError());
@@ -4341,6 +4318,22 @@ var $$ = {};
       t3 = t1.get$_requestAnimationFrame(t1);
       C.Window_methods._ensureRequestAnimationFrame$0(t2);
       t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
+    }
+  },
+  main___closure: {
+    "": "Closure:4;",
+    call$0: function() {
+      var t1, doneLoading;
+      J.remove$0$ax(document.querySelector("#LoadingScreen"));
+      if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+        t1 = $.get$ASSET();
+        doneLoading = t1.$index(t1, "game_loaded").get$0();
+        t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
+        if (typeof t1 !== "number")
+          return t1.$div();
+        J.set$volume$x(doneLoading, t1 / 100);
+        doneLoading.play();
+      }
     }
   },
   Input: {
@@ -5874,14 +5867,14 @@ var $$ = {};
     $isError: true
   },
   _BroadcastStream: {
-    "": "_ControllerStream;_async$_controller",
+    "": "_ControllerStream;_controller",
     $as_ControllerStream: null,
     $asStream: null
   },
   _BroadcastSubscription: {
-    "": "_ControllerSubscription;_eventState,_async$_next@,_async$_previous?,_async$_controller,_async$_onData,_onError,_onDone,_zone,_state,_cancelFuture,_pending",
-    get$_async$_controller: function() {
-      return this._async$_controller;
+    "": "_ControllerSubscription;_eventState,_async$_next@,_async$_previous?,_controller,_async$_onData,_onError,_onDone,_zone,_state,_cancelFuture,_pending",
+    get$_controller: function() {
+      return this._controller;
     },
     _expectsEvent$1: function(eventId) {
       var t1 = this._eventState;
@@ -5997,7 +5990,7 @@ var $$ = {};
       var t1, link, id, link0;
       t1 = this._state;
       if ((t1 & 2) !== 0)
-        throw H.wrapException(P.StateError$("Cannot fire new event. Controller is already firing an event"));
+        throw H.wrapException(new P.StateError("Cannot fire new event. Controller is already firing an event"));
       link = this._async$_next;
       if (link === this)
         return;
@@ -6764,15 +6757,9 @@ var $$ = {};
       return new P.StateError("Cannot add event while adding a stream");
     },
     add$1: [function(_, value) {
-      var t1 = this._state;
-      if (t1 >= 4)
+      if (this._state >= 4)
         throw H.wrapException(this._badEventState$0());
-      if ((t1 & 1) !== 0)
-        this._sendData$1(value);
-      else if ((t1 & 3) === 0) {
-        t1 = this._ensurePendingEvents$0();
-        t1.add$1(t1, new P._DelayedData(value, null));
-      }
+      this._async$_add$1(value);
     }, "call$1", "get$add", 2, 0, function() {
       return H.computeSignature(function(T) {
         return {func: "void__T0", void: true, args: [T]};
@@ -6801,6 +6788,15 @@ var $$ = {};
         t1.add$1(t1, C.C__DelayedDone);
       }
       return this._doneFuture;
+    },
+    _async$_add$1: function(value) {
+      var t1 = this._state;
+      if ((t1 & 1) !== 0)
+        this._sendData$1(value);
+      else if ((t1 & 3) === 0) {
+        t1 = this._ensurePendingEvents$0();
+        t1.add$1(t1, new P._DelayedData(value, null));
+      }
     },
     _subscribe$1: function(cancelOnError) {
       var t1, t2, subscription, pendingEvents, addState;
@@ -6926,12 +6922,12 @@ var $$ = {};
     "": "_StreamController+_SyncStreamControllerDispatch;"
   },
   _ControllerStream: {
-    "": "_StreamImpl;_async$_controller",
+    "": "_StreamImpl;_controller",
     _createSubscription$1: function(cancelOnError) {
-      return this._async$_controller._subscribe$1(cancelOnError);
+      return this._controller._subscribe$1(cancelOnError);
     },
     get$hashCode: function(_) {
-      return (H.Primitives_objectHashCode(this._async$_controller) ^ 892482866) >>> 0;
+      return (H.Primitives_objectHashCode(this._controller) ^ 892482866) >>> 0;
     },
     $eq: function(_, other) {
       var t1;
@@ -6942,22 +6938,22 @@ var $$ = {};
       t1 = J.getInterceptor(other);
       if (typeof other !== "object" || other === null || !t1.$is_ControllerStream)
         return false;
-      return other._async$_controller === this._async$_controller;
+      return other._controller === this._controller;
     },
     $is_ControllerStream: true,
     $as_StreamImpl: null,
     $asStream: null
   },
   _ControllerSubscription: {
-    "": "_BufferingStreamSubscription;_async$_controller<,_async$_onData,_onError,_onDone,_zone,_state,_cancelFuture,_pending",
+    "": "_BufferingStreamSubscription;_controller<,_async$_onData,_onError,_onDone,_zone,_state,_cancelFuture,_pending",
     _onCancel$0: function() {
-      return this.get$_async$_controller()._recordCancel$1(this);
+      return this.get$_controller()._recordCancel$1(this);
     },
     _onPause$0: [function() {
-      this.get$_async$_controller()._recordPause$1(this);
+      this.get$_controller()._recordPause$1(this);
     }, "call$0", "get$_onPause", 0, 0, 6],
     _onResume$0: [function() {
-      this.get$_async$_controller()._recordResume$1(this);
+      this.get$_controller()._recordResume$1(this);
     }, "call$0", "get$_onResume", 0, 0, 6],
     $as_BufferingStreamSubscription: null,
     $asStreamSubscription: null
@@ -7239,11 +7235,11 @@ var $$ = {};
       subscription.onDone$1(onDone);
       return subscription;
     },
-    listen$3$onDone$onError: function(onData, onDone, onError) {
-      return this.listen$4$cancelOnError$onDone$onError(onData, null, onDone, onError);
-    },
     listen$1: function(onData) {
       return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
+    },
+    listen$3$onDone$onError: function(onData, onDone, onError) {
+      return this.listen$4$cancelOnError$onDone$onError(onData, null, onDone, onError);
     },
     _createSubscription$1: function(cancelOnError) {
       var t1, t2;
@@ -7279,7 +7275,7 @@ var $$ = {};
       return;
     },
     set$next: function(_) {
-      throw H.wrapException(P.StateError$("No events after a done."));
+      throw H.wrapException(new P.StateError("No events after a done."));
     }
   },
   _PendingEvents: {
@@ -8773,10 +8769,10 @@ var $$ = {};
       var it, result;
       it = this.get$iterator(this);
       if (!it.moveNext$0())
-        throw H.wrapException(P.StateError$("No elements"));
+        throw H.wrapException(new P.StateError("No elements"));
       result = it.get$current();
       if (it.moveNext$0())
-        throw H.wrapException(P.StateError$("More than one element"));
+        throw H.wrapException(new P.StateError("More than one element"));
       return result;
     },
     elementAt$1: function(_, index) {
@@ -8893,7 +8889,7 @@ var $$ = {};
         return;
       t1 = J.getInterceptor$asx(iterable);
       if (skipCount + $length > t1.get$length(iterable))
-        throw H.wrapException(P.StateError$("Not enough elements"));
+        throw H.wrapException(new P.StateError("Not enough elements"));
       if (skipCount < start)
         for (i = $length - 1; i >= 0; --i)
           this.$indexSet(receiver, start + i, t1.$index(iterable, skipCount + i));
@@ -11128,7 +11124,7 @@ var $$ = {};
     get$first: function(_) {
       var result = this._element.firstElementChild;
       if (result == null)
-        throw H.wrapException(P.StateError$("No elements"));
+        throw H.wrapException(new P.StateError("No elements"));
       return result;
     },
     $asList: function() {
@@ -11240,9 +11236,9 @@ var $$ = {};
       t1 = this._this;
       l = t1.childNodes.length;
       if (l === 0)
-        throw H.wrapException(P.StateError$("No elements"));
+        throw H.wrapException(new P.StateError("No elements"));
       if (l > 1)
-        throw H.wrapException(P.StateError$("More than one element"));
+        throw H.wrapException(new P.StateError("More than one element"));
       return t1.firstChild;
     },
     add$1: function(_, value) {
@@ -11367,18 +11363,10 @@ var $$ = {};
   _BeforeUnloadEventStreamProvider_forTarget_closure: {
     "": "Closure:3;controller_0",
     call$1: function($event) {
-      var wrapped, t1, t2;
-      wrapped = new W._BeforeUnloadEvent(null, $event);
-      t1 = this.controller_0;
+      var t1 = this.controller_0;
       if (t1._state >= 4)
         H.throwExpression(t1._badEventState$0());
-      t2 = t1._state;
-      if ((t2 & 1) !== 0)
-        t1._sendData$1(wrapped);
-      else if ((t2 & 3) === 0) {
-        t1 = t1._ensurePendingEvents$0();
-        t1.add$1(t1, new P._DelayedData(wrapped, null));
-      }
+      t1._async$_add$1(new W._BeforeUnloadEvent(null, $event));
       return;
     }
   },
@@ -11534,7 +11522,7 @@ var $$ = {};
         t4.$builtinTypeInfo = [null];
         pool.add$1(pool, t4);
       }
-      t1 = pool._controller;
+      t1 = pool._html$_controller;
       t1.toString;
       return H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$4$cancelOnError$onDone$onError(onData, cancelOnError, onDone, onError);
     },
@@ -11578,14 +11566,14 @@ var $$ = {};
     $asStreamSubscription: null
   },
   _StreamPool: {
-    "": "Object;_controller,_subscriptions",
+    "": "Object;_html$_controller,_subscriptions",
     add$1: function(_, stream) {
       var t1, t2;
       t1 = this._subscriptions;
       if (t1.containsKey$1(t1, stream))
         return;
-      t2 = this._controller;
-      t1.$indexSet(t1, stream, stream.listen$3$onDone$onError(t2.get$add(t2), new W._StreamPool_add_closure(this, stream), this._controller.get$addError()));
+      t2 = this._html$_controller;
+      t1.$indexSet(t1, stream, stream.listen$3$onDone$onError(t2.get$add(t2), new W._StreamPool_add_closure(this, stream), this._html$_controller.get$addError()));
     },
     remove$1: function(_, stream) {
       var t1, subscription;
@@ -11607,11 +11595,11 @@ var $$ = {};
         t1._collection$_length = 0;
         t1._modifications = t1._modifications + 1 & 67108863;
       }
-      t1 = this._controller;
+      t1 = this._html$_controller;
       t1.close$0(t1);
     }, "call$0", "get$close", 0, 0, 6],
     _html$_StreamPool$broadcast$0: function($T) {
-      this._controller = P.StreamController_StreamController$broadcast(this.get$close(this), null, true, $T);
+      this._html$_controller = P.StreamController_StreamController$broadcast(this.get$close(this), null, true, $T);
     }
   },
   _StreamPool_add_closure: {
@@ -12573,7 +12561,7 @@ var $$ = {};
       count = end - start;
       sourceLength = source.length;
       if (sourceLength - skipCount < count)
-        throw H.wrapException(P.StateError$("Not enough elements"));
+        throw H.wrapException(new P.StateError("Not enough elements"));
       if (skipCount !== 0 || sourceLength !== count)
         source = source.subarray(skipCount, skipCount + count);
       receiver.set(source, start);
@@ -13016,17 +13004,17 @@ var $$ = {};
     }, "call$1", "get$_keyUp", 2, 0, 44],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 25],
+    }, "call$1", "get$_mouseDown", 2, 0, 45],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 25],
+    }, "call$1", "get$_mouseUp", 2, 0, 45],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 25],
+    }, "call$1", "get$_mouseMove", 2, 0, 45],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 25],
+    }, "call$1", "get$_mouseWheel", 2, 0, 45],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
@@ -13136,7 +13124,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:45;this_0",
+    "": "Closure:46;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13149,7 +13137,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:45;this_0",
+    "": "Closure:46;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13162,7 +13150,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:45;this_0",
+    "": "Closure:46;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13235,7 +13223,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:46;copies_3",
+    "": "Closure:47;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14415,14 +14403,14 @@ J.JSNumber.$isObject = true;
 P.Duration.$isDuration = true;
 P.Duration.$isObject = true;
 P.Object.$isObject = true;
-P.Match.$isMatch = true;
-P.Match.$isObject = true;
 W.Element.$isElement = true;
 W.Element.$isNode = true;
 W.Element.$isEventTarget = true;
 W.Element.$isObject = true;
 W.BeforeUnloadEvent.$isEvent = true;
 W.BeforeUnloadEvent.$isObject = true;
+P.Match.$isMatch = true;
+P.Match.$isObject = true;
 W.Event.$isEvent = true;
 W.Event.$isObject = true;
 W.HttpRequest.$isEventTarget = true;
@@ -14447,19 +14435,19 @@ B.GameLoopTimer.$isObject = true;
 B.DigitalButton.$isObject = true;
 G.GameLoopTouch.$isObject = true;
 G.GameLoopTouchPosition.$isObject = true;
+P.Stream.$isStream = true;
+P.Stream.$isObject = true;
+P.StreamSubscription.$isStreamSubscription = true;
+P.StreamSubscription.$isObject = true;
+J.JSBool.$isbool = true;
+J.JSBool.$isObject = true;
 W.MessageEvent.$isMessageEvent = true;
 W.MessageEvent.$isEvent = true;
 W.MessageEvent.$isObject = true;
 W.CloseEvent.$isEvent = true;
 W.CloseEvent.$isObject = true;
-J.JSBool.$isbool = true;
-J.JSBool.$isObject = true;
 W.NodeValidator.$isNodeValidator = true;
 W.NodeValidator.$isObject = true;
-P.Stream.$isStream = true;
-P.Stream.$isObject = true;
-P.StreamSubscription.$isStreamSubscription = true;
-P.StreamSubscription.$isObject = true;
 H.RawReceivePortImpl.$isObject = true;
 H._IsolateEvent.$isObject = true;
 H._IsolateContext.$isObject = true;
@@ -14469,19 +14457,19 @@ P.Symbol.$isSymbol = true;
 P.Symbol.$isObject = true;
 P.StackTrace.$isStackTrace = true;
 P.StackTrace.$isObject = true;
-B.TabContent.$isTabContent = true;
-B.TabContent.$isObject = true;
+P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
+P._BufferingStreamSubscription.$is_EventSink = true;
+P._BufferingStreamSubscription.$isStreamSubscription = true;
+P._BufferingStreamSubscription.$isObject = true;
 P._BroadcastSubscription.$is_BroadcastSubscription = true;
 P._BroadcastSubscription.$is_BufferingStreamSubscription = true;
 P._BroadcastSubscription.$is_EventSink = true;
 P._BroadcastSubscription.$isStreamSubscription = true;
 P._BroadcastSubscription.$isObject = true;
-P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
-P._BufferingStreamSubscription.$is_EventSink = true;
-P._BufferingStreamSubscription.$isStreamSubscription = true;
-P._BufferingStreamSubscription.$isObject = true;
 Z.Scound.$isScound = true;
 Z.Scound.$isObject = true;
+B.TabContent.$isTabContent = true;
+B.TabContent.$isObject = true;
 W.EventTarget.$isEventTarget = true;
 W.EventTarget.$isObject = true;
 W._Html5NodeValidator.$is_Html5NodeValidator = true;
@@ -15473,7 +15461,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Event", args: [W.Event]},
 {func: "dynamic__Element", args: [W.Element]},
-{func: "void__MouseEvent", void: true, args: [W.MouseEvent]},
+{func: "void___MouseEvent", void: true, opt: [W.MouseEvent]},
 {func: "dynamic__TabContent", args: [B.TabContent]},
 {func: "dynamic__KeyboardEvent", args: [W.KeyboardEvent]},
 {func: "dynamic__MessageEvent", args: [W.MessageEvent]},
@@ -15493,6 +15481,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "void__Event", void: true, args: [W.Event]},
 {func: "void__TouchEvent", void: true, args: [W.TouchEvent]},
 {func: "void__KeyboardEvent", void: true, args: [W.KeyboardEvent]},
+{func: "void__MouseEvent", void: true, args: [W.MouseEvent]},
 {func: "dynamic__Touch", args: [W.Touch]},
 {func: "dynamic__int_dynamic", args: [J.JSInt, null]},
 ];
