@@ -3297,7 +3297,7 @@ var $$ = {};
   load_audio: function() {
     var c, t1;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.ogg", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
+    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.mp3", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
     t1.load$2(t1, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
     $.ui_sounds = t1;
     return c.future;
@@ -3625,9 +3625,6 @@ var $$ = {};
     call$1: function(_) {
       var t1, loading, soundCloudSongs;
       if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
-        t1 = $.get$ASSET();
-        if (t1.$index(t1, "loading") == null)
-          P.print("cannot play loading - null");
         t1 = $.get$ASSET();
         loading = t1.$index(t1, "loading").get$0();
         t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
@@ -4360,9 +4357,6 @@ var $$ = {};
       var t1, doneLoading;
       J.remove$0$ax(document.querySelector("#LoadingScreen"));
       if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
-        t1 = $.get$ASSET();
-        if (t1.$index(t1, "game_loaded") == null)
-          P.print("game_loaded is null");
         t1 = $.get$ASSET();
         doneLoading = t1.$index(t1, "game_loaded").get$0();
         t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
