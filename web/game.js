@@ -4273,9 +4273,9 @@ var $$ = {};
   main__closure0: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1, doneLoading;
+      var t1;
       J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
-      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), J.get$remove$ax(document.querySelector("#LoadingScreen")));
+      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.main___closure());
       $.get$ui().init$0();
       B.updateConsole("System: Initializing..");
       t1 = new B.Input(null, null, null, null, null, false);
@@ -4286,6 +4286,13 @@ var $$ = {};
       B.updateConsole("");
       B.updateConsole("COU DEVELOPMENT CONSOLE");
       B.updateConsole("For a list of commands type \"help\"");
+    }
+  },
+  main___closure: {
+    "": "Closure:4;",
+    call$0: function() {
+      var t1, doneLoading;
+      J.remove$0$ax(document.querySelector("#LoadingScreen"));
       if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
         t1 = $.get$ASSET();
         doneLoading = t1.$index(t1, "game_loaded").get$0();
@@ -10410,11 +10417,11 @@ var $$ = {};
     get$nodes: function(receiver) {
       return new W._ChildNodeListLazy(receiver);
     },
-    remove$0: [function(receiver) {
+    remove$0: function(receiver) {
       var t1 = receiver.parentNode;
       if (t1 != null)
         t1.removeChild(receiver);
-    }, "call$0", "get$remove", 0, 0, 6],
+    },
     replaceWith$1: function(receiver, otherNode) {
       var $parent, exception;
       try {
@@ -14737,9 +14744,6 @@ J.get$onClick$x = function(receiver) {
 };
 J.get$onLoad$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$onLoad(receiver);
-};
-J.get$remove$ax = function(receiver) {
-  return J.getInterceptor$ax(receiver).get$remove(receiver);
 };
 J.get$responseText$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$responseText(receiver);
