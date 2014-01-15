@@ -14172,7 +14172,7 @@ var $$ = {};
   Asset: {
     "": "Object;_asset,loaded,_uri,name",
     load$1: function(_, statusElement) {
-      var t1, t2, t3, c, loading, e, audio, t4, t5, result;
+      var t1, t2, t3, c, loading, e, line, audio, t4, t5, result;
       t1 = this._uri;
       t2 = J.getInterceptor$s(t1).split$1(t1, "/");
       t3 = t1.split("/").length - 1;
@@ -14200,6 +14200,8 @@ var $$ = {};
           return c.future;
         for (t2 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t2.moveNext$0();)
           if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", t2._current))) {
+            line = "loading " + H.S(this.name) + " from " + t1;
+            H.printString(line);
             audio = W.AudioElement_AudioElement(null);
             t2 = C.EventStreamProvider_error.forElement$1(audio);
             t3 = t2._eventType;
