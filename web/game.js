@@ -3298,7 +3298,7 @@ var $$ = {};
     var c, t1;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
     t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.ogg", null), new E.Asset(null, false, "./assets/system/mention.ogg", null), new E.Asset(null, false, "./assets/system/game_loaded.ogg", null)], 0);
-    t1.load$1(t1, P.print$closure()).then$1(new B.load_audio_closure(c));
+    t1.load$2(t1, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
     $.ui_sounds = t1;
     return c.future;
   },
@@ -14106,14 +14106,14 @@ var $$ = {};
   "": "",
   Batch: {
     "": "Object;_toLoad,_percentDone",
-    load$1: function(_, callback) {
+    load$2: function(_, callback, statusElement) {
       var t1, t2, percentEach, futures, t3, result;
       t1 = this._toLoad;
       t2 = t1.length;
       percentEach = 100 / t2;
       futures = [];
       for (t1 = new H.ListIterator(t1, t2, 0, null); t1.moveNext$0();) {
-        t2 = J.load$0$x(t1._current);
+        t2 = J.load$1$x(t1._current, statusElement);
         t2.toString;
         t3 = $.Zone__current;
         t3.toString;
@@ -14123,6 +14123,9 @@ var $$ = {};
         futures.push(result);
       }
       return P.Future_wait(futures, false);
+    },
+    load$1: function($receiver, callback) {
+      return this.load$2($receiver, callback, null);
     }
   },
   Batch_load_closure: {
@@ -14184,6 +14187,7 @@ var $$ = {};
             if (t2 != null && t5._pauseCount <= 0)
               J.addEventListener$3$x(t5._target, t3, t2, t4);
             audio.src = t1;
+            document.body.appendChild(audio);
             loading = true;
             break;
           }
@@ -14774,6 +14778,9 @@ J.lastIndexOf$1$asx = function(receiver, a0) {
 };
 J.load$0$x = function(receiver) {
   return J.getInterceptor$x(receiver).load$0(receiver);
+};
+J.load$1$x = function(receiver, a0) {
+  return J.getInterceptor$x(receiver).load$1(receiver, a0);
 };
 J.loop$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).loop$1(receiver, a0);
