@@ -4321,13 +4321,11 @@ var $$ = {};
     call$1: function(_) {
       var t1, playButton;
       $.get$chat().init$0();
-      t1 = window.screen;
-      t1 = H.setRuntimeTypeInfo(new P.Rectangle(t1.availLeft, t1.availTop, t1.availWidth, t1.availHeight), [null]).width;
+      t1 = window.innerWidth;
       if (typeof t1 !== "number")
         return t1.$gt();
-      if (t1 > 1200) {
-        t1 = window.screen;
-        t1 = H.setRuntimeTypeInfo(new P.Rectangle(t1.availLeft, t1.availTop, t1.availWidth, t1.availHeight), [null]).height;
+      if (t1 > 1220) {
+        t1 = window.innerHeight;
         if (typeof t1 !== "number")
           return t1.$gt();
         t1 = t1 > 325;
@@ -4336,8 +4334,9 @@ var $$ = {};
       if (t1)
         B.start();
       else {
+        J.set$display$x(document.querySelector("#LoadingFrame").style, "none");
         playButton = document.querySelector("#PlayButton");
-        playButton.hidden = false;
+        J.set$display$x(playButton.style, "inline-block");
         t1 = C.EventStreamProvider_click.forElement$1(playButton);
         H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.main___closure()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       }
@@ -10548,10 +10547,6 @@ var $$ = {};
       return receiver.toString();
     },
     "%": "Range"
-  },
-  Screen: {
-    "": "Interceptor;height=,width=",
-    "%": "Screen"
   },
   ScriptElement0: {
     "": "HtmlElement;src},type%",
