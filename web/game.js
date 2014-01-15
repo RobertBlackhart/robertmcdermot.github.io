@@ -3626,6 +3626,9 @@ var $$ = {};
       var t1, loading, soundCloudSongs;
       if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
         t1 = $.get$ASSET();
+        if (t1.$index(t1, "loading") == null)
+          P.print("cannot play loading - null");
+        t1 = $.get$ASSET();
         loading = t1.$index(t1, "loading").get$0();
         t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
         if (typeof t1 !== "number")
@@ -4357,6 +4360,9 @@ var $$ = {};
       var t1, doneLoading;
       J.remove$0$ax(document.querySelector("#LoadingScreen"));
       if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+        t1 = $.get$ASSET();
+        if (t1.$index(t1, "game_loaded") == null)
+          P.print("game_loaded is null");
         t1 = $.get$ASSET();
         doneLoading = t1.$index(t1, "game_loaded").get$0();
         t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
