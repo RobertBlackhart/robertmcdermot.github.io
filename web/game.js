@@ -4345,7 +4345,9 @@ var $$ = {};
   main___closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      J.play$0$x($.get$ui().currentSong);
+      var t1 = $.get$ui().currentSong;
+      if (t1 != null)
+        J.play$0$x(t1);
       B.start();
     }
   },
