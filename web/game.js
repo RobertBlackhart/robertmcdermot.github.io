@@ -5250,14 +5250,12 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(gameLoop) {
       var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
-      if ($.showFps) {
-        now = P.DateTime$_now();
-        t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
-        t2 = $.get$fpsDisplay();
-        t3 = $.get$twoDigit();
-        t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
-        $.last = now;
-      }
+      now = P.DateTime$_now();
+      t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
+      t2 = $.get$fpsDisplay();
+      t3 = $.get$twoDigit();
+      t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
+      $.last = now;
       sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
       year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
       sec -= year * 4435200;
