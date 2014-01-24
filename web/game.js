@@ -3294,7 +3294,7 @@ var $$ = {};
   load_audio: function() {
     var c, t1;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.mp3", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
+    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.ogg", null), new E.Asset(null, false, "./assets/system/mention.ogg", null), new E.Asset(null, false, "./assets/system/game_loaded.ogg", null)], 0);
     t1.load$2(t1, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
     $.ui_sounds = t1;
     return c.future;
