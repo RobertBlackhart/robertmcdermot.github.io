@@ -593,11 +593,8 @@ var $$ = {};
     $tdiv: function(receiver, other) {
       if ((receiver | 0) === receiver && (other | 0) === other && 0 !== other && -1 !== other)
         return receiver / other | 0;
-      else {
-        if (typeof other !== "number")
-          H.throwExpression(new P.ArgumentError(other));
+      else
         return this.toInt$0(receiver / other);
-      }
     },
     _tdivFast$1: function(receiver, other) {
       return (receiver | 0) === receiver ? receiver / other | 0 : this.toInt$0(receiver / other);
@@ -4282,7 +4279,7 @@ var $$ = {};
   main__closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1 = new B.Street(null, null, true, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), null);
+      var t1 = new B.Street(null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), null);
       t1.Street$1("test");
       return t1.load$0(t1).then$1(new B.main___closure());
     }
@@ -4507,7 +4504,6 @@ var $$ = {};
         this.this_3.rightKey = true;
       if (k.keyCode === 32 && !this.this_3.ignoreKeys)
         this.this_3.spaceKey = true;
-      $.currentStreet.dirty = true;
     }
   },
   Input_init_closure4: {
@@ -4551,7 +4547,6 @@ var $$ = {};
         t2.rightKey = true;
       else
         t2.rightKey = false;
-      $.currentStreet.dirty = true;
     }
   },
   Input_init_closure6: {
@@ -5078,11 +5073,10 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]");
       }
 
-      $.currentStreet.dirty = true;
     }, "call$1", "get$setCamera", 2, 0, 0]
   },
   Street: {
-    "": "Object;label,_data,dirty,belowPlayer,abovePlayer,bounds",
+    "": "Object;label,_data,belowPlayer,abovePlayer,bounds",
     load$0: function(_) {
       var c, decosToLoad, t1, t2, deco, t3, assetsToLoad, decos;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
@@ -5106,11 +5100,7 @@ var $$ = {};
       return c.future;
     },
     render$0: function() {
-      var t1, t2, t3, t4, t5, t6, t7, t8, t9, canvas;
-      if (!this.dirty)
-        return;
-      else
-        this.dirty = false;
+      var t1, t2, t3, t4, t5, t6, t7, canvas;
       t1 = $.get$camera();
       t2 = t1.x;
       t3 = this.bounds;
@@ -5125,43 +5115,31 @@ var $$ = {};
         return t2.$div();
       t1 = t1.y;
       t3 = t3.height;
-      t5 = t5.clientHeight;
+      t7 = t5.clientHeight;
       if (typeof t3 !== "number")
         return t3.$sub();
-      if (typeof t5 !== "number")
-        return H.iae(t5);
+      if (typeof t7 !== "number")
+        return H.iae(t7);
       if (typeof t1 !== "number")
         return t1.$div();
-      t7 = document.querySelector("#gradient").style;
-      t8 = this.bounds.height;
-      t9 = $.get$gameScreen().clientHeight;
-      if (typeof t8 !== "number")
-        return t8.$sub();
-      if (typeof t9 !== "number")
-        return H.iae(t9);
-      t5 = -(t1 / (t3 - t5));
-      J.set$top$x(t7, C.JSNumber_methods.toString$0((t8 - t9) * t5) + "px");
-      for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll("div"), null), t1 = t1.get$iterator(t1), t6 = -(t2 / (t4 - t6)); t1.moveNext$0();) {
-        canvas = t1._current;
-        t2 = J.getInterceptor$x(canvas);
-        if (t2.get$id(canvas) !== "playerCanvas") {
-          t2 = t2.get$clientWidth(canvas);
-          t3 = $.get$gameScreen();
-          t4 = t3.clientWidth;
-          if (typeof t2 !== "number")
-            return t2.$sub();
-          if (typeof t4 !== "number")
-            return H.iae(t4);
-          t7 = canvas.clientHeight;
-          t3 = t3.clientHeight;
-          if (typeof t7 !== "number")
-            return t7.$sub();
-          if (typeof t3 !== "number")
-            return H.iae(t3);
-          J.set$position$x(canvas.style, "absolute");
-          J.set$left$x(canvas.style, C.JSNumber_methods.toString$0((t2 - t4) * t6) + "px");
-          J.set$top$x(canvas.style, C.JSNumber_methods.toString$0((t7 - t3) * t5) + "px");
-        }
+      for (t5 = W._FrozenElementList$_wrap(t5.querySelectorAll(".streetcanvas"), null), t5 = t5.get$iterator(t5), t6 = -(t2 / (t4 - t6)), t7 = -(t1 / (t3 - t7)); t5.moveNext$0();) {
+        canvas = t5._current;
+        t1 = J.get$clientWidth$x(canvas);
+        t2 = $.get$gameScreen();
+        t3 = t2.clientWidth;
+        if (typeof t1 !== "number")
+          return t1.$sub();
+        if (typeof t3 !== "number")
+          return H.iae(t3);
+        t4 = canvas.clientHeight;
+        t2 = t2.clientHeight;
+        if (typeof t4 !== "number")
+          return t4.$sub();
+        if (typeof t2 !== "number")
+          return H.iae(t2);
+        J.set$position$x(canvas.style, "absolute");
+        J.set$left$x(canvas.style, C.JSNumber_methods.toString$0((t1 - t3) * t6) + "px");
+        J.set$top$x(canvas.style, C.JSNumber_methods.toString$0((t4 - t2) * t7) + "px");
       }
     },
     Street$1: function(streetName) {
@@ -5176,18 +5154,23 @@ var $$ = {};
   Street_load_closure: {
     "": "Closure:3;this_0,c_1",
     call$1: function(_) {
-      var t1, gradientCanvas, $top, bottom, t2, t3, layer, decoCanvas, deco, t4, t5, t6, t7, x, d;
+      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, t4, deco, t5, x, y, w, h, z, t6, d;
       t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = document.createElement("div", null);
+      t2 = J.get$classes$x(gradientCanvas);
+      t2.add$1(t2, "streetcanvas");
       gradientCanvas.id = "gradient";
       J.set$zIndex$x(gradientCanvas.style, C.JSInt_methods.toString$0(-100));
-      J.set$width$x(gradientCanvas.style, J.toString$0($.get$gameScreen().clientWidth) + "px");
+      J.set$width$x(gradientCanvas.style, J.toString$0(t1.bounds.width) + "px");
       J.set$height$x(gradientCanvas.style, J.toString$0(t1.bounds.height) + "px");
       J.set$position$x(gradientCanvas.style, "absolute");
       $top = J.$index$asx(J.$index$asx(t1._data, "gradient"), "top");
       bottom = J.$index$asx(J.$index$asx(t1._data, "gradient"), "bottom");
       J.set$background$x(gradientCanvas.style, "-webkit-linear-gradient(top, #" + H.S($top) + ", #" + H.S(bottom) + ")");
+      J.set$background$x(gradientCanvas.style, "-moz-linear-gradient(top, #" + H.S($top) + ", #" + H.S(bottom) + ")");
+      J.set$background$x(gradientCanvas.style, "-ms-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
+      J.set$background$x(gradientCanvas.style, "-o-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
       $.get$gameScreen().appendChild(gradientCanvas);
       for (t2 = J.$index$asx(J.$index$asx(t1._data, "dynamic"), "layers"), t3 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), t3.addAll$1(t3, t2), t3 = t3.get$values(t3), t3 = H.setRuntimeTypeInfo(new H.MappedIterator(null, J.get$iterator$ax(t3._iterable), t3._f), [H.getTypeArgumentByIndex(t3, 0), H.getTypeArgumentByIndex(t3, 1)]); t3.moveNext$0();) {
         layer = t3._current;
@@ -5197,39 +5180,38 @@ var $$ = {};
         t2 = J.getInterceptor$asx(layer);
         decoCanvas.id = t2.$index(layer, "name");
         J.set$zIndex$x(decoCanvas.style, J.toString$0(t2.$index(layer, "z")));
-        J.set$width$x(decoCanvas.style, J.toString$0(t1.bounds.width) + "px");
-        J.set$height$x(decoCanvas.style, J.toString$0(t1.bounds.height) + "px");
-        J.set$position$x(decoCanvas.style, "relative");
-        J.set$left$x(decoCanvas.style, "0px");
-        J.set$top$x(decoCanvas.style, "0px");
-        for (t2 = J.get$iterator$ax(t2.$index(layer, "decos")); t2.moveNext$0();) {
-          deco = t2.get$current();
-          t4 = J.getInterceptor$asx(deco);
-          t5 = t4.$index(deco, "x");
-          t6 = t1.bounds.width;
-          t7 = $.get$gameScreen().clientWidth;
-          if (typeof t6 !== "number")
-            return t6.$tdiv();
-          if (typeof t7 !== "number")
-            return H.iae(t7);
-          x = J.$add$ns(t5, C.JSNumber_methods.$tdiv(t6, t7));
-          J.$add$ns(J.$sub$n(t4.$index(deco, "y"), t4.$index(deco, "h")), J.$index$asx(J.$index$asx(t1._data, "dynamic"), "ground_y"));
-          t4.$index(deco, "w");
-          t4.$index(deco, "h");
-          t4.$index(deco, "z");
-          t5 = $.get$ASSET();
-          if (t5.$index(t5, t4.$index(deco, "filename")) != null) {
-            t5 = $.get$ASSET();
-            d = t5.$index(t5, t4.$index(deco, "filename")).get$0();
-            t4 = J.getInterceptor$x(d);
-            J.set$position$x(t4.get$style(d), "absolute");
-            t5 = J.getInterceptor(x);
-            J.set$left$x(t4.get$style(d), t5.toString$0(x) + "px");
-            J.set$top$x(t4.get$style(d), t5.toString$0(x) + "px");
-            decoCanvas.appendChild(d);
+        J.set$width$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "w")), "px"));
+        J.set$height$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "h")), "px"));
+        [].$builtinTypeInfo = [W.ImageElement];
+        for (t4 = J.get$iterator$ax(t2.$index(layer, "decos")); t4.moveNext$0();) {
+          deco = t4.get$current();
+          t5 = J.getInterceptor$asx(deco);
+          x = J.$sub$n(t5.$index(deco, "x"), J.$tdiv$n(t5.$index(deco, "w"), 2));
+          y = J.$add$ns(J.$sub$n(t5.$index(deco, "y"), t5.$index(deco, "h")), J.$index$asx(J.$index$asx(t1._data, "dynamic"), "ground_y"));
+          if (J.$eq(t2.$index(layer, "name"), "middleground")) {
+            y = J.$add$ns(y, t2.$index(layer, "h"));
+            x = J.$add$ns(x, J.$tdiv$n(t2.$index(layer, "w"), 2));
           }
-          $.get$gameScreen().appendChild(decoCanvas);
+          w = t5.$index(deco, "w");
+          h = t5.$index(deco, "h");
+          z = t5.$index(deco, "z");
+          t6 = $.get$ASSET();
+          if (t6.$index(t6, t5.$index(deco, "filename")) != null) {
+            t6 = $.get$ASSET();
+            d = t6.$index(t6, t5.$index(deco, "filename")).get$0();
+            t6 = J.getInterceptor$x(d);
+            J.set$position$x(t6.get$style(d), "absolute");
+            J.set$left$x(t6.get$style(d), J.toString$0(x) + "px");
+            J.set$top$x(t6.get$style(d), J.toString$0(y) + "px");
+            J.set$width$x(t6.get$style(d), J.$add$ns(J.toString$0(w), "px"));
+            J.set$height$x(t6.get$style(d), J.$add$ns(J.toString$0(h), "px"));
+            J.set$zIndex$x(t6.get$style(d), J.toString$0(z));
+            if (t5.$index(deco, "h_flip") != null && J.$eq(t5.$index(deco, "h_flip"), true))
+              J.set$transform$x(t6.get$style(d), "scale(-1,1)");
+            decoCanvas.appendChild(t6.clone$1(d, false));
+          }
         }
+        $.get$gameScreen().appendChild(decoCanvas);
       }
       t2 = this.c_1.future;
       if (t2._state !== 0)
@@ -9533,6 +9515,11 @@ var $$ = {};
     $sub: function(_, other) {
       return P.Duration$(0, 0, this._duration - other.get$_duration(), 0, 0, 0);
     },
+    $tdiv: function(_, quotient) {
+      if (quotient === 0)
+        throw H.wrapException(P.IntegerDivisionByZeroException$());
+      return P.Duration$(0, 0, C.JSNumber_methods.$tdiv(this._duration, quotient), 0, 0, 0);
+    },
     $lt: function(_, other) {
       return this._duration < other.get$_duration();
     },
@@ -9714,6 +9701,15 @@ var $$ = {};
     },
     static: {FormatException$: function(message) {
         return new P.FormatException(message);
+      }}
+  },
+  IntegerDivisionByZeroException: {
+    "": "Object;",
+    toString$0: function(_) {
+      return "IntegerDivisionByZeroException";
+    },
+    static: {IntegerDivisionByZeroException$: function() {
+        return new P.IntegerDivisionByZeroException();
       }}
   },
   Expando: {
@@ -10238,6 +10234,7 @@ var $$ = {};
   },
   ImageElement: {
     "": "HtmlElement;height},src},width}",
+    $isImageElement: true,
     "%": "HTMLImageElement"
   },
   InputElement: {
@@ -14356,6 +14353,12 @@ W.HttpRequest.$isObject = true;
 W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
 J.JSArray.$isObject = true;
+W.ImageElement.$isElement = true;
+W.ImageElement.$isNode = true;
+W.ImageElement.$isEventTarget = true;
+W.ImageElement.$isObject = true;
+J.JSBool.$isbool = true;
+J.JSBool.$isObject = true;
 W.MouseEvent.$isMouseEvent = true;
 W.MouseEvent.$isEvent = true;
 W.MouseEvent.$isObject = true;
@@ -14373,8 +14376,6 @@ B.GameLoopTimer.$isObject = true;
 B.DigitalButton.$isObject = true;
 G.GameLoopTouch.$isObject = true;
 G.GameLoopTouchPosition.$isObject = true;
-J.JSBool.$isbool = true;
-J.JSBool.$isObject = true;
 P.Stream.$isStream = true;
 P.Stream.$isObject = true;
 P.StreamSubscription.$isStreamSubscription = true;
@@ -14557,6 +14558,9 @@ J.$sub$n = function(receiver, a0) {
     return receiver - a0;
   return J.getInterceptor$n(receiver).$sub(receiver, a0);
 };
+J.$tdiv$n = function(receiver, a0) {
+  return J.getInterceptor$n(receiver).$tdiv(receiver, a0);
+};
 J._replaceChild$2$x = function(receiver, a0, a1) {
   return J.getInterceptor$x(receiver)._replaceChild$2(receiver, a0, a1);
 };
@@ -14616,6 +14620,9 @@ J.get$className$x = function(receiver) {
 };
 J.get$classes$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$classes(receiver);
+};
+J.get$clientWidth$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$clientWidth(receiver);
 };
 J.get$content$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$content(receiver);
@@ -15301,7 +15308,7 @@ Isolate.$lazy($, "chat", "chat", "get$chat", function() {
   return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
 });
 Isolate.$lazy($, "camera", "camera", "get$camera", function() {
-  var t1 = new B.Camera(500, 500, 0);
+  var t1 = new B.Camera(5000, 400, 0);
   $.get$COMMANDS().push(["camera", "sets the cameras position \"camera x,y\"", t1.get$setCamera()]);
   return t1;
 });
