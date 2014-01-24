@@ -718,11 +718,11 @@ var $$ = {};
     },
     substring$2: function(receiver, startIndex, endIndex) {
       if (typeof startIndex !== "number" || Math.floor(startIndex) !== startIndex)
-        H.throwExpression(P.ArgumentError$(startIndex));
+        H.throwExpression(new P.ArgumentError(startIndex));
       if (endIndex == null)
         endIndex = receiver.length;
       if (typeof endIndex !== "number" || Math.floor(endIndex) !== endIndex)
-        H.throwExpression(P.ArgumentError$(endIndex));
+        H.throwExpression(new P.ArgumentError(endIndex));
       if (startIndex < 0)
         throw H.wrapException(P.RangeError$value(startIndex));
       if (typeof endIndex !== "number")
@@ -3294,7 +3294,7 @@ var $$ = {};
   load_audio: function() {
     var c, t1;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.ogg", null), new E.Asset(null, false, "./assets/system/mention.ogg", null), new E.Asset(null, false, "./assets/system/game_loaded.ogg", null)], 0);
+    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.mp3", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
     t1.load$2(t1, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
     $.ui_sounds = t1;
     return c.future;
@@ -5154,7 +5154,7 @@ var $$ = {};
   Street_load_closure: {
     "": "Closure:3;this_0,c_1",
     call$1: function(_) {
-      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, t4, deco, t5, x, y, w, h, z, t6, d;
+      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, t4, deco, t5, x, y, w, h, z, t6, d, transform;
       t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = document.createElement("div", null);
@@ -5206,8 +5206,14 @@ var $$ = {};
             J.set$width$x(t6.get$style(d), J.$add$ns(J.toString$0(w), "px"));
             J.set$height$x(t6.get$style(d), J.$add$ns(J.toString$0(h), "px"));
             J.set$zIndex$x(t6.get$style(d), J.toString$0(z));
-            if (t5.$index(deco, "h_flip") != null && J.$eq(t5.$index(deco, "h_flip"), true))
-              J.set$transform$x(t6.get$style(d), "scale(-1,1)");
+            transform = t5.$index(deco, "h_flip") != null && J.$eq(t5.$index(deco, "h_flip"), true) ? "" + "scale(-1,1)" : "";
+            if (t5.$index(deco, "r") != null) {
+              t5 = t5.$index(deco, "r");
+              if (typeof t5 !== "number")
+                return H.iae(t5);
+              transform += " rotate(" + C.JSDouble_methods.toString$0(0.017453292519943295 * t5) + "deg)";
+            }
+            J.set$transform$x(t6.get$style(d), transform);
             decoCanvas.appendChild(t6.clone$1(d, false));
           }
         }
@@ -14072,7 +14078,7 @@ var $$ = {};
   Asset: {
     "": "Object;_asset,loaded,_uri,name",
     load$1: function(_, statusElement) {
-      var t1, t2, t3, c, loading, audio, t4, t5, result;
+      var t1, t2, t3, c, loading, ext, audio, t4, t5, filename, source, sourceAlt, result;
       t1 = this._uri;
       t2 = J.getInterceptor$s(t1).split$1(t1, "/");
       t3 = t1.split("/").length - 1;
@@ -14098,8 +14104,9 @@ var $$ = {};
           }
         if (loading)
           return c.future;
-        for (t2 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t2.moveNext$0();)
-          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", t2._current))) {
+        for (t2 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t2.moveNext$0();) {
+          ext = t2._current;
+          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", ext))) {
             audio = W.AudioElement_AudioElement(null);
             t2 = C.EventStreamProvider_error.forElement$1(audio);
             t3 = t2._eventType;
@@ -14117,11 +14124,35 @@ var $$ = {};
             t2 = t5._onData;
             if (t2 != null && t5._pauseCount <= 0)
               J.addEventListener$3$x(t5._target, t3, t2, t4);
-            audio.src = t1;
+            filename = C.JSString_methods.substring$2(t1, 0, C.JSString_methods.lastIndexOf$1(t1, "."));
+            if (J.$eq(ext, "ogg")) {
+              source = document.createElement("source", null);
+              t2 = J.getInterceptor$x(source);
+              t2.set$type(source, "audio/ogg");
+              t2.set$src(source, t1);
+              audio.appendChild(source);
+              sourceAlt = document.createElement("source", null);
+              t2 = J.getInterceptor$x(sourceAlt);
+              t2.set$type(sourceAlt, "audio/mp3");
+              t2.set$src(sourceAlt, filename + ".mp3");
+              audio.appendChild(sourceAlt);
+            } else {
+              source = document.createElement("source", null);
+              t2 = J.getInterceptor$x(source);
+              t2.set$type(source, "audio/mp3");
+              t2.set$src(source, t1);
+              audio.appendChild(source);
+              sourceAlt = document.createElement("source", null);
+              t2 = J.getInterceptor$x(sourceAlt);
+              t2.set$type(sourceAlt, "audio/ogg");
+              t2.set$src(sourceAlt, filename + ".ogg");
+              audio.appendChild(sourceAlt);
+            }
             document.body.appendChild(audio);
             loading = true;
             break;
           }
+        }
         if (loading)
           return c.future;
         for (t2 = new H.ListIterator($.get$textExtensions(), 1, 0, null); loading = false, t2.moveNext$0();)
@@ -14188,9 +14219,8 @@ var $$ = {};
       var t1;
       P.print("Error in loading Audio : " + H.S(this.this_2._uri));
       t1 = this.c_3.future;
-      if (t1._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
-      t1._asyncComplete$1(null);
+      if (t1._state === 0)
+        t1._asyncComplete$1(err);
     }
   },
   Asset_load_closure1: {
@@ -14203,9 +14233,8 @@ var $$ = {};
       t2._asset = this.audio_6;
       t2.loaded = true;
       t1 = this.c_5.future;
-      if (t1._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
-      t1._asyncComplete$1(t2);
+      if (t1._state === 0)
+        t1._asyncComplete$1(t2);
     }
   },
   Asset_load_closure2: {
@@ -15308,7 +15337,7 @@ Isolate.$lazy($, "chat", "chat", "get$chat", function() {
   return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
 });
 Isolate.$lazy($, "camera", "camera", "get$camera", function() {
-  var t1 = new B.Camera(5000, 400, 0);
+  var t1 = new B.Camera(0, 400, 0);
   $.get$COMMANDS().push(["camera", "sets the cameras position \"camera x,y\"", t1.get$setCamera()]);
   return t1;
 });
