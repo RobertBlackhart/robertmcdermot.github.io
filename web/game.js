@@ -3292,31 +3292,25 @@ var $$ = {};
 ["coUclient", "../../web/main.dart", , B, {
   "": "",
   load_audio: function() {
-    var c, t1, t2, t3, t4;
+    var c, t1, t2, t3, t4, result;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
     t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.mp3", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
     t2 = t1.load$2(t1, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
     t3 = $.Zone__current;
     t4 = P._registerErrorHandler(new B.load_audio_closure0(c), t3);
     t3.toString;
-    t2._addListener$1(H.setRuntimeTypeInfo(new P._Future(0, t3, null, null, null, null, t4, null), [null]));
+    result = H.setRuntimeTypeInfo(new P._Future(0, t3, null, null, null, null, t4, null), [null]);
+    t2._addListener$1(result);
+    result.whenComplete$1(new B.load_audio_closure1());
     $.ui_sounds = t1;
     return c.future;
   },
   loadSong: function($name) {
     var c, t1, t2;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-    t1 = $.get$ASSET();
-    if (t1.$index(t1, "music") != null) {
-      t1 = $.get$ui().sc;
-      t2 = $.get$ASSET();
-      t1.load$1(t1, J.$index$asx(J.$index$asx(t2.$index(t2, "music").get$0(), $name), "scid")).then$1(new B.loadSong_closure($name, c));
-    } else {
-      t1 = c.future;
-      if (t1._state !== 0)
-        H.throwExpression(new P.StateError("Future already completed"));
-      t1._asyncComplete$1(null);
-    }
+    t1 = $.get$ui().sc;
+    t2 = $.get$ASSET();
+    t1.load$1(t1, J.$index$asx(J.$index$asx(t2.$index(t2, "music").get$0(), $name), "scid")).then$1(new B.loadSong_closure($name, c));
     return c.future;
   },
   runCommand: function(commandToRun) {
@@ -3471,9 +3465,6 @@ var $$ = {};
     t1 = $.get$ui().currentSong;
     if (t1 != null)
       J.pause$0$x(t1);
-    t1 = $.get$ui().jukebox;
-    if (t1.$index(t1, value) == null)
-      return;
     t1 = $.get$ui();
     t2 = t1.jukebox;
     t1.currentSong = t2.$index(t2, value);
@@ -3669,7 +3660,7 @@ var $$ = {};
   load_audio_closure: {
     "": "Closure:3;c_0",
     call$1: function(_) {
-      var t1, loading, soundCloudSongs;
+      var t1, loading;
       if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
         t1 = $.get$ASSET();
         loading = t1.$index(t1, "loading").get$0();
@@ -3680,8 +3671,6 @@ var $$ = {};
         document.querySelector("#LoadingScreen").appendChild(loading);
         loading.play();
       }
-      soundCloudSongs = new E.Asset(null, false, "./assets/music.json", null);
-      soundCloudSongs.load$1(soundCloudSongs, document.querySelector("#LoadStatus2"));
       t1 = this.c_0.future;
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
@@ -3697,6 +3686,13 @@ var $$ = {};
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(e);
+    }
+  },
+  load_audio_closure1: {
+    "": "Closure:4;",
+    call$0: function() {
+      var soundCloudSongs = new E.Asset(null, false, "./assets/music.json", null);
+      soundCloudSongs.load$1(soundCloudSongs, document.querySelector("#LoadStatus2"));
     }
   },
   loadSong_closure: {
