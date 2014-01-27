@@ -4718,7 +4718,6 @@ var $$ = {};
     "": "Closure:29;this_0",
     call$1: function($event) {
       var t1, t2, t3;
-      P.print("onTouchStart");
       t1 = J.getInterceptor$x($event);
       t1.preventDefault$0($event);
       t2 = this.this_0;
@@ -4739,7 +4738,6 @@ var $$ = {};
     "": "Closure:29;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
-      P.print("onTouchMove");
       t1 = J.getInterceptor$x($event);
       t1.preventDefault$0($event);
       t2 = this.this_1;
