@@ -3530,7 +3530,14 @@ var $$ = {};
     }
   }, "call$0", "main$closure", 0, 0, 4],
   load: function() {
-    B.load_audio().then$1(new B.load_closure());
+    var t1, t2, t3, result;
+    t1 = B.load_audio();
+    t2 = $.Zone__current;
+    t3 = P._registerErrorHandler(new B.load_closure(), t2);
+    t2.toString;
+    result = H.setRuntimeTypeInfo(new P._Future(0, t2, null, null, null, null, t3, null), [null]);
+    t1._addListener$1(result);
+    result.then$1(new B.load_closure0());
   },
   start: function() {
     var t1, t2, t3;
@@ -4302,6 +4309,12 @@ var $$ = {};
     }
   },
   load_closure: {
+    "": "Closure:3;",
+    call$1: function(e) {
+      return P.print(e);
+    }
+  },
+  load_closure0: {
     "": "Closure:3;",
     call$1: function(_) {
       return B.load_streets().then$1(new B.load__closure());
