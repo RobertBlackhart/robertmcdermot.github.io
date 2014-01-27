@@ -5926,12 +5926,20 @@ var $$ = {};
       future._complete$1(value);
   },
   Timer_Timer: function(duration, callback) {
-    var t1 = $.Zone__current;
+    var t1, milliseconds;
+    t1 = $.Zone__current;
     if (t1 === C.C__RootZone) {
       t1.toString;
-      return P._rootCreateTimer(t1, null, t1, duration, callback);
+      if (C.C__RootZone !== t1)
+        callback = t1.bindCallback$1(callback);
+      milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
+      return H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
     }
-    return P._rootCreateTimer(t1, null, t1, duration, t1.bindCallback$2$runGuarded(callback, true));
+    callback = t1.bindCallback$2$runGuarded(callback, true);
+    if (C.C__RootZone !== t1)
+      callback = t1.bindCallback$1(callback);
+    milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
+    return H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
   },
   _createTimer: function(duration, callback) {
     var milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
@@ -5987,9 +5995,6 @@ var $$ = {};
   },
   _rootScheduleMicrotask: function($self, $parent, zone, f) {
     P._scheduleAsyncCallback(C.C__RootZone !== zone ? zone.bindCallback$1(f) : f);
-  },
-  _rootCreateTimer: function($self, $parent, zone, duration, callback) {
-    return P._createTimer(duration, C.C__RootZone !== zone ? zone.bindCallback$1(callback) : callback);
   },
   _AsyncError: {
     "": "Object;error>,stackTrace<",
@@ -10698,7 +10703,6 @@ var $$ = {};
   },
   SourceElement: {
     "": "HtmlElement;src},type%",
-    $isSourceElement: true,
     "%": "HTMLSourceElement"
   },
   SpeechRecognitionError: {
@@ -14297,86 +14301,85 @@ var $$ = {};
   Asset: {
     "": "Object;_asset,loaded,_uri,name",
     load$1: function(_, statusElement) {
-      var t1, t2, t3, c, loading, ext, audio, t4, t5, line, filename, source, sourceAlt, result;
-      t1 = this._uri;
-      t2 = J.getInterceptor$s(t1).split$1(t1, "/");
-      t3 = t1.split("/").length - 1;
-      if (t3 < 0 || t3 >= t2.length)
-        return H.ioore(t2, t3);
-      t3 = J.split$1$s(t2[t3], ".");
-      if (0 >= t3.length)
-        return H.ioore(t3, 0);
-      t3 = t3[0];
-      this.name = t3;
+      var t1, t2, t3, t4, c, loading, ext, audio, result, t5, filename, source, sourceAlt;
+      t1 = {};
+      t2 = this._uri;
+      t3 = J.getInterceptor$s(t2).split$1(t2, "/");
+      t4 = t2.split("/").length - 1;
+      if (t4 < 0 || t4 >= t3.length)
+        return H.ioore(t3, t4);
+      t4 = J.split$1$s(t3[t4], ".");
+      if (0 >= t4.length)
+        return H.ioore(t4, 0);
+      t4 = t4[0];
+      this.name = t4;
       if (statusElement != null)
-        statusElement.textContent = "Loading " + H.S(t3) + " from " + t1;
+        statusElement.textContent = "Loading " + H.S(t4) + " from " + t2;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       if (!this.loaded) {
-        for (t2 = new H.ListIterator($.get$imageExtensions(), 6, 0, null); loading = false, t2.moveNext$0();)
-          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", t2._current))) {
-            t2 = W.ImageElement_ImageElement(null, null, null);
-            this._asset = t2;
-            J.get$onLoad$x(t2).listen$1(new E.Asset_load_closure(this, c));
-            J.set$src$x(this._asset, t1);
+        t1.data_0 = false;
+        for (t3 = new H.ListIterator($.get$imageExtensions(), 6, 0, null); loading = false, t3.moveNext$0();)
+          if (C.JSString_methods.endsWith$1(t2, C.JSString_methods.$add(".", t3._current))) {
+            t3 = W.ImageElement_ImageElement(null, null, null);
+            this._asset = t3;
+            J.get$onLoad$x(t3).listen$1(new E.Asset_load_closure(this, c));
+            J.set$src$x(this._asset, t2);
             loading = true;
             break;
           }
         if (loading)
           return c.future;
-        for (t2 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t2.moveNext$0();) {
-          ext = t2._current;
-          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", ext))) {
+        for (t3 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t3.moveNext$0();) {
+          ext = t3._current;
+          if (C.JSString_methods.endsWith$1(t2, C.JSString_methods.$add(".", ext))) {
+            P.Timer_Timer(new P.Duration(2000000), new E.Asset_load_closure0(t1, c));
             audio = W.AudioElement_AudioElement(null);
-            t2 = C.EventStreamProvider_error.forElement$1(audio);
-            t3 = t2._eventType;
-            t4 = t2._useCapture;
-            t5 = new W._EventStreamSubscription(0, t2._target, t3, W._wrapZone(new E.Asset_load_closure0(this, c)), t4);
-            t5.$builtinTypeInfo = [H.getTypeArgumentByIndex(t2, 0)];
-            t2 = t5._onData;
-            if (t2 != null && t5._pauseCount <= 0)
-              J.addEventListener$3$x(t5._target, t3, t2, t4);
-            t2 = C.EventStreamProvider_canplaythrough.forElement$1(audio);
-            t3 = t2._eventType;
-            t4 = t2._useCapture;
-            t5 = new W._EventStreamSubscription(0, t2._target, t3, W._wrapZone(new E.Asset_load_closure1(this, c, audio)), t4);
-            t5.$builtinTypeInfo = [H.getTypeArgumentByIndex(t2, 0)];
-            t2 = t5._onData;
-            if (t2 != null && t5._pauseCount <= 0)
-              J.addEventListener$3$x(t5._target, t3, t2, t4);
-            line = "here loading " + t1;
-            H.printString(line);
-            filename = C.JSString_methods.substring$2(t1, 0, C.JSString_methods.lastIndexOf$1(t1, "."));
+            t3 = C.EventStreamProvider_loadeddata.forElement$1(audio);
+            t3 = t3.get$first(t3);
+            t4 = $.Zone__current;
+            t4.toString;
+            result = new P._Future(0, t4, null, null, new E.Asset_load_closure1(t1), null, P._registerErrorHandler(null, t4), null);
+            result.$builtinTypeInfo = [null];
+            t3._addListener$1(result);
+            t1 = C.EventStreamProvider_error.forElement$1(audio);
+            t3 = t1._eventType;
+            t4 = t1._useCapture;
+            t5 = new W._EventStreamSubscription(0, t1._target, t3, W._wrapZone(new E.Asset_load_closure2(this, c)), t4);
+            t5.$builtinTypeInfo = [H.getTypeArgumentByIndex(t1, 0)];
+            t1 = t5._onData;
+            if (t1 != null && t5._pauseCount <= 0)
+              J.addEventListener$3$x(t5._target, t3, t1, t4);
+            t1 = C.EventStreamProvider_canplaythrough.forElement$1(audio);
+            t3 = t1._eventType;
+            t4 = t1._useCapture;
+            t5 = new W._EventStreamSubscription(0, t1._target, t3, W._wrapZone(new E.Asset_load_closure3(this, c, audio)), t4);
+            t5.$builtinTypeInfo = [H.getTypeArgumentByIndex(t1, 0)];
+            t1 = t5._onData;
+            if (t1 != null && t5._pauseCount <= 0)
+              J.addEventListener$3$x(t5._target, t3, t1, t4);
+            filename = C.JSString_methods.substring$2(t2, 0, C.JSString_methods.lastIndexOf$1(t2, "."));
             if (J.$eq(ext, "ogg")) {
               source = document.createElement("source", null);
-              t2 = J.getInterceptor$x(source);
-              t2.set$type(source, "audio/ogg");
-              t2.set$src(source, t1);
+              t1 = J.getInterceptor$x(source);
+              t1.set$type(source, "audio/ogg");
+              t1.set$src(source, t2);
               audio.appendChild(source);
               sourceAlt = document.createElement("source", null);
-              t2 = J.getInterceptor$x(sourceAlt);
-              t2.set$type(sourceAlt, "audio/mpeg");
-              t2.set$src(sourceAlt, filename + ".mp3");
+              t1 = J.getInterceptor$x(sourceAlt);
+              t1.set$type(sourceAlt, "audio/mpeg");
+              t1.set$src(sourceAlt, filename + ".mp3");
               audio.appendChild(sourceAlt);
             } else {
-              H.printString("here");
               source = document.createElement("source", null);
-              t2 = J.getInterceptor$x(source);
-              t2.set$type(source, "audio/mpeg");
-              t2.set$src(source, t1);
+              t1 = J.getInterceptor$x(source);
+              t1.set$type(source, "audio/mpeg");
+              t1.set$src(source, t2);
               audio.appendChild(source);
-              result = audio.firstElementChild;
-              if (result == null)
-                H.throwExpression(new P.StateError("No elements"));
-              line = H.interceptedTypeCast(result, "$isSourceElement").src;
-              H.printString(line);
               sourceAlt = document.createElement("source", null);
-              t2 = J.getInterceptor$x(sourceAlt);
-              t2.set$type(sourceAlt, "audio/ogg");
-              t2.set$src(sourceAlt, filename + ".ogg");
+              t1 = J.getInterceptor$x(sourceAlt);
+              t1.set$type(sourceAlt, "audio/ogg");
+              t1.set$src(sourceAlt, filename + ".ogg");
               audio.appendChild(sourceAlt);
-              t2 = new W._ChildrenElementList(audio, audio.children);
-              line = H.interceptedTypeCast(t2.elementAt$1(t2, 1), "$isSourceElement").src;
-              H.printString(line);
             }
             document.body.appendChild(audio);
             loading = true;
@@ -14385,31 +14388,31 @@ var $$ = {};
         }
         if (loading)
           return c.future;
-        for (t2 = new H.ListIterator($.get$textExtensions(), 1, 0, null); loading = false, t2.moveNext$0();)
-          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", t2._current))) {
-            t2 = W.HttpRequest_getString(t1, null, null);
+        for (t1 = new H.ListIterator($.get$textExtensions(), 1, 0, null); loading = false, t1.moveNext$0();)
+          if (C.JSString_methods.endsWith$1(t2, C.JSString_methods.$add(".", t1._current))) {
+            t1 = W.HttpRequest_getString(t2, null, null);
             t3 = $.Zone__current;
             t3.toString;
-            result = new P._Future(0, t3, null, null, new E.Asset_load_closure2(this), null, P._registerErrorHandler(null, t3), null);
+            result = new P._Future(0, t3, null, null, new E.Asset_load_closure4(this), null, P._registerErrorHandler(null, t3), null);
             result.$builtinTypeInfo = [null];
-            t2._addListener$1(result);
-            t2 = c.future;
-            if (t2._state !== 0)
+            t1._addListener$1(result);
+            t1 = c.future;
+            if (t1._state !== 0)
               H.throwExpression(new P.StateError("Future already completed"));
-            t2._asyncComplete$1(result);
+            t1._asyncComplete$1(result);
             loading = true;
             break;
           }
         if (loading)
           return c.future;
-        for (t2 = $.get$jsonExtensions(), t2 = new H.ListIterator(t2, t2.length, 0, null); loading = false, t2.moveNext$0();)
-          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", t2._current))) {
-            t2 = W.HttpRequest_getString(t1, null, null);
+        for (t1 = $.get$jsonExtensions(), t1 = new H.ListIterator(t1, t1.length, 0, null); loading = false, t1.moveNext$0();)
+          if (C.JSString_methods.endsWith$1(t2, C.JSString_methods.$add(".", t1._current))) {
+            t1 = W.HttpRequest_getString(t2, null, null);
             t3 = $.Zone__current;
             t3.toString;
-            result = new P._Future(0, t3, null, null, new E.Asset_load_closure3(this, c), null, P._registerErrorHandler(null, t3), null);
+            result = new P._Future(0, t3, null, null, new E.Asset_load_closure5(this, c), null, P._registerErrorHandler(null, t3), null);
             result.$builtinTypeInfo = [null];
-            t2._addListener$1(result);
+            t1._addListener$1(result);
             loading = true;
             break;
           }
@@ -14430,64 +14433,78 @@ var $$ = {};
     }
   },
   Asset_load_closure: {
-    "": "Closure:3;this_0,c_1",
+    "": "Closure:3;this_1,c_2",
     call$1: function(_) {
       var t1, t2;
       t1 = $.get$ASSET();
-      t2 = this.this_0;
+      t2 = this.this_1;
       t1.$indexSet(t1, t2.name, t2);
       t2.loaded = true;
-      t1 = this.c_1.future;
+      t1 = this.c_2.future;
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(t2);
     }
   },
   Asset_load_closure0: {
-    "": "Closure:22;this_2,c_3",
+    "": "Closure:4;box_0,c_3",
+    call$0: function() {
+      if (!this.box_0.data_0)
+        this.c_3.completeError$1(null);
+    }
+  },
+  Asset_load_closure1: {
+    "": "Closure:3;box_0",
+    call$1: function(_) {
+      this.box_0.data_0 = true;
+      return true;
+    }
+  },
+  Asset_load_closure2: {
+    "": "Closure:22;this_4,c_5",
     call$1: function(err) {
       var t1;
-      P.print("Error in loading Audio : " + H.S(this.this_2._uri));
-      t1 = this.c_3.future;
+      P.print("Error in loading Audio : " + H.S(this.this_4._uri));
+      t1 = this.c_5.future;
       if (t1._state === 0)
         t1._asyncComplete$1(err);
     }
   },
-  Asset_load_closure1: {
-    "": "Closure:3;this_4,c_5,audio_6",
+  Asset_load_closure3: {
+    "": "Closure:3;this_6,c_7,audio_8",
     call$1: function(_) {
       var t1, t2;
       t1 = $.get$ASSET();
-      t2 = this.this_4;
+      t2 = this.this_6;
       t1.$indexSet(t1, t2.name, t2);
-      t2._asset = this.audio_6;
+      t2._asset = this.audio_8;
       t2.loaded = true;
-      t1 = this.c_5.future;
+      t1 = this.c_7.future;
       if (t1._state === 0)
         t1._asyncComplete$1(t2);
     }
   },
-  Asset_load_closure2: {
-    "": "Closure:0;this_7",
+  Asset_load_closure4: {
+    "": "Closure:0;this_9",
     call$1: function(string) {
       var t1, t2;
-      t1 = this.this_7;
+      t1 = this.this_9;
       t1._asset = string;
       t1.loaded = true;
       t2 = $.get$ASSET();
       t2.$indexSet(t2, t1.name, t1);
     }
   },
-  Asset_load_closure3: {
-    "": "Closure:0;this_8,c_9",
+  Asset_load_closure5: {
+    "": "Closure:0;this_10,c_11",
     call$1: function(string) {
       var t1, t2;
       t1 = $.get$ASSET();
-      t2 = this.this_8;
+      t2 = this.this_10;
       t1.$indexSet(t1, t2.name, t2);
       t2._asset = C.C_JsonCodec.decode$1(string);
       t2.loaded = true;
-      t1 = this.c_9.future;
+      t1 = this.c_11.future;
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(t2);
@@ -14596,11 +14613,11 @@ J.JSNumber.$isnum = true;
 J.JSNumber.$isObject = true;
 P.Duration.$isDuration = true;
 P.Duration.$isObject = true;
+P.Object.$isObject = true;
 W.Element.$isElement = true;
 W.Element.$isNode = true;
 W.Element.$isEventTarget = true;
 W.Element.$isObject = true;
-P.Object.$isObject = true;
 P.Match.$isMatch = true;
 P.Match.$isObject = true;
 W.BeforeUnloadEvent.$isEvent = true;
@@ -15141,6 +15158,7 @@ C.EventStreamProvider_keydown = new W.EventStreamProvider("keydown");
 C.EventStreamProvider_keyup = new W.EventStreamProvider("keyup");
 C.EventStreamProvider_load = new W.EventStreamProvider("load");
 C.EventStreamProvider_load0 = new W.EventStreamProvider("load");
+C.EventStreamProvider_loadeddata = new W.EventStreamProvider("loadeddata");
 C.EventStreamProvider_message = new W.EventStreamProvider("message");
 C.EventStreamProvider_mousedown = new W.EventStreamProvider("mousedown");
 C.EventStreamProvider_mousemove = new W.EventStreamProvider("mousemove");
