@@ -518,7 +518,7 @@ var $$ = {};
     static: {JSArray_JSArray$fixed: function($length, $E) {
         var t1;
         if (typeof $length !== "number" || Math.floor($length) !== $length || $length < 0)
-          throw H.wrapException(P.ArgumentError$("Length must be a non-negative integer: " + H.S($length)));
+          throw H.wrapException(new P.ArgumentError("Length must be a non-negative integer: " + H.S($length)));
         t1 = H.setRuntimeTypeInfo(new Array($length), [$E]);
         t1.fixed$length = init;
         return t1;
@@ -718,11 +718,11 @@ var $$ = {};
     },
     substring$2: function(receiver, startIndex, endIndex) {
       if (typeof startIndex !== "number" || Math.floor(startIndex) !== startIndex)
-        H.throwExpression(new P.ArgumentError(startIndex));
+        H.throwExpression(P.ArgumentError$(startIndex));
       if (endIndex == null)
         endIndex = receiver.length;
       if (typeof endIndex !== "number" || Math.floor(endIndex) !== endIndex)
-        H.throwExpression(new P.ArgumentError(endIndex));
+        H.throwExpression(P.ArgumentError$(endIndex));
       if (startIndex < 0)
         throw H.wrapException(P.RangeError$value(startIndex));
       if (typeof endIndex !== "number")
@@ -1833,14 +1833,14 @@ var $$ = {};
     for (t1 = new H.ListIterator(codePoints, codePoints.length, 0, null); t1.moveNext$0();) {
       i = t1._current;
       if (typeof i !== "number" || Math.floor(i) !== i)
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
       if (i <= 65535)
         a.push(i);
       else if (i <= 1114111) {
         a.push(55296 + (C.JSInt_methods._shrOtherPositive$1(i - 65536, 10) & 1023));
         a.push(56320 + (i & 1023));
       } else
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
     }
     return H.Primitives__fromCharCodeApply(a);
   },
@@ -1849,9 +1849,9 @@ var $$ = {};
     for (t1 = new H.ListIterator(charCodes, charCodes.length, 0, null); t1.moveNext$0();) {
       i = t1._current;
       if (typeof i !== "number" || Math.floor(i) !== i)
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
       if (i < 0)
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
       if (i > 65535)
         return H.Primitives_stringFromCodePoints(charCodes);
     }
@@ -3492,8 +3492,9 @@ var $$ = {};
       $.showFps = true;
   }, "call$1", "toggleFps$closure", 2, 0, 3],
   main: [function() {
+    var t1, playButton;
     document.querySelector("#LoadStatus").textContent = "Loading Audio";
-    var t1 = $.get$prevVolume();
+    t1 = $.get$prevVolume();
     if (t1 != null) {
       B.setVolume(t1);
       H.interceptedTypeCast(document.querySelector("#VolumeSlider"), "$isInputElement").value = $.get$prevVolume();
@@ -3507,8 +3508,30 @@ var $$ = {};
       $.get$localStorage().setItem("isMuted", "0");
     }
     $.get$ui()._setMute$1($.get$isMuted());
-    B.load_audio().then$1(new B.main_closure());
+    t1 = window.innerWidth;
+    if (typeof t1 !== "number")
+      return t1.$gt();
+    if (t1 > 1220) {
+      t1 = window.innerHeight;
+      if (typeof t1 !== "number")
+        return t1.$gt();
+      t1 = t1 > 325;
+    } else
+      t1 = false;
+    if (t1)
+      B.load();
+    else {
+      J.set$display$x(document.querySelector("#LoadingFrame").style, "none");
+      playButton = document.querySelector("#PlayButton");
+      playButton.textContent = "Load 'Er Up";
+      J.set$display$x(playButton.style, "inline-block");
+      t1 = C.EventStreamProvider_click.forElement$1(playButton);
+      t1.get$first(t1).then$1(new B.main_closure());
+    }
   }, "call$0", "main$closure", 0, 0, 4],
+  load: function() {
+    B.load_audio().then$1(new B.load_closure());
+  },
   start: function() {
     var t1, t2, t3;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
@@ -3645,7 +3668,7 @@ var $$ = {};
       t1.$indexSet(t1, this.name_0, s);
       t1 = this.c_1.future;
       if (t1._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(null);
     }
   },
@@ -4273,18 +4296,25 @@ var $$ = {};
   main_closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      return B.load_streets().then$1(new B.main__closure());
+      J.set$display$x(document.querySelector("#LoadingFrame").style, "block");
+      B.load();
     }
   },
-  main__closure: {
+  load_closure: {
+    "": "Closure:3;",
+    call$1: function(_) {
+      return B.load_streets().then$1(new B.load__closure());
+    }
+  },
+  load__closure: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1 = new B.Street(null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), null);
       t1.Street$1("test");
-      return t1.load$0(t1).then$1(new B.main___closure());
+      return t1.load$0(t1).then$1(new B.load___closure());
     }
   },
-  main___closure: {
+  load___closure: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1, playButton;
@@ -4307,13 +4337,14 @@ var $$ = {};
       else {
         J.set$display$x(document.querySelector("#LoadingFrame").style, "none");
         playButton = document.querySelector("#PlayButton");
+        playButton.textContent = "Play";
         J.set$display$x(playButton.style, "inline-block");
         t1 = C.EventStreamProvider_click.forElement$1(playButton);
-        H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.main____closure()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+        t1.get$first(t1).then$1(new B.load____closure());
       }
     }
   },
-  main____closure: {
+  load____closure: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1 = $.get$ui().currentSong;
@@ -5225,7 +5256,7 @@ var $$ = {};
       }
       t2 = this.c_1.future;
       if (t2._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
     }
   },
@@ -5241,7 +5272,7 @@ var $$ = {};
       t1 = P.Future_wait(toLoad, false);
       t2 = this.c_0.future;
       if (t2._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
     }
   },
@@ -5378,26 +5409,22 @@ var $$ = {};
           translateY = t2 - (t3 - translateY);
         }
       }
-      transform = "translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px) translateZ(0)";
+      transform = "translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
       if (!t1.facingRight)
         transform += " scale(-1,1)";
       J.set$transform$x(t1.playerCanvas.style, transform);
-      J.set$backfaceVisibility$x(t1.playerCanvas.style, "hidden");
-      J.set$perspective$x(t1.playerCanvas.style, "1000");
     }
   },
   closure0: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
       var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
-      if ($.showFps) {
-        now = P.DateTime$_now();
-        t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
-        t2 = $.get$fpsDisplay();
-        t3 = $.get$twoDigit();
-        t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
-        $.last = now;
-      }
+      now = P.DateTime$_now();
+      t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
+      t2 = $.get$fpsDisplay();
+      t3 = $.get$twoDigit();
+      t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
+      $.last = now;
       sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
       year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
       sec -= year * 4435200;
@@ -5550,7 +5577,7 @@ var $$ = {};
     $isEfficientLength: true
   },
   ListIterator: {
-    "": "Object;_iterable,_dev$_length,_index,_current",
+    "": "Object;_iterable,_length,_index,_current",
     get$current: function() {
       return this._current;
     },
@@ -5559,7 +5586,7 @@ var $$ = {};
       t1 = this._iterable;
       t2 = J.getInterceptor$asx(t1);
       $length = t2.get$length(t1);
-      if (this._dev$_length !== $length)
+      if (this._length !== $length)
         throw H.wrapException(P.ConcurrentModificationError$(t1));
       t3 = this._index;
       if (t3 >= $length) {
@@ -6248,7 +6275,7 @@ var $$ = {};
         if (remaining === 0) {
           t1 = t1.completer_0.future;
           if (t1._state !== 0)
-            H.throwExpression(P.StateError$("Future already completed"));
+            H.throwExpression(new P.StateError("Future already completed"));
           t1._asyncComplete$1(t2);
         }
       } else if (remaining === 0 && !this.eagerError_2)
@@ -6263,10 +6290,10 @@ var $$ = {};
     completeError$2: [function(error, stackTrace) {
       var t1;
       if (error == null)
-        throw H.wrapException(P.ArgumentError$("Error must not be null"));
+        throw H.wrapException(new P.ArgumentError("Error must not be null"));
       t1 = this.future;
       if (t1._state !== 0)
-        throw H.wrapException(P.StateError$("Future already completed"));
+        throw H.wrapException(new P.StateError("Future already completed"));
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
@@ -6387,7 +6414,7 @@ var $$ = {};
         return;
       }
       if (this._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       this._state = 1;
       t1 = this._zone;
       t1.toString;
@@ -6396,7 +6423,7 @@ var $$ = {};
     _asyncCompleteError$2: function(error, stackTrace) {
       var t1;
       if (this._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       this._state = 1;
       t1 = this._zone;
       t1.toString;
@@ -6698,6 +6725,14 @@ var $$ = {};
       t1.subscription_0 = this.listen$4$cancelOnError$onDone$onError(new P.Stream_isEmpty_closure(t1, future), true, new P.Stream_isEmpty_closure0(future), future.get$_completeError());
       return future;
     },
+    get$first: function(_) {
+      var t1, future;
+      t1 = {};
+      future = P._Future$(H.getRuntimeTypeArgument(this, "Stream", 0));
+      t1.subscription_0 = null;
+      t1.subscription_0 = this.listen$4$cancelOnError$onDone$onError(new P.Stream_first_closure(t1, this, future), true, new P.Stream_first_closure0(future), future.get$_completeError());
+      return future;
+    },
     elementAt$1: function(_, index) {
       var t1, future;
       t1 = {};
@@ -6793,6 +6828,23 @@ var $$ = {};
     "": "Closure:4;future_2",
     call$0: function() {
       this.future_2._complete$1(true);
+    }
+  },
+  Stream_first_closure: {
+    "": "Closure;box_0,this_1,future_2",
+    call$1: function(value) {
+      P._cancelAndValue(this.box_0.subscription_0, this.future_2, value);
+    },
+    $signature: function() {
+      return H.computeSignature(function(T) {
+        return {func: "dynamic__T", args: [T]};
+      }, this.this_1, "Stream");
+    }
+  },
+  Stream_first_closure0: {
+    "": "Closure:4;future_3",
+    call$0: function() {
+      this.future_3._completeError$1(new P.StateError("No elements"));
     }
   },
   Stream_elementAt_closure: {
@@ -6894,7 +6946,7 @@ var $$ = {};
     _subscribe$1: function(cancelOnError) {
       var t1, t2, subscription, pendingEvents, addState;
       if ((this._state & 3) !== 0)
-        throw H.wrapException(P.StateError$("Stream has already been listened to."));
+        throw H.wrapException(new P.StateError("Stream has already been listened to."));
       t1 = $.Zone__current;
       t2 = cancelOnError ? 1 : 0;
       subscription = H.setRuntimeTypeInfo(new P._ControllerSubscription(this, null, null, null, t1, t2, null, null), [null]);
@@ -8912,7 +8964,7 @@ var $$ = {};
     },
     get$first: function(receiver) {
       if (this.get$length(receiver) === 0)
-        throw H.wrapException(P.StateError$("No elements"));
+        throw H.wrapException(new P.StateError("No elements"));
       return this.$index(receiver, 0);
     },
     contains$1: function(receiver, element) {
@@ -9170,7 +9222,7 @@ var $$ = {};
     static: {"": "ListQueue__INITIAL_CAPACITY"}
   },
   _ListQueueIterator: {
-    "": "Object;_queue,_end,_modificationCount,_collection$_position,_collection$_current",
+    "": "Object;_queue,_end,_modificationCount,_position,_collection$_current",
     get$current: function() {
       return this._collection$_current;
     },
@@ -9179,7 +9231,7 @@ var $$ = {};
       t1 = this._queue;
       if (this._modificationCount !== t1._modificationCount)
         H.throwExpression(P.ConcurrentModificationError$(t1));
-      t2 = this._collection$_position;
+      t2 = this._position;
       if (t2 === this._end) {
         this._collection$_current = null;
         return false;
@@ -9189,7 +9241,7 @@ var $$ = {};
       if (t2 >= t3)
         return H.ioore(t1, t2);
       this._collection$_current = t1[t2];
-      this._collection$_position = (t2 + 1 & t3 - 1) >>> 0;
+      this._position = (t2 + 1 & t3 - 1) >>> 0;
       return true;
     }
   }
@@ -10813,15 +10865,15 @@ var $$ = {};
     get$first: function(receiver) {
       if (receiver.length > 0)
         return receiver[0];
-      throw H.wrapException(P.StateError$("No elements"));
+      throw H.wrapException(new P.StateError("No elements"));
     },
     get$single: function(receiver) {
       var len = receiver.length;
       if (len === 1)
         return receiver[0];
       if (len === 0)
-        throw H.wrapException(P.StateError$("No elements"));
-      throw H.wrapException(P.StateError$("More than one element"));
+        throw H.wrapException(new P.StateError("No elements"));
+      throw H.wrapException(new P.StateError("More than one element"));
     },
     elementAt$1: function(receiver, index) {
       if (index < 0 || index >= receiver.length)
@@ -11070,9 +11122,6 @@ var $$ = {};
   },
   CssStyleDeclarationBase: {
     "": "Object;",
-    set$backfaceVisibility: function(receiver, value) {
-      this.setProperty$3(receiver, P.Device_cssPrefix() + "backface-visibility", value, "");
-    },
     set$background: function(receiver, value) {
       this.setProperty$3(receiver, "background", value, "");
     },
@@ -11109,9 +11158,6 @@ var $$ = {};
     get$page: function(receiver) {
       return this.getPropertyValue$1(receiver, "page");
     },
-    set$perspective: function(receiver, value) {
-      this.setProperty$3(receiver, P.Device_cssPrefix() + "perspective", value, "");
-    },
     set$position: function(receiver, value) {
       this.setProperty$3(receiver, "position", value, "");
     },
@@ -11122,7 +11168,35 @@ var $$ = {};
       this.setProperty$3(receiver, "top", value, "");
     },
     set$transform: function(receiver, value) {
-      this.setProperty$3(receiver, P.Device_cssPrefix() + "transform", value, "");
+      var t1 = $.Device__cachedCssPrefix;
+      if (t1 == null) {
+        t1 = $.Device__isFirefox;
+        if (t1 == null) {
+          t1 = J.contains$2$asx(window.navigator.userAgent, "Firefox", 0);
+          $.Device__isFirefox = t1;
+        }
+        if (t1 === true) {
+          $.Device__cachedCssPrefix = "-moz-";
+          t1 = "-moz-";
+        } else {
+          t1 = $.Device__isIE;
+          if (t1 == null) {
+            t1 = P.Device_isOpera() !== true && J.contains$2$asx(window.navigator.userAgent, "Trident/", 0);
+            $.Device__isIE = t1;
+          }
+          if (t1 === true) {
+            $.Device__cachedCssPrefix = "-ms-";
+            t1 = "-ms-";
+          } else if (P.Device_isOpera() === true) {
+            $.Device__cachedCssPrefix = "-o-";
+            t1 = "-o-";
+          } else {
+            $.Device__cachedCssPrefix = "-webkit-";
+            t1 = "-webkit-";
+          }
+        }
+      }
+      this.setProperty$3(receiver, t1 + "transform", value, "");
     },
     set$width: function(receiver, value) {
       this.setProperty$3(receiver, "width", value, "");
@@ -11299,7 +11373,7 @@ var $$ = {};
       if (t2) {
         t2 = t3.future;
         if (t2._state !== 0)
-          H.throwExpression(P.StateError$("Future already completed"));
+          H.throwExpression(new P.StateError("Future already completed"));
         t2._asyncComplete$1(t1);
       } else
         t3.completeError$1(e);
@@ -11959,18 +12033,18 @@ var $$ = {};
     $isEvent: true
   },
   FixedSizeListIterator: {
-    "": "Object;_array,_length,_position,_html$_current",
+    "": "Object;_array,_html$_length,_html$_position,_html$_current",
     moveNext$0: function() {
       var nextPosition, t1;
-      nextPosition = this._position + 1;
-      t1 = this._length;
+      nextPosition = this._html$_position + 1;
+      t1 = this._html$_length;
       if (nextPosition < t1) {
         this._html$_current = J.$index$asx(this._array, nextPosition);
-        this._position = nextPosition;
+        this._html$_position = nextPosition;
         return true;
       }
       this._html$_current = null;
-      this._position = t1;
+      this._html$_position = t1;
       return false;
     },
     get$current: function() {
@@ -12797,21 +12871,29 @@ var $$ = {};
     static: {"": "GameLoopGamepad_BUTTON0,GameLoopGamepad_BUTTON1,GameLoopGamepad_BUTTON2,GameLoopGamepad_BUTTON3,GameLoopGamepad_BUTTON4,GameLoopGamepad_BUTTON5,GameLoopGamepad_BUTTON6"}
   },
   GameLoopHtml: {
-    "": "GameLoop;element,_frameCounter,_initialized,_interrupt,_previousFrameTime,_frameTime,_resizePending,_nextResize,game_loop_html$GameLoopHtml$maxAccumulatedTime,_accumulatedTime,_gameTime,_renderInterpolationFactor,resizeLimit,_pointerLock,_keyboard,_mouse,_gamepad0,_lastMousePos,_touchSet,_rafId,_touchEvents,_keyboardEvents,_mouseEvents,onRender,onResize,onFullscreenChange,onPointerLockChange,onTouchStart,onTouchEnd,onKeyDown,updateTimeStep,maxAccumulatedTime,_timers,onUpdate",
+    "": "GameLoop;element,_frameCounter,_initialized,_interrupt,_previousFrameTime,_frameTime,_resizePending,_nextResize,game_loop_html$GameLoopHtml$maxAccumulatedTime,_accumulatedTime,_gameTime,_renderInterpolationFactor,resizeLimit,processAllKeyboardEvents,_pointerLock,_keyboard,_mouse,_gamepad0,_lastMousePos,_touchSet,_rafId,_touchEvents,_keyboardEvents,_mouseEvents,onRender,onResize,onFullscreenChange,onPointerLockChange,onTouchStart,onTouchEnd,onKeyDown,_game_loop_html$_state,updateTimeStep,maxAccumulatedTime,_timers,onUpdate,_game_loop_common$_state",
     _processKeyboardEvents$0: function() {
-      var t1, t2, keyboardEvent, t3, t4, t5, buttonId;
-      for (t1 = this._keyboardEvents, t2 = new H.ListIterator(t1, t1.length, 0, null); t2.moveNext$0();) {
-        keyboardEvent = t2._current;
-        t3 = J.getInterceptor$x(keyboardEvent);
-        t4 = t3.get$type(keyboardEvent);
-        t5 = t3.get$timeStamp(keyboardEvent);
-        if (typeof t5 !== "number")
-          return t5.$div();
-        buttonId = t3.get$keyCode(keyboardEvent);
-        t3 = this._frameCounter;
-        this._keyboard.digitalButtonEvent$1(new B.DigitalButtonEvent(t4 === "keydown", t3, buttonId, t5 / 1000));
-      }
-      C.JSArray_methods.set$length(t1, 0);
+      var t1, t2, keyboardEvent, t3, t4, buttonId;
+      if (!this.processAllKeyboardEvents) {
+        t1 = document.activeElement;
+        t2 = document.body;
+        t2 = t1 == null ? t2 == null : t1 === t2;
+        t1 = t2;
+      } else
+        t1 = true;
+      if (t1)
+        for (t1 = this._keyboardEvents, t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
+          keyboardEvent = t1._current;
+          t2 = J.getInterceptor$x(keyboardEvent);
+          t3 = t2.get$type(keyboardEvent);
+          t4 = t2.get$timeStamp(keyboardEvent);
+          if (typeof t4 !== "number")
+            return t4.$div();
+          buttonId = t2.get$keyCode(keyboardEvent);
+          t2 = this._frameCounter;
+          this._keyboard.digitalButtonEvent$1(new B.DigitalButtonEvent(t3 === "keydown", t2, buttonId, t4 / 1000));
+        }
+      C.JSArray_methods.set$length(this._keyboardEvents, 0);
     },
     _processMouseEvents$0: function() {
       var t1, docElem, box, t2, canvasX, canvasY, t3, mouseEvent, t4, t5, t6, t7, t8, time, mouseX, x, y, clampX, withinCanvas, t9, clampY, dx, dy, buttonId;
@@ -12978,7 +13060,7 @@ var $$ = {};
             this._touchSet._move$1(touchEvent.get$event());
             break;
           default:
-            throw H.wrapException(P.StateError$("Invalid _GameLoopTouchEven type."));
+            throw H.wrapException(new P.StateError("Invalid _GameLoopTouchEven type."));
         }
       }
       C.JSArray_methods.set$length(t1, 0);
@@ -13006,7 +13088,6 @@ var $$ = {};
       t2 = this.get$_requestAnimationFrame(this);
       C.Window_methods._ensureRequestAnimationFrame$0(t1);
       this._rafId = C.Window_methods._html$_requestAnimationFrame$1(t1, W._wrapZone(t2));
-      this._frameCounter = this._frameCounter + 1;
       this._previousFrameTime = this._frameTime;
       t2 = P.DateTime$_now().millisecondsSinceEpoch / 1000;
       this._frameTime = t2;
@@ -13016,29 +13097,33 @@ var $$ = {};
       t1 = this._accumulatedTime + (t2 - t1);
       this._accumulatedTime = t1;
       t2 = this.game_loop_html$GameLoopHtml$maxAccumulatedTime;
-      if (t1 > t2)
+      if (t1 > t2) {
         this._accumulatedTime = t2;
-      this._processKeyboardEvents$0();
-      this._processMouseEvents$0();
-      this._processTouchEvents$0();
-      for (t1 = this.updateTimeStep; this._accumulatedTime >= t1;) {
+        t1 = t2;
+      }
+      for (t2 = this.updateTimeStep; t1 >= t2;) {
+        this._frameCounter = this._frameCounter + 1;
+        this._processKeyboardEvents$0();
+        this._processMouseEvents$0();
+        this._processTouchEvents$0();
         this.processTimers$0();
-        this._gameTime = this._gameTime + t1;
+        this._gameTime = this._gameTime + t2;
         if (this.onUpdate != null)
           this.onUpdate$1(this);
-        this._accumulatedTime = this._accumulatedTime - t1;
+        t1 = this._accumulatedTime - t2;
+        this._accumulatedTime = t1;
       }
       if (this._resizePending)
-        t2 = false;
+        t1 = false;
       else
-        t2 = false;
-      if (t2) {
+        t1 = false;
+      if (t1) {
         this.onResize$1(this, this);
         this._nextResize = this._frameTime + this.resizeLimit;
         this._resizePending = false;
       }
       if (this.onRender != null) {
-        this._renderInterpolationFactor = this._accumulatedTime / t1;
+        this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
     }, "call$1", "get$_requestAnimationFrame", 2, 0, 41],
@@ -13258,37 +13343,6 @@ var $$ = {};
     if (t1 == null) {
       t1 = J.contains$2$asx(window.navigator.userAgent, "Opera", 0);
       $.Device__isOpera = t1;
-    }
-    return t1;
-  },
-  Device_cssPrefix: function() {
-    var t1 = $.Device__cachedCssPrefix;
-    if (t1 == null) {
-      t1 = $.Device__isFirefox;
-      if (t1 == null) {
-        t1 = J.contains$2$asx(window.navigator.userAgent, "Firefox", 0);
-        $.Device__isFirefox = t1;
-      }
-      if (t1 === true) {
-        $.Device__cachedCssPrefix = "-moz-";
-        t1 = "-moz-";
-      } else {
-        t1 = $.Device__isIE;
-        if (t1 == null) {
-          t1 = P.Device_isOpera() !== true && J.contains$2$asx(window.navigator.userAgent, "Trident/", 0);
-          $.Device__isIE = t1;
-        }
-        if (t1 === true) {
-          $.Device__cachedCssPrefix = "-ms-";
-          t1 = "-ms-";
-        } else if (P.Device_isOpera() === true) {
-          $.Device__cachedCssPrefix = "-o-";
-          t1 = "-o-";
-        } else {
-          $.Device__cachedCssPrefix = "-webkit-";
-          t1 = "-webkit-";
-        }
-      }
     }
     return t1;
   },
@@ -14291,13 +14345,13 @@ var $$ = {};
               audio.appendChild(source);
               sourceAlt = document.createElement("source", null);
               t2 = J.getInterceptor$x(sourceAlt);
-              t2.set$type(sourceAlt, "audio/mp3");
+              t2.set$type(sourceAlt, "audio/mpeg");
               t2.set$src(sourceAlt, filename + ".mp3");
               audio.appendChild(sourceAlt);
             } else {
               source = document.createElement("source", null);
               t2 = J.getInterceptor$x(source);
-              t2.set$type(source, "audio/mp3");
+              t2.set$type(source, "audio/mpeg");
               t2.set$src(source, t1);
               audio.appendChild(source);
               sourceAlt = document.createElement("source", null);
@@ -14323,7 +14377,7 @@ var $$ = {};
             t2._addListener$1(result);
             t2 = c.future;
             if (t2._state !== 0)
-              H.throwExpression(P.StateError$("Future already completed"));
+              H.throwExpression(new P.StateError("Future already completed"));
             t2._asyncComplete$1(result);
             loading = true;
             break;
@@ -14367,7 +14421,7 @@ var $$ = {};
       t2.loaded = true;
       t1 = this.c_1.future;
       if (t1._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(t2);
     }
   },
@@ -14417,7 +14471,7 @@ var $$ = {};
       t2.loaded = true;
       t1 = this.c_9.future;
       if (t1._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(t2);
     }
   }
@@ -14498,7 +14552,7 @@ var $$ = {};
       t3.Scound$2(t2, t1);
       t1 = this.completer_2.future;
       if (t1._state !== 0)
-        H.throwExpression(P.StateError$("Future already completed"));
+        H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(t3);
     }
   }
@@ -14533,22 +14587,22 @@ P.Match.$isMatch = true;
 P.Match.$isObject = true;
 W.BeforeUnloadEvent.$isEvent = true;
 W.BeforeUnloadEvent.$isObject = true;
+W.MouseEvent.$isMouseEvent = true;
+W.MouseEvent.$isEvent = true;
+W.MouseEvent.$isObject = true;
+J.JSArray.$isObject = true;
 W.Event.$isEvent = true;
 W.Event.$isObject = true;
 W.HttpRequest.$isEventTarget = true;
 W.HttpRequest.$isObject = true;
 W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
-J.JSArray.$isObject = true;
 W.ImageElement.$isElement = true;
 W.ImageElement.$isNode = true;
 W.ImageElement.$isEventTarget = true;
 W.ImageElement.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
-W.MouseEvent.$isMouseEvent = true;
-W.MouseEvent.$isEvent = true;
-W.MouseEvent.$isObject = true;
 W.TouchEvent.$isTouchEvent = true;
 W.TouchEvent.$isEvent = true;
 W.TouchEvent.$isObject = true;
@@ -14577,12 +14631,12 @@ W.NodeValidator.$isObject = true;
 H.RawReceivePortImpl.$isObject = true;
 H._IsolateEvent.$isObject = true;
 H._IsolateContext.$isObject = true;
-E.Asset.$isAsset = true;
-E.Asset.$isObject = true;
 P.Symbol.$isSymbol = true;
 P.Symbol.$isObject = true;
 P.StackTrace.$isStackTrace = true;
 P.StackTrace.$isObject = true;
+E.Asset.$isAsset = true;
+E.Asset.$isObject = true;
 Z.Scound.$isScound = true;
 Z.Scound.$isObject = true;
 P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
@@ -14943,9 +14997,6 @@ J.replaceWith$1$x = function(receiver, a0) {
 J.send$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).send$1(receiver, a0);
 };
-J.set$backfaceVisibility$x = function(receiver, value) {
-  return J.getInterceptor$x(receiver).set$backfaceVisibility(receiver, value);
-};
 J.set$background$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$background(receiver, value);
 };
@@ -14990,9 +15041,6 @@ J.set$opacity$x = function(receiver, value) {
 };
 J.set$paddingRight$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$paddingRight(receiver, value);
-};
-J.set$perspective$x = function(receiver, value) {
-  return J.getInterceptor$x(receiver).set$perspective(receiver, value);
 };
 J.set$position$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$position(receiver, value);
@@ -15520,7 +15568,7 @@ Isolate.$lazy($, "gameCanvas", "gameCanvas", "get$gameCanvas", function() {
 Isolate.$lazy($, "game", "game", "get$game", function() {
   var t1, t2;
   t1 = $.get$gameCanvas();
-  t2 = new G.GameLoopHtml(t1, 0, false, false, null, 0, false, 0, 0.03, 0, 0, 0, 0.05, null, null, null, null, H.setRuntimeTypeInfo(new P.Point(0, 0), [null]), null, null, H.setRuntimeTypeInfo([], [G._GameLoopTouchEvent]), H.setRuntimeTypeInfo([], [W.KeyboardEvent]), H.setRuntimeTypeInfo([], [W.MouseEvent]), null, null, null, null, null, null, null, 0.015, 0.03, H.setRuntimeTypeInfo([], [B.GameLoopTimer]), null);
+  t2 = new G.GameLoopHtml(t1, 0, false, false, null, 0, false, 0, 0.03, 0, 0, 0, 0.05, true, null, null, null, null, H.setRuntimeTypeInfo(new P.Point(0, 0), [null]), null, null, H.setRuntimeTypeInfo([], [G._GameLoopTouchEvent]), H.setRuntimeTypeInfo([], [W.KeyboardEvent]), H.setRuntimeTypeInfo([], [W.MouseEvent]), null, null, null, null, null, null, null, null, 0.015, 0.03, H.setRuntimeTypeInfo([], [B.GameLoopTimer]), null, null);
   t2.GameLoopHtml$1(t1);
   t2.onUpdate = new B.closure();
   t2.onRender = new B.closure0();
