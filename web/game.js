@@ -4416,14 +4416,105 @@ var $$ = {};
       H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure6(this));
       C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure7(this));
       C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure8(this));
-      C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure9());
+      C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure9(this));
+      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
       B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
       B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
       t1 = document.body;
       t1.toString;
       t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure10(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure11(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       $.playerInput = this;
+    },
+    clickOrTouch$2: function(mouseEvent, touchEvent) {
+      var target, t1, mute, chatMenu, channelName, input, drawer, t2;
+      target = mouseEvent != null ? J.get$target$x(mouseEvent) : J.get$target$x(touchEvent);
+      t1 = J.getInterceptor$x(target);
+      if (t1.get$id(target) === "ConsoleGlyph")
+        if (document.querySelector("#DevConsole").hidden === true)
+          B.showConsole();
+        else {
+          document.querySelector("#DevConsole").hidden = true;
+          $.consolelistener.cancel$0();
+        }
+      if (t1.get$id(target) === "CloseConsole") {
+        document.querySelector("#DevConsole").hidden = true;
+        $.consolelistener.cancel$0();
+      }
+      if (J.contains$1$asx(t1.get$className(target), "FullscreenGlyph"))
+        document.documentElement.webkitRequestFullscreen();
+      if (J.contains$1$asx(target.className, "FullscreenResetGlyph"))
+        document.webkitExitFullscreen();
+      t1 = target.parentElement.id;
+      if (t1 === "AudioGlyph" || t1 === "MobileAudioGlpyh") {
+        mute = $.get$localStorage().getItem("isMuted") === "0" ? "1" : "0";
+        $.get$ui()._setMute$1(mute);
+      }
+      if (target.id === "ChatSettingsIcon") {
+        chatMenu = document.querySelector("#ChatSettingsMenu");
+        if (chatMenu.hidden === true)
+          chatMenu.hidden = false;
+        else
+          chatMenu.hidden = true;
+      }
+      if (target.id === "MobileChatSettingsIcon") {
+        chatMenu = document.querySelector("#MobileChatSettingsMenu");
+        if (chatMenu.hidden === true)
+          chatMenu.hidden = false;
+        else
+          chatMenu.hidden = true;
+      }
+      if (target.className === "ChannelName") {
+        t1 = target.id;
+        t1 = C.JSString_methods.substring$1(t1, J.getInterceptor$asx(t1).indexOf$1(t1, "-") + 1);
+        channelName = H.stringReplaceAllUnchecked(t1, "_", " ");
+        document.querySelector("#ChatChannelTitle").textContent = channelName;
+        t1 = $.get$chat().tabContentMap;
+        t1.$index(t1, channelName).resetMessages$1(mouseEvent);
+        document.querySelector("#ChatScreen").hidden = false;
+        document.querySelector("#ChannelSelectorScreen").hidden = true;
+        t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
+        t1.set$zIndex(t1, "0");
+        t1 = "#conversation-" + H.stringReplaceAllUnchecked(channelName, " ", "_");
+        J.set$zIndex$x(document.querySelector(t1).style, "1");
+      }
+      if (target.id === "BackFromChat") {
+        t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
+        t1.set$zIndex(t1, "0");
+        document.querySelector("#ChatScreen").hidden = true;
+        document.querySelector("#ChannelSelectorScreen").hidden = false;
+      }
+      if (target.id === "BackFromChannelSelector") {
+        document.querySelector("#ChannelSelectorScreen").hidden = true;
+        document.querySelector("#MainScreen").hidden = false;
+      }
+      t1 = target.id;
+      if (t1 === "ChatBubble" || t1 === "ChatBubbleText") {
+        if (J.get$display$x(document.querySelector("#ChatBubbleDisconnect").style) === "inline-block")
+          return;
+        document.querySelector("#ChannelSelectorScreen").hidden = false;
+        document.querySelector("#MainScreen").hidden = true;
+      }
+      if (target.id === "SendButton") {
+        channelName = document.querySelector("#ChatChannelTitle").textContent;
+        input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
+        t1 = $.get$chat().tabContentMap;
+        t1.$index(t1, channelName).processInput$1(input);
+        if (J.trim$0$s(J.get$value$x(input)).length === 0)
+          return;
+        t1 = $.get$chat().tabContentMap;
+        t1.$index(t1, channelName).parseInput$1(input.value);
+        input.value = "";
+      }
+      if (target.id === "InventoryTitle") {
+        drawer = document.querySelector("#InventoryDrawer");
+        t1 = J.get$bottom$x(drawer.style);
+        t2 = drawer.style;
+        if (t1 === "0px")
+          J.set$bottom$x(t2, "-75px");
+        else
+          J.set$bottom$x(t2, "0px");
+      }
     },
     hideClickMenu$0: function() {
       if (document.querySelector("#RightClickMenu") != null)
@@ -4643,101 +4734,21 @@ var $$ = {};
     }
   },
   Input_init_closure9: {
-    "": "Closure:30;",
+    "": "Closure:30;this_10",
     call$1: function($event) {
-      var target, t1, mute, chatMenu, channelName, input, drawer, t2;
-      target = J.get$target$x($event);
-      t1 = J.getInterceptor$x(target);
-      if (t1.get$id(target) === "ConsoleGlyph")
-        if (document.querySelector("#DevConsole").hidden === true)
-          B.showConsole();
-        else {
-          document.querySelector("#DevConsole").hidden = true;
-          $.consolelistener.cancel$0();
-        }
-      if (t1.get$id(target) === "CloseConsole") {
-        document.querySelector("#DevConsole").hidden = true;
-        $.consolelistener.cancel$0();
-      }
-      if (J.contains$1$asx(t1.get$className(target), "FullscreenGlyph"))
-        document.documentElement.webkitRequestFullscreen();
-      if (J.contains$1$asx(target.className, "FullscreenResetGlyph"))
-        document.webkitExitFullscreen();
-      t1 = target.parentElement.id;
-      if (t1 === "AudioGlyph" || t1 === "MobileAudioGlpyh") {
-        mute = $.get$localStorage().getItem("isMuted") === "0" ? "1" : "0";
-        $.get$ui()._setMute$1(mute);
-      }
-      if (target.id === "ChatSettingsIcon") {
-        chatMenu = document.querySelector("#ChatSettingsMenu");
-        if (chatMenu.hidden === true)
-          chatMenu.hidden = false;
-        else
-          chatMenu.hidden = true;
-      }
-      if (target.id === "MobileChatSettingsIcon") {
-        chatMenu = document.querySelector("#MobileChatSettingsMenu");
-        if (chatMenu.hidden === true)
-          chatMenu.hidden = false;
-        else
-          chatMenu.hidden = true;
-      }
-      if (target.className === "ChannelName") {
-        t1 = target.id;
-        t1 = C.JSString_methods.substring$1(t1, J.getInterceptor$asx(t1).indexOf$1(t1, "-") + 1);
-        channelName = H.stringReplaceAllUnchecked(t1, "_", " ");
-        document.querySelector("#ChatChannelTitle").textContent = channelName;
-        t1 = $.get$chat().tabContentMap;
-        t1.$index(t1, channelName).resetMessages$1($event);
-        document.querySelector("#ChatScreen").hidden = false;
-        document.querySelector("#ChannelSelectorScreen").hidden = true;
-        t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
-        t1.set$zIndex(t1, "0");
-        t1 = "#conversation-" + H.stringReplaceAllUnchecked(channelName, " ", "_");
-        J.set$zIndex$x(document.querySelector(t1).style, "1");
-      }
-      if (target.id === "BackFromChat") {
-        t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
-        t1.set$zIndex(t1, "0");
-        document.querySelector("#ChatScreen").hidden = true;
-        document.querySelector("#ChannelSelectorScreen").hidden = false;
-      }
-      if (target.id === "BackFromChannelSelector") {
-        document.querySelector("#ChannelSelectorScreen").hidden = true;
-        document.querySelector("#MainScreen").hidden = false;
-      }
-      if (target.id === "ChatBubble") {
-        if (J.get$display$x(document.querySelector("#ChatBubbleDisconnect").style) === "inline-block")
-          return;
-        document.querySelector("#ChannelSelectorScreen").hidden = false;
-        document.querySelector("#MainScreen").hidden = true;
-      }
-      if (target.id === "SendButton") {
-        channelName = document.querySelector("#ChatChannelTitle").textContent;
-        input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
-        t1 = $.get$chat().tabContentMap;
-        t1.$index(t1, channelName).processInput$1(input);
-        if (J.trim$0$s(J.get$value$x(input)).length === 0)
-          return;
-        t1 = $.get$chat().tabContentMap;
-        t1.$index(t1, channelName).parseInput$1(input.value);
-        input.value = "";
-      }
-      if (target.id === "InventoryTitle") {
-        drawer = document.querySelector("#InventoryDrawer");
-        t1 = J.get$bottom$x(drawer.style);
-        t2 = drawer.style;
-        if (t1 === "0px")
-          J.set$bottom$x(t2, "-75px");
-        else
-          J.set$bottom$x(t2, "0px");
-      }
+      return this.this_10.clickOrTouch$2($event, null);
     }
   },
   Input_init_closure10: {
-    "": "Closure:3;this_10",
+    "": "Closure:29;this_11",
+    call$1: function($event) {
+      return this.this_11.clickOrTouch$2(null, $event);
+    }
+  },
+  Input_init_closure11: {
+    "": "Closure:3;this_12",
     call$1: function(e) {
-      return this.this_10.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
+      return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
     }
   },
   Input_showClickMenu_closure: {
