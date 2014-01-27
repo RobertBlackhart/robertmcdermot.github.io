@@ -3526,7 +3526,7 @@ var $$ = {};
       playButton.textContent = "Load 'Er Up";
       J.set$display$x(playButton.style, "inline-block");
       t1 = C.EventStreamProvider_click.forElement$1(playButton);
-      t1.get$first(t1).then$1(new B.main_closure());
+      t1.get$first(t1).then$1(new B.main_closure(playButton));
     }
   }, "call$0", "main$closure", 0, 0, 4],
   load: function() {
@@ -4294,9 +4294,10 @@ var $$ = {};
     }
   },
   main_closure: {
-    "": "Closure:3;",
+    "": "Closure:3;playButton_0",
     call$1: function(_) {
       J.set$display$x(document.querySelector("#LoadingFrame").style, "block");
+      J.set$display$x(this.playButton_0.style, "none");
       B.load();
     }
   },
@@ -4638,7 +4639,8 @@ var $$ = {};
         document.documentElement.webkitRequestFullscreen();
       if (J.contains$1$asx(target.className, "FullscreenResetGlyph"))
         document.webkitExitFullscreen();
-      if (target.parentElement.id === "AudioGlyph") {
+      t1 = target.parentElement.id;
+      if (t1 === "AudioGlyph" || t1 === "MobileAudioGlpyh") {
         mute = $.get$localStorage().getItem("isMuted") === "0" ? "1" : "0";
         $.get$ui()._setMute$1(mute);
       }
@@ -5024,18 +5026,22 @@ var $$ = {};
         J.set$opacity$x(t1.style, C.JSInt_methods.toString$0(0));
     },
     _setMute$1: function(isMuted) {
-      var audioGlyph, t1, t2;
+      var audioGlyph, mobileAudioGlyph, t1, t2, t3;
       audioGlyph = document.querySelector("#AudioGlyph");
+      mobileAudioGlyph = document.querySelector("#MobileAudioGlyph");
       t1 = isMuted != null && isMuted === "1";
       t2 = J.getInterceptor$x(audioGlyph);
+      t3 = J.getInterceptor$x(mobileAudioGlyph);
       if (t1) {
         H.interceptedTypeCast(document.querySelector("#VolumeSlider"), "$isInputElement").disabled = true;
         t2.set$innerHtml(audioGlyph, "<img src=\"./assets/system/mute.png\" class=\"centered-icon glyph\">");
+        t3.set$innerHtml(mobileAudioGlyph, "<img src=\"./assets/system/mute.png\" class=\"centered-icon glyph\">");
         B.setVolume("0");
         $.get$localStorage().setItem("isMuted", "1");
       } else {
         H.interceptedTypeCast(document.querySelector("#VolumeSlider"), "$isInputElement").disabled = false;
         t2.set$innerHtml(audioGlyph, "<i id=\"VolumeGlyph\" class=\"icon-volume-up glyph icon-large\"></i>");
+        t3.set$innerHtml(mobileAudioGlyph, "<i id=\"VolumeGlyph\" class=\"icon-volume-up glyph icon-large\"></i>");
         B.setVolume($.get$localStorage().getItem("prevVolume"));
         $.get$localStorage().setItem("isMuted", "0");
       }
