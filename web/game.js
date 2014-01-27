@@ -3471,6 +3471,9 @@ var $$ = {};
     t1 = $.get$ui().currentSong;
     if (t1 != null)
       J.pause$0$x(t1);
+    t1 = $.get$ui().jukebox;
+    if (t1.$index(t1, value) == null)
+      return;
     t1 = $.get$ui();
     t2 = t1.jukebox;
     t1.currentSong = t2.$index(t2, value);
@@ -3550,8 +3553,9 @@ var $$ = {};
     P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure());
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = $.get$ASSET();
-      doneLoading = t1.$index(t1, "game_loaded").get$0();
-      if (doneLoading != null) {
+      if (t1.$index(t1, "game_loaded") != null) {
+        t1 = $.get$ASSET();
+        doneLoading = t1.$index(t1, "game_loaded").get$0();
         t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
         if (typeof t1 !== "number")
           return t1.$div();
