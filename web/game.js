@@ -14296,7 +14296,7 @@ var $$ = {};
   Asset: {
     "": "Object;_asset,loaded,_uri,name",
     load$1: function(_, statusElement) {
-      var t1, t2, t3, c, loading, ext, audio, t4, t5, filename, source, sourceAlt, result;
+      var t1, t2, t3, c, loading, ext, audio, t4, t5, line, filename, source, sourceAlt, result;
       t1 = this._uri;
       t2 = J.getInterceptor$s(t1).split$1(t1, "/");
       t3 = t1.split("/").length - 1;
@@ -14342,6 +14342,8 @@ var $$ = {};
             t2 = t5._onData;
             if (t2 != null && t5._pauseCount <= 0)
               J.addEventListener$3$x(t5._target, t3, t2, t4);
+            line = "here loading " + t1;
+            H.printString(line);
             filename = C.JSString_methods.substring$2(t1, 0, C.JSString_methods.lastIndexOf$1(t1, "."));
             if (J.$eq(ext, "ogg")) {
               source = document.createElement("source", null);
