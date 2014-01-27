@@ -3292,10 +3292,14 @@ var $$ = {};
 ["coUclient", "../../web/main.dart", , B, {
   "": "",
   load_audio: function() {
-    var c, t1;
+    var c, t1, t2, t3, t4;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
     t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.mp3", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
-    t1.load$2(t1, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
+    t2 = t1.load$2(t1, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
+    t3 = $.Zone__current;
+    t4 = P._registerErrorHandler(new B.load_audio_closure0(c), t3);
+    t3.toString;
+    t2._addListener$1(H.setRuntimeTypeInfo(new P._Future(0, t3, null, null, null, null, t4, null), [null]));
     $.ui_sounds = t1;
     return c.future;
   },
@@ -3530,14 +3534,7 @@ var $$ = {};
     }
   }, "call$0", "main$closure", 0, 0, 4],
   load: function() {
-    var t1, t2, t3, result;
-    t1 = B.load_audio();
-    t2 = $.Zone__current;
-    t3 = P._registerErrorHandler(new B.load_closure(), t2);
-    t2.toString;
-    result = H.setRuntimeTypeInfo(new P._Future(0, t2, null, null, null, null, t3, null), [null]);
-    t1._addListener$1(result);
-    result.then$1(new B.load_closure0());
+    B.load_audio().then$1(new B.load_closure());
   },
   start: function() {
     var t1, t2, t3;
@@ -3666,6 +3663,17 @@ var $$ = {};
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1("");
+    }
+  },
+  load_audio_closure0: {
+    "": "Closure:3;c_1",
+    call$1: function(e) {
+      var t1;
+      P.print(e);
+      t1 = this.c_1.future;
+      if (t1._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t1._asyncComplete$1(e);
     }
   },
   loadSong_closure: {
@@ -4309,12 +4317,6 @@ var $$ = {};
     }
   },
   load_closure: {
-    "": "Closure:3;",
-    call$1: function(e) {
-      return P.print(e);
-    }
-  },
-  load_closure0: {
     "": "Closure:3;",
     call$1: function(_) {
       return B.load_streets().then$1(new B.load__closure());
