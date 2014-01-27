@@ -3545,9 +3545,20 @@ var $$ = {};
     B.load_audio().then$1(new B.load_closure());
   },
   start: function() {
-    var t1, t2, t3;
+    var t1, doneLoading, t2, t3;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
     P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure());
+    if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+      t1 = $.get$ASSET();
+      doneLoading = t1.$index(t1, "game_loaded").get$0();
+      if (doneLoading != null) {
+        t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
+        if (typeof t1 !== "number")
+          return t1.$div();
+        J.set$volume$x(doneLoading, t1 / 100);
+        doneLoading.play();
+      }
+    }
     $.get$ui().init$0();
     B.updateConsole("System: Initializing..");
     t1 = new B.Input(null, null, null, null, null, false);
@@ -4380,17 +4391,7 @@ var $$ = {};
   start_closure: {
     "": "Closure:4;",
     call$0: function() {
-      var t1, doneLoading;
       J.remove$0$ax(document.querySelector("#LoadingScreen"));
-      if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
-        t1 = $.get$ASSET();
-        doneLoading = t1.$index(t1, "game_loaded").get$0();
-        t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
-        if (typeof t1 !== "number")
-          return t1.$div();
-        J.set$volume$x(doneLoading, t1 / 100);
-        doneLoading.play();
-      }
     }
   },
   Input: {
