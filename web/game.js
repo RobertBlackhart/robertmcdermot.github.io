@@ -10698,6 +10698,7 @@ var $$ = {};
   },
   SourceElement: {
     "": "HtmlElement;src},type%",
+    $isSourceElement: true,
     "%": "HTMLSourceElement"
   },
   SpeechRecognitionError: {
@@ -14357,16 +14358,25 @@ var $$ = {};
               t2.set$src(sourceAlt, filename + ".mp3");
               audio.appendChild(sourceAlt);
             } else {
+              H.printString("here");
               source = document.createElement("source", null);
               t2 = J.getInterceptor$x(source);
               t2.set$type(source, "audio/mpeg");
               t2.set$src(source, t1);
               audio.appendChild(source);
+              result = audio.firstElementChild;
+              if (result == null)
+                H.throwExpression(new P.StateError("No elements"));
+              line = H.interceptedTypeCast(result, "$isSourceElement").src;
+              H.printString(line);
               sourceAlt = document.createElement("source", null);
               t2 = J.getInterceptor$x(sourceAlt);
               t2.set$type(sourceAlt, "audio/ogg");
               t2.set$src(sourceAlt, filename + ".ogg");
               audio.appendChild(sourceAlt);
+              t2 = new W._ChildrenElementList(audio, audio.children);
+              line = H.interceptedTypeCast(t2.elementAt$1(t2, 1), "$isSourceElement").src;
+              H.printString(line);
             }
             document.body.appendChild(audio);
             loading = true;
@@ -14586,11 +14596,11 @@ J.JSNumber.$isnum = true;
 J.JSNumber.$isObject = true;
 P.Duration.$isDuration = true;
 P.Duration.$isObject = true;
-P.Object.$isObject = true;
 W.Element.$isElement = true;
 W.Element.$isNode = true;
 W.Element.$isEventTarget = true;
 W.Element.$isObject = true;
+P.Object.$isObject = true;
 P.Match.$isMatch = true;
 P.Match.$isObject = true;
 W.BeforeUnloadEvent.$isEvent = true;
