@@ -14332,7 +14332,7 @@ var $$ = {};
         for (t3 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t3.moveNext$0();) {
           ext = t3._current;
           if (C.JSString_methods.endsWith$1(t2, C.JSString_methods.$add(".", ext))) {
-            P.Timer_Timer(new P.Duration(2000000), new E.Asset_load_closure0(t1, c));
+            P.Timer_Timer(new P.Duration(2000000), new E.Asset_load_closure0(t1, this, c));
             audio = W.AudioElement_AudioElement(null);
             t3 = C.EventStreamProvider_loadeddata.forElement$1(audio);
             t3 = t3.get$first(t3);
@@ -14447,10 +14447,10 @@ var $$ = {};
     }
   },
   Asset_load_closure0: {
-    "": "Closure:4;box_0,c_3",
+    "": "Closure:4;box_0,this_3,c_4",
     call$0: function() {
       if (!this.box_0.data_0)
-        this.c_3.completeError$1(null);
+        this.c_4.completeError$1("could not load resource: " + H.S(this.this_3._uri));
     }
   },
   Asset_load_closure1: {
@@ -14461,34 +14461,34 @@ var $$ = {};
     }
   },
   Asset_load_closure2: {
-    "": "Closure:22;this_4,c_5",
+    "": "Closure:22;this_5,c_6",
     call$1: function(err) {
       var t1;
-      P.print("Error in loading Audio : " + H.S(this.this_4._uri));
-      t1 = this.c_5.future;
+      P.print("Error in loading Audio : " + H.S(this.this_5._uri));
+      t1 = this.c_6.future;
       if (t1._state === 0)
         t1._asyncComplete$1(err);
     }
   },
   Asset_load_closure3: {
-    "": "Closure:3;this_6,c_7,audio_8",
+    "": "Closure:3;this_7,c_8,audio_9",
     call$1: function(_) {
       var t1, t2;
       t1 = $.get$ASSET();
-      t2 = this.this_6;
+      t2 = this.this_7;
       t1.$indexSet(t1, t2.name, t2);
-      t2._asset = this.audio_8;
+      t2._asset = this.audio_9;
       t2.loaded = true;
-      t1 = this.c_7.future;
+      t1 = this.c_8.future;
       if (t1._state === 0)
         t1._asyncComplete$1(t2);
     }
   },
   Asset_load_closure4: {
-    "": "Closure:0;this_9",
+    "": "Closure:0;this_10",
     call$1: function(string) {
       var t1, t2;
-      t1 = this.this_9;
+      t1 = this.this_10;
       t1._asset = string;
       t1.loaded = true;
       t2 = $.get$ASSET();
@@ -14496,15 +14496,15 @@ var $$ = {};
     }
   },
   Asset_load_closure5: {
-    "": "Closure:0;this_10,c_11",
+    "": "Closure:0;this_11,c_12",
     call$1: function(string) {
       var t1, t2;
       t1 = $.get$ASSET();
-      t2 = this.this_10;
+      t2 = this.this_11;
       t1.$indexSet(t1, t2.name, t2);
       t2._asset = C.C_JsonCodec.decode$1(string);
       t2.loaded = true;
-      t1 = this.c_11.future;
+      t1 = this.c_12.future;
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(t2);
