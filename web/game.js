@@ -3306,9 +3306,17 @@ var $$ = {};
   loadSong: function($name) {
     var c, t1, t2;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-    t1 = $.get$ui().sc;
-    t2 = $.get$ASSET();
-    t1.load$1(t1, J.$index$asx(J.$index$asx(t2.$index(t2, "music").get$0(), $name), "scid")).then$1(new B.loadSong_closure($name, c));
+    t1 = $.get$ASSET();
+    if (t1.$index(t1, "music") != null) {
+      t1 = $.get$ui().sc;
+      t2 = $.get$ASSET();
+      t1.load$1(t1, J.$index$asx(J.$index$asx(t2.$index(t2, "music").get$0(), $name), "scid")).then$1(new B.loadSong_closure($name, c));
+    } else {
+      t1 = c.future;
+      if (t1._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t1._asyncComplete$1(null);
+    }
     return c.future;
   },
   runCommand: function(commandToRun) {
@@ -3662,7 +3670,7 @@ var $$ = {};
       t1 = this.c_0.future;
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
-      t1._asyncComplete$1("");
+      t1._asyncComplete$1(null);
     }
   },
   load_audio_closure0: {
