@@ -5382,18 +5382,22 @@ var $$ = {};
       if (!t1.facingRight)
         transform += " scale(-1,1)";
       J.set$transform$x(t1.playerCanvas.style, transform);
+      J.set$backfaceVisibility$x(t1.playerCanvas.style, "hidden");
+      J.set$perspective$x(t1.playerCanvas.style, "1000");
     }
   },
   closure0: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
       var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
-      now = P.DateTime$_now();
-      t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
-      t2 = $.get$fpsDisplay();
-      t3 = $.get$twoDigit();
-      t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
-      $.last = now;
+      if ($.showFps) {
+        now = P.DateTime$_now();
+        t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
+        t2 = $.get$fpsDisplay();
+        t3 = $.get$twoDigit();
+        t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
+        $.last = now;
+      }
       sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
       year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
       sec -= year * 4435200;
@@ -11066,6 +11070,9 @@ var $$ = {};
   },
   CssStyleDeclarationBase: {
     "": "Object;",
+    set$backfaceVisibility: function(receiver, value) {
+      this.setProperty$3(receiver, P.Device_cssPrefix() + "backface-visibility", value, "");
+    },
     set$background: function(receiver, value) {
       this.setProperty$3(receiver, "background", value, "");
     },
@@ -11102,6 +11109,9 @@ var $$ = {};
     get$page: function(receiver) {
       return this.getPropertyValue$1(receiver, "page");
     },
+    set$perspective: function(receiver, value) {
+      this.setProperty$3(receiver, P.Device_cssPrefix() + "perspective", value, "");
+    },
     set$position: function(receiver, value) {
       this.setProperty$3(receiver, "position", value, "");
     },
@@ -11112,35 +11122,7 @@ var $$ = {};
       this.setProperty$3(receiver, "top", value, "");
     },
     set$transform: function(receiver, value) {
-      var t1 = $.Device__cachedCssPrefix;
-      if (t1 == null) {
-        t1 = $.Device__isFirefox;
-        if (t1 == null) {
-          t1 = J.contains$2$asx(window.navigator.userAgent, "Firefox", 0);
-          $.Device__isFirefox = t1;
-        }
-        if (t1 === true) {
-          $.Device__cachedCssPrefix = "-moz-";
-          t1 = "-moz-";
-        } else {
-          t1 = $.Device__isIE;
-          if (t1 == null) {
-            t1 = P.Device_isOpera() !== true && J.contains$2$asx(window.navigator.userAgent, "Trident/", 0);
-            $.Device__isIE = t1;
-          }
-          if (t1 === true) {
-            $.Device__cachedCssPrefix = "-ms-";
-            t1 = "-ms-";
-          } else if (P.Device_isOpera() === true) {
-            $.Device__cachedCssPrefix = "-o-";
-            t1 = "-o-";
-          } else {
-            $.Device__cachedCssPrefix = "-webkit-";
-            t1 = "-webkit-";
-          }
-        }
-      }
-      this.setProperty$3(receiver, t1 + "transform", value, "");
+      this.setProperty$3(receiver, P.Device_cssPrefix() + "transform", value, "");
     },
     set$width: function(receiver, value) {
       this.setProperty$3(receiver, "width", value, "");
@@ -13279,6 +13261,37 @@ var $$ = {};
     }
     return t1;
   },
+  Device_cssPrefix: function() {
+    var t1 = $.Device__cachedCssPrefix;
+    if (t1 == null) {
+      t1 = $.Device__isFirefox;
+      if (t1 == null) {
+        t1 = J.contains$2$asx(window.navigator.userAgent, "Firefox", 0);
+        $.Device__isFirefox = t1;
+      }
+      if (t1 === true) {
+        $.Device__cachedCssPrefix = "-moz-";
+        t1 = "-moz-";
+      } else {
+        t1 = $.Device__isIE;
+        if (t1 == null) {
+          t1 = P.Device_isOpera() !== true && J.contains$2$asx(window.navigator.userAgent, "Trident/", 0);
+          $.Device__isIE = t1;
+        }
+        if (t1 === true) {
+          $.Device__cachedCssPrefix = "-ms-";
+          t1 = "-ms-";
+        } else if (P.Device_isOpera() === true) {
+          $.Device__cachedCssPrefix = "-o-";
+          t1 = "-o-";
+        } else {
+          $.Device__cachedCssPrefix = "-webkit-";
+          t1 = "-webkit-";
+        }
+      }
+    }
+    return t1;
+  },
   convertNativeToDart_AcceptStructuredClone_findSlot: {
     "": "Closure:11;values_0,copies_1",
     call$1: function(value) {
@@ -14930,6 +14943,9 @@ J.replaceWith$1$x = function(receiver, a0) {
 J.send$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).send$1(receiver, a0);
 };
+J.set$backfaceVisibility$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$backfaceVisibility(receiver, value);
+};
 J.set$background$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$background(receiver, value);
 };
@@ -14974,6 +14990,9 @@ J.set$opacity$x = function(receiver, value) {
 };
 J.set$paddingRight$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$paddingRight(receiver, value);
+};
+J.set$perspective$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$perspective(receiver, value);
 };
 J.set$position$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$position(receiver, value);
