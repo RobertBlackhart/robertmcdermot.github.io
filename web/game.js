@@ -4288,7 +4288,7 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1, playButton;
-      t1 = new B.Player(null, null, null, null, null, true, null);
+      t1 = new B.Player(null, null, null, null, null, null, -40, false, true, null, true, null);
       t1.Player$0();
       $.CurrentPlayer = t1;
       $.get$chat().init$0();
@@ -5037,23 +5037,28 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;posX,posY,width,height,avatar,doPhysicsApply,playerCanvas",
+    "": "Object;posX,posY,width,height,speed,yVel,yAccel,jumping,facingRight,avatar,doPhysicsApply,playerCanvas",
     Player$0: function() {
-      this.posX = 0;
-      this.posY = 550;
       this.width = 100;
       this.height = 172;
+      this.speed = 5;
+      this.yVel = 0;
+      this.posX = 0;
+      var t1 = $.currentStreet.bounds.height;
+      if (typeof t1 !== "number")
+        return t1.$sub();
+      this.posY = t1 - 172;
       this.avatar = W.ImageElement_ImageElement(null, "assets/sprites/avatar.png", null);
-      var t1 = W.CanvasElement_CanvasElement(null, null);
+      t1 = W.CanvasElement_CanvasElement(null, null);
       this.playerCanvas = t1;
       t1.id = "playerCanvas";
-      J.set$width$x(t1, this.width);
+      J.set$position$x(t1.style, "absolute");
+      J.set$width$x(this.playerCanvas, this.width);
       J.set$height$x(this.playerCanvas, this.height);
-      J.set$left$x(this.playerCanvas.style, C.JSInt_methods.toString$0(this.posX) + "px");
-      J.set$top$x(this.playerCanvas.style, C.JSInt_methods.toString$0(this.posY) + "px");
       $.get$gameScreen().appendChild(this.playerCanvas);
       $.CurrentPlayer = this;
-    }
+    },
+    $isPlayer: true
   },
   Camera: {
     "": "Object;x>,y>,zoom",
@@ -5100,7 +5105,7 @@ var $$ = {};
       return c.future;
     },
     render$0: function() {
-      var t1, t2, t3, t4, t5, t6, t7, canvas;
+      var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, canvas;
       t1 = $.get$camera();
       t2 = t1.x;
       t3 = this.bounds;
@@ -5113,33 +5118,33 @@ var $$ = {};
         return H.iae(t6);
       if (typeof t2 !== "number")
         return t2.$div();
+      currentPercentX = t2 / (t4 - t6);
       t1 = t1.y;
       t3 = t3.height;
-      t7 = t5.clientHeight;
+      t6 = t5.clientHeight;
       if (typeof t3 !== "number")
         return t3.$sub();
-      if (typeof t7 !== "number")
-        return H.iae(t7);
+      if (typeof t6 !== "number")
+        return H.iae(t6);
       if (typeof t1 !== "number")
         return t1.$div();
-      for (t5 = W._FrozenElementList$_wrap(t5.querySelectorAll(".streetcanvas"), null), t5 = t5.get$iterator(t5), t6 = -(t2 / (t4 - t6)), t7 = -(t1 / (t3 - t7)); t5.moveNext$0();) {
-        canvas = t5._current;
-        t1 = J.get$clientWidth$x(canvas);
-        t2 = $.get$gameScreen();
-        t3 = t2.clientWidth;
-        if (typeof t1 !== "number")
-          return t1.$sub();
+      currentPercentY = t1 / (t3 - t6);
+      for (t1 = W._FrozenElementList$_wrap(t5.querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
+        canvas = t1._current;
+        t2 = J.get$clientWidth$x(canvas);
+        t3 = $.get$gameScreen();
+        t4 = t3.clientWidth;
+        if (typeof t2 !== "number")
+          return t2.$sub();
+        if (typeof t4 !== "number")
+          return H.iae(t4);
+        t5 = canvas.clientHeight;
+        t3 = t3.clientHeight;
+        if (typeof t5 !== "number")
+          return t5.$sub();
         if (typeof t3 !== "number")
           return H.iae(t3);
-        t4 = canvas.clientHeight;
-        t2 = t2.clientHeight;
-        if (typeof t4 !== "number")
-          return t4.$sub();
-        if (typeof t2 !== "number")
-          return H.iae(t2);
-        J.set$position$x(canvas.style, "absolute");
-        J.set$left$x(canvas.style, C.JSNumber_methods.toString$0((t1 - t3) * t6) + "px");
-        J.set$top$x(canvas.style, C.JSNumber_methods.toString$0((t4 - t2) * t7) + "px");
+        J.set$transform$x(canvas.style, "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(-((t2 - t4) * currentPercentX)) + "px) translateY(" + C.JSNumber_methods.toString$0(-((t5 - t3) * currentPercentY)) + "px)");
       }
     },
     Street$1: function(streetName) {
@@ -5182,6 +5187,7 @@ var $$ = {};
         J.set$zIndex$x(decoCanvas.style, J.toString$0(t2.$index(layer, "z")));
         J.set$width$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "w")), "px"));
         J.set$height$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "h")), "px"));
+        J.set$position$x(decoCanvas.style, "absolute");
         [].$builtinTypeInfo = [W.ImageElement];
         for (t4 = J.get$iterator$ax(t2.$index(layer, "decos")); t4.moveNext$0();) {
           deco = t4.get$current();
@@ -5244,6 +5250,140 @@ var $$ = {};
   closure: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
+      var t1, t2, t3, t4, t5, t6, translateX, t7, translateY, transform;
+      t1 = $.CurrentPlayer;
+      t2 = $.get$game();
+      t1.toString;
+      t3 = $.playerInput;
+      if (t3.rightKey) {
+        t1.posX = t1.posX + t1.speed;
+        t1.facingRight = true;
+      }
+      if (t3.leftKey) {
+        t1.posX = t1.posX - t1.speed;
+        t1.facingRight = false;
+      }
+      if (t3.spaceKey && !t1.jumping) {
+        if (C.C__JSRandom.nextInt$1(4) === 3)
+          t1.yVel = -20;
+        else
+          t1.yVel = -15;
+        t1.jumping = true;
+      }
+      if (t1.doPhysicsApply) {
+        t2 = t1.yVel - t1.yAccel * t2.updateTimeStep;
+        t1.yVel = t2;
+        t1.posY = C.JSNumber_methods._tdivFast$1(t1.posY + t2, 1);
+      } else {
+        t2 = $.playerInput;
+        if (t2.downKey)
+          t1.posY = t1.posY + $.CurrentPlayer.speed;
+        if (t2.upKey)
+          t1.posY = t1.posY - $.CurrentPlayer.speed;
+      }
+      t2 = t1.posX;
+      if (t2 < 0) {
+        t1.posX = 0;
+        t2 = 0;
+      }
+      t3 = $.currentStreet.bounds;
+      t4 = t3.width;
+      t5 = t1.width;
+      if (typeof t4 !== "number")
+        return t4.$sub();
+      t6 = t4 - t5;
+      if (t2 > t6) {
+        t1.posX = t6;
+        translateX = t6;
+      } else
+        translateX = t2;
+      t2 = t1.posY;
+      t3 = t3.height;
+      t6 = t1.height;
+      if (typeof t3 !== "number")
+        return t3.$sub();
+      t7 = t3 - t6;
+      if (t2 > t7) {
+        t1.posY = t7;
+        t1.yVel = 0;
+        t1.jumping = false;
+        t2 = t7;
+      }
+      if (t2 < 0) {
+        t1.posY = 0;
+        translateY = 0;
+      } else
+        translateY = t2;
+      t2 = $.get$gameScreen();
+      t7 = t2.clientHeight;
+      if (typeof t7 !== "number")
+        return t7.$sub();
+      t7 = t2.clientWidth;
+      if (typeof t7 !== "number")
+        return t7.$div();
+      if (translateX > t4 - t5 / 2 - t7 / 2) {
+        t5 = $.get$camera();
+        t7 = t2.clientWidth;
+        if (typeof t7 !== "number")
+          return H.iae(t7);
+        t5.x = t4 - t7;
+        t7 = t2.clientWidth;
+        if (typeof t7 !== "number")
+          return H.iae(t7);
+        translateX = translateX - t4 + t7;
+        t4 = t5;
+      } else {
+        t4 = t2.clientWidth;
+        if (typeof t4 !== "number")
+          return t4.$div();
+        if (translateX + t5 / 2 > t4 / 2) {
+          t4 = $.get$camera();
+          t7 = t2.clientWidth;
+          if (typeof t7 !== "number")
+            return t7.$div();
+          t4.x = translateX + t5 / 2 - t7 / 2;
+          t7 = t2.clientWidth;
+          if (typeof t7 !== "number")
+            return t7.$div();
+          translateX = t7 / 2 - t5 / 2;
+        } else {
+          t4 = $.get$camera();
+          t4.x = 0;
+        }
+      }
+      t5 = t2.clientHeight;
+      if (typeof t5 !== "number")
+        return t5.$div();
+      if (translateY + t6 / 2 < t5 / 2)
+        t4.y = 0;
+      else {
+        t5 = t2.clientHeight;
+        if (typeof t5 !== "number")
+          return t5.$div();
+        if (translateY < t3 - t6 / 2 - t5 / 2) {
+          t5 = t2.clientHeight;
+          if (typeof t5 !== "number")
+            return t5.$div();
+          t4.y = t3 - (t3 - translateY - t6 / 2 + t5 / 2);
+          t2 = t2.clientHeight;
+          if (typeof t2 !== "number")
+            return t2.$div();
+          translateY = t2 / 2 - t6 / 2;
+        } else {
+          t5 = t2.clientHeight;
+          if (typeof t5 !== "number")
+            return H.iae(t5);
+          t4.y = t3 - t5;
+          t2 = t2.clientHeight;
+          if (typeof t2 !== "number")
+            return t2.$sub();
+          translateY = t2 - (t3 - translateY);
+        }
+      }
+      transform = "translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px) translateZ(0)";
+      if (!t1.facingRight)
+        transform += " scale(-1,1)";
+      J.set$transform$x(t1.playerCanvas.style, transform);
     }
   },
   closure0: {
@@ -5302,6 +5442,12 @@ var $$ = {};
       t2 = J.getInterceptor(t1);
       if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
         t1.render$0();
+      t1 = $.CurrentPlayer;
+      t2 = J.getInterceptor(t1);
+      if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer) {
+        J.get$context2D$x(t1.playerCanvas).clearRect(0, 0, t1.width, t1.height);
+        J.get$context2D$x($.CurrentPlayer.playerCanvas).drawImage(t1.avatar, 0, 0, t1.width, t1.height);
+      }
     }
   }
 },
@@ -9987,6 +10133,9 @@ var $$ = {};
   },
   CanvasElement: {
     "": "HtmlElement;height},width}",
+    get$context2D: function(receiver) {
+      return receiver.getContext("2d");
+    },
     "%": "HTMLCanvasElement"
   },
   CharacterData: {
@@ -14655,6 +14804,9 @@ J.get$clientWidth$x = function(receiver) {
 };
 J.get$content$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$content(receiver);
+};
+J.get$context2D$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$context2D(receiver);
 };
 J.get$data$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$data(receiver);
