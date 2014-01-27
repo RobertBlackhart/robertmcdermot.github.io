@@ -14296,7 +14296,7 @@ var $$ = {};
   Asset: {
     "": "Object;_asset,loaded,_uri,name",
     load$1: function(_, statusElement) {
-      var t1, t2, t3, c, loading, audio, t4, t5, result;
+      var t1, t2, t3, c, loading, ext, audio, t4, t5, filename, source, sourceAlt, result;
       t1 = this._uri;
       t2 = J.getInterceptor$s(t1).split$1(t1, "/");
       t3 = t1.split("/").length - 1;
@@ -14322,8 +14322,9 @@ var $$ = {};
           }
         if (loading)
           return c.future;
-        for (t2 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t2.moveNext$0();)
-          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", t2._current))) {
+        for (t2 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t2.moveNext$0();) {
+          ext = t2._current;
+          if (C.JSString_methods.endsWith$1(t1, C.JSString_methods.$add(".", ext))) {
             audio = W.AudioElement_AudioElement(null);
             t2 = C.EventStreamProvider_error.forElement$1(audio);
             t3 = t2._eventType;
@@ -14341,11 +14342,35 @@ var $$ = {};
             t2 = t5._onData;
             if (t2 != null && t5._pauseCount <= 0)
               J.addEventListener$3$x(t5._target, t3, t2, t4);
-            audio.src = t1;
+            filename = C.JSString_methods.substring$2(t1, 0, C.JSString_methods.lastIndexOf$1(t1, "."));
+            if (J.$eq(ext, "ogg")) {
+              source = document.createElement("source", null);
+              t2 = J.getInterceptor$x(source);
+              t2.set$type(source, "audio/ogg");
+              t2.set$src(source, t1);
+              audio.appendChild(source);
+              sourceAlt = document.createElement("source", null);
+              t2 = J.getInterceptor$x(sourceAlt);
+              t2.set$type(sourceAlt, "audio/mpeg");
+              t2.set$src(sourceAlt, filename + ".mp3");
+              audio.appendChild(sourceAlt);
+            } else {
+              source = document.createElement("source", null);
+              t2 = J.getInterceptor$x(source);
+              t2.set$type(source, "audio/mpeg");
+              t2.set$src(source, t1);
+              audio.appendChild(source);
+              sourceAlt = document.createElement("source", null);
+              t2 = J.getInterceptor$x(sourceAlt);
+              t2.set$type(sourceAlt, "audio/ogg");
+              t2.set$src(sourceAlt, filename + ".ogg");
+              audio.appendChild(sourceAlt);
+            }
             document.body.appendChild(audio);
             loading = true;
             break;
           }
+        }
         if (loading)
           return c.future;
         for (t2 = new H.ListIterator($.get$textExtensions(), 1, 0, null); loading = false, t2.moveNext$0();)
