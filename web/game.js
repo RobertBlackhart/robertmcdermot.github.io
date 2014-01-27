@@ -1688,6 +1688,16 @@ var $$ = {};
       } else
         throw H.wrapException(P.UnsupportedError$("Canceling a timer."));
     },
+    TimerImpl$periodic$2: function(milliseconds, callback) {
+      var t1, t2;
+      t1 = $.get$globalThis();
+      if (t1.setTimeout != null) {
+        t2 = init.globalState.topEventLoop;
+        t2.activeTimerCount = t2.activeTimerCount + 1;
+        this._handle = t1.setInterval(H.convertDartClosureToJS(new H.TimerImpl$periodic_closure(this, callback), 0), milliseconds);
+      } else
+        throw H.wrapException(P.UnsupportedError$("Periodic timer."));
+    },
     TimerImpl$2: function(milliseconds, callback) {
       var t1, t2;
       if (milliseconds === 0)
@@ -1714,6 +1724,10 @@ var $$ = {};
         var t1 = new H.TimerImpl(true, false, null);
         t1.TimerImpl$2(milliseconds, callback);
         return t1;
+      }, TimerImpl$periodic: function(milliseconds, callback) {
+        var t1 = new H.TimerImpl(false, false, null);
+        t1.TimerImpl$periodic$2(milliseconds, callback);
+        return t1;
       }}
   },
   TimerImpl_internalCallback: {
@@ -1730,6 +1744,12 @@ var $$ = {};
       var t1 = init.globalState.topEventLoop;
       t1.activeTimerCount = t1.activeTimerCount - 1;
       this.callback_3.call$0();
+    }
+  },
+  TimerImpl$periodic_closure: {
+    "": "Closure:4;this_0,callback_1",
+    call$0: function() {
+      this.callback_1.call$1(this.this_0);
     }
   }
 }],
@@ -3556,7 +3576,7 @@ var $$ = {};
     }
     $.get$ui().init$0();
     B.updateConsole("System: Initializing..");
-    t1 = new B.Input(null, null, null, null, null, false);
+    t1 = new B.Input(null, null, null, null, null, false, false);
     t1.Input$0();
     t1.init$0();
     $.playerInput = t1;
@@ -4395,7 +4415,7 @@ var $$ = {};
     }
   },
   Input: {
-    "": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys",
+    "": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys,touched",
     init$0: function() {
       var volumeSlider, t1, chatInputs, joystick;
       $.get$game()._pointerLock.lockOnClick = false;
@@ -4428,7 +4448,15 @@ var $$ = {};
     },
     clickOrTouch$2: function(mouseEvent, touchEvent) {
       var target, t1, mute, chatMenu, channelName, input, drawer, t2;
-      target = mouseEvent != null ? J.get$target$x(mouseEvent) : J.get$target$x(touchEvent);
+      if (mouseEvent != null) {
+        if (this.touched)
+          return;
+        target = J.get$target$x(mouseEvent);
+      } else {
+        target = J.get$target$x(touchEvent);
+        this.touched = true;
+        P.Timer_Timer$periodic(P.Duration$(0, 0, 0, 100, 0, 0), new B.Input_clickOrTouch_closure(this));
+      }
       t1 = J.getInterceptor$x(target);
       if (t1.get$id(target) === "ConsoleGlyph")
         if (document.querySelector("#DevConsole").hidden === true)
@@ -4749,6 +4777,13 @@ var $$ = {};
     "": "Closure:3;this_12",
     call$1: function(e) {
       return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
+    }
+  },
+  Input_clickOrTouch_closure: {
+    "": "Closure:31;this_0",
+    call$1: function(timer) {
+      timer.cancel$0();
+      this.this_0.touched = false;
     }
   },
   Input_showClickMenu_closure: {
@@ -5302,7 +5337,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:31;c_0",
+    "": "Closure:32;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -5976,6 +6011,14 @@ var $$ = {};
     milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
     return H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
   },
+  Timer_Timer$periodic: function(duration, callback) {
+    var t1 = $.Zone__current;
+    if (t1 === C.C__RootZone) {
+      t1.toString;
+      return P._rootCreatePeriodicTimer(t1, null, t1, duration, callback);
+    }
+    return P._rootCreatePeriodicTimer(t1, null, t1, duration, t1.bindUnaryCallback$2$runGuarded(callback, true));
+  },
   _createTimer: function(duration, callback) {
     var milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
     return H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
@@ -6030,6 +6073,13 @@ var $$ = {};
   },
   _rootScheduleMicrotask: function($self, $parent, zone, f) {
     P._scheduleAsyncCallback(C.C__RootZone !== zone ? zone.bindCallback$1(f) : f);
+  },
+  _rootCreatePeriodicTimer: function($self, $parent, zone, duration, callback) {
+    var milliseconds;
+    if (C.C__RootZone !== zone)
+      callback = zone.bindUnaryCallback$1(callback);
+    milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
+    return H.TimerImpl$periodic(milliseconds < 0 ? 0 : milliseconds, callback);
   },
   _AsyncError: {
     "": "Object;error>,stackTrace<",
@@ -6139,7 +6189,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 32, 9],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 33, 9],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6306,7 +6356,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:33;box_0,eagerError_2,pos_3",
+    "": "Closure:34;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6343,7 +6393,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 32, 9],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 33, 9],
     $as_Completer: null
   },
   _Future: {
@@ -6614,7 +6664,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:34;target_1",
+    "": "Closure:35;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -6720,7 +6770,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:34;box_0,listener_7",
+    "": "Closure:35;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -6811,7 +6861,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:35;box_0,future_6",
+    "": "Closure:36;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7531,7 +7581,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:36;subscription_0,future_1",
+    "": "Closure:37;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -7541,6 +7591,9 @@ var $$ = {};
     call$0: function() {
       return this.future_0._complete$1(this.value_1);
     }
+  },
+  Timer: {
+    "": "Object;"
   },
   _BaseZone: {
     "": "Object;",
@@ -7599,6 +7652,9 @@ var $$ = {};
         return new P._BaseZone_bindUnaryCallback_closure(this, registered);
       else
         return new P._BaseZone_bindUnaryCallback_closure0(this, registered);
+    },
+    bindUnaryCallback$1: function(f) {
+      return this.bindUnaryCallback$2$runGuarded(f, true);
     }
   },
   _BaseZone_bindCallback_closure: {
@@ -9540,7 +9596,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:37;box_0,this_1",
+    "": "Closure:38;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -9663,7 +9719,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:38;box_0",
+    "": "Closure:39;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -9725,7 +9781,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:39;",
+    "": "Closure:40;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -9740,7 +9796,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:39;",
+    "": "Closure:40;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -9750,7 +9806,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:39;",
+    "": "Closure:40;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -9814,7 +9870,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:39;",
+    "": "Closure:40;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -9830,7 +9886,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:39;",
+    "": "Closure:40;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -12221,7 +12277,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:40;this_0",
+    "": "Closure:41;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13172,48 +13228,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 41],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 42],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 42],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 43],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 42],
+    }, "call$1", "get$_fullscreenError", 2, 0, 43],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 43],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 44],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 43],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 44],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 43],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 44],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 44],
+    }, "call$1", "get$_keyDown", 2, 0, 45],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 44],
+    }, "call$1", "get$_keyUp", 2, 0, 45],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 45],
+    }, "call$1", "get$_mouseDown", 2, 0, 46],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 45],
+    }, "call$1", "get$_mouseUp", 2, 0, 46],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 45],
+    }, "call$1", "get$_mouseMove", 2, 0, 46],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 45],
+    }, "call$1", "get$_mouseWheel", 2, 0, 46],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 42],
+    }, "call$1", "get$_resize", 2, 0, 43],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13253,9 +13309,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 42],
+    }, "call$1", "get$_onClick", 2, 0, 43],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 42],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 43],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13319,7 +13375,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:46;this_0",
+    "": "Closure:47;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13332,7 +13388,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:46;this_0",
+    "": "Closure:47;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13345,7 +13401,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:46;this_0",
+    "": "Closure:47;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13418,7 +13474,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:47;copies_3",
+    "": "Closure:48;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14718,6 +14774,8 @@ P._BroadcastSubscription.$is_BufferingStreamSubscription = true;
 P._BroadcastSubscription.$is_EventSink = true;
 P._BroadcastSubscription.$isStreamSubscription = true;
 P._BroadcastSubscription.$isObject = true;
+P.Timer.$isTimer = true;
+P.Timer.$isObject = true;
 B.TabContent.$isTabContent = true;
 B.TabContent.$isObject = true;
 W.EventTarget.$isEventTarget = true;
@@ -15734,6 +15792,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__Match", args: [P.Match]},
 {func: "dynamic__TouchEvent", args: [W.TouchEvent]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
+{func: "dynamic__Timer", args: [P.Timer]},
 {func: "dynamic__Asset", args: [E.Asset]},
 {func: "void__Object__StackTrace", void: true, args: [P.Object], opt: [P.StackTrace]},
 {func: "dynamic__Object", args: [P.Object]},
