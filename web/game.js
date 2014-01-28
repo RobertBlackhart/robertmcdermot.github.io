@@ -374,7 +374,7 @@ var $$ = {};
     toString$0: function(receiver) {
       return H.Primitives_objectToString(receiver);
     },
-    "%": "ArrayBuffer|CanvasRenderingContext|CanvasRenderingContext2D|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
+    "%": "ArrayBuffer|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
   },
   JSBool: {
     "": "bool/Interceptor;",
@@ -5175,14 +5175,13 @@ var $$ = {};
       if (typeof t1 !== "number")
         return t1.$sub();
       this.posY = t1 - 172;
-      this.avatar = W.ImageElement_ImageElement(null, "assets/sprites/avatar.png", null);
-      t1 = W.CanvasElement_CanvasElement(null, null);
-      this.playerCanvas = t1;
+      t1 = W.ImageElement_ImageElement(null, "assets/sprites/avatar.png", null);
+      this.avatar = t1;
       t1.id = "playerCanvas";
       J.set$position$x(t1.style, "absolute");
-      J.set$width$x(this.playerCanvas, this.width);
-      J.set$height$x(this.playerCanvas, this.height);
-      $.get$gameScreen().appendChild(this.playerCanvas);
+      J.set$width$x(this.avatar.style, C.JSInt_methods.toString$0(this.width) + "px");
+      J.set$height$x(this.avatar.style, C.JSInt_methods.toString$0(this.height) + "px");
+      $.get$gameScreen().appendChild(this.avatar);
       $.CurrentPlayer = this;
     },
     $isPlayer: true
@@ -5490,7 +5489,7 @@ var $$ = {};
       transform = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
       if (!t1.facingRight)
         transform += " scale(-1,1)";
-      J.set$transform$x(t1.playerCanvas.style, transform);
+      J.set$transform$x(t1.avatar.style, transform);
     }
   },
   closure0: {
@@ -5550,10 +5549,8 @@ var $$ = {};
         t1.render$0();
       t1 = $.CurrentPlayer;
       t2 = J.getInterceptor(t1);
-      if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer) {
-        J.get$context2D$x(t1.playerCanvas).clearRect(0, 0, t1.width, t1.height);
-        J.get$context2D$x($.CurrentPlayer.playerCanvas).drawImage(t1.avatar, 0, 0);
-      }
+      if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
+        t1.toString;
     }
   }
 },
@@ -10268,7 +10265,7 @@ var $$ = {};
   },
   HtmlElement: {
     "": "Element;",
-    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
+    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLCanvasElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
   },
   AnchorElement: {
     "": "HtmlElement;hostname=,href},port=,protocol=,target=,type%",
@@ -10304,13 +10301,6 @@ var $$ = {};
   ButtonElement: {
     "": "HtmlElement;name%,type%,value%",
     "%": "HTMLButtonElement"
-  },
-  CanvasElement: {
-    "": "HtmlElement;height},width}",
-    get$context2D: function(receiver) {
-      return receiver.getContext("2d");
-    },
-    "%": "HTMLCanvasElement"
   },
   CharacterData: {
     "": "Node;data=,length=",
@@ -10473,7 +10463,7 @@ var $$ = {};
     "%": ";Element"
   },
   EmbedElement: {
-    "": "HtmlElement;height},name%,src},type%,width}",
+    "": "HtmlElement;name%,src},type%",
     "%": "HTMLEmbedElement"
   },
   ErrorEvent: {
@@ -10562,16 +10552,16 @@ var $$ = {};
     "%": ";XMLHttpRequestEventTarget"
   },
   IFrameElement: {
-    "": "HtmlElement;height},name%,src},width}",
+    "": "HtmlElement;name%,src}",
     "%": "HTMLIFrameElement"
   },
   ImageElement: {
-    "": "HtmlElement;height},src},width}",
+    "": "HtmlElement;src}",
     $isImageElement: true,
     "%": "HTMLImageElement"
   },
   InputElement: {
-    "": "HtmlElement;checked%,height},name%,src},type%,value%,width}",
+    "": "HtmlElement;checked%,name%,src},type%,value%",
     $isInputElement: true,
     $isElement: true,
     $isNode: true,
@@ -10639,7 +10629,7 @@ var $$ = {};
     get$onPlay: function(receiver) {
       return C.EventStreamProvider_play.forElement$1(receiver);
     },
-    "%": "HTMLAudioElement;HTMLMediaElement"
+    "%": "HTMLAudioElement|HTMLMediaElement|HTMLVideoElement"
   },
   MediaStream: {
     "": "EventTarget;id=",
@@ -10765,7 +10755,7 @@ var $$ = {};
     "%": "HTMLOListElement"
   },
   ObjectElement: {
-    "": "HtmlElement;data=,height},name%,type%,width}",
+    "": "HtmlElement;data=,name%,type%",
     "%": "HTMLObjectElement"
   },
   OptionElement: {
@@ -11024,10 +11014,6 @@ var $$ = {};
       return H.setRuntimeTypeInfo(new P.Point(receiver.pageX, receiver.pageY), [null]);
     },
     "%": "FocusEvent|SVGZoomEvent;UIEvent"
-  },
-  VideoElement: {
-    "": "MediaElement;height},width}",
-    "%": "HTMLVideoElement"
   },
   WebSocket: {
     "": "EventTarget;",
@@ -15044,9 +15030,6 @@ J.get$classes$x = function(receiver) {
 };
 J.get$content$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$content(receiver);
-};
-J.get$context2D$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$context2D(receiver);
 };
 J.get$data$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$data(receiver);
