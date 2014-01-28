@@ -5236,7 +5236,7 @@ var $$ = {};
       return c.future;
     },
     render$0: function() {
-      var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
+      var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, transforms, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
       t1 = $.get$camera();
       if (t1.dirty) {
         t2 = t1._coUclient$_x;
@@ -5261,6 +5261,7 @@ var $$ = {};
         if (typeof t1 !== "number")
           return t1.$div();
         currentPercentY = t1 / (t3 - t5);
+        transforms = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
         for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
           canvas = t1._current;
           t2 = J.getInterceptor$x(canvas);
@@ -5272,14 +5273,15 @@ var $$ = {};
           canvasHeight = P.num_parse(H.stringReplaceAllUnchecked(t3, "px", ""), null);
           offsetX = J.$mul$n(J.$sub$n(canvasWidth, $.get$ui().gameScreenWidth), currentPercentX);
           offsetY = J.$mul$n(J.$sub$n(canvasHeight, $.get$ui().gameScreenHeight), currentPercentY);
-          t2 = t2.get$style(canvas);
+          t2 = J.$add$ns(t2.get$id(canvas), "translateZ(0) translateX(");
           if (typeof offsetX !== "number")
             return offsetX.$negate();
-          t3 = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(-offsetX) + "px) translateY(";
+          t2 = t2 + C.JSNumber_methods.toString$0(-offsetX) + "px) translateY(";
           if (typeof offsetY !== "number")
             return offsetY.$negate();
-          J.set$transform$x(t2, t3 + C.JSNumber_methods.toString$0(-offsetY) + "px)");
+          transforms.$indexSet(transforms, t2 + C.JSNumber_methods.toString$0(-offsetY) + "px)", canvas);
         }
+        transforms.forEach$1(transforms, new B.Street_render_closure());
         $.get$camera().dirty = false;
       }
     },
@@ -5367,8 +5369,16 @@ var $$ = {};
       t2._asyncComplete$1(t1);
     }
   },
+  Street_render_closure: {
+    "": "Closure:33;",
+    call$2: function(transform, canvas) {
+      var t1 = J.getInterceptor$x(canvas);
+      transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
+      J.set$transform$x(t1.get$style(canvas), transform);
+    }
+  },
   load_streets_closure: {
-    "": "Closure:33;c_0",
+    "": "Closure:34;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -6182,7 +6192,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 34, 9],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 35, 9],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6349,7 +6359,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:35;box_0,eagerError_2,pos_3",
+    "": "Closure:36;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6386,7 +6396,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 34, 9],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 35, 9],
     $as_Completer: null
   },
   _Future: {
@@ -6657,7 +6667,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:36;target_1",
+    "": "Closure:37;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -6763,7 +6773,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:36;box_0,listener_7",
+    "": "Closure:37;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -6854,7 +6864,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:37;box_0,future_6",
+    "": "Closure:38;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7574,7 +7584,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:38;subscription_0,future_1",
+    "": "Closure:39;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -9589,7 +9599,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:39;box_0,this_1",
+    "": "Closure:40;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -9726,7 +9736,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:40;box_0",
+    "": "Closure:41;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -9788,7 +9798,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:41;",
+    "": "Closure:42;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -9803,7 +9813,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:41;",
+    "": "Closure:42;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -9813,7 +9823,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:41;",
+    "": "Closure:42;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -9880,7 +9890,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:41;",
+    "": "Closure:42;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -9896,7 +9906,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:41;",
+    "": "Closure:42;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -10258,7 +10268,7 @@ var $$ = {};
   },
   HtmlElement: {
     "": "Element;",
-    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLDivElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
+    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
   },
   AnchorElement: {
     "": "HtmlElement;hostname=,href},port=,protocol=,target=,type%",
@@ -10335,6 +10345,10 @@ var $$ = {};
 
     },
     "%": "CSS2Properties|CSSStyleDeclaration|MSStyleCSSProperties"
+  },
+  DivElement: {
+    "": "HtmlElement;",
+    "%": "HTMLDivElement"
   },
   DocumentFragment: {
     "": "Node;",
@@ -12293,7 +12307,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:42;this_0",
+    "": "Closure:43;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13256,48 +13270,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 43],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 44],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 44],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 45],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 44],
+    }, "call$1", "get$_fullscreenError", 2, 0, 45],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 45],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 46],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 45],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 46],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 45],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 46],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 46],
+    }, "call$1", "get$_keyDown", 2, 0, 47],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 46],
+    }, "call$1", "get$_keyUp", 2, 0, 47],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 47],
+    }, "call$1", "get$_mouseDown", 2, 0, 48],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 47],
+    }, "call$1", "get$_mouseUp", 2, 0, 48],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 47],
+    }, "call$1", "get$_mouseMove", 2, 0, 48],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 47],
+    }, "call$1", "get$_mouseWheel", 2, 0, 48],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 44],
+    }, "call$1", "get$_resize", 2, 0, 45],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13337,9 +13351,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 44],
+    }, "call$1", "get$_onClick", 2, 0, 45],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 44],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 45],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13403,7 +13417,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:48;this_0",
+    "": "Closure:49;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13416,7 +13430,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:48;this_0",
+    "": "Closure:49;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13429,7 +13443,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:48;this_0",
+    "": "Closure:49;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13502,7 +13516,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:49;copies_3",
+    "": "Closure:50;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14793,6 +14807,11 @@ E.Asset.$isAsset = true;
 E.Asset.$isObject = true;
 Z.Scound.$isScound = true;
 Z.Scound.$isObject = true;
+W.DivElement.$isDivElement = true;
+W.DivElement.$isElement = true;
+W.DivElement.$isNode = true;
+W.DivElement.$isEventTarget = true;
+W.DivElement.$isObject = true;
 P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
 P._BufferingStreamSubscription.$is_EventSink = true;
 P._BufferingStreamSubscription.$isStreamSubscription = true;
@@ -15830,6 +15849,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
 {func: "void__String", void: true, args: [J.JSString]},
+{func: "dynamic__String_DivElement", args: [J.JSString, W.DivElement]},
 {func: "dynamic__Asset", args: [E.Asset]},
 {func: "void__Object__StackTrace", void: true, args: [P.Object], opt: [P.StackTrace]},
 {func: "dynamic__Object", args: [P.Object]},
