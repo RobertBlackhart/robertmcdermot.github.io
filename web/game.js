@@ -576,6 +576,11 @@ var $$ = {};
         throw H.wrapException(new P.ArgumentError(other));
       return receiver - other;
     },
+    $mul: function(receiver, other) {
+      if (typeof other !== "number")
+        throw H.wrapException(new P.ArgumentError(other));
+      return receiver * other;
+    },
     $mod: function(receiver, other) {
       var result;
       if (typeof other !== "number")
@@ -1796,7 +1801,8 @@ var $$ = {};
   }, "call$1", "Primitives__throwFormatException$closure", 2, 0, 0],
   Primitives_parseInt: function(source, radix, handleError) {
     var match, t1;
-    handleError = H.Primitives__throwFormatException$closure();
+    if (handleError == null)
+      handleError = H.Primitives__throwFormatException$closure();
     if (typeof source !== "string")
       H.throwExpression(new P.ArgumentError(source));
     match = /^\s*[+-]?((0x[a-f0-9]+)|(\d+)|([a-z0-9]+))\s*$/i.exec(source);
@@ -1815,6 +1821,19 @@ var $$ = {};
     if (match == null)
       return handleError.call$1(source);
     return parseInt(source, 10);
+  },
+  Primitives_parseDouble: function(source, handleError) {
+    var result, trimmed;
+    if (!/^\s*[+-]?(?:Infinity|NaN|(?:\.\d+|\d+(?:\.\d*)?)(?:[eE][+-]?\d+)?)\s*$/.test(source))
+      return handleError.call$1(source);
+    result = parseFloat(source);
+    if (isNaN(result)) {
+      trimmed = C.JSString_methods.trim$0(source);
+      if (trimmed === "NaN" || trimmed === "+NaN" || trimmed === "-NaN")
+        return result;
+      return handleError.call$1(source);
+    }
+    return result;
   },
   Primitives_objectTypeName: function(object) {
     var $name, decompiled;
@@ -3618,8 +3637,11 @@ var $$ = {};
     t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
   },
   resize: function() {
-    var warningMessage, t1;
-    document.querySelector("#GameScreen").clientHeight;
+    var gameScreen, t1, warningMessage;
+    gameScreen = document.querySelector("#GameScreen");
+    t1 = $.get$ui();
+    t1.gameScreenWidth = gameScreen.clientWidth;
+    t1.gameScreenHeight = gameScreen.clientHeight;
     warningMessage = document.querySelector("#SizeWarning");
     t1 = window.innerWidth;
     if (typeof t1 !== "number")
@@ -5034,7 +5056,7 @@ var $$ = {};
     }
   },
   UserInterface: {
-    "": "Object;commaFormatter,nameMeter,currantMeter,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent",
+    "": "Object;commaFormatter,gameScreenWidth,gameScreenHeight,nameMeter,currantMeter,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent",
     init$0: function() {
       C._BeforeUnloadEventStreamProvider_beforeunload.forTarget$1(window).listen$1(new B.UserInterface_init_closure());
       B.resize();
@@ -5166,24 +5188,28 @@ var $$ = {};
     $isPlayer: true
   },
   Camera: {
-    "": "Object;x>,y>,zoom",
+    "": "Object;_coUclient$_x,_coUclient$_y,zoom,dirty",
     setCamera$1: [function(xy) {
-      var t1, exception;
+      var newX, newY, t1, exception;
       try {
         t1 = J.split$1$s(xy, ",");
         if (0 >= t1.length)
           return H.ioore(t1, 0);
-        this.x = H.Primitives_parseInt(t1[0], null, null);
+        newX = P.num_parse(t1[0], null);
         t1 = J.split$1$s(xy, ",");
         if (1 >= t1.length)
           return H.ioore(t1, 1);
-        this.y = H.Primitives_parseInt(t1[1], null, null);
+        newY = P.num_parse(t1[1], null);
+        if (!J.$eq(newX, this._coUclient$_x) || !J.$eq(newY, this._coUclient$_y))
+          this.dirty = true;
+        this._coUclient$_x = newX;
+        this._coUclient$_y = newY;
       } catch (exception) {
         H.unwrapException(exception);
         B.updateConsole("error: format must be camera [num],[num]");
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 0]
+    }, "call$1", "get$setCamera", 2, 0, 32]
   },
   Street: {
     "": "Object;label,_data,belowPlayer,abovePlayer,bounds",
@@ -5210,46 +5236,51 @@ var $$ = {};
       return c.future;
     },
     render$0: function() {
-      var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, canvas;
+      var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
       t1 = $.get$camera();
-      t2 = t1.x;
-      t3 = this.bounds;
-      t4 = t3.width;
-      t5 = $.get$gameScreen();
-      t6 = t5.clientWidth;
-      if (typeof t4 !== "number")
-        return t4.$sub();
-      if (typeof t6 !== "number")
-        return H.iae(t6);
-      if (typeof t2 !== "number")
-        return t2.$div();
-      currentPercentX = t2 / (t4 - t6);
-      t1 = t1.y;
-      t3 = t3.height;
-      t6 = t5.clientHeight;
-      if (typeof t3 !== "number")
-        return t3.$sub();
-      if (typeof t6 !== "number")
-        return H.iae(t6);
-      if (typeof t1 !== "number")
-        return t1.$div();
-      currentPercentY = t1 / (t3 - t6);
-      for (t1 = W._FrozenElementList$_wrap(t5.querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
-        canvas = t1._current;
-        t2 = J.get$clientWidth$x(canvas);
-        t3 = $.get$gameScreen();
-        t4 = t3.clientWidth;
-        if (typeof t2 !== "number")
-          return t2.$sub();
+      if (t1.dirty) {
+        t2 = t1._coUclient$_x;
+        t3 = this.bounds;
+        t4 = t3.width;
+        t5 = $.get$ui();
+        t6 = t5.gameScreenWidth;
         if (typeof t4 !== "number")
-          return H.iae(t4);
-        t5 = canvas.clientHeight;
-        t3 = t3.clientHeight;
-        if (typeof t5 !== "number")
-          return t5.$sub();
+          return t4.$sub();
+        if (typeof t6 !== "number")
+          return H.iae(t6);
+        if (typeof t2 !== "number")
+          return t2.$div();
+        currentPercentX = t2 / (t4 - t6);
+        t1 = t1._coUclient$_y;
+        t3 = t3.height;
+        t5 = t5.gameScreenHeight;
         if (typeof t3 !== "number")
-          return H.iae(t3);
-        J.set$transform$x(canvas.style, "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(-((t2 - t4) * currentPercentX)) + "px) translateY(" + C.JSNumber_methods.toString$0(-((t5 - t3) * currentPercentY)) + "px)");
+          return t3.$sub();
+        if (typeof t5 !== "number")
+          return H.iae(t5);
+        if (typeof t1 !== "number")
+          return t1.$div();
+        currentPercentY = t1 / (t3 - t5);
+        for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
+          canvas = t1._current;
+          t2 = J.getInterceptor$x(canvas);
+          t3 = J.get$width$x(t2.get$style(canvas));
+          t3.toString;
+          canvasWidth = P.num_parse(H.stringReplaceAllUnchecked(t3, "px", ""), null);
+          t3 = J.get$height$x(t2.get$style(canvas));
+          t3.toString;
+          canvasHeight = P.num_parse(H.stringReplaceAllUnchecked(t3, "px", ""), null);
+          offsetX = J.$mul$n(J.$sub$n(canvasWidth, $.get$ui().gameScreenWidth), currentPercentX);
+          offsetY = J.$mul$n(J.$sub$n(canvasHeight, $.get$ui().gameScreenHeight), currentPercentY);
+          t2 = t2.get$style(canvas);
+          if (typeof offsetX !== "number")
+            return offsetX.$negate();
+          t3 = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(-offsetX) + "px) translateY(";
+          if (typeof offsetY !== "number")
+            return offsetY.$negate();
+          J.set$transform$x(t2, t3 + C.JSNumber_methods.toString$0(-offsetY) + "px)");
+        }
+        $.get$camera().dirty = false;
       }
     },
     Street$1: function(streetName) {
@@ -5337,7 +5368,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:32;c_0",
+    "": "Closure:33;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -5355,7 +5386,7 @@ var $$ = {};
   closure: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
-      var t1, t2, t3, t4, t5, t6, translateX, t7, translateY, transform;
+      var t1, t2, t3, t4, t5, t6, translateX, t7, translateY, t8, camX, camY, transform;
       t1 = $.CurrentPlayer;
       t2 = $.get$game();
       t1.toString;
@@ -5419,73 +5450,34 @@ var $$ = {};
         translateY = 0;
       } else
         translateY = t2;
-      t2 = $.get$gameScreen();
-      t7 = t2.clientHeight;
+      t2 = $.get$ui();
+      t7 = t2.gameScreenHeight;
       if (typeof t7 !== "number")
         return t7.$sub();
-      t7 = t2.clientWidth;
-      if (typeof t7 !== "number")
-        return t7.$div();
-      if (translateX > t4 - t5 / 2 - t7 / 2) {
-        t5 = $.get$camera();
-        t7 = t2.clientWidth;
-        if (typeof t7 !== "number")
-          return H.iae(t7);
-        t5.x = t4 - t7;
-        t7 = t2.clientWidth;
-        if (typeof t7 !== "number")
-          return H.iae(t7);
-        translateX = translateX - t4 + t7;
-        t4 = t5;
+      t8 = $.get$camera();
+      t8._coUclient$_y;
+      t2 = t2.gameScreenWidth;
+      if (typeof t2 !== "number")
+        return t2.$div();
+      if (translateX > t4 - t5 / 2 - t2 / 2) {
+        camX = t4 - t2;
+        translateX = translateX - t4 + t2;
+      } else if (translateX + t5 / 2 > t2 / 2) {
+        camX = translateX + t5 / 2 - t2 / 2;
+        translateX = t2 / 2 - t5 / 2;
+      } else
+        camX = 0;
+      if (translateY + t6 / 2 < t7 / 2)
+        camY = 0;
+      else if (translateY < t3 - t6 / 2 - t7 / 2) {
+        camY = t3 - (t3 - translateY - t6 / 2 + t7 / 2);
+        translateY = t7 / 2 - t6 / 2;
       } else {
-        t4 = t2.clientWidth;
-        if (typeof t4 !== "number")
-          return t4.$div();
-        if (translateX + t5 / 2 > t4 / 2) {
-          t4 = $.get$camera();
-          t7 = t2.clientWidth;
-          if (typeof t7 !== "number")
-            return t7.$div();
-          t4.x = translateX + t5 / 2 - t7 / 2;
-          t7 = t2.clientWidth;
-          if (typeof t7 !== "number")
-            return t7.$div();
-          translateX = t7 / 2 - t5 / 2;
-        } else {
-          t4 = $.get$camera();
-          t4.x = 0;
-        }
+        camY = t3 - t7;
+        translateY = t7 - (t3 - translateY);
       }
-      t5 = t2.clientHeight;
-      if (typeof t5 !== "number")
-        return t5.$div();
-      if (translateY + t6 / 2 < t5 / 2)
-        t4.y = 0;
-      else {
-        t5 = t2.clientHeight;
-        if (typeof t5 !== "number")
-          return t5.$div();
-        if (translateY < t3 - t6 / 2 - t5 / 2) {
-          t5 = t2.clientHeight;
-          if (typeof t5 !== "number")
-            return t5.$div();
-          t4.y = t3 - (t3 - translateY - t6 / 2 + t5 / 2);
-          t2 = t2.clientHeight;
-          if (typeof t2 !== "number")
-            return t2.$div();
-          translateY = t2 / 2 - t6 / 2;
-        } else {
-          t5 = t2.clientHeight;
-          if (typeof t5 !== "number")
-            return H.iae(t5);
-          t4.y = t3 - t5;
-          t2 = t2.clientHeight;
-          if (typeof t2 !== "number")
-            return t2.$sub();
-          translateY = t2 - (t3 - translateY);
-        }
-      }
-      transform = "translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
+      t8.setCamera$1(C.JSNumber_methods.toString$0(camX) + "," + C.JSNumber_methods.toString$0(camY));
+      transform = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
       if (!t1.facingRight)
         transform += " scale(-1,1)";
       J.set$transform$x(t1.playerCanvas.style, transform);
@@ -5541,6 +5533,7 @@ var $$ = {};
       J.set$innerHtml$x(document.querySelector("#CurrDay"), data[3]);
       J.set$innerHtml$x(document.querySelector("#CurrTime"), data[4]);
       J.set$innerHtml$x(document.querySelector("#CurrDate"), data[2] + " of " + data[1]);
+      P.DateTime$_now();
       t1 = $.currentStreet;
       t2 = J.getInterceptor(t1);
       if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
@@ -5549,7 +5542,7 @@ var $$ = {};
       t2 = J.getInterceptor(t1);
       if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer) {
         J.get$context2D$x(t1.playerCanvas).clearRect(0, 0, t1.width, t1.height);
-        J.get$context2D$x($.CurrentPlayer.playerCanvas).drawImage(t1.avatar, 0, 0, t1.width, t1.height);
+        J.get$context2D$x($.CurrentPlayer.playerCanvas).drawImage(t1.avatar, 0, 0);
       }
     }
   }
@@ -6189,7 +6182,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 33, 9],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 34, 9],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6356,7 +6349,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:34;box_0,eagerError_2,pos_3",
+    "": "Closure:35;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6393,7 +6386,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 33, 9],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 34, 9],
     $as_Completer: null
   },
   _Future: {
@@ -6664,7 +6657,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:35;target_1",
+    "": "Closure:36;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -6770,7 +6763,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:35;box_0,listener_7",
+    "": "Closure:36;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -6861,7 +6854,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:36;box_0,future_6",
+    "": "Closure:37;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7581,7 +7574,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:37;subscription_0,future_1",
+    "": "Closure:38;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -9596,7 +9589,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:38;box_0,this_1",
+    "": "Closure:39;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -9711,6 +9704,20 @@ var $$ = {};
     }
     return fixedList;
   },
+  num_parse: function(input, onError) {
+    var source, result;
+    source = J.trim$0$s(input);
+    result = H.Primitives_parseInt(source, null, P.num__returnNull$closure());
+    if (result != null)
+      return result;
+    result = H.Primitives_parseDouble(source, P.num__returnNull$closure());
+    if (result != null)
+      return result;
+    throw H.wrapException(P.FormatException$(input));
+  },
+  num__returnNull: [function(_) {
+    return;
+  }, "call$1", "num__returnNull$closure", 2, 0, 3],
   print: [function(object) {
     var line = H.S(object);
     H.printString(line);
@@ -9719,7 +9726,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:39;box_0",
+    "": "Closure:40;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -9781,7 +9788,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:40;",
+    "": "Closure:41;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -9796,7 +9803,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:40;",
+    "": "Closure:41;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -9806,7 +9813,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:40;",
+    "": "Closure:41;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -9820,6 +9827,9 @@ var $$ = {};
     },
     $sub: function(_, other) {
       return P.Duration$(0, 0, this._duration - other.get$_duration(), 0, 0, 0);
+    },
+    $mul: function(_, factor) {
+      return P.Duration$(0, 0, C.JSNumber_methods.toInt$0(C.JSNumber_methods.roundToDouble$0(this._duration * factor)), 0, 0, 0);
     },
     $tdiv: function(_, quotient) {
       if (quotient === 0)
@@ -9870,7 +9880,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:40;",
+    "": "Closure:41;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -9886,7 +9896,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:40;",
+    "": "Closure:41;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -10350,7 +10360,7 @@ var $$ = {};
     "%": "DOMException"
   },
   Element: {
-    "": "Node;className%,clientWidth=,id=,style=",
+    "": "Node;className%,id=,style=",
     get$attributes: function(receiver) {
       return new W._ElementAttributeMap(receiver);
     },
@@ -11245,6 +11255,9 @@ var $$ = {};
     set$display: function(receiver, value) {
       this.setProperty$3(receiver, "display", value, "");
     },
+    get$height: function(receiver) {
+      return this.getPropertyValue$1(receiver, "height");
+    },
     set$height: function(receiver, value) {
       this.setProperty$3(receiver, "height", value, "");
     },
@@ -11299,6 +11312,9 @@ var $$ = {};
         }
       }
       this.setProperty$3(receiver, t1 + "transform", value, "");
+    },
+    get$width: function(receiver) {
+      return this.getPropertyValue$1(receiver, "width");
     },
     set$width: function(receiver, value) {
       this.setProperty$3(receiver, "width", value, "");
@@ -12277,7 +12293,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:41;this_0",
+    "": "Closure:42;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -12590,6 +12606,18 @@ var $$ = {};
       if (typeof t2 !== "number")
         return H.iae(t2);
       t2 = new P.Point(t1 - t3, t4 - t2);
+      t2.$builtinTypeInfo = this.$builtinTypeInfo;
+      return t2;
+    },
+    $mul: function(_, factor) {
+      var t1, t2;
+      t1 = this.x;
+      if (typeof t1 !== "number")
+        return t1.$mul();
+      t2 = this.y;
+      if (typeof t2 !== "number")
+        return t2.$mul();
+      t2 = new P.Point(t1 * factor, t2 * factor);
       t2.$builtinTypeInfo = this.$builtinTypeInfo;
       return t2;
     },
@@ -13228,48 +13256,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 42],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 43],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 43],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 44],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 43],
+    }, "call$1", "get$_fullscreenError", 2, 0, 44],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 44],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 45],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 44],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 45],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 44],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 45],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 45],
+    }, "call$1", "get$_keyDown", 2, 0, 46],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 45],
+    }, "call$1", "get$_keyUp", 2, 0, 46],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 46],
+    }, "call$1", "get$_mouseDown", 2, 0, 47],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 46],
+    }, "call$1", "get$_mouseUp", 2, 0, 47],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 46],
+    }, "call$1", "get$_mouseMove", 2, 0, 47],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 46],
+    }, "call$1", "get$_mouseWheel", 2, 0, 47],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 43],
+    }, "call$1", "get$_resize", 2, 0, 44],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13309,9 +13337,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 43],
+    }, "call$1", "get$_onClick", 2, 0, 44],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 43],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 44],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13375,7 +13403,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:47;this_0",
+    "": "Closure:48;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13388,7 +13416,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:47;this_0",
+    "": "Closure:48;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13401,7 +13429,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:47;this_0",
+    "": "Closure:48;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13474,7 +13502,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:48;copies_3",
+    "": "Closure:49;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14688,12 +14716,12 @@ Isolate.$finishClasses($$, $, null);
 $$ = null;
 
 // Runtime type support
-J.JSInt.$isint = true;
-J.JSInt.$isnum = true;
-J.JSInt.$isObject = true;
 W.Node.$isNode = true;
 W.Node.$isEventTarget = true;
 W.Node.$isObject = true;
+J.JSInt.$isint = true;
+J.JSInt.$isnum = true;
+J.JSInt.$isObject = true;
 J.JSString.$isString = true;
 J.JSString.$isObject = true;
 W.Touch.$isTouch = true;
@@ -14922,6 +14950,11 @@ J.$lt$n = function(receiver, a0) {
     return receiver < a0;
   return J.getInterceptor$n(receiver).$lt(receiver, a0);
 };
+J.$mul$n = function(receiver, a0) {
+  if (typeof receiver == "number" && typeof a0 == "number")
+    return receiver * a0;
+  return J.getInterceptor$n(receiver).$mul(receiver, a0);
+};
 J.$sub$n = function(receiver, a0) {
   if (typeof receiver == "number" && typeof a0 == "number")
     return receiver - a0;
@@ -14990,9 +15023,6 @@ J.get$className$x = function(receiver) {
 J.get$classes$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$classes(receiver);
 };
-J.get$clientWidth$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$clientWidth(receiver);
-};
 J.get$content$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$content(receiver);
 };
@@ -15013,6 +15043,9 @@ J.get$first$ax = function(receiver) {
 };
 J.get$hashCode$ = function(receiver) {
   return J.getInterceptor(receiver).get$hashCode(receiver);
+};
+J.get$height$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$height(receiver);
 };
 J.get$id$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$id(receiver);
@@ -15070,6 +15103,9 @@ J.get$value$x = function(receiver) {
 };
 J.get$values$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$values(receiver);
+};
+J.get$width$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$width(receiver);
 };
 J.get$x$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$x(receiver);
@@ -15675,13 +15711,13 @@ Isolate.$lazy($, "ui", "ui", "get$ui", function() {
   t15 = document.querySelector("#MaxMood");
   t16 = document.querySelector("#MoodPercent");
   J.set$innerHtml$x(t11, C.JSInt_methods.toString$0(100));
-  return new B.UserInterface(t1, t2, t3, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16);
+  return new B.UserInterface(t1, null, null, t2, t3, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16);
 });
 Isolate.$lazy($, "chat", "chat", "get$chat", function() {
   return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
 });
 Isolate.$lazy($, "camera", "camera", "get$camera", function() {
-  var t1 = new B.Camera(0, 400, 0);
+  var t1 = new B.Camera(0, 400, 0, true);
   $.get$COMMANDS().push(["camera", "sets the cameras position \"camera x,y\"", t1.get$setCamera()]);
   return t1;
 });
@@ -15793,6 +15829,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__TouchEvent", args: [W.TouchEvent]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
+{func: "void__String", void: true, args: [J.JSString]},
 {func: "dynamic__Asset", args: [E.Asset]},
 {func: "void__Object__StackTrace", void: true, args: [P.Object], opt: [P.StackTrace]},
 {func: "dynamic__Object", args: [P.Object]},
