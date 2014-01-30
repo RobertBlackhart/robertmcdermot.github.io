@@ -531,7 +531,7 @@ var $$ = {};
     static: {JSArray_JSArray$fixed: function($length, $E) {
         var t1;
         if (typeof $length !== "number" || Math.floor($length) !== $length || $length < 0)
-          throw H.wrapException(new P.ArgumentError("Length must be a non-negative integer: " + H.S($length)));
+          throw H.wrapException(P.ArgumentError$("Length must be a non-negative integer: " + H.S($length)));
         t1 = H.setRuntimeTypeInfo(new Array($length), [$E]);
         t1.fixed$length = init;
         return t1;
@@ -739,11 +739,11 @@ var $$ = {};
     },
     substring$2: function(receiver, startIndex, endIndex) {
       if (typeof startIndex !== "number" || Math.floor(startIndex) !== startIndex)
-        H.throwExpression(P.ArgumentError$(startIndex));
+        H.throwExpression(new P.ArgumentError(startIndex));
       if (endIndex == null)
         endIndex = receiver.length;
       if (typeof endIndex !== "number" || Math.floor(endIndex) !== endIndex)
-        H.throwExpression(P.ArgumentError$(endIndex));
+        H.throwExpression(new P.ArgumentError(endIndex));
       if (startIndex < 0)
         throw H.wrapException(P.RangeError$value(startIndex));
       if (typeof endIndex !== "number")
@@ -1888,14 +1888,14 @@ var $$ = {};
     for (t1 = new H.ListIterator(codePoints, codePoints.length, 0, null); t1.moveNext$0();) {
       i = t1._current;
       if (typeof i !== "number" || Math.floor(i) !== i)
-        throw H.wrapException(new P.ArgumentError(i));
+        throw H.wrapException(P.ArgumentError$(i));
       if (i <= 65535)
         a.push(i);
       else if (i <= 1114111) {
         a.push(55296 + (C.JSInt_methods._shrOtherPositive$1(i - 65536, 10) & 1023));
         a.push(56320 + (i & 1023));
       } else
-        throw H.wrapException(new P.ArgumentError(i));
+        throw H.wrapException(P.ArgumentError$(i));
     }
     return H.Primitives__fromCharCodeApply(a);
   },
@@ -1904,9 +1904,9 @@ var $$ = {};
     for (t1 = new H.ListIterator(charCodes, charCodes.length, 0, null); t1.moveNext$0();) {
       i = t1._current;
       if (typeof i !== "number" || Math.floor(i) !== i)
-        throw H.wrapException(new P.ArgumentError(i));
+        throw H.wrapException(P.ArgumentError$(i));
       if (i < 0)
-        throw H.wrapException(new P.ArgumentError(i));
+        throw H.wrapException(P.ArgumentError$(i));
       if (i > 65535)
         return H.Primitives_stringFromCodePoints(charCodes);
     }
@@ -3509,7 +3509,9 @@ var $$ = {};
     var t1, t2, t3;
     t1 = {};
     t1.value_0 = value;
-    value = J.replaceAll$2$s(value, " ", "");
+    if (J.$eq(value, $.get$ui().titleMeter.textContent))
+      return;
+    value = J.replaceAll$2$s(t1.value_0, " ", "");
     t1.value_0 = value;
     t2 = $.get$ui().jukebox;
     t2 = t2.$index(t2, value);
@@ -3562,9 +3564,8 @@ var $$ = {};
       $.showFps = true;
   }, "call$1", "toggleFps$closure", 2, 0, 3],
   main: [function() {
-    var t1, playButton;
     document.querySelector("#LoadStatus").textContent = "Loading Audio";
-    t1 = $.get$prevVolume();
+    var t1 = $.get$prevVolume();
     if (t1 != null) {
       B.setVolume(t1);
       H.interceptedTypeCast(document.querySelector("#VolumeSlider"), "$isInputElement").value = $.get$prevVolume();
@@ -3578,30 +3579,8 @@ var $$ = {};
       $.get$localStorage().setItem("isMuted", "0");
     }
     $.get$ui()._setMute$1($.get$isMuted());
-    t1 = window.innerWidth;
-    if (typeof t1 !== "number")
-      return t1.$gt();
-    if (t1 > 1220) {
-      t1 = window.innerHeight;
-      if (typeof t1 !== "number")
-        return t1.$gt();
-      t1 = t1 > 325;
-    } else
-      t1 = false;
-    if (t1)
-      B.load();
-    else {
-      J.set$display$x(document.querySelector("#LoadingFrame").style, "none");
-      playButton = document.querySelector("#PlayButton");
-      playButton.textContent = "Load 'Er Up";
-      J.set$display$x(playButton.style, "inline-block");
-      t1 = C.EventStreamProvider_click.forElement$1(playButton);
-      t1.get$first(t1).then$1(new B.main_closure(playButton));
-    }
+    B.load_audio().then$1(new B.main_closure());
   }, "call$0", "main$closure", 0, 0, 4],
-  load: function() {
-    B.load_audio().then$1(new B.load_closure());
-  },
   start: function() {
     var t1, doneLoading, t2, t3;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
@@ -4396,27 +4375,19 @@ var $$ = {};
     }
   },
   main_closure: {
-    "": "Closure:3;playButton_0",
-    call$1: function(_) {
-      J.set$display$x(document.querySelector("#LoadingFrame").style, "block");
-      J.set$display$x(this.playButton_0.style, "none");
-      B.load();
-    }
-  },
-  load_closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      return B.load_streets().then$1(new B.load__closure());
+      return B.load_streets().then$1(new B.main__closure());
     }
   },
-  load__closure: {
+  main__closure: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1 = B.Street$("test");
-      return t1.load$0(t1).then$1(new B.load___closure());
+      return t1.load$0(t1).then$1(new B.main___closure());
     }
   },
-  load___closure: {
+  main___closure: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1, playButton;
@@ -4442,11 +4413,11 @@ var $$ = {};
         playButton.textContent = "Play";
         J.set$display$x(playButton.style, "inline-block");
         t1 = C.EventStreamProvider_click.forElement$1(playButton);
-        t1.get$first(t1).then$1(new B.load____closure());
+        t1.get$first(t1).then$1(new B.main____closure());
       }
     }
   },
-  load____closure: {
+  main____closure: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1 = $.get$ui().currentSong;
@@ -4522,7 +4493,7 @@ var $$ = {};
       if (J.contains$1$asx(target.className, "FullscreenResetGlyph"))
         document.webkitExitFullscreen();
       t1 = target.parentElement.id;
-      if (t1 === "AudioGlyph" || t1 === "MobileAudioGlpyh") {
+      if (t1 === "AudioGlyph" || t1 === "MobileAudioGlyph") {
         mute = $.get$localStorage().getItem("isMuted") === "0" ? "1" : "0";
         $.get$ui()._setMute$1(mute);
       }
@@ -5788,7 +5759,7 @@ var $$ = {};
     $isEfficientLength: true
   },
   ListIterator: {
-    "": "Object;_iterable,_length,_index,_current",
+    "": "Object;_iterable,_dev$_length,_index,_current",
     get$current: function() {
       return this._current;
     },
@@ -5797,7 +5768,7 @@ var $$ = {};
       t1 = this._iterable;
       t2 = J.getInterceptor$asx(t1);
       $length = t2.get$length(t1);
-      if (this._length !== $length)
+      if (this._dev$_length !== $length)
         throw H.wrapException(P.ConcurrentModificationError$(t1));
       t3 = this._index;
       if (t3 >= $length) {
@@ -6521,10 +6492,10 @@ var $$ = {};
     completeError$2: [function(error, stackTrace) {
       var t1;
       if (error == null)
-        throw H.wrapException(new P.ArgumentError("Error must not be null"));
+        throw H.wrapException(P.ArgumentError$("Error must not be null"));
       t1 = this.future;
       if (t1._state !== 0)
-        throw H.wrapException(new P.StateError("Future already completed"));
+        throw H.wrapException(P.StateError$("Future already completed"));
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
@@ -6654,7 +6625,7 @@ var $$ = {};
     _asyncCompleteError$2: function(error, stackTrace) {
       var t1;
       if (this._state !== 0)
-        H.throwExpression(new P.StateError("Future already completed"));
+        H.throwExpression(P.StateError$("Future already completed"));
       this._state = 1;
       t1 = this._zone;
       t1.toString;
@@ -9459,7 +9430,7 @@ var $$ = {};
     static: {"": "ListQueue__INITIAL_CAPACITY"}
   },
   _ListQueueIterator: {
-    "": "Object;_queue,_end,_modificationCount,_position,_collection$_current",
+    "": "Object;_queue,_end,_modificationCount,_collection$_position,_collection$_current",
     get$current: function() {
       return this._collection$_current;
     },
@@ -9468,7 +9439,7 @@ var $$ = {};
       t1 = this._queue;
       if (this._modificationCount !== t1._modificationCount)
         H.throwExpression(P.ConcurrentModificationError$(t1));
-      t2 = this._position;
+      t2 = this._collection$_position;
       if (t2 === this._end) {
         this._collection$_current = null;
         return false;
@@ -9478,7 +9449,7 @@ var $$ = {};
       if (t2 >= t3)
         return H.ioore(t1, t2);
       this._collection$_current = t1[t2];
-      this._position = (t2 + 1 & t3 - 1) >>> 0;
+      this._collection$_position = (t2 + 1 & t3 - 1) >>> 0;
       return true;
     }
   }
@@ -12265,18 +12236,18 @@ var $$ = {};
     $isEvent: true
   },
   FixedSizeListIterator: {
-    "": "Object;_array,_html$_length,_html$_position,_html$_current",
+    "": "Object;_array,_length,_position,_html$_current",
     moveNext$0: function() {
       var nextPosition, t1;
-      nextPosition = this._html$_position + 1;
-      t1 = this._html$_length;
+      nextPosition = this._position + 1;
+      t1 = this._length;
       if (nextPosition < t1) {
         this._html$_current = J.$index$asx(this._array, nextPosition);
-        this._html$_position = nextPosition;
+        this._position = nextPosition;
         return true;
       }
       this._html$_current = null;
-      this._html$_position = t1;
+      this._position = t1;
       return false;
     },
     get$current: function() {
@@ -14662,7 +14633,7 @@ var $$ = {};
             t1._addListener$1(result);
             t1 = c.future;
             if (t1._state !== 0)
-              H.throwExpression(new P.StateError("Future already completed"));
+              H.throwExpression(P.StateError$("Future already completed"));
             t1._asyncComplete$1(result);
             loading = true;
             break;
@@ -14886,18 +14857,18 @@ P.Match.$isMatch = true;
 P.Match.$isObject = true;
 W.BeforeUnloadEvent.$isEvent = true;
 W.BeforeUnloadEvent.$isObject = true;
-W.MouseEvent.$isMouseEvent = true;
-W.MouseEvent.$isEvent = true;
-W.MouseEvent.$isObject = true;
-J.JSArray.$isObject = true;
 W.Event.$isEvent = true;
 W.Event.$isObject = true;
 W.HttpRequest.$isEventTarget = true;
 W.HttpRequest.$isObject = true;
 W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
+J.JSArray.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
+W.MouseEvent.$isMouseEvent = true;
+W.MouseEvent.$isEvent = true;
+W.MouseEvent.$isObject = true;
 W.TouchEvent.$isTouchEvent = true;
 W.TouchEvent.$isEvent = true;
 W.TouchEvent.$isObject = true;
@@ -14926,12 +14897,12 @@ W.NodeValidator.$isObject = true;
 H.RawReceivePortImpl.$isObject = true;
 H._IsolateEvent.$isObject = true;
 H._IsolateContext.$isObject = true;
+E.Asset.$isAsset = true;
+E.Asset.$isObject = true;
 P.Symbol.$isSymbol = true;
 P.Symbol.$isObject = true;
 P.StackTrace.$isStackTrace = true;
 P.StackTrace.$isObject = true;
-E.Asset.$isAsset = true;
-E.Asset.$isObject = true;
 Z.Scound.$isScound = true;
 Z.Scound.$isObject = true;
 P.Map.$isMap = true;
