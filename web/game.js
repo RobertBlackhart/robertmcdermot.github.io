@@ -2251,6 +2251,12 @@ var $$ = {};
       return value;
     H.propertyTypeCastError(value, property);
   },
+  listTypeCast: function(value) {
+    var t1 = J.getInterceptor(value);
+    if (typeof value === "object" && value !== null && (value.constructor === Array || !!t1.$isList) || value == null)
+      return value;
+    throw H.wrapException(H.CastErrorImplementation$(H.Primitives_objectTypeName(value), "List"));
+  },
   throwCyclicInit: function(staticName) {
     throw H.wrapException(P.CyclicInitializationError$("Cyclic initialization for static " + H.S(staticName)));
   },
@@ -4386,8 +4392,7 @@ var $$ = {};
   load__closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1 = new B.Street(null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), null);
-      t1.Street$1("test");
+      var t1 = B.Street$("test");
       return t1.load$0(t1).then$1(new B.load___closure());
     }
   },
@@ -4462,14 +4467,15 @@ var $$ = {};
       C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
       B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
       B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
+      C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure11());
       t1 = document.body;
       t1.toString;
       t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure11(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure12(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       $.playerInput = this;
     },
     clickOrTouch$2: function(mouseEvent, touchEvent) {
-      var target, t1, mute, chatMenu, channelName, input, drawer, t2;
+      var target, t1, mute, chatMenu, loadStreet, channelName, input, drawer, t2;
       if (mouseEvent != null) {
         if (this.touched)
           return;
@@ -4513,6 +4519,11 @@ var $$ = {};
           chatMenu.hidden = false;
         else
           chatMenu.hidden = true;
+      }
+      if (target.className === "ExitLabel") {
+        loadStreet = document.createElement("script", null);
+        J.set$src$x(loadStreet, target.getAttribute("url"));
+        document.body.appendChild(loadStreet);
       }
       if (target.className === "ChannelName") {
         t1 = target.id;
@@ -4796,6 +4807,20 @@ var $$ = {};
     }
   },
   Input_init_closure11: {
+    "": "Closure:27;",
+    call$1: function($event) {
+      var street, label, t1, t2;
+      street = C.C_JsonCodec.decode$1(J.get$data$x($event));
+      label = J.$index$asx(street, "label");
+      t1 = new E.Asset(street, false, null, label);
+      t1.loaded = true;
+      t2 = $.get$ASSET();
+      t2.$indexSet(t2, label, t1);
+      t1 = B.Street$(label);
+      t1.load$0(t1);
+    }
+  },
+  Input_init_closure12: {
     "": "Closure:3;this_12",
     call$1: function(e) {
       return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
@@ -5187,7 +5212,7 @@ var $$ = {};
     $isPlayer: true
   },
   Camera: {
-    "": "Object;_coUclient$_x,_coUclient$_y,zoom,dirty",
+    "": "Object;_x,_y,zoom,dirty",
     setCamera$1: [function(xy) {
       var newX, newY, t1, exception;
       try {
@@ -5199,10 +5224,10 @@ var $$ = {};
         if (1 >= t1.length)
           return H.ioore(t1, 1);
         newY = P.num_parse(t1[1], null);
-        if (!J.$eq(newX, this._coUclient$_x) || !J.$eq(newY, this._coUclient$_y))
+        if (!J.$eq(newX, this._x) || !J.$eq(newY, this._y))
           this.dirty = true;
-        this._coUclient$_x = newX;
-        this._coUclient$_y = newY;
+        this._x = newX;
+        this._y = newY;
       } catch (exception) {
         H.unwrapException(exception);
         B.updateConsole("error: format must be camera [num],[num]");
@@ -5211,11 +5236,12 @@ var $$ = {};
     }, "call$1", "get$setCamera", 2, 0, 32]
   },
   Street: {
-    "": "Object;label,_data,belowPlayer,abovePlayer,bounds",
+    "": "Object;label,_data,belowPlayer,abovePlayer,exits,bounds",
     load$0: function(_) {
-      var c, decosToLoad, t1, t2, deco, t3, assetsToLoad, decos;
+      var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-      $.currentStreet = null;
+      t1 = J.get$children$x($.get$layers());
+      t1.clear$0(t1);
       if (J.$index$asx(this._data, "music") != null)
         B.setSong(J.$index$asx(this._data, "music"));
       decosToLoad = [];
@@ -5238,7 +5264,7 @@ var $$ = {};
       var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, transforms, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
       t1 = $.get$camera();
       if (t1.dirty) {
-        t2 = t1._coUclient$_x;
+        t2 = t1._x;
         t3 = this.bounds;
         t4 = t3.width;
         t5 = $.get$ui();
@@ -5250,7 +5276,7 @@ var $$ = {};
         if (typeof t2 !== "number")
           return t2.$div();
         currentPercentX = t2 / (t4 - t6);
-        t1 = t1._coUclient$_y;
+        t1 = t1._y;
         t3 = t3.height;
         t5 = t5.gameScreenHeight;
         if (typeof t3 !== "number")
@@ -5261,7 +5287,7 @@ var $$ = {};
           return t1.$div();
         currentPercentY = t1 / (t3 - t5);
         transforms = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
-        for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
+        for (t1 = W._FrozenElementList$_wrap($.get$layers().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
           canvas = t1._current;
           t2 = J.getInterceptor$x(canvas);
           t3 = J.get$width$x(t2.get$style(canvas));
@@ -5291,12 +5317,17 @@ var $$ = {};
       this.label = J.$index$asx(t1, "label");
       this.bounds = H.setRuntimeTypeInfo(new P.Rectangle(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l"), J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l")) + J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "r")), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"))), [null]);
     },
-    $isStreet: true
+    $isStreet: true,
+    static: {Street$: function(streetName) {
+        var t1 = new B.Street(null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
+        t1.Street$1(streetName);
+        return t1;
+      }}
   },
   Street_load_closure: {
     "": "Closure:3;this_0,c_1",
     call$1: function(_) {
-      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, t4, deco, t5, x, y, w, h, z, t6, d, transform;
+      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, t4, deco, t5, x, y, w, h, z, t6, d, transform, exitsElement;
       t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = document.createElement("div", null);
@@ -5313,7 +5344,7 @@ var $$ = {};
       J.set$background$x(gradientCanvas.style, "-moz-linear-gradient(top, #" + H.S($top) + ", #" + H.S(bottom) + ")");
       J.set$background$x(gradientCanvas.style, "-ms-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
       J.set$background$x(gradientCanvas.style, "-o-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
-      $.get$gameScreen().appendChild(gradientCanvas);
+      $.get$layers().appendChild(gradientCanvas);
       for (t2 = J.$index$asx(J.$index$asx(t1._data, "dynamic"), "layers"), t3 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), t3.addAll$1(t3, t2), t3 = t3.get$values(t3), t3 = H.setRuntimeTypeInfo(new H.MappedIterator(null, J.get$iterator$ax(t3._iterable), t3._f), [H.getTypeArgumentByIndex(t3, 0), H.getTypeArgumentByIndex(t3, 1)]); t3.moveNext$0();) {
         layer = t3._current;
         decoCanvas = document.createElement("div", null);
@@ -5325,7 +5356,6 @@ var $$ = {};
         J.set$width$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "w")), "px"));
         J.set$height$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "h")), "px"));
         J.set$position$x(decoCanvas.style, "absolute");
-        [].$builtinTypeInfo = [W.ImageElement];
         for (t4 = J.get$iterator$ax(t2.$index(layer, "decos")); t4.moveNext$0();) {
           deco = t4.get$current();
           t5 = J.getInterceptor$asx(deco);
@@ -5360,16 +5390,45 @@ var $$ = {};
             decoCanvas.appendChild(t6.clone$1(d, false));
           }
         }
-        $.get$gameScreen().appendChild(decoCanvas);
+        for (t2 = J.get$iterator$ax(t2.$index(layer, "signposts")); t2.moveNext$0();)
+          J.forEach$1$ax(H.listTypeCast(J.$index$asx(t2.get$current(), "connects")), new B.Street_load__closure(t1));
+        $.get$layers().appendChild(decoCanvas);
       }
+      exitsElement = document.querySelector("#Exits");
+      exitsElement.textContent = "Exits";
+      t2 = t1.exits;
+      t2.forEach$1(t2, new B.Street_load__closure0(exitsElement));
+      $.get$camera().dirty = true;
       t2 = this.c_1.future;
       if (t2._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
     }
   },
+  Street_load__closure: {
+    "": "Closure:33;this_2",
+    call$1: function(exit) {
+      var t1, t2;
+      t1 = this.this_2.exits;
+      t2 = J.getInterceptor$asx(exit);
+      t1.$indexSet(t1, t2.$index(exit, "label"), t2.$index(exit, "tsid"));
+    }
+  },
+  Street_load__closure0: {
+    "": "Closure:34;exitsElement_3",
+    call$2: function(label, tsid) {
+      var exitLabel;
+      tsid = J.replaceAll$2$s(tsid, "L", "G");
+      exitLabel = document.createElement("span", null);
+      exitLabel.className = "ExitLabel";
+      exitLabel.textContent = label;
+      exitLabel.setAttribute("url", "http://revdancatt.github.io/CAT422-glitch-location-viewer/locations/" + tsid + ".callback.json");
+      exitLabel.setAttribute("tsid", tsid);
+      this.exitsElement_3.appendChild(exitLabel);
+    }
+  },
   Street_render_closure: {
-    "": "Closure:33;",
+    "": "Closure:35;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -5377,7 +5436,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:34;c_0",
+    "": "Closure:36;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -5464,7 +5523,7 @@ var $$ = {};
       if (typeof t7 !== "number")
         return t7.$sub();
       t8 = $.get$camera();
-      t8._coUclient$_y;
+      t8._y;
       t2 = t2.gameScreenWidth;
       if (typeof t2 !== "number")
         return t2.$div();
@@ -6191,7 +6250,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 35, 9],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 37, 9],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6358,7 +6417,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:36;box_0,eagerError_2,pos_3",
+    "": "Closure:38;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6395,7 +6454,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 35, 9],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 37, 9],
     $as_Completer: null
   },
   _Future: {
@@ -6666,7 +6725,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:37;target_1",
+    "": "Closure:39;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -6772,7 +6831,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:37;box_0,listener_7",
+    "": "Closure:39;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -6863,7 +6922,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:38;box_0,future_6",
+    "": "Closure:40;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7583,7 +7642,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:39;subscription_0,future_1",
+    "": "Closure:41;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -9598,7 +9657,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:40;box_0,this_1",
+    "": "Closure:42;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -9735,7 +9794,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:41;box_0",
+    "": "Closure:43;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -9797,7 +9856,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:42;",
+    "": "Closure:44;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -9812,7 +9871,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:42;",
+    "": "Closure:44;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -9822,7 +9881,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:42;",
+    "": "Closure:44;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -9889,7 +9948,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:42;",
+    "": "Closure:44;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -9905,7 +9964,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:42;",
+    "": "Closure:44;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -10072,6 +10131,11 @@ var $$ = {};
   },
   Iterator: {
     "": "Object;"
+  },
+  Map: {
+    "": "Object;",
+    $isMap: true,
+    $asMap: null
   },
   Null: {
     "": "Object;",
@@ -10559,7 +10623,6 @@ var $$ = {};
   },
   ImageElement: {
     "": "HtmlElement;src}",
-    $isImageElement: true,
     "%": "HTMLImageElement"
   },
   InputElement: {
@@ -12295,7 +12358,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:43;this_0",
+    "": "Closure:45;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13140,8 +13203,8 @@ var $$ = {};
           this._lastMousePos = t4;
           t4 = this._frameCounter;
           t5 = this._mouse;
-          t5._x = x;
-          t5._y = y;
+          t5._game_loop_html$_x = x;
+          t5._game_loop_html$_y = y;
           t5._time = time;
           t5._frame = t4;
           t4 = t5._dx;
@@ -13258,48 +13321,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 44],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 46],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 45],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 47],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 45],
+    }, "call$1", "get$_fullscreenError", 2, 0, 47],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 46],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 48],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 46],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 48],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 46],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 48],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 47],
+    }, "call$1", "get$_keyDown", 2, 0, 49],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 47],
+    }, "call$1", "get$_keyUp", 2, 0, 49],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 48],
+    }, "call$1", "get$_mouseDown", 2, 0, 50],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 48],
+    }, "call$1", "get$_mouseUp", 2, 0, 50],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 48],
+    }, "call$1", "get$_mouseMove", 2, 0, 50],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 48],
+    }, "call$1", "get$_mouseWheel", 2, 0, 50],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 45],
+    }, "call$1", "get$_resize", 2, 0, 47],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13325,12 +13388,12 @@ var $$ = {};
     static: {"": "Keyboard_A,Keyboard_B,Keyboard_C,Keyboard_D,Keyboard_E,Keyboard_F,Keyboard_G,Keyboard_H,Keyboard_I,Keyboard_J,Keyboard_K,Keyboard_L,Keyboard_M,Keyboard_N,Keyboard_O,Keyboard_P,Keyboard_Q,Keyboard_R,Keyboard_S,Keyboard_T,Keyboard_U,Keyboard_V,Keyboard_W,Keyboard_X,Keyboard_Y,Keyboard_Z,Keyboard_SHIFT,Keyboard_CTRL,Keyboard_ALT,Keyboard_SPACE,Keyboard_ZERO,Keyboard_ONE,Keyboard_TWO,Keyboard_THREE,Keyboard_FOUR,Keyboard_FIVE,Keyboard_SIX,Keyboard_SEVEN,Keyboard_EIGHT,Keyboard_NINE,Keyboard_ENTER,Keyboard_UP,Keyboard_DOWN,Keyboard_LEFT,Keyboard_RIGHT,Keyboard_ESCAPE,Keyboard_APOSTROPHE,Keyboard_BACKSLASH,Keyboard_BACKSPACE,Keyboard_CAPS_LOCK,Keyboard_CLOSE_SQUARE_BRACKET,Keyboard_COMMA,Keyboard_CONTEXT_MENU,Keyboard_DASH,Keyboard_DELETE,Keyboard_END,Keyboard_EQUALS,Keyboard_F1,Keyboard_F2,Keyboard_F3,Keyboard_F4,Keyboard_F5,Keyboard_F6,Keyboard_F7,Keyboard_F8,Keyboard_F9,Keyboard_F10,Keyboard_F11,Keyboard_F12,Keyboard_FF_EQUALS,Keyboard_FF_SEMICOLON,Keyboard_FIRST_MEDIA_KEY,Keyboard_HOME,Keyboard_INSERT,Keyboard_LAST_MEDIA_KEY,Keyboard_MAC_ENTER,Keyboard_MAC_FF_META,Keyboard_META,Keyboard_NUM_CENTER,Keyboard_NUM_DELETE,Keyboard_NUM_DIVISION,Keyboard_NUM_EAST,Keyboard_NUM_EIGHT,Keyboard_NUM_FIVE,Keyboard_NUM_FOUR,Keyboard_NUM_INSERT,Keyboard_NUM_MINUS,Keyboard_NUM_MULTIPLY,Keyboard_NUM_NINE,Keyboard_NUM_NORTH,Keyboard_NUM_NORTH_EAST,Keyboard_NUM_NORTH_WEST,Keyboard_NUM_ONE,Keyboard_NUM_PERIOD,Keyboard_NUM_PLUS,Keyboard_NUM_SEVEN,Keyboard_NUM_SIX,Keyboard_NUM_SOUTH,Keyboard_NUM_SOUTH_EAST,Keyboard_NUM_SOUTH_WEST,Keyboard_NUM_THREE,Keyboard_NUM_TWO,Keyboard_NUM_WEST,Keyboard_NUM_ZERO,Keyboard_NUMLOCK,Keyboard_OPEN_SQUARE_BRACKET,Keyboard_PAGE_UP,Keyboard_PAGE_DOWN,Keyboard_PAUSE,Keyboard_PERIOD,Keyboard_PRINT_SCREEN,Keyboard_QUESTION_MARK,Keyboard_SCROLL_LOCK,Keyboard_SEMICOLON,Keyboard_SINGLE_QUOTE,Keyboard_SLASH,Keyboard_TAB,Keyboard_TILDE,Keyboard_WIN_IME,Keyboard_WIN_KEY,Keyboard_WIN_KEY_FF_LINUX,Keyboard_WIN_KEY_LEFT,Keyboard_WIN_KEY_RIGHT,Keyboard__buttonIds"}
   },
   Mouse: {
-    "": "DigitalInput;_dx,_dy,_x,_y,_clampX,_clampY,_wheelDx,_wheelDy,_withinCanvas,_time,_frame,gameLoop,buttons,interceptor",
+    "": "DigitalInput;_dx,_dy,_game_loop_html$_x,_game_loop_html$_y,_clampX,_clampY,_wheelDx,_wheelDy,_withinCanvas,_time,_frame,gameLoop,buttons,interceptor",
     get$x: function(_) {
-      return this._x;
+      return this._game_loop_html$_x;
     },
     get$y: function(_) {
-      return this._y;
+      return this._game_loop_html$_y;
     },
     static: {"": "Mouse_LEFT,Mouse_MIDDLE,Mouse_RIGHT,Mouse__buttonIds"}
   },
@@ -13339,9 +13402,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 45],
+    }, "call$1", "get$_onClick", 2, 0, 47],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 45],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 47],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13405,7 +13468,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:49;this_0",
+    "": "Closure:51;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13418,7 +13481,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:49;this_0",
+    "": "Closure:51;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13431,7 +13494,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:49;this_0",
+    "": "Closure:51;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13504,7 +13567,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:50;copies_3",
+    "": "Closure:52;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14753,10 +14816,6 @@ W.HttpRequest.$isEventTarget = true;
 W.HttpRequest.$isObject = true;
 W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
-W.ImageElement.$isElement = true;
-W.ImageElement.$isNode = true;
-W.ImageElement.$isEventTarget = true;
-W.ImageElement.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
 W.TouchEvent.$isTouchEvent = true;
@@ -14773,13 +14832,13 @@ B.GameLoopTimer.$isObject = true;
 B.DigitalButton.$isObject = true;
 G.GameLoopTouch.$isObject = true;
 G.GameLoopTouchPosition.$isObject = true;
+W.MessageEvent.$isMessageEvent = true;
+W.MessageEvent.$isEvent = true;
+W.MessageEvent.$isObject = true;
 P.Stream.$isStream = true;
 P.Stream.$isObject = true;
 P.StreamSubscription.$isStreamSubscription = true;
 P.StreamSubscription.$isObject = true;
-W.MessageEvent.$isMessageEvent = true;
-W.MessageEvent.$isEvent = true;
-W.MessageEvent.$isObject = true;
 W.CloseEvent.$isEvent = true;
 W.CloseEvent.$isObject = true;
 W.NodeValidator.$isNodeValidator = true;
@@ -14795,6 +14854,8 @@ E.Asset.$isAsset = true;
 E.Asset.$isObject = true;
 Z.Scound.$isScound = true;
 Z.Scound.$isObject = true;
+P.Map.$isMap = true;
+P.Map.$isObject = true;
 W.DivElement.$isDivElement = true;
 W.DivElement.$isElement = true;
 W.DivElement.$isNode = true;
@@ -15728,6 +15789,9 @@ Isolate.$lazy($, "camera", "camera", "get$camera", function() {
 Isolate.$lazy($, "gameScreen", "gameScreen", "get$gameScreen", function() {
   return document.querySelector("#GameScreen");
 });
+Isolate.$lazy($, "layers", "layers", "get$layers", function() {
+  return document.querySelector("#Layers");
+});
 Isolate.$lazy($, "localStorage", "localStorage", "get$localStorage", function() {
   return window.localStorage;
 });
@@ -15834,6 +15898,8 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
 {func: "void__String", void: true, args: [J.JSString]},
+{func: "dynamic__Map", args: [[P.Map, J.JSString, J.JSString]]},
+{func: "dynamic__String_String", args: [J.JSString, J.JSString]},
 {func: "dynamic__String_DivElement", args: [J.JSString, W.DivElement]},
 {func: "dynamic__Asset", args: [E.Asset]},
 {func: "void__Object__StackTrace", void: true, args: [P.Object], opt: [P.StackTrace]},

@@ -302,6 +302,20 @@ textarea{resize: none;}
     overflow: hidden;
 }
 
+#Exits {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: rgba(255, 255, 255, 0.53);
+	padding: 5px;
+	z-index: 3;
+}
+
+.ExitLabel {
+	display: block;
+	cursor: pointer;
+}
+
 .streetcanvas {
 				/*
     transition-property: top right;
