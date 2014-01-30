@@ -4391,10 +4391,10 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1, playButton;
-      t1 = new B.Player(null, null, null, null, null, null, -40, false, true, null, true, null);
+      $.get$chat().init$0();
+      t1 = new B.Player(null, null, null, null, null, null, -40, false, true, null, true, null, null);
       t1.Player$0();
       $.CurrentPlayer = t1;
-      $.get$chat().init$0();
       t1 = window.innerWidth;
       if (typeof t1 !== "number")
         return t1.$gt();
@@ -5183,7 +5183,7 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;posX,posY,width,height,speed,yVel,yAccel,jumping,facingRight,avatar,doPhysicsApply,playerCanvas",
+    "": "Object;posX,posY,width,height,speed,yVel,yAccel,jumping,facingRight,avatar,doPhysicsApply,playerCanvas,playerName",
     Player$0: function() {
       this.width = 100;
       this.height = 172;
@@ -5194,13 +5194,24 @@ var $$ = {};
       if (typeof t1 !== "number")
         return t1.$sub();
       this.posY = t1 - 172;
+      t1 = document.createElement("div", null);
+      J.set$width$x(t1.style, C.JSInt_methods.toString$0(this.width) + "px");
+      J.set$height$x(t1.style, C.JSInt_methods.toString$0(this.height) + "px");
+      J.set$display$x(t1.style, "inline-block");
+      J.set$textAlign$x(t1.style, "center");
+      this.playerCanvas = t1;
+      t1 = document.createElement("span", null);
+      t1.textContent = $.get$chat().username;
+      J.set$display$x(t1.style, "inline-block");
+      this.playerName = t1;
       t1 = W.ImageElement_ImageElement(null, "assets/sprites/avatar.png", null);
       this.avatar = t1;
       t1.id = "playerCanvas";
-      J.set$position$x(t1.style, "absolute");
-      J.set$width$x(this.avatar.style, C.JSInt_methods.toString$0(this.width) + "px");
+      J.set$width$x(t1.style, C.JSInt_methods.toString$0(this.width) + "px");
       J.set$height$x(this.avatar.style, C.JSInt_methods.toString$0(this.height) + "px");
-      $.get$gameScreen().appendChild(this.avatar);
+      this.playerCanvas.appendChild(this.playerName);
+      this.playerCanvas.appendChild(this.avatar);
+      $.get$gameScreen().appendChild(this.playerCanvas);
       $.CurrentPlayer = this;
     },
     $isPlayer: true
@@ -5591,9 +5602,14 @@ var $$ = {};
       }
       t8.setCamera$1(C.JSNumber_methods.toString$0(camX) + "," + C.JSNumber_methods.toString$0(camY));
       transform = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
-      if (!t1.facingRight)
+      t2 = t1.facingRight;
+      t3 = t1.playerName;
+      if (!t2) {
         transform += " scale(-1,1)";
-      J.set$transform$x(t1.avatar.style, transform);
+        J.set$transform$x(t3.style, "scale(-1,1)");
+      } else
+        J.set$transform$x(t3.style, "scale(1,1)");
+      J.set$transform$x(t1.playerCanvas.style, transform);
     }
   },
   closure0: {
@@ -11392,6 +11408,9 @@ var $$ = {};
     set$src: function(receiver, value) {
       this.setProperty$3(receiver, "src", value, "");
     },
+    set$textAlign: function(receiver, value) {
+      this.setProperty$3(receiver, "text-align", value, "");
+    },
     set$top: function(receiver, value) {
       this.setProperty$3(receiver, "top", value, "");
     },
@@ -15333,6 +15352,9 @@ J.set$position$x = function(receiver, value) {
 };
 J.set$src$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$src(receiver, value);
+};
+J.set$textAlign$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$textAlign(receiver, value);
 };
 J.set$top$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$top(receiver, value);
