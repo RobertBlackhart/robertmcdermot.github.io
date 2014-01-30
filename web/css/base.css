@@ -234,7 +234,7 @@ textarea{resize: none;}
 }
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*Loading a street*/
-#MapLoadingScreen {
+.MapLoadingScreen {
    background-color: #829363;
    position:absolute;
    top:0px;  
@@ -242,6 +242,7 @@ textarea{resize: none;}
    right:0px;
    bottom:0px;
    opacity:1.0;
+   z-index:2;
     
     transition-property: opacity;
     transition-duration: 1s;
@@ -251,6 +252,16 @@ textarea{resize: none;}
     -webkit-transition-duration:1s;
     -webkit-transition-timing-function:linear;
     -webkit-transition-delay:0.5s;
+}
+.MapLoadingScreenIn {
+   background-color: #829363;
+   position:absolute;
+   top:0px;  
+   left:0px;
+   right:0px;
+   bottom:0px;
+   opacity:1.0;
+   z-index:2;
 }
 .LoadingGroove{
   background-color: #e6ecee;
@@ -1371,7 +1382,7 @@ textarea{resize: none;}
 		top: 10px;
 		right: 20px;
 	}
-	#MobileVolumeGlyph {
+	#MobileAudioGlyph {
 		position: absolute;
 		display: inline;
 		top:10px;
@@ -1509,7 +1520,7 @@ textarea{resize: none;}
 		top: 10px;
 		right: 20px;
 	}
-	#MobileVolumeGlyph {
+	#MobileAudioGlyph {
 		position: absolute;
 		display: inline;
 		top:10px;
@@ -1557,7 +1568,7 @@ textarea{resize: none;}
 		left: 100px;
 		z-index: -1;
 	}
-	#MobileVolumeGlyph {
+	#MobileAudioGlyph {
 		position: absolute;
 		top:150px;
 		left: 100px;

@@ -436,6 +436,19 @@ var $$ = {};
     forEach$1: function(receiver, f) {
       return H.IterableMixinWorkaround_forEach(receiver, f);
     },
+    join$1: function(receiver, separator) {
+      var t1, list, i, t2;
+      t1 = receiver.length;
+      list = Array(t1);
+      list.fixed$length = init;
+      for (i = 0; i < receiver.length; ++i) {
+        t2 = H.S(receiver[i]);
+        if (i >= t1)
+          return H.ioore(list, i);
+        list[i] = t2;
+      }
+      return list.join(separator);
+    },
     elementAt$1: function(receiver, index) {
       if (index < 0 || index >= receiver.length)
         return H.ioore(receiver, index);
@@ -702,6 +715,9 @@ var $$ = {};
     },
     splitMapJoin$3$onMatch$onNonMatch: function(receiver, from, onMatch, onNonMatch) {
       return H.stringReplaceAllFuncUnchecked(receiver, from, onMatch, onNonMatch);
+    },
+    replaceFirst$2: function(receiver, from, to) {
+      return H.stringReplaceFirstUnchecked(receiver, from, to);
     },
     split$1: function(receiver, pattern) {
       return receiver.split(pattern);
@@ -2746,6 +2762,9 @@ var $$ = {};
     buffer.write$1(onNonMatch.call$1(C.JSString_methods.substring$1(receiver, startIndex)));
     return buffer._contents;
   },
+  stringReplaceFirstUnchecked: function(receiver, from, to) {
+    return receiver.replace(from, to.replace("$", "$$$$"));
+  },
   ConstantMap: {
     "": "Object;",
     get$isEmpty: function(_) {
@@ -3702,6 +3721,7 @@ var $$ = {};
     J.set$width$x(document.querySelector("#MapLoadingBar").style, J.toString$0(t1.$add(percent, 1)) + "%");
     if (t1.$ge(percent, 99)) {
       document.querySelector("#StreetLoadingStatus").textContent = "...done";
+      document.querySelector("#MapLoadingScreen").className = "MapLoadingScreen";
       J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
     }
   }, "call$1", "setStreetLoadBar$closure", 2, 0, 5],
@@ -4475,7 +4495,7 @@ var $$ = {};
       $.playerInput = this;
     },
     clickOrTouch$2: function(mouseEvent, touchEvent) {
-      var target, t1, mute, chatMenu, loadStreet, channelName, input, drawer, t2;
+      var target, t1, mute, chatMenu, loadingScreen, loadStreet, channelName, input, drawer, t2;
       if (mouseEvent != null) {
         if (this.touched)
           return;
@@ -4521,6 +4541,9 @@ var $$ = {};
           chatMenu.hidden = true;
       }
       if (target.className === "ExitLabel") {
+        loadingScreen = document.querySelector("#MapLoadingScreen");
+        loadingScreen.className = "MapLoadingScreenIn";
+        J.set$opacity$x(loadingScreen.style, "1.0");
         loadStreet = document.createElement("script", null);
         J.set$src$x(loadStreet, target.getAttribute("url"));
         document.body.appendChild(loadStreet);
@@ -5252,7 +5275,6 @@ var $$ = {};
           if (!C.JSArray_methods.contains$1(decosToLoad, C.JSString_methods.$add("http://revdancatt.github.io/CAT422-glitch-location-viewer/img/scenery/", t3.$index(deco, "filename")) + ".png"))
             decosToLoad.push(C.JSString_methods.$add("http://revdancatt.github.io/CAT422-glitch-location-viewer/img/scenery/", t3.$index(deco, "filename")) + ".png");
         }
-      P.DateTime$_now();
       assetsToLoad = [];
       for (t1 = new H.ListIterator(decosToLoad, decosToLoad.length, 0, null); t1.moveNext$0();)
         assetsToLoad.push(new E.Asset(null, false, t1._current, null));
@@ -5327,7 +5349,7 @@ var $$ = {};
   Street_load_closure: {
     "": "Closure:3;this_0,c_1",
     call$1: function(_) {
-      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, t4, deco, t5, x, y, w, h, z, t6, d, transform, exitsElement;
+      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, filters, t4, t5, deco, x, y, w, h, z, t6, d, transform, exitsElement;
       t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = document.createElement("div", null);
@@ -5356,6 +5378,12 @@ var $$ = {};
         J.set$width$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "w")), "px"));
         J.set$height$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "h")), "px"));
         J.set$position$x(decoCanvas.style, "absolute");
+        filters = [];
+        t4 = t2.$index(layer, "filters");
+        t5 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+        t5.addAll$1(t5, t4);
+        t5.forEach$1(t5, new B.Street_load__closure(filters));
+        J.set$filter$x(decoCanvas.style, C.JSArray_methods.join$1(filters, " "));
         for (t4 = J.get$iterator$ax(t2.$index(layer, "decos")); t4.moveNext$0();) {
           deco = t4.get$current();
           t5 = J.getInterceptor$asx(deco);
@@ -5391,13 +5419,13 @@ var $$ = {};
           }
         }
         for (t2 = J.get$iterator$ax(t2.$index(layer, "signposts")); t2.moveNext$0();)
-          J.forEach$1$ax(H.listTypeCast(J.$index$asx(t2.get$current(), "connects")), new B.Street_load__closure(t1));
+          J.forEach$1$ax(H.listTypeCast(J.$index$asx(t2.get$current(), "connects")), new B.Street_load__closure0(t1));
         $.get$layers().appendChild(decoCanvas);
       }
       exitsElement = document.querySelector("#Exits");
       exitsElement.textContent = "Exits";
       t2 = t1.exits;
-      t2.forEach$1(t2, new B.Street_load__closure0(exitsElement));
+      t2.forEach$1(t2, new B.Street_load__closure1(exitsElement));
       $.get$camera().dirty = true;
       t2 = this.c_1.future;
       if (t2._state !== 0)
@@ -5406,29 +5434,75 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "": "Closure:33;this_2",
+    "": "Closure:33;filters_2",
+    call$2: function(filterName, value) {
+      var t1, t2;
+      t1 = J.getInterceptor(filterName);
+      if (t1.$eq(filterName, "brightness")) {
+        t2 = J.getInterceptor$n(value);
+        if (t2.$lt(value, 0)) {
+          if (typeof value !== "number")
+            return value.$div();
+          this.filters_2.push("brightness(" + C.JSNumber_methods.toString$0(1 - value / -100) + ")");
+        }
+        if (t2.$gt(value, 0)) {
+          if (typeof value !== "number")
+            return value.$div();
+          this.filters_2.push("brightness(" + C.JSNumber_methods.toString$0(1 + value / 100) + ")");
+        }
+      }
+      if (t1.$eq(filterName, "contrast")) {
+        t2 = J.getInterceptor$n(value);
+        if (t2.$lt(value, 0)) {
+          if (typeof value !== "number")
+            return value.$div();
+          this.filters_2.push("contrast(" + C.JSNumber_methods.toString$0(1 - value / -100) + ")");
+        }
+        if (t2.$gt(value, 0)) {
+          if (typeof value !== "number")
+            return value.$div();
+          this.filters_2.push("contrast(" + C.JSNumber_methods.toString$0(1 + value / 100) + ")");
+        }
+      }
+      if (t1.$eq(filterName, "saturation")) {
+        t1 = J.getInterceptor$n(value);
+        if (t1.$lt(value, 0)) {
+          if (typeof value !== "number")
+            return value.$div();
+          this.filters_2.push("saturation(" + C.JSNumber_methods.toString$0(1 - value / -100) + ")");
+        }
+        if (t1.$gt(value, 0)) {
+          if (typeof value !== "number")
+            return value.$div();
+          this.filters_2.push("saturation(" + C.JSNumber_methods.toString$0(1 + value / 100) + ")");
+        }
+      }
+    }
+  },
+  Street_load__closure0: {
+    "": "Closure:34;this_3",
     call$1: function(exit) {
       var t1, t2;
-      t1 = this.this_2.exits;
+      t1 = this.this_3.exits;
       t2 = J.getInterceptor$asx(exit);
       t1.$indexSet(t1, t2.$index(exit, "label"), t2.$index(exit, "tsid"));
     }
   },
-  Street_load__closure0: {
-    "": "Closure:34;exitsElement_3",
+  Street_load__closure1: {
+    "": "Closure:35;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
-      tsid = J.replaceAll$2$s(tsid, "L", "G");
+      tsid = J.replaceFirst$2$s(tsid, "L", "G");
       exitLabel = document.createElement("span", null);
       exitLabel.className = "ExitLabel";
       exitLabel.textContent = label;
       exitLabel.setAttribute("url", "http://revdancatt.github.io/CAT422-glitch-location-viewer/locations/" + tsid + ".callback.json");
       exitLabel.setAttribute("tsid", tsid);
-      this.exitsElement_3.appendChild(exitLabel);
+      this.exitsElement_4.appendChild(exitLabel);
     }
   },
   Street_render_closure: {
-    "": "Closure:35;",
+    "": "Closure:36;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -5436,7 +5510,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:36;c_0",
+    "": "Closure:37;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -6250,7 +6324,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 37, 9],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 38, 9],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6417,7 +6491,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:38;box_0,eagerError_2,pos_3",
+    "": "Closure:39;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6454,7 +6528,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 37, 9],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 38, 9],
     $as_Completer: null
   },
   _Future: {
@@ -6725,7 +6799,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:39;target_1",
+    "": "Closure:40;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -6831,7 +6905,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:39;box_0,listener_7",
+    "": "Closure:40;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -6922,7 +6996,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:40;box_0,future_6",
+    "": "Closure:41;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7642,7 +7716,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:41;subscription_0,future_1",
+    "": "Closure:42;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -9657,7 +9731,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:42;box_0,this_1",
+    "": "Closure:43;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -9794,7 +9868,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:43;box_0",
+    "": "Closure:44;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -9856,7 +9930,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:44;",
+    "": "Closure:45;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -9871,7 +9945,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:44;",
+    "": "Closure:45;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -9881,7 +9955,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:44;",
+    "": "Closure:45;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -9948,7 +10022,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:44;",
+    "": "Closure:45;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -9964,7 +10038,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:44;",
+    "": "Closure:45;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -11320,6 +11394,9 @@ var $$ = {};
     set$display: function(receiver, value) {
       this.setProperty$3(receiver, "display", value, "");
     },
+    set$filter: function(receiver, value) {
+      this.setProperty$3(receiver, P.Device_cssPrefix() + "filter", value, "");
+    },
     get$height: function(receiver) {
       return this.getPropertyValue$1(receiver, "height");
     },
@@ -11348,35 +11425,7 @@ var $$ = {};
       this.setProperty$3(receiver, "top", value, "");
     },
     set$transform: function(receiver, value) {
-      var t1 = $.Device__cachedCssPrefix;
-      if (t1 == null) {
-        t1 = $.Device__isFirefox;
-        if (t1 == null) {
-          t1 = J.contains$2$asx(window.navigator.userAgent, "Firefox", 0);
-          $.Device__isFirefox = t1;
-        }
-        if (t1 === true) {
-          $.Device__cachedCssPrefix = "-moz-";
-          t1 = "-moz-";
-        } else {
-          t1 = $.Device__isIE;
-          if (t1 == null) {
-            t1 = P.Device_isOpera() !== true && J.contains$2$asx(window.navigator.userAgent, "Trident/", 0);
-            $.Device__isIE = t1;
-          }
-          if (t1 === true) {
-            $.Device__cachedCssPrefix = "-ms-";
-            t1 = "-ms-";
-          } else if (P.Device_isOpera() === true) {
-            $.Device__cachedCssPrefix = "-o-";
-            t1 = "-o-";
-          } else {
-            $.Device__cachedCssPrefix = "-webkit-";
-            t1 = "-webkit-";
-          }
-        }
-      }
-      this.setProperty$3(receiver, t1 + "transform", value, "");
+      this.setProperty$3(receiver, P.Device_cssPrefix() + "transform", value, "");
     },
     get$width: function(receiver) {
       return this.getPropertyValue$1(receiver, "width");
@@ -12358,7 +12407,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:45;this_0",
+    "": "Closure:46;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13321,48 +13370,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 46],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 47],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 47],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 48],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 47],
+    }, "call$1", "get$_fullscreenError", 2, 0, 48],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 48],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 49],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 48],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 49],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 48],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 49],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 49],
+    }, "call$1", "get$_keyDown", 2, 0, 50],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 49],
+    }, "call$1", "get$_keyUp", 2, 0, 50],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 50],
+    }, "call$1", "get$_mouseDown", 2, 0, 51],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 50],
+    }, "call$1", "get$_mouseUp", 2, 0, 51],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 50],
+    }, "call$1", "get$_mouseMove", 2, 0, 51],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 50],
+    }, "call$1", "get$_mouseWheel", 2, 0, 51],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 47],
+    }, "call$1", "get$_resize", 2, 0, 48],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13402,9 +13451,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 47],
+    }, "call$1", "get$_onClick", 2, 0, 48],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 47],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 48],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13468,7 +13517,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:51;this_0",
+    "": "Closure:52;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13481,7 +13530,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:51;this_0",
+    "": "Closure:52;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13494,7 +13543,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:51;this_0",
+    "": "Closure:52;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13541,6 +13590,37 @@ var $$ = {};
     }
     return t1;
   },
+  Device_cssPrefix: function() {
+    var t1 = $.Device__cachedCssPrefix;
+    if (t1 == null) {
+      t1 = $.Device__isFirefox;
+      if (t1 == null) {
+        t1 = J.contains$2$asx(window.navigator.userAgent, "Firefox", 0);
+        $.Device__isFirefox = t1;
+      }
+      if (t1 === true) {
+        $.Device__cachedCssPrefix = "-moz-";
+        t1 = "-moz-";
+      } else {
+        t1 = $.Device__isIE;
+        if (t1 == null) {
+          t1 = P.Device_isOpera() !== true && J.contains$2$asx(window.navigator.userAgent, "Trident/", 0);
+          $.Device__isIE = t1;
+        }
+        if (t1 === true) {
+          $.Device__cachedCssPrefix = "-ms-";
+          t1 = "-ms-";
+        } else if (P.Device_isOpera() === true) {
+          $.Device__cachedCssPrefix = "-o-";
+          t1 = "-o-";
+        } else {
+          $.Device__cachedCssPrefix = "-webkit-";
+          t1 = "-webkit-";
+        }
+      }
+    }
+    return t1;
+  },
   convertNativeToDart_AcceptStructuredClone_findSlot: {
     "": "Closure:11;values_0,copies_1",
     call$1: function(value) {
@@ -13567,7 +13647,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:52;copies_3",
+    "": "Closure:53;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -15220,6 +15300,9 @@ J.removeEventListener$3$x = function(receiver, a0, a1, a2) {
 J.replaceAll$2$s = function(receiver, a0, a1) {
   return J.getInterceptor$s(receiver).replaceAll$2(receiver, a0, a1);
 };
+J.replaceFirst$2$s = function(receiver, a0, a1) {
+  return J.getInterceptor$s(receiver).replaceFirst$2(receiver, a0, a1);
+};
 J.replaceWith$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).replaceWith$1(receiver, a0);
 };
@@ -15246,6 +15329,9 @@ J.set$cursor$x = function(receiver, value) {
 };
 J.set$display$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$display(receiver, value);
+};
+J.set$filter$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$filter(receiver, value);
 };
 J.set$height$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$height(receiver, value);
@@ -15898,6 +15984,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
 {func: "void__String", void: true, args: [J.JSString]},
+{func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__Map", args: [[P.Map, J.JSString, J.JSString]]},
 {func: "dynamic__String_String", args: [J.JSString, J.JSString]},
 {func: "dynamic__String_DivElement", args: [J.JSString, W.DivElement]},
