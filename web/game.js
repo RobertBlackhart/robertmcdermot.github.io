@@ -3608,6 +3608,7 @@ var $$ = {};
     B.updateConsole("");
     B.updateConsole("COU DEVELOPMENT CONSOLE");
     B.updateConsole("For a list of commands type \"help\"");
+    B.setSong($.currentStreet.songName);
     t1 = $.get$game();
     if (!t1._initialized) {
       C.EventStreamProvider_webkitfullscreenerror.forTarget$1(document).listen$1(t1.get$_fullscreenError());
@@ -4606,14 +4607,7 @@ var $$ = {};
   main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      B.setSong($.currentStreet.songName).then$1(new B.main______closure());
-      B.start();
-    }
-  },
-  main______closure: {
-    "": "Closure:3;",
-    call$1: function(_) {
-      return J.pause$0$x($.get$ui().currentSong);
+      return B.start();
     }
   },
   start_closure: {
@@ -4633,13 +4627,6 @@ var $$ = {};
           doneLoading.play();
         }
       }
-      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 2), new B.start__closure());
-    }
-  },
-  start__closure: {
-    "": "Closure:5;",
-    call$0: function() {
-      J.play$0$x($.get$ui().currentSong);
     }
   },
   Input: {
