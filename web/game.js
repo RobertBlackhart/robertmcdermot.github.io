@@ -1083,13 +1083,13 @@ var $$ = {};
     return x == null || typeof x === "string" || typeof x === "number" || typeof x === "boolean";
   },
   startRootIsolate_closure: {
-    "": "Closure:4;entry_0",
+    "": "Closure:5;entry_0",
     call$0: function() {
       this.entry_0.call$1([]);
     }
   },
   startRootIsolate_closure0: {
-    "": "Closure:4;entry_1",
+    "": "Closure:5;entry_1",
     call$0: function() {
       this.entry_1.call$2([], null);
     }
@@ -1222,7 +1222,7 @@ var $$ = {};
     }
   },
   _EventLoop__runHelper_next: {
-    "": "Closure:6;this_0",
+    "": "Closure:7;this_0",
     call$0: function() {
       if (!this.this_0.runIteration$0())
         return;
@@ -1240,7 +1240,7 @@ var $$ = {};
     "": "Object;"
   },
   IsolateNatives__processWorkerMessage_closure: {
-    "": "Closure:4;entryPoint_0,args_1,message_2,isSpawnUri_3,replyTo_4",
+    "": "Closure:5;entryPoint_0,args_1,message_2,isSpawnUri_3,replyTo_4",
     call$0: function() {
       var t1, t2, t3, t4, t5, t6, t7;
       t1 = this.entryPoint_0;
@@ -1315,7 +1315,7 @@ var $$ = {};
     $isSendPort: true
   },
   _NativeJsSendPort_send_closure: {
-    "": "Closure:4;box_0,this_1,shouldSerialize_2",
+    "": "Closure:5;box_0,this_1,shouldSerialize_2",
     call$0: function() {
       var t1, t2;
       t1 = this.this_1._receivePort;
@@ -1405,7 +1405,7 @@ var $$ = {};
       t1.close$0(t1);
       t1 = this.__isolate_helper$_controller;
       t1.close$0(t1);
-    }, "call$0", "get$close", 0, 0, 6],
+    }, "call$0", "get$close", 0, 0, 7],
     ReceivePortImpl$fromRawReceivePort$1: function(_rawPort) {
       var t1 = P.StreamController_StreamController(this.get$close(this), null, null, null, true, null);
       this.__isolate_helper$_controller = t1;
@@ -1567,7 +1567,7 @@ var $$ = {};
     }
   },
   _Copier_visitMap_closure: {
-    "": "Closure:19;box_0,this_1",
+    "": "Closure:20;box_0,this_1",
     call$2: function(key, val) {
       var t1 = this.this_1;
       J.$indexSet$ax(this.box_0.copy_0, t1._dispatch$1(key), t1._dispatch$1(val));
@@ -1752,14 +1752,14 @@ var $$ = {};
       }}
   },
   TimerImpl_internalCallback: {
-    "": "Closure:6;this_0,callback_1",
+    "": "Closure:7;this_0,callback_1",
     call$0: function() {
       this.this_0._handle = null;
       this.callback_1.call$0();
     }
   },
   TimerImpl_internalCallback0: {
-    "": "Closure:6;this_2,callback_3",
+    "": "Closure:7;this_2,callback_3",
     call$0: function() {
       this.this_2._handle = null;
       var t1 = init.globalState.topEventLoop;
@@ -1768,7 +1768,7 @@ var $$ = {};
     }
   },
   TimerImpl$periodic_closure: {
-    "": "Closure:4;this_0,callback_1",
+    "": "Closure:5;this_0,callback_1",
     call$0: function() {
       this.callback_1.call$1(this.this_0);
     }
@@ -2969,31 +2969,31 @@ var $$ = {};
     }
   },
   invokeClosure_closure: {
-    "": "Closure:4;closure_0",
+    "": "Closure:5;closure_0",
     call$0: function() {
       return this.closure_0.call$0();
     }
   },
   invokeClosure_closure0: {
-    "": "Closure:4;closure_1,arg1_2",
+    "": "Closure:5;closure_1,arg1_2",
     call$0: function() {
       return this.closure_1.call$1(this.arg1_2);
     }
   },
   invokeClosure_closure1: {
-    "": "Closure:4;closure_3,arg1_4,arg2_5",
+    "": "Closure:5;closure_3,arg1_4,arg2_5",
     call$0: function() {
       return this.closure_3.call$2(this.arg1_4, this.arg2_5);
     }
   },
   invokeClosure_closure2: {
-    "": "Closure:4;closure_6,arg1_7,arg2_8,arg3_9",
+    "": "Closure:5;closure_6,arg1_7,arg2_8,arg3_9",
     call$0: function() {
       return this.closure_6.call$3(this.arg1_7, this.arg2_8, this.arg3_9);
     }
   },
   invokeClosure_closure3: {
-    "": "Closure:4;closure_10,arg1_11,arg2_12,arg3_13,arg4_14",
+    "": "Closure:5;closure_10,arg1_11,arg2_12,arg3_13,arg4_14",
     call$0: function() {
       return this.closure_10.call$4(this.arg1_11, this.arg2_12, this.arg3_13, this.arg4_14);
     }
@@ -3211,7 +3211,7 @@ var $$ = {};
     }
   },
   initHooks_closure0: {
-    "": "Closure:20;getUnknownTag_1",
+    "": "Closure:21;getUnknownTag_1",
     call$2: function(o, tag) {
       return this.getUnknownTag_1(o, tag);
     }
@@ -3506,21 +3506,33 @@ var $$ = {};
     B.updateConsole("Setting name to \"" + H.S(value) + "\"");
   }, "call$1", "setName$closure", 2, 0, 0],
   setSong: [function(value) {
-    var t1, t2, t3;
+    var t1, c, t2, t3;
     t1 = {};
     t1.value_0 = value;
-    if (J.$eq(value, $.get$ui().titleMeter.textContent))
-      return;
+    c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
+    if (J.$eq(t1.value_0, $.get$ui().titleMeter.textContent)) {
+      t1 = c.future;
+      if (t1._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t1._asyncComplete$1(null);
+      return t1;
+    }
     value = J.replaceAll$2$s(t1.value_0, " ", "");
     t1.value_0 = value;
     t2 = $.get$ui().jukebox;
     t2 = t2.$index(t2, value);
     t3 = t1.value_0;
     if (t2 == null)
-      B.loadSong(t3).then$1(new B.setSong_closure(t1));
-    else
+      B.loadSong(t3).then$1(new B.setSong_closure(t1, c));
+    else {
       B._playSong(t3);
-  }, "call$1", "setSong$closure", 2, 0, 0],
+      t1 = c.future;
+      if (t1._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t1._asyncComplete$1(null);
+    }
+    return c.future;
+  }, "call$1", "setSong$closure", 2, 0, 4],
   _playSong: function(value) {
     var testResult, t1, t2, title, artist;
     testResult = W.AudioElement_AudioElement(null).canPlayType("audio/mp3");
@@ -3580,12 +3592,13 @@ var $$ = {};
     }
     $.get$ui()._setMute$1($.get$isMuted());
     B.load_audio().then$1(new B.main_closure());
-  }, "call$0", "main$closure", 0, 0, 4],
+  }, "call$0", "main$closure", 0, 0, 5],
   start: function() {
     var loadingScreen, t1, t2, t3;
+    B.setSong($.currentStreet.songName).then$1(new B.start_closure());
     loadingScreen = document.querySelector("#LoadingScreen");
     J.set$opacity$x(loadingScreen.style, "0.0");
-    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure(loadingScreen));
+    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure0(loadingScreen));
     $.get$ui().init$0();
     B.updateConsole("System: Initializing..");
     t1 = new B.Input(null, null, null, null, null, false, false);
@@ -3692,7 +3705,7 @@ var $$ = {};
       document.querySelector("#MapLoadingScreen").className = "MapLoadingScreen";
       J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
     }
-  }, "call$1", "setStreetLoadBar$closure", 2, 0, 5],
+  }, "call$1", "setStreetLoadBar$closure", 2, 0, 6],
   Animation: {
     "": "Object;backgroundImage>,animationName,animationStyleString<,width>,height>",
     load$0: function(_) {
@@ -3876,14 +3889,14 @@ var $$ = {};
     }
   },
   load_audio_closure1: {
-    "": "Closure:4;",
+    "": "Closure:5;",
     call$0: function() {
       var soundCloudSongs = new E.Asset(null, false, "./assets/music.json", null);
       soundCloudSongs.load$1(soundCloudSongs, document.querySelector("#LoadStatus2"));
     }
   },
   loadSong_closure: {
-    "": "Closure:21;name_0,c_1",
+    "": "Closure:22;name_0,c_1",
     call$1: function(s) {
       var t1 = $.get$ui().jukebox;
       t1.$indexSet(t1, this.name_0, s);
@@ -3977,7 +3990,7 @@ var $$ = {};
     }
   },
   Chat_init_closure: {
-    "": "Closure:22;this_0",
+    "": "Closure:23;this_0",
     call$1: function($event) {
       var checkbox, t1;
       checkbox = H.interceptedTypeCast(J.get$target$x($event), "$isCheckboxInputElement");
@@ -3994,13 +4007,13 @@ var $$ = {};
     }
   },
   Chat_init_closure0: {
-    "": "Closure:23;this_1",
+    "": "Closure:24;this_1",
     call$1: function(element) {
       J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_1._showJoinMessages);
     }
   },
   Chat_init_closure1: {
-    "": "Closure:23;this_2",
+    "": "Closure:24;this_2",
     call$1: function(element) {
       J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_2._playMentionSound);
     }
@@ -4021,7 +4034,7 @@ var $$ = {};
       document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
     }, function() {
       return this.resetMessages$1(null);
-    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 24, 9],
+    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 25, 10],
     getDiv$0: function() {
       var t1, span, t2, input, t3, map;
       t1 = document.createElement("div", null);
@@ -4296,14 +4309,14 @@ var $$ = {};
       }}
   },
   TabContent_resetMessages_closure: {
-    "": "Closure:25;box_0",
+    "": "Closure:26;box_0",
     call$1: function(tabContent) {
       var t1 = this.box_0;
       t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
     }
   },
   TabContent_processInput_closure: {
-    "": "Closure:26;this_0,input_1",
+    "": "Closure:27;this_0,input_1",
     call$1: function(key) {
       var t1, t2, startIndex, t3, t4, t5, username, index;
       if (J.get$keyCode$x(key) === 9) {
@@ -4349,7 +4362,7 @@ var $$ = {};
     }
   },
   TabContent_processInput_closure0: {
-    "": "Closure:26;this_2,input_3",
+    "": "Closure:27;this_2,input_3",
     call$1: function(key) {
       var t1, t2;
       if (J.get$keyCode$x(key) !== 9)
@@ -4390,7 +4403,7 @@ var $$ = {};
     }
   },
   TabContent_setupWebSocket_closure0: {
-    "": "Closure:27;this_3,channelName_4",
+    "": "Closure:28;this_3,channelName_4",
     call$1: function(messageEvent) {
       var t1, map, t2, t3, t4, t5, selector;
       t1 = {};
@@ -4451,7 +4464,7 @@ var $$ = {};
     }
   },
   TabContent_setupWebSocket__closure0: {
-    "": "Closure:25;box_0",
+    "": "Closure:26;box_0",
     call$1: function(tabContent) {
       var t1 = this.box_0;
       t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
@@ -4469,7 +4482,7 @@ var $$ = {};
     }
   },
   TabContent_setupWebSocket__closure: {
-    "": "Closure:4;this_8,chatHistory_9,channelName_10",
+    "": "Closure:5;this_8,chatHistory_9,channelName_10",
     call$0: function() {
       this.this_8.setupWebSocket$2(this.chatHistory_9, this.channelName_10);
     }
@@ -4488,7 +4501,7 @@ var $$ = {};
     }
   },
   TabContent__parseForUrls_closure: {
-    "": "Closure:28;box_0",
+    "": "Closure:29;box_0",
     call$1: function(m) {
       var url, t1;
       url = m.$index(m, 0);
@@ -4528,9 +4541,14 @@ var $$ = {};
     }
   },
   setSong_closure: {
-    "": "Closure:3;box_0",
+    "": "Closure:3;box_0,c_1",
     call$1: function(_) {
+      var t1;
       B._playSong(this.box_0.value_0);
+      t1 = this.c_1.future;
+      if (t1._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t1._asyncComplete$1(null);
     }
   },
   main_closure: {
@@ -4593,7 +4611,13 @@ var $$ = {};
     }
   },
   start_closure: {
-    "": "Closure:4;loadingScreen_0",
+    "": "Closure:3;",
+    call$1: function(_) {
+      return J.pause$0$x($.get$ui().currentSong);
+    }
+  },
+  start_closure0: {
+    "": "Closure:5;loadingScreen_0",
     call$0: function() {
       var t1, doneLoading;
       J.remove$0$ax(this.loadingScreen_0);
@@ -4613,9 +4637,9 @@ var $$ = {};
     }
   },
   start__closure: {
-    "": "Closure:4;",
+    "": "Closure:5;",
     call$0: function() {
-      B.setSong($.currentStreet.songName);
+      J.play$0$x($.get$ui().currentSong);
     }
   },
   Input: {
@@ -4876,7 +4900,7 @@ var $$ = {};
     }
   },
   Input_init_closure3: {
-    "": "Closure:26;this_3",
+    "": "Closure:27;this_3",
     call$1: function(k) {
       var t1;
       if ((J.get$keyCode$x(k) === 38 || k.keyCode === 87) && !this.this_3.ignoreKeys)
@@ -4895,7 +4919,7 @@ var $$ = {};
     }
   },
   Input_init_closure4: {
-    "": "Closure:26;this_4",
+    "": "Closure:27;this_4",
     call$1: function(k) {
       var t1;
       if ((J.get$keyCode$x(k) === 38 || k.keyCode === 87) && !this.this_4.ignoreKeys)
@@ -4948,7 +4972,7 @@ var $$ = {};
     }
   },
   Input_init_closure7: {
-    "": "Closure:29;this_8",
+    "": "Closure:30;this_8",
     call$1: function($event) {
       var t1, target, t2;
       t1 = J.getInterceptor$x($event);
@@ -4963,7 +4987,7 @@ var $$ = {};
     }
   },
   Input_init_closure8: {
-    "": "Closure:29;this_9",
+    "": "Closure:30;this_9",
     call$1: function($event) {
       var target, t1;
       target = J.get$target$x($event);
@@ -4975,19 +4999,19 @@ var $$ = {};
     }
   },
   Input_init_closure9: {
-    "": "Closure:30;this_10",
+    "": "Closure:31;this_10",
     call$1: function($event) {
       return this.this_10.clickOrTouch$2($event, null);
     }
   },
   Input_init_closure10: {
-    "": "Closure:29;this_11",
+    "": "Closure:30;this_11",
     call$1: function($event) {
       return this.this_11.clickOrTouch$2(null, $event);
     }
   },
   Input_init_closure11: {
-    "": "Closure:27;",
+    "": "Closure:28;",
     call$1: function($event) {
       var street, label, t1, t2;
       street = C.C_JsonCodec.decode$1(J.get$data$x($event));
@@ -5007,7 +5031,7 @@ var $$ = {};
     }
   },
   Input_clickOrTouch_closure: {
-    "": "Closure:31;this_0",
+    "": "Closure:32;this_0",
     call$1: function(timer) {
       timer.cancel$0();
       this.this_0.touched = false;
@@ -5045,7 +5069,7 @@ var $$ = {};
       }}
   },
   Joystick_closure: {
-    "": "Closure:29;this_0",
+    "": "Closure:30;this_0",
     call$1: function($event) {
       var t1, t2, t3;
       t1 = J.getInterceptor$x($event);
@@ -5065,7 +5089,7 @@ var $$ = {};
     }
   },
   Joystick_closure0: {
-    "": "Closure:29;this_1",
+    "": "Closure:30;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
       t1 = J.getInterceptor$x($event);
@@ -5163,7 +5187,7 @@ var $$ = {};
     }
   },
   Joystick_closure1: {
-    "": "Closure:29;this_2",
+    "": "Closure:30;this_2",
     call$1: function($event) {
       var t1, t2;
       J.preventDefault$0$x($event);
@@ -5203,7 +5227,7 @@ var $$ = {};
       }}
   },
   TouchScroller_closure: {
-    "": "Closure:29;this_0",
+    "": "Closure:30;this_0",
     call$1: function($event) {
       var t1, t2;
       t1 = J.getInterceptor$x($event);
@@ -5219,7 +5243,7 @@ var $$ = {};
     }
   },
   TouchScroller_closure0: {
-    "": "Closure:29;this_1",
+    "": "Closure:30;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, t5, t6, t7, t8;
       t1 = J.getInterceptor$x($event);
@@ -5357,13 +5381,13 @@ var $$ = {};
     }
   },
   UserInterface__setEnergy_closure: {
-    "": "Closure:4;this_0",
+    "": "Closure:5;this_0",
     call$0: function() {
       return J.get$classes$x(this.this_0._currEnergyText.parentElement.parentElement).toggle$1("changed");
     }
   },
   UserInterface__setMood_closure: {
-    "": "Closure:4;this_0",
+    "": "Closure:5;this_0",
     call$0: function() {
       return J.get$classes$x(this.this_0._currMoodText.parentElement).toggle$1("changed");
     }
@@ -5410,7 +5434,7 @@ var $$ = {};
     $isPlayer: true
   },
   Player_loadAnimations_closure: {
-    "": "Closure:32;futures_0",
+    "": "Closure:33;futures_0",
     call$2: function($name, animation) {
       return this.futures_0.push(J.load$0$x(animation));
     }
@@ -5437,7 +5461,7 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]");
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 33]
+    }, "call$1", "get$setCamera", 2, 0, 34]
   },
   Street: {
     "": "Object;label,songName,_data,belowPlayer,abovePlayer,exits,bounds",
@@ -5620,7 +5644,7 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "": "Closure:34;filters_2",
+    "": "Closure:35;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
       t1 = J.getInterceptor(filterName);
@@ -5666,7 +5690,7 @@ var $$ = {};
     }
   },
   Street_load__closure0: {
-    "": "Closure:35;this_3",
+    "": "Closure:36;this_3",
     call$1: function(exit) {
       var t1, t2;
       t1 = this.this_3.exits;
@@ -5675,7 +5699,7 @@ var $$ = {};
     }
   },
   Street_load__closure1: {
-    "": "Closure:36;exitsElement_4",
+    "": "Closure:37;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
       tsid = J.replaceFirst$2$s(tsid, "L", "G");
@@ -5688,7 +5712,7 @@ var $$ = {};
     }
   },
   Street_render_closure: {
-    "": "Closure:37;",
+    "": "Closure:38;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -5696,7 +5720,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:38;c_0",
+    "": "Closure:39;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -6254,7 +6278,7 @@ var $$ = {};
 
     }
     $._callbacksAreEnqueued = false;
-  }, "call$0", "_asyncRunCallback$closure", 0, 0, 6],
+  }, "call$0", "_asyncRunCallback$closure", 0, 0, 7],
   _scheduleAsyncCallback: function(callback) {
     $.get$_asyncCallbacks()._add$1(callback);
     if (!$._callbacksAreEnqueued) {
@@ -6311,17 +6335,17 @@ var $$ = {};
 
   },
   _nullDataHandler: [function(value) {
-  }, "call$1", "_nullDataHandler$closure", 2, 0, 7],
+  }, "call$1", "_nullDataHandler$closure", 2, 0, 8],
   _nullErrorHandler: [function(error, stackTrace) {
     var t1 = $.Zone__current;
     t1.toString;
     P._rootHandleUncaughtError(t1, null, t1, error, stackTrace);
   }, function(error) {
     return P._nullErrorHandler(error, null);
-  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 8, 9],
+  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 9, 10],
   _nullDoneHandler: [function() {
     return;
-  }, "call$0", "_nullDoneHandler$closure", 0, 0, 6],
+  }, "call$0", "_nullDoneHandler$closure", 0, 0, 7],
   _runUserCode: function(userCode, onSuccess, onError) {
     var e, s, exception, t1;
     try {
@@ -6463,10 +6487,10 @@ var $$ = {};
     },
     _onPause$0: [function() {
       return;
-    }, "call$0", "get$_onPause", 0, 0, 6],
+    }, "call$0", "get$_onPause", 0, 0, 7],
     _onResume$0: [function() {
       return;
-    }, "call$0", "get$_onResume", 0, 0, 6],
+    }, "call$0", "get$_onResume", 0, 0, 7],
     $as_ControllerSubscription: null,
     $asStreamSubscription: null,
     static: {"": "_BroadcastSubscription__STATE_EVENT_ID,_BroadcastSubscription__STATE_FIRING,_BroadcastSubscription__STATE_REMOVE_AFTER_FIRING"}
@@ -6549,7 +6573,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 39, 9],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 40, 10],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6696,7 +6720,7 @@ var $$ = {};
     $isFuture: true
   },
   Future_wait_handleError: {
-    "": "Closure:19;box_0,eagerError_1",
+    "": "Closure:20;box_0,eagerError_1",
     call$2: function(theError, theStackTrace) {
       var t1, t2, remaining;
       t1 = this.box_0;
@@ -6716,7 +6740,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:40;box_0,eagerError_2,pos_3",
+    "": "Closure:41;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6753,7 +6777,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 39, 9],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 40, 10],
     $as_Completer: null
   },
   _Future: {
@@ -6854,7 +6878,7 @@ var $$ = {};
       P._Future__propagateToListeners(this, listeners);
     }, function(error) {
       return this._completeError$2(error, null);
-    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 8, 9],
+    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 9, 10],
     _asyncComplete$1: function(value) {
       var t1, t2;
       t1 = J.getInterceptor(value);
@@ -7012,7 +7036,7 @@ var $$ = {};
       }}
   },
   _Future__addListener_closure: {
-    "": "Closure:4;this_0,listener_1",
+    "": "Closure:5;this_0,listener_1",
     call$0: function() {
       P._Future__propagateToListeners(this.this_0, this.listener_1);
     }
@@ -7024,7 +7048,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:41;target_1",
+    "": "Closure:42;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -7033,25 +7057,25 @@ var $$ = {};
     }
   },
   _Future__asyncComplete_closure: {
-    "": "Closure:4;this_0,value_1",
+    "": "Closure:5;this_0,value_1",
     call$0: function() {
       this.this_0._complete$1(this.value_1);
     }
   },
   _Future__asyncCompleteError_closure: {
-    "": "Closure:4;this_0,error_1,stackTrace_2",
+    "": "Closure:5;this_0,error_1,stackTrace_2",
     call$0: function() {
       this.this_0._completeError$2(this.error_1, this.stackTrace_2);
     }
   },
   _Future__propagateToListeners_closure: {
-    "": "Closure:4;box_2,listener_3",
+    "": "Closure:5;box_2,listener_3",
     call$0: function() {
       P._Future__propagateToListeners(this.box_2.source_4, this.listener_3);
     }
   },
   _Future__propagateToListeners_closure0: {
-    "": "Closure:4;box_2,box_1,hasError_4,listener_5",
+    "": "Closure:5;box_2,box_1,hasError_4,listener_5",
     call$0: function() {
       var t1, value, asyncError, test, matchesTest, errorCallback, e, s, t2, t3, t4, t5, completeResult, exception;
       t1 = {};
@@ -7130,7 +7154,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:41;box_0,listener_7",
+    "": "Closure:42;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -7215,20 +7239,20 @@ var $$ = {};
     }
   },
   Stream_contains__closure: {
-    "": "Closure:4;needle_4,element_5",
+    "": "Closure:5;needle_4,element_5",
     call$0: function() {
       return J.$eq(this.element_5, this.needle_4);
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:42;box_0,future_6",
+    "": "Closure:43;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
     }
   },
   Stream_contains_closure0: {
-    "": "Closure:4;future_7",
+    "": "Closure:5;future_7",
     call$0: function() {
       this.future_7._complete$1(false);
     }
@@ -7245,7 +7269,7 @@ var $$ = {};
     }
   },
   Stream_forEach__closure: {
-    "": "Closure:4;action_4,element_5",
+    "": "Closure:5;action_4,element_5",
     call$0: function() {
       return this.action_4.call$1(this.element_5);
     }
@@ -7256,7 +7280,7 @@ var $$ = {};
     }
   },
   Stream_forEach_closure0: {
-    "": "Closure:4;future_6",
+    "": "Closure:5;future_6",
     call$0: function() {
       this.future_6._complete$1(null);
     }
@@ -7269,7 +7293,7 @@ var $$ = {};
     }
   },
   Stream_length_closure0: {
-    "": "Closure:4;box_0,future_1",
+    "": "Closure:5;box_0,future_1",
     call$0: function() {
       this.future_1._complete$1(this.box_0.count_0);
     }
@@ -7281,7 +7305,7 @@ var $$ = {};
     }
   },
   Stream_isEmpty_closure0: {
-    "": "Closure:4;future_2",
+    "": "Closure:5;future_2",
     call$0: function() {
       this.future_2._complete$1(true);
     }
@@ -7298,7 +7322,7 @@ var $$ = {};
     }
   },
   Stream_first_closure0: {
-    "": "Closure:4;future_3",
+    "": "Closure:5;future_3",
     call$0: function() {
       this.future_3._completeError$1(new P.StateError("No elements"));
     }
@@ -7322,7 +7346,7 @@ var $$ = {};
     }
   },
   Stream_elementAt_closure0: {
-    "": "Closure:4;box_0,future_3",
+    "": "Closure:5;box_0,future_3",
     call$0: function() {
       this.future_3._completeError$1(new P.RangeError("value " + this.box_0.index_0));
     }
@@ -7448,13 +7472,13 @@ var $$ = {};
     }
   },
   _StreamController__subscribe_closure: {
-    "": "Closure:4;this_0",
+    "": "Closure:5;this_0",
     call$0: function() {
       P._runGuarded(this.this_0.get$_onListen());
     }
   },
   _StreamController__recordCancel_complete: {
-    "": "Closure:6;this_0",
+    "": "Closure:7;this_0",
     call$0: function() {
       var t1 = this.this_0._doneFuture;
       if (t1 != null && t1._state === 0)
@@ -7552,10 +7576,10 @@ var $$ = {};
     },
     _onPause$0: [function() {
       this.get$_controller()._recordPause$1(this);
-    }, "call$0", "get$_onPause", 0, 0, 6],
+    }, "call$0", "get$_onPause", 0, 0, 7],
     _onResume$0: [function() {
       this.get$_controller()._recordResume$1(this);
-    }, "call$0", "get$_onResume", 0, 0, 6],
+    }, "call$0", "get$_onResume", 0, 0, 7],
     $as_BufferingStreamSubscription: null,
     $asStreamSubscription: null
   },
@@ -7675,9 +7699,9 @@ var $$ = {};
         this._addPending$1(C.C__DelayedDone);
     },
     _onPause$0: [function() {
-    }, "call$0", "get$_onPause", 0, 0, 6],
+    }, "call$0", "get$_onPause", 0, 0, 7],
     _onResume$0: [function() {
-    }, "call$0", "get$_onResume", 0, 0, 6],
+    }, "call$0", "get$_onResume", 0, 0, 7],
     _onCancel$0: function() {
     },
     _addPending$1: function($event) {
@@ -7787,7 +7811,7 @@ var $$ = {};
     static: {"": "_BufferingStreamSubscription__STATE_CANCEL_ON_ERROR,_BufferingStreamSubscription__STATE_CLOSED,_BufferingStreamSubscription__STATE_INPUT_PAUSED,_BufferingStreamSubscription__STATE_CANCELED,_BufferingStreamSubscription__STATE_WAIT_FOR_CANCEL,_BufferingStreamSubscription__STATE_IN_CALLBACK,_BufferingStreamSubscription__STATE_HAS_PENDING,_BufferingStreamSubscription__STATE_PAUSE_COUNT,_BufferingStreamSubscription__STATE_PAUSE_COUNT_SHIFT"}
   },
   _BufferingStreamSubscription__sendError_sendError: {
-    "": "Closure:6;this_0,error_1,stackTrace_2",
+    "": "Closure:7;this_0,error_1,stackTrace_2",
     call$0: function() {
       var t1, t2, t3, t4, t5;
       t1 = this.this_0;
@@ -7815,7 +7839,7 @@ var $$ = {};
     }
   },
   _BufferingStreamSubscription__sendDone_sendDone: {
-    "": "Closure:6;this_0",
+    "": "Closure:7;this_0",
     call$0: function() {
       var t1, t2;
       t1 = this.this_0;
@@ -7898,7 +7922,7 @@ var $$ = {};
     }
   },
   _PendingEvents_schedule_closure: {
-    "": "Closure:4;this_0,dispatch_1",
+    "": "Closure:5;this_0,dispatch_1",
     call$0: function() {
       var t1, oldState;
       t1 = this.this_0;
@@ -7935,19 +7959,19 @@ var $$ = {};
     }
   },
   _cancelAndError_closure: {
-    "": "Closure:4;future_0,error_1,stackTrace_2",
+    "": "Closure:5;future_0,error_1,stackTrace_2",
     call$0: function() {
       return this.future_0._completeError$2(this.error_1, this.stackTrace_2);
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:43;subscription_0,future_1",
+    "": "Closure:44;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
   },
   _cancelAndValue_closure: {
-    "": "Closure:4;future_0,value_1",
+    "": "Closure:5;future_0,value_1",
     call$0: function() {
       return this.future_0._complete$1(this.value_1);
     }
@@ -8018,13 +8042,13 @@ var $$ = {};
     }
   },
   _BaseZone_bindCallback_closure: {
-    "": "Closure:4;this_0,registered_1",
+    "": "Closure:5;this_0,registered_1",
     call$0: function() {
       return this.this_0.runGuarded$1(this.registered_1);
     }
   },
   _BaseZone_bindCallback_closure0: {
-    "": "Closure:4;this_2,registered_3",
+    "": "Closure:5;this_2,registered_3",
     call$0: function() {
       return this.this_2.run$1(this.registered_3);
     }
@@ -8042,13 +8066,13 @@ var $$ = {};
     }
   },
   _rootHandleUncaughtError_closure: {
-    "": "Closure:4;error_0,stackTrace_1",
+    "": "Closure:5;error_0,stackTrace_1",
     call$0: function() {
       P._scheduleAsyncCallback(new P._rootHandleUncaughtError__closure(this.error_0, this.stackTrace_1));
     }
   },
   _rootHandleUncaughtError__closure: {
-    "": "Closure:4;error_2,stackTrace_3",
+    "": "Closure:5;error_2,stackTrace_3",
     call$0: function() {
       var t1, trace, t2;
       t1 = this.error_2;
@@ -8095,10 +8119,10 @@ var $$ = {};
   "": "",
   _defaultEquals: [function(a, b) {
     return J.$eq(a, b);
-  }, "call$2", "_defaultEquals$closure", 4, 0, 10],
+  }, "call$2", "_defaultEquals$closure", 4, 0, 11],
   _defaultHashCode: [function(a) {
     return J.get$hashCode$(a);
-  }, "call$1", "_defaultHashCode$closure", 2, 0, 11],
+  }, "call$1", "_defaultHashCode$closure", 2, 0, 12],
   HashMap_HashMap: function(equals, hashCode, isValidKey, $K, $V) {
     return H.setRuntimeTypeInfo(new P._HashMap(0, null, null, null, null), [$K, $V]);
   },
@@ -9527,7 +9551,7 @@ var $$ = {};
     $isEfficientLength: true
   },
   Maps_mapToString_closure: {
-    "": "Closure:19;box_0,result_1",
+    "": "Closure:20;box_0,result_1",
     call$2: function(k, v) {
       var t1 = this.box_0;
       if (!t1.first_0)
@@ -9732,9 +9756,9 @@ var $$ = {};
   },
   _defaultToEncodable: [function(object) {
     return object.toJson$0();
-  }, "call$1", "_defaultToEncodable$closure", 2, 0, 12],
+  }, "call$1", "_defaultToEncodable$closure", 2, 0, 13],
   _convertJsonToDart_closure: {
-    "": "Closure:19;",
+    "": "Closure:20;",
     call$2: function(key, value) {
       return value;
     }
@@ -9956,7 +9980,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:44;box_0,this_1",
+    "": "Closure:45;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -10038,10 +10062,10 @@ var $$ = {};
   },
   identical: [function(a, b) {
     return a == null ? b == null : a === b;
-  }, "call$2", "identical$closure", 4, 0, 13],
+  }, "call$2", "identical$closure", 4, 0, 14],
   identityHashCode: [function(object) {
     return H.objectHashCode(object);
-  }, "call$1", "identityHashCode$closure", 2, 0, 14],
+  }, "call$1", "identityHashCode$closure", 2, 0, 15],
   List_List$filled: function($length, fill, $E) {
     var result, t1, i;
     result = J.JSArray_JSArray$fixed($length, $E);
@@ -10088,12 +10112,12 @@ var $$ = {};
   print: [function(object) {
     var line = H.S(object);
     H.printString(line);
-  }, "call$1", "print$closure", 2, 0, 15],
+  }, "call$1", "print$closure", 2, 0, 16],
   String_String$fromCharCodes: function(charCodes) {
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:45;box_0",
+    "": "Closure:46;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -10155,7 +10179,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:46;",
+    "": "Closure:47;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -10170,7 +10194,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:46;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -10180,7 +10204,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:46;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -10247,7 +10271,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:46;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -10263,7 +10287,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:46;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -10541,7 +10565,7 @@ var $$ = {};
       return "mousewheel";
     else
       return "DOMMouseScroll";
-  }, "call$1", "Element__determineMouseWheelEventType$closure", 2, 0, 16],
+  }, "call$1", "Element__determineMouseWheelEventType$closure", 2, 0, 17],
   _ElementFactoryProvider_createElement_tag: function(tag, typeExtension) {
     return document.createElement(tag);
   },
@@ -11601,10 +11625,10 @@ var $$ = {};
     "": "Object;",
     error$1: [function(_, arg) {
       return typeof console != "undefined" ? console.error(arg) : null;
-    }, "call$1", "get$error", 2, 0, 15],
+    }, "call$1", "get$error", 2, 0, 16],
     timeStamp$1: [function(_, arg) {
       return typeof console != "undefined" ? console.timeStamp(arg) : null;
-    }, "call$1", "get$timeStamp", 2, 0, 15],
+    }, "call$1", "get$timeStamp", 2, 0, 16],
     static: {"": "Console__safeConsole"}
   },
   Interceptor_CssStyleDeclarationBase: {
@@ -11874,7 +11898,7 @@ var $$ = {};
     }
   },
   HttpRequest_request_closure0: {
-    "": "Closure:19;xhr_0",
+    "": "Closure:20;xhr_0",
     call$2: function(header, value) {
       this.xhr_0.setRequestHeader(header, value);
     }
@@ -11985,13 +12009,13 @@ var $$ = {};
     $isEfficientLength: true
   },
   Storage_keys_closure: {
-    "": "Closure:19;keys_0",
+    "": "Closure:20;keys_0",
     call$2: function(k, v) {
       return this.keys_0.push(k);
     }
   },
   Storage_values_closure: {
-    "": "Closure:19;values_0",
+    "": "Closure:20;values_0",
     call$2: function(k, v) {
       return this.values_0.push(v);
     }
@@ -12290,13 +12314,13 @@ var $$ = {};
       }
       t1 = this._html$_controller;
       t1.close$0(t1);
-    }, "call$0", "get$close", 0, 0, 6],
+    }, "call$0", "get$close", 0, 0, 7],
     _html$_StreamPool$broadcast$0: function($T) {
       this._html$_controller = P.StreamController_StreamController$broadcast(this.get$close(this), null, true, $T);
     }
   },
   _StreamPool_add_closure: {
-    "": "Closure:4;this_0,stream_1",
+    "": "Closure:5;this_0,stream_1",
     call$0: function() {
       var t1 = this.this_0;
       return t1.remove$1(t1, this.stream_1);
@@ -12349,9 +12373,9 @@ var $$ = {};
         return t1;
       }, _Html5NodeValidator__standardAttributeValidator: [function(element, attributeName, value, context) {
         return true;
-      }, "call$4", "_Html5NodeValidator__standardAttributeValidator$closure", 8, 0, 17], _Html5NodeValidator__uriAttributeValidator: [function(element, attributeName, value, context) {
+      }, "call$4", "_Html5NodeValidator__standardAttributeValidator$closure", 8, 0, 18], _Html5NodeValidator__uriAttributeValidator: [function(element, attributeName, value, context) {
         return context.get$uriPolicy().allowsUri$1(value);
-      }, "call$4", "_Html5NodeValidator__uriAttributeValidator$closure", 8, 0, 17]}
+      }, "call$4", "_Html5NodeValidator__uriAttributeValidator$closure", 8, 0, 18]}
   },
   ImmutableListMixin: {
     "": "Object;",
@@ -12710,7 +12734,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:47;this_0",
+    "": "Closure:48;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13693,48 +13717,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 48],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 49],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 49],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 50],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 49],
+    }, "call$1", "get$_fullscreenError", 2, 0, 50],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 50],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 51],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 50],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 51],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 50],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 51],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 51],
+    }, "call$1", "get$_keyDown", 2, 0, 52],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 51],
+    }, "call$1", "get$_keyUp", 2, 0, 52],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 52],
+    }, "call$1", "get$_mouseDown", 2, 0, 53],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 52],
+    }, "call$1", "get$_mouseUp", 2, 0, 53],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 52],
+    }, "call$1", "get$_mouseMove", 2, 0, 53],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 52],
+    }, "call$1", "get$_mouseWheel", 2, 0, 53],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 49],
+    }, "call$1", "get$_resize", 2, 0, 50],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13774,9 +13798,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 49],
+    }, "call$1", "get$_onClick", 2, 0, 50],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 49],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 50],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13840,7 +13864,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:53;this_0",
+    "": "Closure:54;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13853,7 +13877,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:53;this_0",
+    "": "Closure:54;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13866,7 +13890,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:53;this_0",
+    "": "Closure:54;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13875,7 +13899,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__verifyTouchList_closure: {
-    "": "Closure:19;this_0,touches_1",
+    "": "Closure:20;this_0,touches_1",
     call$2: function(identifier, touch) {
       if (!this.this_0._inTouchList$2(this.touches_1, identifier))
         P.print("Did not find " + H.S(identifier));
@@ -13945,7 +13969,7 @@ var $$ = {};
     return t1;
   },
   convertNativeToDart_AcceptStructuredClone_findSlot: {
-    "": "Closure:11;values_0,copies_1",
+    "": "Closure:12;values_0,copies_1",
     call$1: function(value) {
       var t1, $length, i, t2;
       t1 = this.values_0;
@@ -13961,7 +13985,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_readSlot: {
-    "": "Closure:5;copies_2",
+    "": "Closure:6;copies_2",
     call$1: function(i) {
       var t1 = this.copies_2;
       if (i >= t1.length)
@@ -13970,7 +13994,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:54;copies_3",
+    "": "Closure:55;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14455,7 +14479,7 @@ var $$ = {};
           return false;
         t1 = $.numberFormatSymbols;
         return t1.containsKey$1(t1, localeName);
-      }, "call$1", "NumberFormat_localeExists$closure", 2, 0, 18]}
+      }, "call$1", "NumberFormat_localeExists$closure", 2, 0, 19]}
   },
   NumberFormat_NumberFormat_closure: {
     "": "Closure:3;newPattern_0",
@@ -14876,7 +14900,7 @@ var $$ = {};
     }
   },
   Batch_load_closure: {
-    "": "Closure:4;this_0,callback_1,percentEach_2",
+    "": "Closure:5;this_0,callback_1,percentEach_2",
     call$0: function() {
       var t1, t2;
       t1 = this.this_0;
@@ -15034,7 +15058,7 @@ var $$ = {};
     }
   },
   Asset_load_closure0: {
-    "": "Closure:4;box_0,this_3,c_4",
+    "": "Closure:5;box_0,this_3,c_4",
     call$0: function() {
       if (!this.box_0.data_0)
         this.c_4.completeError$1("could not load resource: " + H.S(this.this_3._uri));
@@ -15048,7 +15072,7 @@ var $$ = {};
     }
   },
   Asset_load_closure2: {
-    "": "Closure:22;this_5,c_6",
+    "": "Closure:23;this_5,c_6",
     call$1: function(err) {
       var t1;
       P.print("Error in loading Audio : " + H.S(this.this_5._uri));
@@ -15280,13 +15304,13 @@ W.DivElement.$isEventTarget = true;
 W.DivElement.$isObject = true;
 P.Timer.$isTimer = true;
 P.Timer.$isObject = true;
+P.Future.$isFuture = true;
+P.Future.$isObject = true;
 W._Html5NodeValidator.$is_Html5NodeValidator = true;
 W._Html5NodeValidator.$isNodeValidator = true;
 W._Html5NodeValidator.$isObject = true;
 W.EventTarget.$isEventTarget = true;
 W.EventTarget.$isObject = true;
-P.Future.$isFuture = true;
-P.Future.$isObject = true;
 P.DateTime.$isDateTime = true;
 P.DateTime.$isObject = true;
 P._DelayedEvent.$is_DelayedEvent = true;
@@ -16296,6 +16320,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "String__Match", ret: J.JSString, args: [P.Match]},
 {func: "String__String", ret: J.JSString, args: [J.JSString]},
 {func: "args1", args: [null]},
+{func: "Future__String", ret: P.Future, args: [J.JSString]},
 {func: "args0"},
 {func: "dynamic__int", args: [J.JSInt]},
 {func: "void_", void: true},
