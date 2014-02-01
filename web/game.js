@@ -3704,6 +3704,87 @@ var $$ = {};
       J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
     }
   }, "call$1", "setStreetLoadBar$closure", 2, 0, 5],
+  Animation: {
+    "": "Object;backgroundImage>,animationName,animationStyleString<,width>,height>",
+    load$0: function(_) {
+      var c, temp, t1;
+      c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
+      temp = W.ImageElement_ImageElement(null, this.backgroundImage, null);
+      t1 = J.get$onLoad$x(temp);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Animation_load_closure(this, c, temp)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      return c.future;
+    }
+  },
+  Animation_load_closure: {
+    "": "Closure:3;this_0,c_1,temp_2",
+    call$1: function(_) {
+      var t1, t2, width, height, t3, endPos, t4, t5, styleSheet;
+      t1 = this.temp_2;
+      t2 = J.getInterceptor$x(t1);
+      width = t2.get$width(t1);
+      height = t2.get$height(t1);
+      t1 = this.this_0;
+      t2 = t1.animationName;
+      if (t2 === "stillframe") {
+        if (typeof width !== "number")
+          return width.$tdiv();
+        t3 = C.JSInt_methods._tdivFast$1(width, 15);
+        t1.width = t3;
+        t1.height = height;
+        endPos = width - t3;
+        t3 = document.styleSheets;
+        if (0 >= t3.length)
+          return H.ioore(t3, 0);
+        H.interceptedTypeCast(t3[0], "$isCssStyleSheet").insertRule("@-webkit-keyframes base { from { background-position: " + C.JSInt_methods.toString$0(endPos) + "px;} to { background-position: -" + C.JSInt_methods.toString$0(endPos) + "px;}}", 1);
+        t1.animationStyleString = "base .8s steps(1)";
+      }
+      if (t2 === "base") {
+        if (typeof width !== "number")
+          return width.$tdiv();
+        t3 = C.JSInt_methods._tdivFast$1(width, 15);
+        t1.width = t3;
+        t1.height = height;
+        t4 = document.styleSheets;
+        if (0 >= t4.length)
+          return H.ioore(t4, 0);
+        H.interceptedTypeCast(t4[0], "$isCssStyleSheet").insertRule("@-webkit-keyframes base { from { background-position: 0px;} to { background-position: -" + C.JSInt_methods.toString$0(width - t3 * 3) + "px;}}", 1);
+        t1.animationStyleString = "base .8s steps(12) infinite";
+      }
+      if (t2 === "idle") {
+        if (typeof width !== "number")
+          return width.$tdiv();
+        t3 = C.JSInt_methods._tdivFast$1(width, 29);
+        t1.width = t3;
+        if (typeof height !== "number")
+          return height.$tdiv();
+        t4 = C.JSInt_methods._tdivFast$1(height, 2);
+        t1.height = t4;
+        t5 = document.styleSheets;
+        if (0 >= t5.length)
+          return H.ioore(t5, 0);
+        styleSheet = H.interceptedTypeCast(t5[0], "$isCssStyleSheet");
+        styleSheet.insertRule("@-webkit-keyframes idle { from { background-position: 0px 0px;} to { background-position: -" + C.JSInt_methods.toString$0(width) + "px 0px;}}", 1);
+        t4 = -t4;
+        styleSheet.insertRule("@-webkit-keyframes idle2 { from { background-position: 0px " + C.JSInt_methods.toString$0(t4) + "px;} to { background-position: " + C.JSInt_methods.toString$0(width - t3) + "px " + C.JSInt_methods.toString$0(t4) + "px;}}", 1);
+        t1.animationStyleString = "idle 1s 10s steps(29), idle2 1s 11s steps(28)";
+      }
+      if (t2 === "jump") {
+        if (typeof width !== "number")
+          return width.$tdiv();
+        t1.width = C.JSInt_methods._tdivFast$1(width, 33);
+        t1.height = height;
+        t2 = document.styleSheets;
+        if (0 >= t2.length)
+          return H.ioore(t2, 0);
+        H.interceptedTypeCast(t2[0], "$isCssStyleSheet").insertRule("@-webkit-keyframes jump { from { background-position: 0px;} to { background-position: -" + C.JSInt_methods.toString$0(width) + "px;}}", 1);
+        t1.animationStyleString = "jump 1s steps(33) infinite";
+      }
+      t2 = this.c_1.future;
+      if (t2._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t2._asyncComplete$1(t1);
+    }
+  },
   load_audio_closure: {
     "": "Closure:3;c_0",
     call$1: function(_) {
@@ -3756,10 +3837,21 @@ var $$ = {};
   Chat: {
     "": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
     init$0: function() {
-      if ($.get$localStorage().getItem("username") != null)
-        this.username = $.get$localStorage().getItem("username");
-      else
-        this.username = J.$add$ns(this.username, C.JSInt_methods.toString$0(C.C__JSRandom.nextInt$1(10000)));
+      var t1, newValue, newValue0;
+      if ($.get$localStorage().getItem("username") != null) {
+        t1 = $.get$localStorage().getItem("username");
+        this.username = t1;
+        newValue = t1;
+      } else {
+        t1 = J.$add$ns(this.username, C.JSInt_methods.toString$0(C.C__JSRandom.nextInt$1(10000)));
+        this.username = t1;
+        newValue = t1;
+      }
+      t1 = $.get$ui();
+      t1.toString;
+      newValue0 = J.getInterceptor$asx(newValue).get$length(newValue) >= 17 ? C.JSString_methods.substring$2(newValue, 0, 15) + "..." : newValue;
+      t1.nameMeter.textContent = newValue0;
+      B.updateConsole("Setting name to \"" + newValue + "\"");
       C.EventStreamProvider_change._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null)).listen$1(new B.Chat_init_closure(this));
       if ($.get$localStorage().getItem("showJoinMessages") != null)
         if ($.get$localStorage().getItem("showJoinMessages") === "true") {
@@ -3774,7 +3866,7 @@ var $$ = {};
         this._showJoinMessages = false;
         $.get$localStorage().setItem("showJoinMessages", C.JSBool_methods.toString$0(false));
       }
-      var t1 = W._FrozenElementList$_wrap(document.querySelectorAll("#ShowJoinMessages"), null);
+      t1 = W._FrozenElementList$_wrap(document.querySelectorAll("#ShowJoinMessages"), null);
       t1.forEach$1(t1, new B.Chat_init_closure0(this));
       if ($.get$localStorage().getItem("playMentionSound") != null)
         if ($.get$localStorage().getItem("playMentionSound") === "true") {
@@ -3953,7 +4045,7 @@ var $$ = {};
       C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B.TabContent_setupWebSocket_closure1(this, chatHistory, channelName));
     },
     _addmessage$1: function(map) {
-      var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, rowSpacer, t3, t4, t5, chatLine, chatRow, conversation;
+      var t1, validator, mentionSound, userElement, text, chatString, t2, newValue, t3, newValue0, oldUsername, newUsername, rowSpacer, t4, t5, chatLine, chatRow, conversation;
       t1 = H.setRuntimeTypeInfo([], [W.NodeValidator]);
       validator = new W.NodeValidatorBuilder(t1);
       t1.push(W._Html5NodeValidator$(null));
@@ -4001,6 +4093,14 @@ var $$ = {};
         t2.add$1(t2, text);
       }
       if (J.$eq(t1.$index(map, "statusMessage"), "changeName")) {
+        $.CurrentPlayer.playerName.textContent = t1.$index(map, "newUsername");
+        newValue = t1.$index(map, "newUsername");
+        t2 = $.get$ui();
+        t2.toString;
+        t3 = J.getInterceptor$asx(newValue);
+        newValue0 = J.$ge$n(t3.get$length(newValue), 17) ? t3.substring$2(newValue, 0, 15) + "..." : newValue;
+        t2.nameMeter.textContent = newValue0;
+        B.updateConsole("Setting name to \"" + H.S(newValue) + "\"");
         J.set$paddingRight$x(text.style, "4px");
         t2 = J.getInterceptor$x(chatString);
         if (J.$eq(t1.$index(map, "success"), "true")) {
@@ -4390,11 +4490,21 @@ var $$ = {};
   main___closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1, playButton;
+      var t1;
       $.get$chat().init$0();
-      t1 = new B.Player(null, null, null, null, null, null, -40, false, true, null, true, null, null);
+      t1 = new B.Player(null, null, null, null, null, null, null, -40, false, false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, true, null, null, null);
       t1.Player$0();
       $.CurrentPlayer = t1;
+      t1.loadAnimations$0().then$1(new B.main____closure());
+    }
+  },
+  main____closure: {
+    "": "Closure:3;",
+    call$1: function(_) {
+      var t1, t2, playButton;
+      t1 = $.CurrentPlayer;
+      t2 = t1.animations;
+      t1.currentAnimation = t2.$index(t2, "idle");
       t1 = window.innerWidth;
       if (typeof t1 !== "number")
         return t1.$gt();
@@ -4413,11 +4523,11 @@ var $$ = {};
         playButton.textContent = "Play";
         J.set$display$x(playButton.style, "inline-block");
         t1 = C.EventStreamProvider_click.forElement$1(playButton);
-        t1.get$first(t1).then$1(new B.main____closure());
+        t1.get$first(t1).then$1(new B.main_____closure());
       }
     }
   },
-  main____closure: {
+  main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1 = $.get$ui().currentSong;
@@ -5183,38 +5293,51 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;posX,posY,width,height,speed,yVel,yAccel,jumping,facingRight,avatar,doPhysicsApply,playerCanvas,playerName",
+    "": "Object;posX,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation,doPhysicsApply,playerCanvas,avatar,playerName",
+    loadAnimations$0: function() {
+      var t1, futures;
+      t1 = this.animations;
+      t1.$indexSet(t1, "idle", new B.Animation("assets/sprites/idle.png", "idle", null, null, null));
+      t1.$indexSet(t1, "base", new B.Animation("assets/sprites/base.png", "base", null, null, null));
+      t1.$indexSet(t1, "jump", new B.Animation("assets/sprites/jump.png", "jump", null, null, null));
+      t1.$indexSet(t1, "stillframe", new B.Animation("assets/sprites/base.png", "base", null, null, null));
+      futures = [];
+      t1.forEach$1(t1, new B.Player_loadAnimations_closure(futures));
+      return P.Future_wait(futures, false);
+    },
     Player$0: function() {
-      this.width = 100;
-      this.height = 172;
+      this.width = 116;
+      this.height = 137;
       this.speed = 5;
       this.yVel = 0;
       this.posX = 0;
       var t1 = $.currentStreet.bounds.height;
       if (typeof t1 !== "number")
         return t1.$sub();
-      this.posY = t1 - 172;
+      this.posY = t1 - 170;
       t1 = document.createElement("div", null);
-      J.set$width$x(t1.style, C.JSInt_methods.toString$0(this.width) + "px");
-      J.set$height$x(t1.style, C.JSInt_methods.toString$0(this.height) + "px");
       J.set$display$x(t1.style, "inline-block");
       J.set$textAlign$x(t1.style, "center");
       this.playerCanvas = t1;
-      t1 = document.createElement("span", null);
+      t1 = document.createElement("div", null);
       t1.textContent = $.get$chat().username;
-      J.set$display$x(t1.style, "inline-block");
       this.playerName = t1;
-      t1 = W.ImageElement_ImageElement(null, "assets/sprites/avatar.png", null);
+      t1 = document.createElement("div", null);
       this.avatar = t1;
       t1.id = "playerCanvas";
-      J.set$width$x(t1.style, C.JSInt_methods.toString$0(this.width) + "px");
-      J.set$height$x(this.avatar.style, C.JSInt_methods.toString$0(this.height) + "px");
       this.playerCanvas.appendChild(this.playerName);
       this.playerCanvas.appendChild(this.avatar);
       $.get$gameScreen().appendChild(this.playerCanvas);
+      this.canvasHeight = this.playerCanvas.clientHeight;
       $.CurrentPlayer = this;
     },
     $isPlayer: true
+  },
+  Player_loadAnimations_closure: {
+    "": "Closure:32;futures_0",
+    call$2: function($name, animation) {
+      return this.futures_0.push(J.load$0$x(animation));
+    }
   },
   Camera: {
     "": "Object;_x,_y,zoom,dirty",
@@ -5238,7 +5361,7 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]");
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 32]
+    }, "call$1", "get$setCamera", 2, 0, 33]
   },
   Street: {
     "": "Object;label,_data,belowPlayer,abovePlayer,exits,bounds",
@@ -5416,7 +5539,7 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "": "Closure:33;filters_2",
+    "": "Closure:34;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
       t1 = J.getInterceptor(filterName);
@@ -5462,7 +5585,7 @@ var $$ = {};
     }
   },
   Street_load__closure0: {
-    "": "Closure:34;this_3",
+    "": "Closure:35;this_3",
     call$1: function(exit) {
       var t1, t2;
       t1 = this.this_3.exits;
@@ -5471,7 +5594,7 @@ var $$ = {};
     }
   },
   Street_load__closure1: {
-    "": "Closure:35;exitsElement_4",
+    "": "Closure:36;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
       tsid = J.replaceFirst$2$s(tsid, "L", "G");
@@ -5484,7 +5607,7 @@ var $$ = {};
     }
   },
   Street_render_closure: {
-    "": "Closure:36;",
+    "": "Closure:37;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -5492,7 +5615,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:37;c_0",
+    "": "Closure:38;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -5510,7 +5633,7 @@ var $$ = {};
   closure: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
-      var t1, t2, t3, t4, t5, t6, translateX, t7, translateY, t8, camX, camY, transform;
+      var t1, t2, t3, t4, t5, translateX, t6, t7, t8, camX, translateY, camY, transform;
       t1 = $.CurrentPlayer;
       t2 = $.get$game();
       t1.toString;
@@ -5518,11 +5641,13 @@ var $$ = {};
       if (t3.rightKey) {
         t1.posX = t1.posX + t1.speed;
         t1.facingRight = true;
-      }
-      if (t3.leftKey) {
+        t1.moving = true;
+      } else if (t3.leftKey) {
         t1.posX = t1.posX - t1.speed;
         t1.facingRight = false;
-      }
+        t1.moving = true;
+      } else
+        t1.moving = false;
       if (t3.spaceKey && !t1.jumping) {
         if (C.C__JSRandom.nextInt$1(4) === 3)
           t1.yVel = -20;
@@ -5551,56 +5676,88 @@ var $$ = {};
       t5 = t1.width;
       if (typeof t4 !== "number")
         return t4.$sub();
-      t6 = t4 - t5;
-      if (t2 > t6) {
-        t1.posX = t6;
-        translateX = t6;
-      } else
-        translateX = t2;
+      t5 = t4 - t5;
+      if (t2 > t5)
+        t1.posX = t5;
       t2 = t1.posY;
       t3 = t3.height;
-      t6 = t1.height;
+      t4 = t1.canvasHeight;
       if (typeof t3 !== "number")
         return t3.$sub();
-      t7 = t3 - t6;
-      if (t2 > t7) {
-        t1.posY = t7;
+      if (typeof t4 !== "number")
+        return H.iae(t4);
+      t4 = t3 - t4;
+      if (t2 > t4) {
+        t1.posY = t4;
         t1.yVel = 0;
         t1.jumping = false;
-        t2 = t7;
+        t2 = t4;
       }
-      if (t2 < 0) {
+      if (t2 < 0)
         t1.posY = 0;
-        translateY = 0;
-      } else
-        translateY = t2;
-      t2 = $.get$ui();
-      t7 = t2.gameScreenHeight;
+      t2 = t1.moving;
+      if (!t2 && !t1.jumping) {
+        t2 = t1.animations;
+        t1.currentAnimation = t2.$index(t2, "idle");
+      } else if (t2 && !t1.jumping) {
+        t2 = t1.animations;
+        t1.currentAnimation = t2.$index(t2, "base");
+      } else {
+        t2 = t1.jumping;
+        t3 = t1.animations;
+        if (t2)
+          t1.currentAnimation = t3.$index(t3, "jump");
+        else
+          t1.currentAnimation = t3.$index(t3, "stillframe");
+      }
+      if (!J.contains$1$asx(J.get$backgroundImage$x(t1.avatar.style), J.get$backgroundImage$x(t1.currentAnimation)))
+        J.set$backgroundImage$x(t1.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(t1.currentAnimation)) + ")");
+      J.set$width$x(t1.avatar.style, J.toString$0(J.get$width$x(t1.currentAnimation)) + "px");
+      J.set$height$x(t1.avatar.style, J.toString$0(J.get$height$x(t1.currentAnimation)) + "px");
+      J.set$animation$x(t1.avatar.style, t1.currentAnimation.get$animationStyleString());
+      t2 = J.$add$ns(J.get$height$x(t1.currentAnimation), 50);
+      t1.canvasHeight = t2;
+      translateX = t1.posX;
+      t3 = $.get$ui();
+      t4 = t3.gameScreenHeight;
+      if (typeof t4 !== "number")
+        return t4.$sub();
+      if (typeof t2 !== "number")
+        return H.iae(t2);
+      t5 = $.get$camera();
+      t5._y;
+      t6 = $.currentStreet.bounds;
+      t7 = t6.width;
+      t8 = t1.width;
       if (typeof t7 !== "number")
         return t7.$sub();
-      t8 = $.get$camera();
-      t8._y;
-      t2 = t2.gameScreenWidth;
-      if (typeof t2 !== "number")
-        return t2.$div();
-      if (translateX > t4 - t5 / 2 - t2 / 2) {
-        camX = t4 - t2;
-        translateX = translateX - t4 + t2;
-      } else if (translateX + t5 / 2 > t2 / 2) {
-        camX = translateX + t5 / 2 - t2 / 2;
-        translateX = t2 / 2 - t5 / 2;
+      t3 = t3.gameScreenWidth;
+      if (typeof t3 !== "number")
+        return t3.$div();
+      if (translateX > t7 - t8 / 2 - t3 / 2) {
+        camX = t7 - t3;
+        translateX = translateX - t7 + t3;
+      } else if (translateX + t8 / 2 > t3 / 2) {
+        camX = translateX + t8 / 2 - t3 / 2;
+        translateX = t3 / 2 - t8 / 2;
       } else
         camX = 0;
-      if (translateY + t6 / 2 < t7 / 2)
+      translateY = t1.posY;
+      if (translateY + t2 / 2 < t4 / 2)
         camY = 0;
-      else if (translateY < t3 - t6 / 2 - t7 / 2) {
-        camY = t3 - (t3 - translateY - t6 / 2 + t7 / 2);
-        translateY = t7 / 2 - t6 / 2;
-      } else {
-        camY = t3 - t7;
-        translateY = t7 - (t3 - translateY);
+      else {
+        t3 = t6.height;
+        if (typeof t3 !== "number")
+          return t3.$sub();
+        if (translateY < t3 - t2 / 2 - t4 / 2) {
+          camY = t3 - (t3 - translateY - t2 / 2 + t4 / 2);
+          translateY = t4 / 2 - t2 / 2;
+        } else {
+          camY = t3 - t4;
+          translateY = t4 - (t3 - translateY);
+        }
       }
-      t8.setCamera$1(C.JSNumber_methods.toString$0(camX) + "," + C.JSNumber_methods.toString$0(camY));
+      t5.setCamera$1(C.JSNumber_methods.toString$0(camX) + "," + C.JSNumber_methods.toString$0(camY));
       transform = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
       t2 = t1.facingRight;
       t3 = t1.playerName;
@@ -6311,7 +6468,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 38, 9],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 39, 9],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6478,7 +6635,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:39;box_0,eagerError_2,pos_3",
+    "": "Closure:40;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6515,7 +6672,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 38, 9],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 39, 9],
     $as_Completer: null
   },
   _Future: {
@@ -6786,7 +6943,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:40;target_1",
+    "": "Closure:41;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -6892,7 +7049,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:40;box_0,listener_7",
+    "": "Closure:41;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -6983,7 +7140,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:41;box_0,future_6",
+    "": "Closure:42;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7598,11 +7755,11 @@ var $$ = {};
       subscription.onDone$1(onDone);
       return subscription;
     },
-    listen$1: function(onData) {
-      return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
-    },
     listen$3$onDone$onError: function(onData, onDone, onError) {
       return this.listen$4$cancelOnError$onDone$onError(onData, null, onDone, onError);
+    },
+    listen$1: function(onData) {
+      return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
     },
     _createSubscription$1: function(cancelOnError) {
       var t1, t2;
@@ -7703,7 +7860,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:42;subscription_0,future_1",
+    "": "Closure:43;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -9718,7 +9875,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:43;box_0,this_1",
+    "": "Closure:44;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -9855,7 +10012,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:44;box_0",
+    "": "Closure:45;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -9898,12 +10055,12 @@ var $$ = {};
     add$1: function(_, duration) {
       return P.DateTime$fromMillisecondsSinceEpoch(this.millisecondsSinceEpoch + duration.get$inMilliseconds(), this.isUtc);
     },
+    DateTime$_now$0: function() {
+      H.Primitives_lazyAsJsDate(this);
+    },
     DateTime$fromMillisecondsSinceEpoch$2$isUtc: function(millisecondsSinceEpoch, isUtc) {
       if (Math.abs(millisecondsSinceEpoch) > 8640000000000000)
         throw H.wrapException(new P.ArgumentError(millisecondsSinceEpoch));
-    },
-    DateTime$_now$0: function() {
-      H.Primitives_lazyAsJsDate(this);
     },
     $isDateTime: true,
     static: {"": "DateTime_MONDAY,DateTime_TUESDAY,DateTime_WEDNESDAY,DateTime_THURSDAY,DateTime_FRIDAY,DateTime_SATURDAY,DateTime_SUNDAY,DateTime_DAYS_PER_WEEK,DateTime_JANUARY,DateTime_FEBRUARY,DateTime_MARCH,DateTime_APRIL,DateTime_MAY,DateTime_JUNE,DateTime_JULY,DateTime_AUGUST,DateTime_SEPTEMBER,DateTime_OCTOBER,DateTime_NOVEMBER,DateTime_DECEMBER,DateTime_MONTHS_PER_YEAR,DateTime__MAX_MILLISECONDS_SINCE_EPOCH", DateTime$fromMillisecondsSinceEpoch: function(millisecondsSinceEpoch, isUtc) {
@@ -9917,7 +10074,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:45;",
+    "": "Closure:46;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -9932,7 +10089,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:45;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -9942,7 +10099,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:45;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -10009,7 +10166,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:45;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -10025,7 +10182,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:45;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -10392,7 +10549,7 @@ var $$ = {};
   },
   HtmlElement: {
     "": "Element;",
-    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLCanvasElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
+    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
   },
   AnchorElement: {
     "": "HtmlElement;hostname=,href},port=,protocol=,target=,type%",
@@ -10429,6 +10586,10 @@ var $$ = {};
     "": "HtmlElement;name%,type%,value%",
     "%": "HTMLButtonElement"
   },
+  CanvasElement: {
+    "": "HtmlElement;height=,width=",
+    "%": "HTMLCanvasElement"
+  },
   CharacterData: {
     "": "Node;data=,length=",
     "%": "CDATASection|Comment|Text;CharacterData"
@@ -10462,6 +10623,11 @@ var $$ = {};
 
     },
     "%": "CSS2Properties|CSSStyleDeclaration|MSStyleCSSProperties"
+  },
+  CssStyleSheet: {
+    "": "StyleSheet;",
+    $isCssStyleSheet: true,
+    "%": "CSSStyleSheet"
   },
   DivElement: {
     "": "HtmlElement;",
@@ -10590,7 +10756,7 @@ var $$ = {};
     "%": ";Element"
   },
   EmbedElement: {
-    "": "HtmlElement;name%,src},type%",
+    "": "HtmlElement;height=,name%,src},type%,width=",
     "%": "HTMLEmbedElement"
   },
   ErrorEvent: {
@@ -10679,15 +10845,15 @@ var $$ = {};
     "%": ";XMLHttpRequestEventTarget"
   },
   IFrameElement: {
-    "": "HtmlElement;name%,src}",
+    "": "HtmlElement;height=,name%,src},width=",
     "%": "HTMLIFrameElement"
   },
   ImageElement: {
-    "": "HtmlElement;src}",
+    "": "HtmlElement;height=,src},width=",
     "%": "HTMLImageElement"
   },
   InputElement: {
-    "": "HtmlElement;checked%,name%,src},type%,value%",
+    "": "HtmlElement;checked%,height=,name%,src},type%,value%,width=",
     $isInputElement: true,
     $isElement: true,
     $isNode: true,
@@ -10755,7 +10921,7 @@ var $$ = {};
     get$onPlay: function(receiver) {
       return C.EventStreamProvider_play.forElement$1(receiver);
     },
-    "%": "HTMLAudioElement|HTMLMediaElement|HTMLVideoElement"
+    "%": "HTMLAudioElement;HTMLMediaElement"
   },
   MediaStream: {
     "": "EventTarget;id=",
@@ -10881,7 +11047,7 @@ var $$ = {};
     "%": "HTMLOListElement"
   },
   ObjectElement: {
-    "": "HtmlElement;data=,name%,type%",
+    "": "HtmlElement;data=,height=,name%,type%,width=",
     "%": "HTMLObjectElement"
   },
   OptionElement: {
@@ -10987,6 +11153,10 @@ var $$ = {};
   StyleElement: {
     "": "HtmlElement;type%",
     "%": "HTMLStyleElement"
+  },
+  StyleSheet: {
+    "": "Interceptor;type=",
+    "%": ";StyleSheet"
   },
   TableElement: {
     "": "HtmlElement;",
@@ -11140,6 +11310,10 @@ var $$ = {};
       return H.setRuntimeTypeInfo(new P.Point(receiver.pageX, receiver.pageY), [null]);
     },
     "%": "FocusEvent|SVGZoomEvent;UIEvent"
+  },
+  VideoElement: {
+    "": "MediaElement;height=,width=",
+    "%": "HTMLVideoElement"
   },
   WebSocket: {
     "": "EventTarget;",
@@ -11309,6 +11483,36 @@ var $$ = {};
     $isJavaScriptIndexingBehavior: true,
     "%": "MozNamedAttrMap|NamedNodeMap"
   },
+  _StyleSheetList: {
+    "": "Interceptor_ListMixin_ImmutableListMixin3;",
+    get$length: function(receiver) {
+      return receiver.length;
+    },
+    $index: function(receiver, index) {
+      var t1 = receiver.length;
+      if (index >>> 0 !== index || index >= t1)
+        throw H.wrapException(P.RangeError$range(index, 0, t1));
+      return receiver[index];
+    },
+    $indexSet: function(receiver, index, value) {
+      throw H.wrapException(P.UnsupportedError$("Cannot assign element of immutable List."));
+    },
+    set$length: function(receiver, value) {
+      throw H.wrapException(P.UnsupportedError$("Cannot resize immutable List."));
+    },
+    elementAt$1: function(receiver, index) {
+      if (index < 0 || index >= receiver.length)
+        return H.ioore(receiver, index);
+      return receiver[index];
+    },
+    $isList: true,
+    $asList: function() {
+      return [W.StyleSheet];
+    },
+    $isEfficientLength: true,
+    $isJavaScriptIndexingBehavior: true,
+    "%": "StyleSheetList"
+  },
   Console: {
     "": "Object;",
     error$1: [function(_, arg) {
@@ -11360,8 +11564,17 @@ var $$ = {};
   },
   CssStyleDeclarationBase: {
     "": "Object;",
+    set$animation: function(receiver, value) {
+      this.setProperty$3(receiver, P.Device_cssPrefix() + "animation", value, "");
+    },
     set$background: function(receiver, value) {
       this.setProperty$3(receiver, "background", value, "");
+    },
+    get$backgroundImage: function(receiver) {
+      return this.getPropertyValue$1(receiver, "background-image");
+    },
+    set$backgroundImage: function(receiver, value) {
+      this.setProperty$3(receiver, "background-image", value, "");
     },
     get$bottom: function(receiver) {
       return this.getPropertyValue$1(receiver, "bottom");
@@ -11763,6 +11976,22 @@ var $$ = {};
     $isList: true,
     $asList: function() {
       return [W.Node];
+    },
+    $isEfficientLength: true
+  },
+  Interceptor_ListMixin3: {
+    "": "Interceptor+ListMixin;",
+    $isList: true,
+    $asList: function() {
+      return [W.StyleSheet];
+    },
+    $isEfficientLength: true
+  },
+  Interceptor_ListMixin_ImmutableListMixin3: {
+    "": "Interceptor_ListMixin3+ImmutableListMixin;",
+    $isList: true,
+    $asList: function() {
+      return [W.StyleSheet];
     },
     $isEfficientLength: true
   },
@@ -12397,7 +12626,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:46;this_0",
+    "": "Closure:47;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -12416,55 +12645,55 @@ var $$ = {};
     "%": "SVGAElement"
   },
   FEBlendElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEBlendElement"
   },
   FEColorMatrixElement: {
-    "": "SvgElement;type=,values=,x=,y=",
+    "": "SvgElement;type=,values=,height=,width=,x=,y=",
     "%": "SVGFEColorMatrixElement"
   },
   FEComponentTransferElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEComponentTransferElement"
   },
   FECompositeElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFECompositeElement"
   },
   FEConvolveMatrixElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEConvolveMatrixElement"
   },
   FEDiffuseLightingElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEDiffuseLightingElement"
   },
   FEDisplacementMapElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEDisplacementMapElement"
   },
   FEFloodElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEFloodElement"
   },
   FEGaussianBlurElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEGaussianBlurElement"
   },
   FEImageElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEImageElement"
   },
   FEMergeElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEMergeElement"
   },
   FEMorphologyElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEMorphologyElement"
   },
   FEOffsetElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFEOffsetElement"
   },
   FEPointLightElement: {
@@ -12472,7 +12701,7 @@ var $$ = {};
     "%": "SVGFEPointLightElement"
   },
   FESpecularLightingElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFESpecularLightingElement"
   },
   FESpotLightElement: {
@@ -12480,19 +12709,19 @@ var $$ = {};
     "%": "SVGFESpotLightElement"
   },
   FETileElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFETileElement"
   },
   FETurbulenceElement: {
-    "": "SvgElement;type=,x=,y=",
+    "": "SvgElement;type=,height=,width=,x=,y=",
     "%": "SVGFETurbulenceElement"
   },
   FilterElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFilterElement"
   },
   ForeignObjectElement: {
-    "": "GraphicsElement;x=,y=",
+    "": "GraphicsElement;height=,width=,x=,y=",
     "%": "SVGForeignObjectElement"
   },
   GraphicsElement: {
@@ -12500,19 +12729,19 @@ var $$ = {};
     "%": "SVGCircleElement|SVGClipPathElement|SVGDefsElement|SVGEllipseElement|SVGGElement|SVGLineElement|SVGPathElement|SVGPolygonElement|SVGPolylineElement|SVGSwitchElement;SVGGraphicsElement"
   },
   ImageElement0: {
-    "": "GraphicsElement;x=,y=",
+    "": "GraphicsElement;height=,width=,x=,y=",
     "%": "SVGImageElement"
   },
   MaskElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGMaskElement"
   },
   PatternElement: {
-    "": "SvgElement;x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGPatternElement"
   },
   RectElement: {
-    "": "GraphicsElement;x=,y=",
+    "": "GraphicsElement;height=,width=,x=,y=",
     "%": "SVGRectElement"
   },
   ScriptElement: {
@@ -12572,7 +12801,7 @@ var $$ = {};
     "%": "SVGAltGlyphDefElement|SVGAltGlyphItemElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGAnimationElement|SVGComponentTransferFunctionElement|SVGCursorElement|SVGDescElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement|SVGFEMergeNodeElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGHKernElement|SVGLinearGradientElement|SVGMPathElement|SVGMarkerElement|SVGMetadataElement|SVGMissingGlyphElement|SVGRadialGradientElement|SVGSetElement|SVGStopElement|SVGSymbolElement|SVGTitleElement|SVGVKernElement|SVGViewElement;SVGElement"
   },
   SvgSvgElement: {
-    "": "GraphicsElement;x=,y=",
+    "": "GraphicsElement;height=,width=,x=,y=",
     "%": "SVGSVGElement"
   },
   TextContentElement: {
@@ -12584,7 +12813,7 @@ var $$ = {};
     "%": "SVGAltGlyphElement|SVGTSpanElement|SVGTextElement|SVGTextPositioningElement"
   },
   UseElement: {
-    "": "GraphicsElement;x=,y=",
+    "": "GraphicsElement;height=,width=,x=,y=",
     "%": "SVGUseElement"
   },
   _AttributeClassSet: {
@@ -13106,6 +13335,26 @@ var $$ = {};
   },
   GameLoopHtml: {
     "": "GameLoop;element,_frameCounter,_initialized,_interrupt,_previousFrameTime,_frameTime,_resizePending,_nextResize,game_loop_html$GameLoopHtml$maxAccumulatedTime,_accumulatedTime,_gameTime,_renderInterpolationFactor,resizeLimit,processAllKeyboardEvents,_pointerLock,_keyboard,_mouse,_gamepad0,_lastMousePos,_touchSet,_rafId,_touchEvents,_keyboardEvents,_mouseEvents,onRender,onResize,onFullscreenChange,onPointerLockChange,onTouchStart,onTouchEnd,onKeyDown,_game_loop_html$_state,updateTimeStep,maxAccumulatedTime,_timers,onUpdate,_game_loop_common$_state",
+    get$width: function(_) {
+      var t1, t2, t3, t4;
+      t1 = this.element;
+      t2 = t1.clientLeft;
+      t3 = t1.clientTop;
+      t4 = t1.clientWidth;
+      t1 = t1.clientHeight;
+      new P.Rectangle(t2, t3, t4, t1).$builtinTypeInfo = [null];
+      return t4;
+    },
+    get$height: function(_) {
+      var t1, t2, t3, t4;
+      t1 = this.element;
+      t2 = t1.clientLeft;
+      t3 = t1.clientTop;
+      t4 = t1.clientWidth;
+      t1 = t1.clientHeight;
+      new P.Rectangle(t2, t3, t4, t1).$builtinTypeInfo = [null];
+      return t1;
+    },
     _processKeyboardEvents$0: function() {
       var t1, t2, keyboardEvent, t3, t4, buttonId;
       if (!this.processAllKeyboardEvents) {
@@ -13360,48 +13609,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 47],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 48],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 48],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 49],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 48],
+    }, "call$1", "get$_fullscreenError", 2, 0, 49],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 49],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 50],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 49],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 50],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 49],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 50],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 50],
+    }, "call$1", "get$_keyDown", 2, 0, 51],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 50],
+    }, "call$1", "get$_keyUp", 2, 0, 51],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 51],
+    }, "call$1", "get$_mouseDown", 2, 0, 52],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 51],
+    }, "call$1", "get$_mouseUp", 2, 0, 52],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 51],
+    }, "call$1", "get$_mouseMove", 2, 0, 52],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 51],
+    }, "call$1", "get$_mouseWheel", 2, 0, 52],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 48],
+    }, "call$1", "get$_resize", 2, 0, 49],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13441,9 +13690,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 48],
+    }, "call$1", "get$_onClick", 2, 0, 49],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 48],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 49],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13507,7 +13756,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:52;this_0",
+    "": "Closure:53;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13520,7 +13769,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:52;this_0",
+    "": "Closure:53;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13533,7 +13782,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:52;this_0",
+    "": "Closure:53;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13637,7 +13886,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:53;copies_3",
+    "": "Closure:54;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14863,6 +15112,7 @@ W.Touch.$isTouch = true;
 W.Touch.$isObject = true;
 J.JSDouble.$isnum = true;
 J.JSDouble.$isObject = true;
+W.StyleSheet.$isObject = true;
 J.JSNumber.$isnum = true;
 J.JSNumber.$isObject = true;
 P.Duration.$isDuration = true;
@@ -14885,15 +15135,26 @@ W.ProgressEvent.$isObject = true;
 J.JSArray.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
-W.MouseEvent.$isMouseEvent = true;
-W.MouseEvent.$isEvent = true;
-W.MouseEvent.$isObject = true;
 W.TouchEvent.$isTouchEvent = true;
 W.TouchEvent.$isEvent = true;
 W.TouchEvent.$isObject = true;
 W.KeyboardEvent.$isKeyboardEvent = true;
 W.KeyboardEvent.$isEvent = true;
 W.KeyboardEvent.$isObject = true;
+W.MessageEvent.$isMessageEvent = true;
+W.MessageEvent.$isEvent = true;
+W.MessageEvent.$isObject = true;
+W.CloseEvent.$isEvent = true;
+W.CloseEvent.$isObject = true;
+W.NodeValidator.$isNodeValidator = true;
+W.NodeValidator.$isObject = true;
+W.MouseEvent.$isMouseEvent = true;
+W.MouseEvent.$isEvent = true;
+W.MouseEvent.$isObject = true;
+P.Stream.$isStream = true;
+P.Stream.$isObject = true;
+P.StreamSubscription.$isStreamSubscription = true;
+P.StreamSubscription.$isObject = true;
 W.WheelEvent.$isMouseEvent = true;
 W.WheelEvent.$isEvent = true;
 W.WheelEvent.$isObject = true;
@@ -14902,17 +15163,6 @@ B.GameLoopTimer.$isObject = true;
 B.DigitalButton.$isObject = true;
 G.GameLoopTouch.$isObject = true;
 G.GameLoopTouchPosition.$isObject = true;
-W.MessageEvent.$isMessageEvent = true;
-W.MessageEvent.$isEvent = true;
-W.MessageEvent.$isObject = true;
-P.Stream.$isStream = true;
-P.Stream.$isObject = true;
-P.StreamSubscription.$isStreamSubscription = true;
-P.StreamSubscription.$isObject = true;
-W.CloseEvent.$isEvent = true;
-W.CloseEvent.$isObject = true;
-W.NodeValidator.$isNodeValidator = true;
-W.NodeValidator.$isObject = true;
 H.RawReceivePortImpl.$isObject = true;
 H._IsolateEvent.$isObject = true;
 H._IsolateContext.$isObject = true;
@@ -14926,29 +15176,31 @@ Z.Scound.$isScound = true;
 Z.Scound.$isObject = true;
 P.Map.$isMap = true;
 P.Map.$isObject = true;
-W.DivElement.$isDivElement = true;
-W.DivElement.$isElement = true;
-W.DivElement.$isNode = true;
-W.DivElement.$isEventTarget = true;
-W.DivElement.$isObject = true;
-P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
-P._BufferingStreamSubscription.$is_EventSink = true;
-P._BufferingStreamSubscription.$isStreamSubscription = true;
-P._BufferingStreamSubscription.$isObject = true;
+B.Animation.$isAnimation = true;
+B.Animation.$isObject = true;
+B.TabContent.$isTabContent = true;
+B.TabContent.$isObject = true;
 P._BroadcastSubscription.$is_BroadcastSubscription = true;
 P._BroadcastSubscription.$is_BufferingStreamSubscription = true;
 P._BroadcastSubscription.$is_EventSink = true;
 P._BroadcastSubscription.$isStreamSubscription = true;
 P._BroadcastSubscription.$isObject = true;
+P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
+P._BufferingStreamSubscription.$is_EventSink = true;
+P._BufferingStreamSubscription.$isStreamSubscription = true;
+P._BufferingStreamSubscription.$isObject = true;
+W.DivElement.$isDivElement = true;
+W.DivElement.$isElement = true;
+W.DivElement.$isNode = true;
+W.DivElement.$isEventTarget = true;
+W.DivElement.$isObject = true;
 P.Timer.$isTimer = true;
 P.Timer.$isObject = true;
-B.TabContent.$isTabContent = true;
-B.TabContent.$isObject = true;
-W.EventTarget.$isEventTarget = true;
-W.EventTarget.$isObject = true;
 W._Html5NodeValidator.$is_Html5NodeValidator = true;
 W._Html5NodeValidator.$isNodeValidator = true;
 W._Html5NodeValidator.$isObject = true;
+W.EventTarget.$isEventTarget = true;
+W.EventTarget.$isObject = true;
 P.Future.$isFuture = true;
 P.Future.$isObject = true;
 P.DateTime.$isDateTime = true;
@@ -15143,6 +15395,9 @@ J.forEach$1$ax = function(receiver, a0) {
 J.get$_key$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$_key(receiver);
 };
+J.get$backgroundImage$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$backgroundImage(receiver);
+};
 J.get$bottom$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$bottom(receiver);
 };
@@ -15299,8 +15554,14 @@ J.replaceWith$1$x = function(receiver, a0) {
 J.send$1$x = function(receiver, a0) {
   return J.getInterceptor$x(receiver).send$1(receiver, a0);
 };
+J.set$animation$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$animation(receiver, value);
+};
 J.set$background$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$background(receiver, value);
+};
+J.set$backgroundImage$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$backgroundImage(receiver, value);
 };
 J.set$bottom$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$bottom(receiver, value);
@@ -15976,6 +16237,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__TouchEvent", args: [W.TouchEvent]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
+{func: "dynamic__String_Animation", args: [J.JSString, B.Animation]},
 {func: "void__String", void: true, args: [J.JSString]},
 {func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__Map", args: [[P.Map, J.JSString, J.JSString]]},
