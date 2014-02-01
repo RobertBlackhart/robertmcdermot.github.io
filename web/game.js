@@ -4571,7 +4571,7 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1 = B.Street$("test");
-      return t1.load$1$delaySong(t1, true).then$1(new B.main___closure());
+      return t1.load$0(t1).then$1(new B.main___closure());
     }
   },
   main___closure: {
@@ -4617,7 +4617,9 @@ var $$ = {};
   main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      B.setSong($.currentStreet.songName);
+      var t1 = $.get$ui().currentSong;
+      if (t1 != null)
+        J.play$0$x(t1);
       B.start();
     }
   },
@@ -5449,15 +5451,14 @@ var $$ = {};
     }, "call$1", "get$setCamera", 2, 0, 34]
   },
   Street: {
-    "": "Object;label,songName,_data,belowPlayer,abovePlayer,exits,bounds",
-    load$1$delaySong: function(_, delaySong) {
+    "": "Object;label,_data,belowPlayer,abovePlayer,exits,bounds",
+    load$0: function(_) {
       var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       t1 = J.get$children$x($.get$layers());
       t1.clear$0(t1);
-      t1 = this.songName;
-      if (t1 != null && !delaySong)
-        B.setSong(t1);
+      if (J.$index$asx(this._data, "music") != null)
+        B.setSong(J.$index$asx(this._data, "music"));
       decosToLoad = [];
       for (t1 = J.get$iterator$ax(J.get$values$x(J.$index$asx(J.$index$asx(this._data, "dynamic"), "layers"))); t1.moveNext$0();)
         for (t2 = J.get$iterator$ax(J.$index$asx(t1.get$current(), "decos")); t2.moveNext$0();) {
@@ -5472,9 +5473,6 @@ var $$ = {};
       decos = new E.Batch(assetsToLoad, 0);
       decos.load$1(decos, B.setStreetLoadBar$closure()).then$1(new B.Street_load_closure(this, c));
       return c.future;
-    },
-    load$0: function($receiver) {
-      return this.load$1$delaySong($receiver, false);
     },
     render$0: function() {
       var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, transforms, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
@@ -5531,12 +5529,11 @@ var $$ = {};
       t1 = t1.$index(t1, streetName).get$0();
       this._data = t1;
       this.label = J.$index$asx(t1, "label");
-      this.songName = J.$index$asx(this._data, "music");
       this.bounds = H.setRuntimeTypeInfo(new P.Rectangle(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l"), J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l")) + J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "r")), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"))), [null]);
     },
     $isStreet: true,
     static: {Street$: function(streetName) {
-        var t1 = new B.Street(null, null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
+        var t1 = new B.Street(null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
         t1.Street$1(streetName);
         return t1;
       }}
