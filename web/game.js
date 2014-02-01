@@ -3859,7 +3859,7 @@ var $$ = {};
           H.unwrapException(exception);
         }
 
-        t1.animationStyleString = "jump 1s steps(33,end) infinite";
+        t1.animationStyleString = "jump 1s steps(33)";
       }
       t2 = this.c_1.future;
       if (t2._state !== 0)
