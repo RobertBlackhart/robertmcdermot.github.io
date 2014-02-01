@@ -327,6 +327,16 @@ textarea{resize: none;}
 	z-index: 3;
 }
 
+.ExitsExpanded {
+	
+}
+
+.ExitsCollapsed {
+	height: 1em;
+	overflow: hidden;
+	cursor: pointer;
+}
+
 .ExitLabel {
 	display: block;
 	cursor: pointer;

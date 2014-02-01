@@ -3834,7 +3834,7 @@ var $$ = {};
           H.unwrapException(exception);
         }
 
-        t1.animationStyleString = "idle 1s 10s steps(29), idle2 1s 11s steps(28)";
+        t1.animationStyleString = "idle 1s 5s steps(29), idle2 1s 10s steps(28)";
       }
       if (t2 === "jump") {
         if (typeof width !== "number")
@@ -3859,7 +3859,7 @@ var $$ = {};
           H.unwrapException(exception);
         }
 
-        t1.animationStyleString = "jump 1s steps(33) infinite";
+        t1.animationStyleString = "jump 1s steps(33,end) infinite";
       }
       t2 = this.c_1.future;
       if (t2._state !== 0)
@@ -4663,7 +4663,7 @@ var $$ = {};
       $.playerInput = this;
     },
     clickOrTouch$2: function(mouseEvent, touchEvent) {
-      var target, t1, mute, chatMenu, loadingScreen, loadStreet, channelName, input, drawer, t2;
+      var target, t1, t2, mute, chatMenu, loadingScreen, loadStreet, channelName, input, drawer;
       if (mouseEvent != null) {
         if (this.touched)
           return;
@@ -4689,8 +4689,8 @@ var $$ = {};
         document.documentElement.webkitRequestFullscreen();
       if (J.contains$1$asx(target.className, "FullscreenResetGlyph"))
         document.webkitExitFullscreen();
-      t1 = target.parentElement.id;
-      if (t1 === "AudioGlyph" || t1 === "MobileAudioGlyph") {
+      t2 = target.parentElement.id;
+      if (t2 === "AudioGlyph" || t2 === "MobileAudioGlyph") {
         mute = $.get$localStorage().getItem("isMuted") === "0" ? "1" : "0";
         $.get$ui()._setMute$1(mute);
       }
@@ -4715,6 +4715,24 @@ var $$ = {};
         loadStreet = document.createElement("script", null);
         J.set$src$x(loadStreet, target.getAttribute("url"));
         document.body.appendChild(loadStreet);
+      }
+      if (target.id === "Exits") {
+        t2 = t1.get$classes(target).readClasses$0();
+        if (t2.contains$1(t2, "ExitsExpanded")) {
+          t2 = t1.get$classes(target);
+          t2.clear$0(t2);
+          t2 = t1.get$classes(target);
+          t2.add$1(t2, "ExitsCollapsed");
+          t1 = t1.get$classes(target);
+          t1.add$1(t1, "icon-expand-alt");
+        } else {
+          t2 = t1.get$classes(target);
+          t2.clear$0(t2);
+          t2 = t1.get$classes(target);
+          t2.add$1(t2, "ExitsExpanded");
+          t1 = t1.get$classes(target);
+          t1.add$1(t1, "icon-collapse-alt");
+        }
       }
       if (target.className === "ChannelName") {
         t1 = target.id;
@@ -5451,7 +5469,7 @@ var $$ = {};
     }, "call$1", "get$setCamera", 2, 0, 34]
   },
   Street: {
-    "": "Object;label,_data,belowPlayer,abovePlayer,exits,bounds",
+    "": "Object;label,_data,exits,bounds",
     load$0: function(_) {
       var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
@@ -5533,7 +5551,7 @@ var $$ = {};
     },
     $isStreet: true,
     static: {Street$: function(streetName) {
-        var t1 = new B.Street(null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
+        var t1 = new B.Street(null, null, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
         t1.Street$1(streetName);
         return t1;
       }}
@@ -5541,7 +5559,7 @@ var $$ = {};
   Street_load_closure: {
     "": "Closure:3;this_0,c_1",
     call$1: function(_) {
-      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, filters, t4, t5, deco, x, y, w, h, z, t6, d, transform, exitsElement;
+      var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, filters, t4, t5, deco, x, y, w, h, z, t6, d, transform;
       t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = document.createElement("div", null);
@@ -5614,10 +5632,8 @@ var $$ = {};
           J.forEach$1$ax(H.listTypeCast(J.$index$asx(t2.get$current(), "connects")), new B.Street_load__closure0(t1));
         $.get$layers().appendChild(decoCanvas);
       }
-      exitsElement = document.querySelector("#Exits");
-      exitsElement.textContent = "Exits";
       t2 = t1.exits;
-      t2.forEach$1(t2, new B.Street_load__closure1(exitsElement));
+      t2.forEach$1(t2, new B.Street_load__closure1(document.querySelector("#Exits")));
       $.get$camera().dirty = true;
       t2 = this.c_1.future;
       if (t2._state !== 0)
@@ -5797,20 +5813,21 @@ var $$ = {};
         else
           t1.currentAnimation = t3.$index(t3, "stillframe");
       }
-      if (!J.contains$1$asx(J.get$backgroundImage$x(t1.avatar.style), J.get$backgroundImage$x(t1.currentAnimation)))
+      if (!J.contains$1$asx(J.get$backgroundImage$x(t1.avatar.style), J.get$backgroundImage$x(t1.currentAnimation))) {
         J.set$backgroundImage$x(t1.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(t1.currentAnimation)) + ")");
-      J.set$width$x(t1.avatar.style, J.toString$0(J.get$width$x(t1.currentAnimation)) + "px");
-      J.set$height$x(t1.avatar.style, J.toString$0(J.get$height$x(t1.currentAnimation)) + "px");
-      J.set$animation$x(t1.avatar.style, t1.currentAnimation.get$animationStyleString());
-      t2 = J.$add$ns(J.get$height$x(t1.currentAnimation), 50);
-      t1.canvasHeight = t2;
+        J.set$width$x(t1.avatar.style, J.toString$0(J.get$width$x(t1.currentAnimation)) + "px");
+        J.set$height$x(t1.avatar.style, J.toString$0(J.get$height$x(t1.currentAnimation)) + "px");
+        J.set$animation$x(t1.avatar.style, t1.currentAnimation.get$animationStyleString());
+        t1.canvasHeight = J.$add$ns(J.get$height$x(t1.currentAnimation), 50);
+      }
       translateX = t1.posX;
-      t3 = $.get$ui();
-      t4 = t3.gameScreenHeight;
+      t2 = $.get$ui();
+      t3 = t2.gameScreenHeight;
+      t4 = t1.canvasHeight;
+      if (typeof t3 !== "number")
+        return t3.$sub();
       if (typeof t4 !== "number")
-        return t4.$sub();
-      if (typeof t2 !== "number")
-        return H.iae(t2);
+        return H.iae(t4);
       t5 = $.get$camera();
       t5._y;
       t6 = $.currentStreet.bounds;
@@ -5818,30 +5835,30 @@ var $$ = {};
       t8 = t1.width;
       if (typeof t7 !== "number")
         return t7.$sub();
-      t3 = t3.gameScreenWidth;
-      if (typeof t3 !== "number")
-        return t3.$div();
-      if (translateX > t7 - t8 / 2 - t3 / 2) {
-        camX = t7 - t3;
-        translateX = translateX - t7 + t3;
-      } else if (translateX + t8 / 2 > t3 / 2) {
-        camX = translateX + t8 / 2 - t3 / 2;
-        translateX = t3 / 2 - t8 / 2;
+      t2 = t2.gameScreenWidth;
+      if (typeof t2 !== "number")
+        return t2.$div();
+      if (translateX > t7 - t8 / 2 - t2 / 2) {
+        camX = t7 - t2;
+        translateX = translateX - t7 + t2;
+      } else if (translateX + t8 / 2 > t2 / 2) {
+        camX = translateX + t8 / 2 - t2 / 2;
+        translateX = t2 / 2 - t8 / 2;
       } else
         camX = 0;
       translateY = t1.posY;
-      if (translateY + t2 / 2 < t4 / 2)
+      if (translateY + t4 / 2 < t3 / 2)
         camY = 0;
       else {
-        t3 = t6.height;
-        if (typeof t3 !== "number")
-          return t3.$sub();
-        if (translateY < t3 - t2 / 2 - t4 / 2) {
-          camY = t3 - (t3 - translateY - t2 / 2 + t4 / 2);
-          translateY = t4 / 2 - t2 / 2;
+        t2 = t6.height;
+        if (typeof t2 !== "number")
+          return t2.$sub();
+        if (translateY < t2 - t4 / 2 - t3 / 2) {
+          camY = t2 - (t2 - translateY - t4 / 2 + t3 / 2);
+          translateY = t3 / 2 - t4 / 2;
         } else {
-          camY = t3 - t4;
-          translateY = t4 - (t3 - translateY);
+          camY = t2 - t3;
+          translateY = t3 - (t2 - translateY);
         }
       }
       t5.setCamera$1(C.JSNumber_methods.toString$0(camX) + "," + C.JSNumber_methods.toString$0(camY));
@@ -10528,10 +10545,6 @@ var $$ = {};
       return new Audio(src);
     return new Audio();
   },
-  CanvasElement_CanvasElement: function(height, width) {
-    var e = document.createElement("canvas", null);
-    return e;
-  },
   Element_Element$html: function(html, treeSanitizer, validator) {
     var fragment, t1;
     fragment = J.createFragment$3$treeSanitizer$validator$x(document.body, html, treeSanitizer, validator);
@@ -14096,6 +14109,9 @@ var $$ = {};
       var t1 = this.readClasses$0();
       return t1.elementAt$1(t1, index);
     },
+    clear$0: function(_) {
+      this.modify$1(new P.CssClassSetImpl_clear_closure());
+    },
     modify$1: function(f) {
       var s, ret;
       s = this.readClasses$0();
@@ -14109,6 +14125,21 @@ var $$ = {};
     "": "Closure:3;value_0",
     call$1: function(s) {
       return s.add$1(s, this.value_0);
+    }
+  },
+  CssClassSetImpl_clear_closure: {
+    "": "Closure:3;",
+    call$1: function(s) {
+      if (s._collection$_length > 0) {
+        s._last = null;
+        s._first = null;
+        s._rest = null;
+        s._nums = null;
+        s._strings = null;
+        s._collection$_length = 0;
+        s._modifications = s._modifications + 1 & 67108863;
+      }
+      return;
     }
   },
   FilteredElementList: {
@@ -16229,7 +16260,8 @@ Isolate.$lazy($, "localStorage", "localStorage", "get$localStorage", function() 
   return window.localStorage;
 });
 Isolate.$lazy($, "gameCanvas", "gameCanvas", "get$gameCanvas", function() {
-  return W.CanvasElement_CanvasElement(null, null);
+  var e = document.createElement("canvas", null);
+  return e;
 });
 Isolate.$lazy($, "game", "game", "get$game", function() {
   var t1, t2;
