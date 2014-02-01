@@ -3595,10 +3595,9 @@ var $$ = {};
   }, "call$0", "main$closure", 0, 0, 5],
   start: function() {
     var loadingScreen, t1, t2, t3;
-    B.setSong($.currentStreet.songName).then$1(new B.start_closure());
     loadingScreen = document.querySelector("#LoadingScreen");
     J.set$opacity$x(loadingScreen.style, "0.0");
-    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure0(loadingScreen));
+    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure(loadingScreen));
     $.get$ui().init$0();
     B.updateConsole("System: Initializing..");
     t1 = new B.Input(null, null, null, null, null, false, false);
@@ -4607,16 +4606,17 @@ var $$ = {};
   main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      return B.start();
+      B.setSong($.currentStreet.songName).then$1(new B.main______closure());
+      B.start();
     }
   },
-  start_closure: {
+  main______closure: {
     "": "Closure:3;",
     call$1: function(_) {
       return J.pause$0$x($.get$ui().currentSong);
     }
   },
-  start_closure0: {
+  start_closure: {
     "": "Closure:5;loadingScreen_0",
     call$0: function() {
       var t1, doneLoading;
