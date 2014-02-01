@@ -3582,21 +3582,10 @@ var $$ = {};
     B.load_audio().then$1(new B.main_closure());
   }, "call$0", "main$closure", 0, 0, 4],
   start: function() {
-    var t1, doneLoading, t2, t3;
-    J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
-    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure());
-    if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
-      t1 = $.get$ASSET();
-      if (t1.$index(t1, "game_loaded") != null) {
-        t1 = $.get$ASSET();
-        doneLoading = t1.$index(t1, "game_loaded").get$0();
-        t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
-        if (typeof t1 !== "number")
-          return t1.$div();
-        J.set$volume$x(doneLoading, t1 / 100);
-        doneLoading.play();
-      }
-    }
+    var loadingScreen, t1, t2, t3;
+    loadingScreen = document.querySelector("#LoadingScreen");
+    J.set$opacity$x(loadingScreen.style, "0.0");
+    P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure(loadingScreen));
     $.get$ui().init$0();
     B.updateConsole("System: Initializing..");
     t1 = new B.Input(null, null, null, null, null, false, false);
@@ -4115,7 +4104,7 @@ var $$ = {};
       C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B.TabContent_setupWebSocket_closure1(this, chatHistory, channelName));
     },
     _addmessage$1: function(map) {
-      var t1, validator, mentionSound, userElement, text, chatString, t2, newValue, t3, newValue0, oldUsername, newUsername, rowSpacer, t4, t5, chatLine, chatRow, conversation;
+      var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, newValue, t3, newValue0, rowSpacer, t4, t5, chatLine, chatRow, conversation;
       t1 = H.setRuntimeTypeInfo([], [W.NodeValidator]);
       validator = new W.NodeValidatorBuilder(t1);
       t1.push(W._Html5NodeValidator$(null));
@@ -4163,14 +4152,6 @@ var $$ = {};
         t2.add$1(t2, text);
       }
       if (J.$eq(t1.$index(map, "statusMessage"), "changeName")) {
-        $.CurrentPlayer.playerName.textContent = t1.$index(map, "newUsername");
-        newValue = t1.$index(map, "newUsername");
-        t2 = $.get$ui();
-        t2.toString;
-        t3 = J.getInterceptor$asx(newValue);
-        newValue0 = J.$ge$n(t3.get$length(newValue), 17) ? t3.substring$2(newValue, 0, 15) + "..." : newValue;
-        t2.nameMeter.textContent = newValue0;
-        B.updateConsole("Setting name to \"" + H.S(newValue) + "\"");
         J.set$paddingRight$x(text.style, "4px");
         t2 = J.getInterceptor$x(chatString);
         if (J.$eq(t1.$index(map, "success"), "true")) {
@@ -4188,6 +4169,14 @@ var $$ = {};
           if (J.$eq(t1.$index(map, "username"), $.get$chat().username)) {
             $.get$chat().username = t1.$index(map, "newUsername");
             $.get$localStorage().setItem("username", $.get$chat().username);
+            $.CurrentPlayer.playerName.textContent = t1.$index(map, "newUsername");
+            newValue = t1.$index(map, "newUsername");
+            t2 = $.get$ui();
+            t2.toString;
+            t3 = J.getInterceptor$asx(newValue);
+            newValue0 = J.$ge$n(t3.get$length(newValue), 17) ? t3.substring$2(newValue, 0, 15) + "..." : newValue;
+            t2.nameMeter.textContent = newValue0;
+            B.updateConsole("Setting name to \"" + H.S(newValue) + "\"");
           }
           J.remove$1$ax(this.connectedUsers, t1.$index(map, "username"));
           J.add$1$ax(this.connectedUsers, t1.$index(map, "newUsername"));
@@ -4554,7 +4543,7 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1 = B.Street$("test");
-      return t1.load$0(t1).then$1(new B.main___closure());
+      return t1.load$1$delaySong(t1, true).then$1(new B.main___closure());
     }
   },
   main___closure: {
@@ -4600,16 +4589,33 @@ var $$ = {};
   main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1 = $.get$ui().currentSong;
-      if (t1 != null)
-        J.play$0$x(t1);
-      B.start();
+      return B.start();
     }
   },
   start_closure: {
+    "": "Closure:4;loadingScreen_0",
+    call$0: function() {
+      var t1, doneLoading;
+      J.remove$0$ax(this.loadingScreen_0);
+      if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+        t1 = $.get$ASSET();
+        if (t1.$index(t1, "game_loaded") != null) {
+          t1 = $.get$ASSET();
+          doneLoading = t1.$index(t1, "game_loaded").get$0();
+          t1 = H.Primitives_parseInt($.get$prevVolume(), null, null);
+          if (typeof t1 !== "number")
+            return t1.$div();
+          J.set$volume$x(doneLoading, t1 / 100);
+          doneLoading.play();
+        }
+      }
+      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 2), new B.start__closure());
+    }
+  },
+  start__closure: {
     "": "Closure:4;",
     call$0: function() {
-      J.remove$0$ax(document.querySelector("#LoadingScreen"));
+      B.setSong($.currentStreet.songName);
     }
   },
   Input: {
@@ -5434,14 +5440,15 @@ var $$ = {};
     }, "call$1", "get$setCamera", 2, 0, 33]
   },
   Street: {
-    "": "Object;label,_data,belowPlayer,abovePlayer,exits,bounds",
-    load$0: function(_) {
+    "": "Object;label,songName,_data,belowPlayer,abovePlayer,exits,bounds",
+    load$1$delaySong: function(_, delaySong) {
       var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       t1 = J.get$children$x($.get$layers());
       t1.clear$0(t1);
-      if (J.$index$asx(this._data, "music") != null)
-        B.setSong(J.$index$asx(this._data, "music"));
+      t1 = this.songName;
+      if (t1 != null && !delaySong)
+        B.setSong(t1);
       decosToLoad = [];
       for (t1 = J.get$iterator$ax(J.get$values$x(J.$index$asx(J.$index$asx(this._data, "dynamic"), "layers"))); t1.moveNext$0();)
         for (t2 = J.get$iterator$ax(J.$index$asx(t1.get$current(), "decos")); t2.moveNext$0();) {
@@ -5456,6 +5463,9 @@ var $$ = {};
       decos = new E.Batch(assetsToLoad, 0);
       decos.load$1(decos, B.setStreetLoadBar$closure()).then$1(new B.Street_load_closure(this, c));
       return c.future;
+    },
+    load$0: function($receiver) {
+      return this.load$1$delaySong($receiver, false);
     },
     render$0: function() {
       var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, transforms, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
@@ -5512,11 +5522,12 @@ var $$ = {};
       t1 = t1.$index(t1, streetName).get$0();
       this._data = t1;
       this.label = J.$index$asx(t1, "label");
+      this.songName = J.$index$asx(this._data, "music");
       this.bounds = H.setRuntimeTypeInfo(new P.Rectangle(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l"), J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l")) + J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "r")), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"))), [null]);
     },
     $isStreet: true,
     static: {Street$: function(streetName) {
-        var t1 = new B.Street(null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
+        var t1 = new B.Street(null, null, null, W.CanvasElement_CanvasElement(null, null), W.CanvasElement_CanvasElement(null, null), P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
         t1.Street$1(streetName);
         return t1;
       }}
