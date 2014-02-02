@@ -4277,10 +4277,13 @@ var $$ = {};
       return t1[t2];
     },
     TabContent$2: function(channelName, useSpanForTitle) {
-      var t1, t2, conversationStack, conversation, channelList, channel;
+      var t1, t2, input, conversationStack, conversation, channelList, channel;
       t1 = $.get$chat().tabContentMap;
       t2 = this.channelName;
       t1.$indexSet(t1, t2, this);
+      input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
+      t1 = $.get$chat().tabContentMap;
+      t1.$index(t1, t2).processInput$1(input);
       conversationStack = document.querySelector("#ConversationStack");
       conversation = document.createElement("div", null);
       conversation.className = "Conversation";
@@ -4609,9 +4612,8 @@ var $$ = {};
   main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1 = $.get$ui().currentSong;
-      if (t1 != null)
-        J.play$0$x(t1);
+      if ($.get$ui().currentSong != null && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0")
+        J.play$0$x($.get$ui().currentSong);
       B.start();
     }
   },
@@ -4760,8 +4762,6 @@ var $$ = {};
       if (target.id === "SendButton") {
         channelName = document.querySelector("#ChatChannelTitle").textContent;
         input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
-        t1 = $.get$chat().tabContentMap;
-        t1.$index(t1, channelName).processInput$1(input);
         if (J.trim$0$s(J.get$value$x(input)).length === 0)
           return;
         t1 = $.get$chat().tabContentMap;
