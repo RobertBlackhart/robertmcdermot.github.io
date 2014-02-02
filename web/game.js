@@ -4277,13 +4277,10 @@ var $$ = {};
       return t1[t2];
     },
     TabContent$2: function(channelName, useSpanForTitle) {
-      var t1, t2, input, conversationStack, conversation, channelList, channel;
+      var t1, t2, conversationStack, conversation, channelList, channel;
       t1 = $.get$chat().tabContentMap;
       t2 = this.channelName;
       t1.$indexSet(t1, t2, this);
-      input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
-      t1 = $.get$chat().tabContentMap;
-      t1.$index(t1, t2).processInput$1(input);
       conversationStack = document.querySelector("#ConversationStack");
       conversation = document.createElement("div", null);
       conversation.className = "Conversation";
@@ -4612,8 +4609,9 @@ var $$ = {};
   main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      if ($.get$ui().currentSong != null && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0")
-        J.play$0$x($.get$ui().currentSong);
+      var t1 = $.currentStreet.song;
+      if (t1 != null)
+        B.setSong(t1);
       B.start();
     }
   },
@@ -4735,6 +4733,9 @@ var $$ = {};
         document.querySelector("#ChatChannelTitle").textContent = channelName;
         t1 = $.get$chat().tabContentMap;
         t1.$index(t1, channelName).resetMessages$1(mouseEvent);
+        input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
+        t1 = $.get$chat().tabContentMap;
+        t1.$index(t1, channelName).processInput$1(input);
         document.querySelector("#ChatScreen").hidden = false;
         document.querySelector("#ChannelSelectorScreen").hidden = true;
         t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
@@ -5461,14 +5462,16 @@ var $$ = {};
     }, "call$1", "get$setCamera", 2, 0, 34]
   },
   Street: {
-    "": "Object;label,_data,exits,bounds",
+    "": "Object;label,song,_data,exits,bounds",
     load$0: function(_) {
       var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       t1 = J.get$children$x($.get$layers());
       t1.clear$0(t1);
-      if (J.$index$asx(this._data, "music") != null)
+      if (J.$index$asx(this._data, "music") != null) {
+        this.song = J.$index$asx(this._data, "music");
         B.setSong(J.$index$asx(this._data, "music"));
+      }
       decosToLoad = [];
       for (t1 = J.get$iterator$ax(J.get$values$x(J.$index$asx(J.$index$asx(this._data, "dynamic"), "layers"))); t1.moveNext$0();)
         for (t2 = J.get$iterator$ax(J.$index$asx(t1.get$current(), "decos")); t2.moveNext$0();) {
@@ -5543,7 +5546,7 @@ var $$ = {};
     },
     $isStreet: true,
     static: {Street$: function(streetName) {
-        var t1 = new B.Street(null, null, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
+        var t1 = new B.Street(null, null, null, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
         t1.Street$1(streetName);
         return t1;
       }}
