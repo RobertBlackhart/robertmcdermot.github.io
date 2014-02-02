@@ -4019,8 +4019,12 @@ var $$ = {};
       t1 = {};
       this.unreadMessages = 0;
       t2 = this.channelName;
-      selector = "#label-" + H.stringReplaceAllUnchecked(t2, " ", "_");
+      selector = "#channelName-" + H.stringReplaceAllUnchecked(t2, " ", "_");
       document.querySelector(selector).textContent = t2;
+      if (t2 !== "Local Chat") {
+        selector = "#label-" + H.stringReplaceAllUnchecked(t2, " ", "_");
+        document.querySelector(selector).textContent = t2;
+      }
       t1.totalUnread_0 = 0;
       t2 = $.get$chat().tabContentMap;
       t2 = t2.get$values(t2);
@@ -4609,9 +4613,8 @@ var $$ = {};
   main_____closure: {
     "": "Closure:3;",
     call$1: function(_) {
-      var t1 = $.currentStreet.song;
-      if (t1 != null)
-        B.setSong(t1);
+      if ($.get$ui().currentSong != null && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0")
+        J.play$0$x($.get$ui().currentSong);
       B.start();
     }
   },
@@ -5462,16 +5465,14 @@ var $$ = {};
     }, "call$1", "get$setCamera", 2, 0, 34]
   },
   Street: {
-    "": "Object;label,song,_data,exits,bounds",
+    "": "Object;label,_data,exits,bounds",
     load$0: function(_) {
       var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       t1 = J.get$children$x($.get$layers());
       t1.clear$0(t1);
-      if (J.$index$asx(this._data, "music") != null) {
-        this.song = J.$index$asx(this._data, "music");
+      if (J.$index$asx(this._data, "music") != null)
         B.setSong(J.$index$asx(this._data, "music"));
-      }
       decosToLoad = [];
       for (t1 = J.get$iterator$ax(J.get$values$x(J.$index$asx(J.$index$asx(this._data, "dynamic"), "layers"))); t1.moveNext$0();)
         for (t2 = J.get$iterator$ax(J.$index$asx(t1.get$current(), "decos")); t2.moveNext$0();) {
@@ -5546,7 +5547,7 @@ var $$ = {};
     },
     $isStreet: true,
     static: {Street$: function(streetName) {
-        var t1 = new B.Street(null, null, null, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
+        var t1 = new B.Street(null, null, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
         t1.Street$1(streetName);
         return t1;
       }}
