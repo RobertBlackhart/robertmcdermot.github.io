@@ -4019,7 +4019,7 @@ var $$ = {};
       t1 = {};
       this.unreadMessages = 0;
       t2 = this.channelName;
-      selector = "#channelName-" + H.stringReplaceAllUnchecked(t2, " ", "_");
+      selector = "#label-" + H.stringReplaceAllUnchecked(t2, " ", "_");
       document.querySelector(selector).textContent = t2;
       t1.totalUnread_0 = 0;
       t2 = $.get$chat().tabContentMap;
@@ -4399,7 +4399,7 @@ var $$ = {};
   TabContent_setupWebSocket_closure0: {
     "": "Closure:28;this_3,channelName_4",
     call$1: function(messageEvent) {
-      var t1, map, t2, t3, t4, t5, selector;
+      var t1, map, t2, t3, prevUnread, t4, t5, selector;
       t1 = {};
       map = C.C_JsonCodec.decode$1(J.get$data$x(messageEvent));
       t2 = J.getInterceptor$asx(map);
@@ -4417,43 +4417,51 @@ var $$ = {};
         if ($.get$chat()._showJoinMessages !== true)
           return;
       }
+      t3 = this.this_3;
+      prevUnread = t3.unreadMessages;
+      if (t2.$index(map, "statusMessage") == null)
+        t4 = (J.$eq(t2.$index(map, "message"), " left.") || J.$eq(t2.$index(map, "message"), " joined.")) && $.get$chat()._showJoinMessages === true;
+      else
+        t4 = false;
+      if (t4)
+        t3.unreadMessages = t3.unreadMessages + 1;
+      else if (t2.$index(map, "statusMessage") == null && !J.$eq(t2.$index(map, "message"), " left.") && !J.$eq(t2.$index(map, "message"), " joined."))
+        t3.unreadMessages = t3.unreadMessages + 1;
       if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
-        t3 = this.channelName_4;
-        t4 = "#conversation-" + H.stringReplaceAllUnchecked(t3, " ", "_");
-        if (J.get$zIndex$x(document.querySelector(t4).style) !== "1") {
-          t4 = this.this_3;
-          t4.unreadMessages = t4.unreadMessages + 1;
-          t5 = "#channelName-" + H.stringReplaceAllUnchecked(t3, " ", "_");
-          J.set$innerHtml$x(document.querySelector(t5), t3 + " " + "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t4.unreadMessages) + "</span>");
-        }
+        t4 = this.channelName_4;
+        t5 = "#conversation-" + H.stringReplaceAllUnchecked(t4, " ", "_");
+        if (J.get$zIndex$x(document.querySelector(t5).style) !== "1")
+          if (prevUnread !== t3.unreadMessages) {
+            t5 = "#channelName-" + H.stringReplaceAllUnchecked(t4, " ", "_");
+            J.set$innerHtml$x(document.querySelector(t5), t4 + " " + "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t3.unreadMessages) + "</span>");
+          }
         t1.totalUnread_0 = 0;
-        t3 = $.get$chat().tabContentMap;
-        t3 = t3.get$values(t3);
-        t3.forEach$1(t3, new B.TabContent_setupWebSocket__closure0(t1));
+        t4 = $.get$chat().tabContentMap;
+        t4 = t4.get$values(t4);
+        t4.forEach$1(t4, new B.TabContent_setupWebSocket__closure0(t1));
         document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
       }
       if (J.$eq(t2.$index(map, "channel"), "all"))
-        this.this_3._addmessage$1(map);
+        t3._addmessage$1(map);
       else if (J.$eq(t2.$index(map, "channel"), "Local Chat") && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
         if (t2.$index(map, "statusMessage") != null)
-          this.this_3._addmessage$1(map);
+          t3._addmessage$1(map);
         else if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "street"), $.currentStreet.label))
-          this.this_3._addmessage$1(map);
+          t3._addmessage$1(map);
       } else {
         t1 = this.channelName_4;
         if (J.$eq(t2.$index(map, "channel"), t1))
           if (t2.$index(map, "statusMessage") == null) {
             selector = "#tab-" + H.stringReplaceAllUnchecked(t1, " ", "_");
-            if (J.get$checked$x(H.interceptedTypeCast(document.querySelector(selector), "$isRadioButtonInputElement")) !== true) {
-              t3 = this.this_3;
-              t3.unreadMessages = t3.unreadMessages + 1;
-              selector = "#label-" + H.stringReplaceAllUnchecked(t1, " ", "_");
-              J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t3.unreadMessages) + "</span>" + " " + t1);
-            }
+            if (J.get$checked$x(H.interceptedTypeCast(document.querySelector(selector), "$isRadioButtonInputElement")) !== true)
+              if (prevUnread !== t3.unreadMessages) {
+                selector = "#label-" + H.stringReplaceAllUnchecked(t1, " ", "_");
+                J.set$innerHtml$x(document.querySelector(selector), "<span class=\"Counter\">" + C.JSInt_methods.toString$0(t3.unreadMessages) + "</span>" + " " + t1);
+              }
             if (!J.$eq(t2.$index(map, "username"), $.get$chat().username))
-              this.this_3._addmessage$1(map);
+              t3._addmessage$1(map);
           } else
-            this.this_3._addmessage$1(map);
+            t3._addmessage$1(map);
       }
     }
   },
@@ -5503,7 +5511,7 @@ var $$ = {};
           return t1.$div();
         currentPercentY = t1 / (t3 - t5);
         transforms = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
-        for (t1 = W._FrozenElementList$_wrap($.get$layers().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
+        for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
           canvas = t1._current;
           t2 = J.getInterceptor$x(canvas);
           t3 = J.get$width$x(t2.get$style(canvas));
