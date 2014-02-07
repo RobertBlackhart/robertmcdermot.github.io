@@ -1272,7 +1272,7 @@ textarea{resize: none;}
   -o-transform: scale(2);
 }
 
-@media (max-device-width: 1280px) and (orientation: landscape) /* mobile device in landscape */
+@media (max-device-width: 1279px) and (orientation: landscape) /* mobile device in landscape */
 {
 	#PlayerPortraitDiv {
 		top: 3px;
@@ -1550,7 +1550,7 @@ textarea{resize: none;}
 	display: none;
 }
 
-@media (min-device-width: 1308px) and (min-device-height: 325px) /* desktop device*/
+@media (min-device-width: 1280px) and (min-device-height: 325px) /* desktop device*/
 {
 	#InventoryDrawer {
 		display: none;

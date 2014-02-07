@@ -1817,8 +1817,7 @@ var $$ = {};
   }, "call$1", "Primitives__throwFormatException$closure", 2, 0, 0],
   Primitives_parseInt: function(source, radix, handleError) {
     var match, t1;
-    if (handleError == null)
-      handleError = H.Primitives__throwFormatException$closure();
+    handleError = H.Primitives__throwFormatException$closure();
     if (typeof source !== "string")
       H.throwExpression(new P.ArgumentError(source));
     match = /^\s*[+-]?((0x[a-f0-9]+)|(\d+)|([a-z0-9]+))\s*$/i.exec(source);
@@ -1837,19 +1836,6 @@ var $$ = {};
     if (match == null)
       return handleError.call$1(source);
     return parseInt(source, 10);
-  },
-  Primitives_parseDouble: function(source, handleError) {
-    var result, trimmed;
-    if (!/^\s*[+-]?(?:Infinity|NaN|(?:\.\d+|\d+(?:\.\d*)?)(?:[eE][+-]?\d+)?)\s*$/.test(source))
-      return handleError.call$1(source);
-    result = parseFloat(source);
-    if (isNaN(result)) {
-      trimmed = C.JSString_methods.trim$0(source);
-      if (trimmed === "NaN" || trimmed === "+NaN" || trimmed === "-NaN")
-        return result;
-      return handleError.call$1(source);
-    }
-    return result;
   },
   Primitives_objectTypeName: function(object) {
     var $name, decompiled;
@@ -4115,7 +4101,7 @@ var $$ = {};
       C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B.TabContent_setupWebSocket_closure1(this, chatHistory, channelName));
     },
     _addmessage$1: function(map) {
-      var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, newValue, t3, newValue0, rowSpacer, t4, t5, chatLine, chatRow, conversation;
+      var t1, validator, mentionSound, userElement, text, chatString, t2, oldUsername, newUsername, newValue, t3, newValue0, rowSpacer, t4, atTheBottom, chatLine, chatRow, conversation;
       t1 = H.setRuntimeTypeInfo([], [W.NodeValidator]);
       validator = new W.NodeValidatorBuilder(t1);
       t1.push(W._Html5NodeValidator$(null));
@@ -4210,18 +4196,21 @@ var $$ = {};
       rowSpacer.className = "RowSpacer";
       J.set$paddingRight$x(chatString.style, "2px");
       t2 = this.chatHistory;
-      t3 = t2.scrollTop;
-      t4 = t2.scrollHeight;
-      t5 = t2.offsetHeight;
+      t3 = t2.scrollHeight;
+      t4 = t2.offsetHeight;
+      if (typeof t3 !== "number")
+        return t3.$sub();
       if (typeof t4 !== "number")
-        return t4.$sub();
-      if (typeof t5 !== "number")
-        return H.iae(t5);
-      t2 = J.get$children$x(t2);
+        return H.iae(t4);
+      t2 = t2.scrollTop;
+      if (typeof t2 !== "number")
+        return H.iae(t2);
+      atTheBottom = Math.abs(t3 - t4 - t2) < 5 && true;
+      t2 = J.get$children$x(this.chatHistory);
       t2.add$1(t2, chatString);
       t2 = J.get$children$x(this.chatHistory);
       t2.add$1(t2, rowSpacer);
-      if (t3 === t4 - t5 || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username)) {
+      if (atTheBottom || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username)) {
         t2 = this.chatHistory;
         t2.scrollTop = t2.scrollHeight;
       }
@@ -4242,16 +4231,19 @@ var $$ = {};
       t2.add$1(t2, chatLine);
       t2 = "#conversation-" + H.stringReplaceAllUnchecked(this.channelName, " ", "_");
       conversation = document.querySelector(t2);
-      t2 = conversation.scrollTop;
-      t3 = conversation.scrollHeight;
-      t4 = conversation.offsetHeight;
+      t2 = conversation.scrollHeight;
+      t3 = conversation.offsetHeight;
+      if (typeof t2 !== "number")
+        return t2.$sub();
       if (typeof t3 !== "number")
-        return t3.$sub();
+        return H.iae(t3);
+      t4 = conversation.scrollTop;
       if (typeof t4 !== "number")
         return H.iae(t4);
-      t5 = J.get$children$x(conversation);
-      t5.add$1(t5, chatRow);
-      if (t2 === t3 - t4 || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username))
+      atTheBottom = Math.abs(t2 - t3 - t4) < 5 && true;
+      t2 = J.get$children$x(conversation);
+      t2.add$1(t2, chatRow);
+      if (atTheBottom || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username))
         conversation.scrollTop = conversation.scrollHeight;
     },
     _parseForUrls$1: function(message) {
@@ -4424,12 +4416,6 @@ var $$ = {};
       t3 = this.this_3;
       prevUnread = t3.unreadMessages;
       if (t2.$index(map, "statusMessage") == null)
-        t4 = (J.$eq(t2.$index(map, "message"), " left.") || J.$eq(t2.$index(map, "message"), " joined.")) && $.get$chat()._showJoinMessages === true;
-      else
-        t4 = false;
-      if (t4)
-        t3.unreadMessages = t3.unreadMessages + 1;
-      else if (t2.$index(map, "statusMessage") == null && !J.$eq(t2.$index(map, "message"), " left.") && !J.$eq(t2.$index(map, "message"), " joined."))
         t3.unreadMessages = t3.unreadMessages + 1;
       if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
         t4 = this.channelName_4;
@@ -5443,23 +5429,24 @@ var $$ = {};
   Camera: {
     "": "Object;_x,_y,zoom,dirty",
     setCamera$1: [function(xy) {
-      var newX, newY, t1, exception;
+      var newX, newY, error, t1, exception;
       try {
         t1 = J.split$1$s(xy, ",");
         if (0 >= t1.length)
           return H.ioore(t1, 0);
-        newX = P.num_parse(t1[0], null);
+        newX = H.Primitives_parseInt(t1[0], null, null);
         t1 = J.split$1$s(xy, ",");
         if (1 >= t1.length)
           return H.ioore(t1, 1);
-        newY = P.num_parse(t1[1], null);
+        newY = H.Primitives_parseInt(t1[1], null, null);
         if (!J.$eq(newX, this._x) || !J.$eq(newY, this._y))
           this.dirty = true;
         this._x = newX;
         this._y = newY;
       } catch (exception) {
-        H.unwrapException(exception);
-        B.updateConsole("error: format must be camera [num],[num]");
+        t1 = H.unwrapException(exception);
+        error = t1;
+        B.updateConsole("error: format must be camera [num],[num]: " + H.S(error));
       }
 
     }, "call$1", "get$setCamera", 2, 0, 34]
@@ -5520,10 +5507,10 @@ var $$ = {};
           t2 = J.getInterceptor$x(canvas);
           t3 = J.get$width$x(t2.get$style(canvas));
           t3.toString;
-          canvasWidth = P.num_parse(H.stringReplaceAllUnchecked(t3, "px", ""), null);
+          canvasWidth = H.Primitives_parseInt(H.stringReplaceAllUnchecked(t3, "px", ""), null, null);
           t3 = J.get$height$x(t2.get$style(canvas));
           t3.toString;
-          canvasHeight = P.num_parse(H.stringReplaceAllUnchecked(t3, "px", ""), null);
+          canvasHeight = H.Primitives_parseInt(H.stringReplaceAllUnchecked(t3, "px", ""), null, null);
           offsetX = J.$mul$n(J.$sub$n(canvasWidth, $.get$ui().gameScreenWidth), currentPercentX);
           offsetY = J.$mul$n(J.$sub$n(canvasHeight, $.get$ui().gameScreenHeight), currentPercentY);
           t2 = J.$add$ns(t2.get$id(canvas), "translateZ(0) translateX(");
@@ -5861,7 +5848,7 @@ var $$ = {};
           translateY = t3 - (t2 - translateY);
         }
       }
-      t5.setCamera$1(C.JSNumber_methods.toString$0(camX) + "," + C.JSNumber_methods.toString$0(camY));
+      t5.setCamera$1(C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camX, 1)) + "," + C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camY, 1)));
       transform = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
       t2 = t1.facingRight;
       t3 = t1.playerName;
@@ -10094,20 +10081,6 @@ var $$ = {};
     }
     return fixedList;
   },
-  num_parse: function(input, onError) {
-    var source, result;
-    source = J.trim$0$s(input);
-    result = H.Primitives_parseInt(source, null, P.num__returnNull$closure());
-    if (result != null)
-      return result;
-    result = H.Primitives_parseDouble(source, P.num__returnNull$closure());
-    if (result != null)
-      return result;
-    throw H.wrapException(P.FormatException$(input));
-  },
-  num__returnNull: [function(_) {
-    return;
-  }, "call$1", "num__returnNull$closure", 2, 0, 3],
   print: [function(object) {
     var line = H.S(object);
     H.printString(line);
