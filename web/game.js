@@ -3638,6 +3638,286 @@ var $$ = {};
     C.Window_methods._ensureRequestAnimationFrame$0(t2);
     t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
   },
+  createOtherPlayer: function(map) {
+    var t1, otherPlayer, t2;
+    t1 = J.getInterceptor$asx(map);
+    otherPlayer = B.Player$(t1.$index(map, "username"));
+    B.updateOtherPlayer(map, otherPlayer);
+    t2 = $.otherPlayers;
+    t2.$indexSet(t2, t1.$index(map, "username"), otherPlayer);
+    document.querySelector("#PlayerHolder").appendChild(otherPlayer.playerCanvas);
+  },
+  updateOtherPlayer: function(map, otherPlayer) {
+    var t1, t2, x, y, facingRight, transform;
+    t1 = $.CurrentPlayer.animations;
+    t2 = J.getInterceptor$asx(map);
+    otherPlayer.set$currentAnimation(t1.$index(t1, t2.$index(map, "animation")));
+    J.set$backgroundImage$x(otherPlayer.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(otherPlayer.currentAnimation)) + ")");
+    J.set$width$x(otherPlayer.avatar.style, J.toString$0(J.get$width$x(otherPlayer.currentAnimation)) + "px");
+    J.set$height$x(otherPlayer.avatar.style, J.toString$0(J.get$height$x(otherPlayer.currentAnimation)) + "px");
+    J.set$animation$x(otherPlayer.avatar.style, otherPlayer.currentAnimation.get$animationStyleString());
+    otherPlayer.canvasHeight = J.$add$ns(J.get$height$x(otherPlayer.currentAnimation), 50);
+    J.set$position$x(otherPlayer.playerCanvas.style, "absolute");
+    otherPlayer.playerCanvas.id = C.JSString_methods.$add("player-", t2.$index(map, "username"));
+    t1 = J.split$1$s(t2.$index(map, "xy"), ",");
+    if (0 >= t1.length)
+      return H.ioore(t1, 0);
+    x = H.Primitives_parseInt(t1[0], null, null);
+    t1 = J.split$1$s(t2.$index(map, "xy"), ",");
+    if (1 >= t1.length)
+      return H.ioore(t1, 1);
+    y = H.Primitives_parseInt(t1[1], null, null);
+    otherPlayer.posX = x;
+    otherPlayer.posY = y;
+    facingRight = J.$eq(t2.$index(map, "facingRight"), "true") && true;
+    t1 = otherPlayer.playerName;
+    if (!facingRight) {
+      transform = "" + " scale(-1,1)";
+      J.set$transform$x(t1.style, "scale(-1,1)");
+      t1 = otherPlayer.chatBubble;
+      if (t1 != null)
+        J.set$transform$x(t1.textElement.style, "scale(-1,1)");
+    } else {
+      J.set$transform$x(t1.style, "scale(1,1)");
+      t1 = otherPlayer.chatBubble;
+      if (t1 != null)
+        J.set$transform$x(t1.textElement.style, "scale(1,1)");
+      transform = "";
+    }
+    J.set$transform$x(otherPlayer.playerCanvas.style, transform);
+  },
+  loop: function() {
+    var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, map;
+    t1 = $.CurrentPlayer;
+    t2 = $.get$game().updateTimeStep;
+    t3 = t1.chatBubble;
+    if (t3 != null) {
+      t4 = t3.timeToLive;
+      if (t4 <= 0) {
+        J.remove$0$ax(t3.bubble);
+        t1.chatBubble = null;
+      } else {
+        t3.timeToLive = t4 - t2;
+        t1.playerCanvas.appendChild(t3.bubble);
+      }
+    }
+    t3 = $.playerInput;
+    if (t3.rightKey) {
+      t1.posX = J.$add$ns(t1.posX, $.CurrentPlayer.speed);
+      t1.facingRight = true;
+      t1.moving = true;
+    } else if (t3.leftKey) {
+      t1.posX = J.$sub$n(t1.posX, $.CurrentPlayer.speed);
+      t1.facingRight = false;
+      t1.moving = true;
+    } else
+      t1.moving = false;
+    if ($.playerInput.spaceKey && !t1.jumping) {
+      if (C.C__JSRandom.nextInt$1(4) === 3)
+        t1.yVel = -20;
+      else
+        t1.yVel = -15;
+      t1.jumping = true;
+    }
+    if (t1.doPhysicsApply) {
+      t2 = t1.yVel - t1.yAccel * t2;
+      t1.yVel = t2;
+      t1.posY = J.$tdiv$n(J.$add$ns(t1.posY, t2), 1);
+    } else {
+      if ($.playerInput.downKey)
+        t1.posY = J.$add$ns(t1.posY, $.CurrentPlayer.speed);
+      if ($.playerInput.upKey)
+        t1.posY = J.$sub$n(t1.posY, $.CurrentPlayer.speed);
+    }
+    if (J.$lt$n(t1.posX, 0))
+      t1.posX = 0;
+    t2 = t1.posX;
+    t3 = $.currentStreet.bounds.width;
+    t4 = t1.width;
+    if (typeof t3 !== "number")
+      return t3.$sub();
+    if (J.$gt$n(t2, t3 - t4)) {
+      t2 = $.currentStreet.bounds.width;
+      t3 = t1.width;
+      if (typeof t2 !== "number")
+        return t2.$sub();
+      t1.posX = t2 - t3;
+    }
+    t2 = t1.posY;
+    t3 = $.currentStreet.bounds.height;
+    t4 = t1.canvasHeight;
+    if (typeof t3 !== "number")
+      return t3.$sub();
+    if (typeof t4 !== "number")
+      return H.iae(t4);
+    if (J.$gt$n(t2, t3 - t4)) {
+      t2 = $.currentStreet.bounds.height;
+      t3 = t1.canvasHeight;
+      if (typeof t2 !== "number")
+        return t2.$sub();
+      if (typeof t3 !== "number")
+        return H.iae(t3);
+      t1.posY = t2 - t3;
+      t1.yVel = 0;
+      t1.jumping = false;
+    }
+    if (J.$lt$n(t1.posY, 0))
+      t1.posY = 0;
+    t2 = t1.moving;
+    if (!t2 && !t1.jumping) {
+      t2 = t1.animations;
+      t1.currentAnimation = t2.$index(t2, "idle");
+    } else if (t2 && !t1.jumping) {
+      t2 = t1.animations;
+      t1.currentAnimation = t2.$index(t2, "base");
+    } else {
+      t2 = t1.jumping;
+      t3 = t1.animations;
+      if (t2)
+        t1.currentAnimation = t3.$index(t3, "jump");
+      else
+        t1.currentAnimation = t3.$index(t3, "stillframe");
+    }
+    if (!J.contains$1$asx(J.get$backgroundImage$x(t1.avatar.style), J.get$backgroundImage$x(t1.currentAnimation))) {
+      J.set$backgroundImage$x(t1.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(t1.currentAnimation)) + ")");
+      J.set$width$x(t1.avatar.style, J.toString$0(J.get$width$x(t1.currentAnimation)) + "px");
+      J.set$height$x(t1.avatar.style, J.toString$0(J.get$height$x(t1.currentAnimation)) + "px");
+      J.set$animation$x(t1.avatar.style, t1.currentAnimation.get$animationStyleString());
+      t1.canvasHeight = J.$add$ns(J.get$height$x(t1.currentAnimation), 50);
+    }
+    translateX = t1.posX;
+    t2 = $.get$ui();
+    t3 = t2.gameScreenHeight;
+    t4 = t1.canvasHeight;
+    if (typeof t3 !== "number")
+      return t3.$sub();
+    if (typeof t4 !== "number")
+      return H.iae(t4);
+    $.get$camera()._y;
+    t3 = $.currentStreet.bounds.width;
+    t4 = t1.width;
+    if (typeof t3 !== "number")
+      return t3.$sub();
+    t2 = t2.gameScreenWidth;
+    if (typeof t2 !== "number")
+      return t2.$div();
+    if (J.$gt$n(translateX, t3 - t4 / 2 - t2 / 2)) {
+      t2 = $.currentStreet.bounds.width;
+      t3 = $.get$ui().gameScreenWidth;
+      if (typeof t2 !== "number")
+        return t2.$sub();
+      if (typeof t3 !== "number")
+        return H.iae(t3);
+      camX = t2 - t3;
+      translateX = J.$add$ns(J.$sub$n(t1.posX, t2), $.get$ui().gameScreenWidth);
+    } else {
+      t2 = J.$add$ns(t1.posX, t1.width / 2);
+      t3 = $.get$ui().gameScreenWidth;
+      if (typeof t3 !== "number")
+        return t3.$div();
+      if (J.$gt$n(t2, t3 / 2)) {
+        t2 = J.$add$ns(t1.posX, t1.width / 2);
+        t3 = $.get$ui().gameScreenWidth;
+        if (typeof t3 !== "number")
+          return t3.$div();
+        camX = J.$sub$n(t2, t3 / 2);
+        t3 = $.get$ui().gameScreenWidth;
+        if (typeof t3 !== "number")
+          return t3.$div();
+        translateX = t3 / 2 - t1.width / 2;
+      } else
+        camX = 0;
+    }
+    t2 = t1.posY;
+    t3 = t1.canvasHeight;
+    if (typeof t3 !== "number")
+      return t3.$div();
+    t3 = J.$add$ns(t2, t3 / 2);
+    t2 = $.get$ui().gameScreenHeight;
+    if (typeof t2 !== "number")
+      return t2.$div();
+    if (J.$lt$n(t3, t2 / 2)) {
+      translateY = t1.posY;
+      camY = 0;
+    } else {
+      t2 = t1.posY;
+      t3 = $.currentStreet.bounds.height;
+      t4 = t1.canvasHeight;
+      if (typeof t4 !== "number")
+        return t4.$div();
+      if (typeof t3 !== "number")
+        return t3.$sub();
+      t5 = $.get$ui().gameScreenHeight;
+      if (typeof t5 !== "number")
+        return t5.$div();
+      t5 = J.$lt$n(t2, t3 - t4 / 2 - t5 / 2);
+      t4 = $.currentStreet;
+      if (t5) {
+        t2 = t4.bounds.height;
+        t3 = t1.posY;
+        if (typeof t2 !== "number")
+          return t2.$sub();
+        if (typeof t3 !== "number")
+          return H.iae(t3);
+        t4 = t1.canvasHeight;
+        if (typeof t4 !== "number")
+          return t4.$div();
+        t5 = $.get$ui().gameScreenHeight;
+        if (typeof t5 !== "number")
+          return t5.$div();
+        camY = t2 - (t2 - t3 - t4 / 2 + t5 / 2);
+        translateY = t5 / 2 - t4 / 2;
+      } else {
+        t2 = t4.bounds.height;
+        t3 = $.get$ui().gameScreenHeight;
+        if (typeof t2 !== "number")
+          return t2.$sub();
+        if (typeof t3 !== "number")
+          return H.iae(t3);
+        camY = t2 - t3;
+        t4 = t1.posY;
+        if (typeof t4 !== "number")
+          return H.iae(t4);
+        translateY = t3 - (t2 - t4);
+      }
+    }
+    $.get$camera().setCamera$1(J.toString$0(J.$tdiv$n(camX, 1)) + "," + C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camY, 1)));
+    transform = C.JSString_methods.$add("translateZ(0) translateX(" + J.toString$0(translateX) + "px) translateY(", J.toString$0(translateY)) + "px)";
+    t2 = t1.facingRight;
+    t3 = t1.playerName;
+    if (!t2) {
+      transform += " scale(-1,1)";
+      J.set$transform$x(t3.style, "scale(-1,1)");
+      t2 = t1.chatBubble;
+      if (t2 != null)
+        J.set$transform$x(t2.textElement.style, "scale(-1,1)");
+    } else {
+      J.set$transform$x(t3.style, "scale(1,1)");
+      t2 = t1.chatBubble;
+      if (t2 != null)
+        J.set$transform$x(t2.textElement.style, "scale(1,1)");
+    }
+    J.set$transform$x(t1.playerCanvas.style, transform);
+    t1 = $.otherPlayers;
+    t1.forEach$1(t1, new B.loop_closure());
+    t1 = $.timeLast + $.get$game().updateTimeStep;
+    $.timeLast = t1;
+    if (t1 > 0.1) {
+      t1 = $.playerSocket;
+      t1 = t1 != null && t1.readyState === 1;
+    } else
+      t1 = false;
+    if (t1) {
+      $.timeLast = 0;
+      map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+      map.$indexSet(map, "username", $.get$chat().username);
+      map.$indexSet(map, "xy", J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY)));
+      map.$indexSet(map, "street", $.currentStreet.label);
+      map.$indexSet(map, "facingRight", String($.CurrentPlayer.facingRight));
+      map.$indexSet(map, "animation", J.get$animationName$x($.CurrentPlayer.currentAnimation));
+      $.playerSocket.send(C.C_JsonCodec.encode$1(map));
+    }
+  },
   resize: function() {
     var gameScreen, t1, warningMessage;
     gameScreen = document.querySelector("#GameScreen");
@@ -3702,8 +3982,24 @@ var $$ = {};
       J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
     }
   }, "call$1", "setStreetLoadBar$closure", 2, 0, 6],
+  ChatBubble: {
+    "": "Object;text,timeToLive,bubble,textElement",
+    ChatBubble$1: function(text) {
+      var t1, t2;
+      this.timeToLive = 5;
+      t1 = document.createElement("div", null);
+      t2 = J.get$classes$x(t1);
+      t2.add$1(t2, "PlayerChatBubble");
+      this.bubble = t1;
+      t1 = document.createElement("span", null);
+      J.set$display$x(t1.style, "inline-block");
+      t1.textContent = this.text;
+      this.textElement = t1;
+      this.bubble.appendChild(t1);
+    }
+  },
   Animation: {
-    "": "Object;backgroundImage>,animationName,animationStyleString<,width>,height>",
+    "": "Object;backgroundImage>,animationName>,animationStyleString<,width>,height>",
     load$0: function(_) {
       var c, temp, t1;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
@@ -3999,7 +4295,7 @@ var $$ = {};
     }
   },
   TabContent: {
-    "": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tabInserted,webSocket,chatDiv,chatHistory,unreadMessages<,tabSearchIndex,numMessages,_chatServerUrl",
+    "": "Object;connectedUsers,channelName,lastWord,useSpanForTitle,tabInserted,webSocket<,chatDiv,chatHistory,unreadMessages<,tabSearchIndex,numMessages,_chatServerUrl",
     resetMessages$1: [function($event) {
       var t1, t2, selector;
       t1 = {};
@@ -4078,6 +4374,7 @@ var $$ = {};
           map.$indexSet(map, "username", $.get$chat().username);
           map.$indexSet(map, "statusMessage", "list");
           map.$indexSet(map, "channel", t1);
+          map.$indexSet(map, "street", $.currentStreet.label);
         } else {
           map.$indexSet(map, "username", $.get$chat().username);
           map.$indexSet(map, "message", input);
@@ -4138,6 +4435,8 @@ var $$ = {};
       text.className = "MessageBody";
       chatString = document.createElement("div", null);
       if (t1.$index(map, "statusMessage") == null || J.$eq(t1.$index(map, "message"), " joined.")) {
+        if (t1.$index(map, "username") == null)
+          P.print(map);
         userElement.textContent = J.$add$ns(t1.$index(map, "username"), ": ");
         J.set$color$x(userElement.style, this._getColor$1(t1.$index(map, "username")));
         t2 = J.get$children$x(chatString);
@@ -4245,6 +4544,16 @@ var $$ = {};
       t2.add$1(t2, chatRow);
       if (atTheBottom || J.$eq(t1.$index(map, "username"), $.get$chat().username) || J.$eq(t1.$index(map, "newUsername"), $.get$chat().username))
         conversation.scrollTop = conversation.scrollHeight;
+      if (J.$eq(t1.$index(map, "channel"), "Local Chat") && J.$eq(t1.$index(map, "username"), $.get$chat().username) && t1.$index(map, "statusMessage") == null) {
+        t2 = $.CurrentPlayer.chatBubble;
+        if (t2 != null && t2.bubble != null)
+          J.remove$0$ax(t2.bubble);
+        t2 = $.CurrentPlayer;
+        t1 = t1.$index(map, "message");
+        t3 = new B.ChatBubble(t1, null, null, null);
+        t3.ChatBubble$1(t1);
+        t2.chatBubble = t3;
+      }
     },
     _parseForUrls$1: function(message) {
       var t1 = {};
@@ -4293,7 +4602,7 @@ var $$ = {};
       t1.add$1(t1, channel);
     },
     static: {"": "TabContent__COLORS", TabContent$: function(channelName, useSpanForTitle) {
-        var t1 = new B.TabContent([], channelName, "", useSpanForTitle, false, null, null, null, 0, 0, 0, "ws://couchatserver.herokuapp.com");
+        var t1 = new B.TabContent([], channelName, "", useSpanForTitle, false, null, null, null, 0, 0, 0, "ws://couserver.herokuapp.com");
         t1.TabContent$2(channelName, useSpanForTitle);
         return t1;
       }}
@@ -4415,7 +4724,7 @@ var $$ = {};
       }
       t3 = this.this_3;
       prevUnread = t3.unreadMessages;
-      if (t2.$index(map, "statusMessage") == null)
+      if (t2.$index(map, "statusMessage") == null && J.$eq(t2.$index(map, "channel"), this.channelName_4))
         t3.unreadMessages = t3.unreadMessages + 1;
       if (!J.$eq(t2.$index(map, "username"), $.get$chat().username) && J.$eq(t2.$index(map, "channel"), this.channelName_4)) {
         t4 = this.channelName_4;
@@ -4561,13 +4870,41 @@ var $$ = {};
     call$1: function(_) {
       var t1;
       $.get$chat().init$0();
-      t1 = new B.Player(null, null, null, null, null, null, null, -40, false, false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, true, null, null, null);
-      t1.Player$0();
+      $.otherPlayers = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+      t1 = W.WebSocket_WebSocket("ws://couserver.herokuapp.com/playerUpdate", null);
+      $.playerSocket = t1;
+      C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B.main____closure());
+      t1 = B.Player$(null);
       $.CurrentPlayer = t1;
-      t1.loadAnimations$0().then$1(new B.main____closure());
+      t1.loadAnimations$0().then$1(new B.main____closure0());
     }
   },
   main____closure: {
+    "": "Closure:28;",
+    call$1: function($event) {
+      var map, t1, t2;
+      map = C.C_JsonCodec.decode$1(J.get$data$x($event));
+      t1 = J.getInterceptor$asx(map);
+      if (t1.$index(map, "changeStreet") != null)
+        if (!J.$eq(t1.$index(map, "changeStreet"), $.currentStreet.label)) {
+          t2 = $.otherPlayers;
+          t2.remove$1(t2, t1.$index(map, "username"));
+          t1 = C.JSString_methods.$add("player-", t1.$index(map, "username"));
+          J.remove$0$ax(document.querySelector(t1));
+        } else
+          B.createOtherPlayer(map);
+      else {
+        t2 = $.otherPlayers;
+        if (t2.$index(t2, t1.$index(map, "username")) == null)
+          B.createOtherPlayer(map);
+        else {
+          t2 = $.otherPlayers;
+          B.updateOtherPlayer(map, t2.$index(t2, t1.$index(map, "username")));
+        }
+      }
+    }
+  },
+  main____closure0: {
     "": "Closure:3;",
     call$1: function(_) {
       var t1, t2, playButton;
@@ -5000,9 +5337,16 @@ var $$ = {};
   Input_init_closure11: {
     "": "Closure:28;",
     call$1: function($event) {
-      var street, label, t1, t2;
+      var street, label, map, t1, t2;
       street = C.C_JsonCodec.decode$1(J.get$data$x($event));
       label = J.$index$asx(street, "label");
+      map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+      map.$indexSet(map, "statusMessage", "changeStreet");
+      map.$indexSet(map, "username", $.get$chat().username);
+      map.$indexSet(map, "newStreet", label);
+      map.$indexSet(map, "oldStreet", $.currentStreet.label);
+      t1 = $.get$chat().tabContentMap;
+      t1.$index(t1, "Local Chat").get$webSocket().send(C.C_JsonCodec.encode$1(map));
       t1 = new E.Asset(street, false, null, label);
       t1.loaded = true;
       t2 = $.get$ASSET();
@@ -5196,6 +5540,16 @@ var $$ = {};
   JoystickEvent: {
     "": "Object;"
   },
+  loop_closure: {
+    "": "Closure:33;",
+    call$2: function(username, otherPlayer) {
+      var x, y;
+      x = otherPlayer.get$posX();
+      y = otherPlayer.posY;
+      J.set$top$x(otherPlayer.playerCanvas.style, J.$add$ns(J.toString$0(y), "px"));
+      J.set$left$x(otherPlayer.playerCanvas.style, J.$add$ns(J.toString$0(x), "px"));
+    }
+  },
   TouchScroller: {
     "": "Object;_scrollDiv,_startX,_startY,_lastX,_lastY,_direction",
     TouchScroller$2: function(_scrollDiv, _direction) {
@@ -5380,7 +5734,7 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;posX,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation,doPhysicsApply,playerCanvas,avatar,playerName",
+    "": "Object;posX<,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
     loadAnimations$0: function() {
       var t1, futures;
       t1 = this.animations;
@@ -5392,13 +5746,14 @@ var $$ = {};
       t1.forEach$1(t1, new B.Player_loadAnimations_closure(futures));
       return P.Future_wait(futures, false);
     },
-    Player$0: function() {
+    Player$1: function($name) {
+      var t1;
       this.width = 116;
       this.height = 137;
       this.speed = 5;
       this.yVel = 0;
       this.posX = 0;
-      var t1 = $.currentStreet.bounds.height;
+      t1 = $.currentStreet.bounds.height;
       if (typeof t1 !== "number")
         return t1.$sub();
       this.posY = t1 - 170;
@@ -5407,21 +5762,23 @@ var $$ = {};
       J.set$textAlign$x(t1.style, "center");
       this.playerCanvas = t1;
       t1 = document.createElement("div", null);
-      t1.textContent = $.get$chat().username;
+      t1.textContent = $name != null ? $name : $.get$chat().username;
       this.playerName = t1;
-      t1 = document.createElement("div", null);
-      this.avatar = t1;
-      t1.id = "playerCanvas";
+      this.avatar = document.createElement("div", null);
       this.playerCanvas.appendChild(this.playerName);
       this.playerCanvas.appendChild(this.avatar);
       $.get$gameScreen().appendChild(this.playerCanvas);
       this.canvasHeight = this.playerCanvas.clientHeight;
-      $.CurrentPlayer = this;
     },
-    $isPlayer: true
+    $isPlayer: true,
+    static: {Player$: function($name) {
+        var t1 = new B.Player(null, null, null, null, null, null, null, -40, false, false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, null, true, null, null, null);
+        t1.Player$1($name);
+        return t1;
+      }}
   },
   Player_loadAnimations_closure: {
-    "": "Closure:33;futures_0",
+    "": "Closure:34;futures_0",
     call$2: function($name, animation) {
       return this.futures_0.push(J.load$0$x(animation));
     }
@@ -5449,7 +5806,7 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]: " + H.S(error));
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 34]
+    }, "call$1", "get$setCamera", 2, 0, 35]
   },
   Street: {
     "": "Object;label,_data,exits,bounds",
@@ -5512,8 +5869,8 @@ var $$ = {};
           t3.toString;
           canvasHeight = H.Primitives_parseInt(H.stringReplaceAllUnchecked(t3, "px", ""), null, null);
           offsetX = J.$mul$n(J.$sub$n(canvasWidth, $.get$ui().gameScreenWidth), currentPercentX);
-          offsetY = J.$mul$n(J.$sub$n(canvasHeight, $.get$ui().gameScreenHeight), currentPercentY);
-          t2 = J.$add$ns(t2.get$id(canvas), "translateZ(0) translateX(");
+          offsetY = J.$add$ns(J.$mul$n(J.$sub$n(canvasHeight, $.get$ui().gameScreenHeight), currentPercentY), H.Primitives_parseInt(t2.get$attributes(canvas)._element.getAttribute("ground_y"), null, null));
+          t2 = J.$add$ns(canvas.id, "translateZ(0) translateX(");
           if (typeof offsetX !== "number")
             return offsetX.$negate();
           t2 = t2 + C.JSNumber_methods.toString$0(-offsetX) + "px) translateY(";
@@ -5526,11 +5883,22 @@ var $$ = {};
       }
     },
     Street$1: function(streetName) {
-      var t1 = $.get$ASSET();
+      var t1, playerHolder, t2;
+      t1 = $.get$ASSET();
       t1 = t1.$index(t1, streetName).get$0();
       this._data = t1;
       this.label = J.$index$asx(t1, "label");
       this.bounds = H.setRuntimeTypeInfo(new P.Rectangle(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l"), J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l")) + J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "r")), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"))), [null]);
+      playerHolder = document.querySelector("#PlayerHolder");
+      t1 = J.getInterceptor$x(playerHolder);
+      t2 = t1.get$children(playerHolder);
+      t2.clear$0(t2);
+      J.set$width$x(playerHolder.style, J.toString$0(this.bounds.width) + "px");
+      J.set$height$x(playerHolder.style, J.toString$0(this.bounds.height) + "px");
+      t1 = t1.get$classes(playerHolder);
+      t1.add$1(t1, "streetcanvas");
+      J.set$position$x(playerHolder.style, "absolute");
+      playerHolder.setAttribute("ground_y", "0");
     },
     $isStreet: true,
     static: {Street$: function(streetName) {
@@ -5553,6 +5921,7 @@ var $$ = {};
       J.set$width$x(gradientCanvas.style, J.toString$0(t1.bounds.width) + "px");
       J.set$height$x(gradientCanvas.style, J.toString$0(t1.bounds.height) + "px");
       J.set$position$x(gradientCanvas.style, "absolute");
+      gradientCanvas.setAttribute("ground_y", "0");
       $top = J.$index$asx(J.$index$asx(t1._data, "gradient"), "top");
       bottom = J.$index$asx(J.$index$asx(t1._data, "gradient"), "bottom");
       J.set$background$x(gradientCanvas.style, "-webkit-linear-gradient(top, #" + H.S($top) + ", #" + H.S(bottom) + ")");
@@ -5571,6 +5940,7 @@ var $$ = {};
         J.set$width$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "w")), "px"));
         J.set$height$x(decoCanvas.style, J.$add$ns(J.toString$0(t2.$index(layer, "h")), "px"));
         J.set$position$x(decoCanvas.style, "absolute");
+        decoCanvas.setAttribute("ground_y", J.toString$0(J.$index$asx(J.$index$asx(t1._data, "dynamic"), "ground_y")));
         filters = [];
         t4 = t2.$index(layer, "filters");
         t5 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
@@ -5629,7 +5999,7 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "": "Closure:35;filters_2",
+    "": "Closure:36;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
       t1 = J.getInterceptor(filterName);
@@ -5675,7 +6045,7 @@ var $$ = {};
     }
   },
   Street_load__closure0: {
-    "": "Closure:36;this_3",
+    "": "Closure:37;this_3",
     call$1: function(exit) {
       var t1, t2;
       t1 = this.this_3.exits;
@@ -5684,7 +6054,7 @@ var $$ = {};
     }
   },
   Street_load__closure1: {
-    "": "Closure:37;exitsElement_4",
+    "": "Closure:38;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
       tsid = J.replaceFirst$2$s(tsid, "L", "G");
@@ -5697,7 +6067,7 @@ var $$ = {};
     }
   },
   Street_render_closure: {
-    "": "Closure:38;",
+    "": "Closure:39;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -5705,7 +6075,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:39;c_0",
+    "": "Closure:40;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -5723,141 +6093,7 @@ var $$ = {};
   closure: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
-      var t1, t2, t3, t4, t5, translateX, t6, t7, t8, camX, translateY, camY, transform;
-      t1 = $.CurrentPlayer;
-      t2 = $.get$game();
-      t1.toString;
-      t3 = $.playerInput;
-      if (t3.rightKey) {
-        t1.posX = t1.posX + t1.speed;
-        t1.facingRight = true;
-        t1.moving = true;
-      } else if (t3.leftKey) {
-        t1.posX = t1.posX - t1.speed;
-        t1.facingRight = false;
-        t1.moving = true;
-      } else
-        t1.moving = false;
-      if (t3.spaceKey && !t1.jumping) {
-        if (C.C__JSRandom.nextInt$1(4) === 3)
-          t1.yVel = -20;
-        else
-          t1.yVel = -15;
-        t1.jumping = true;
-      }
-      if (t1.doPhysicsApply) {
-        t2 = t1.yVel - t1.yAccel * t2.updateTimeStep;
-        t1.yVel = t2;
-        t1.posY = C.JSNumber_methods._tdivFast$1(t1.posY + t2, 1);
-      } else {
-        t2 = $.playerInput;
-        if (t2.downKey)
-          t1.posY = t1.posY + $.CurrentPlayer.speed;
-        if (t2.upKey)
-          t1.posY = t1.posY - $.CurrentPlayer.speed;
-      }
-      t2 = t1.posX;
-      if (t2 < 0) {
-        t1.posX = 0;
-        t2 = 0;
-      }
-      t3 = $.currentStreet.bounds;
-      t4 = t3.width;
-      t5 = t1.width;
-      if (typeof t4 !== "number")
-        return t4.$sub();
-      t5 = t4 - t5;
-      if (t2 > t5)
-        t1.posX = t5;
-      t2 = t1.posY;
-      t3 = t3.height;
-      t4 = t1.canvasHeight;
-      if (typeof t3 !== "number")
-        return t3.$sub();
-      if (typeof t4 !== "number")
-        return H.iae(t4);
-      t4 = t3 - t4;
-      if (t2 > t4) {
-        t1.posY = t4;
-        t1.yVel = 0;
-        t1.jumping = false;
-        t2 = t4;
-      }
-      if (t2 < 0)
-        t1.posY = 0;
-      t2 = t1.moving;
-      if (!t2 && !t1.jumping) {
-        t2 = t1.animations;
-        t1.currentAnimation = t2.$index(t2, "idle");
-      } else if (t2 && !t1.jumping) {
-        t2 = t1.animations;
-        t1.currentAnimation = t2.$index(t2, "base");
-      } else {
-        t2 = t1.jumping;
-        t3 = t1.animations;
-        if (t2)
-          t1.currentAnimation = t3.$index(t3, "jump");
-        else
-          t1.currentAnimation = t3.$index(t3, "stillframe");
-      }
-      if (!J.contains$1$asx(J.get$backgroundImage$x(t1.avatar.style), J.get$backgroundImage$x(t1.currentAnimation))) {
-        J.set$backgroundImage$x(t1.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(t1.currentAnimation)) + ")");
-        J.set$width$x(t1.avatar.style, J.toString$0(J.get$width$x(t1.currentAnimation)) + "px");
-        J.set$height$x(t1.avatar.style, J.toString$0(J.get$height$x(t1.currentAnimation)) + "px");
-        J.set$animation$x(t1.avatar.style, t1.currentAnimation.get$animationStyleString());
-        t1.canvasHeight = J.$add$ns(J.get$height$x(t1.currentAnimation), 50);
-      }
-      translateX = t1.posX;
-      t2 = $.get$ui();
-      t3 = t2.gameScreenHeight;
-      t4 = t1.canvasHeight;
-      if (typeof t3 !== "number")
-        return t3.$sub();
-      if (typeof t4 !== "number")
-        return H.iae(t4);
-      t5 = $.get$camera();
-      t5._y;
-      t6 = $.currentStreet.bounds;
-      t7 = t6.width;
-      t8 = t1.width;
-      if (typeof t7 !== "number")
-        return t7.$sub();
-      t2 = t2.gameScreenWidth;
-      if (typeof t2 !== "number")
-        return t2.$div();
-      if (translateX > t7 - t8 / 2 - t2 / 2) {
-        camX = t7 - t2;
-        translateX = translateX - t7 + t2;
-      } else if (translateX + t8 / 2 > t2 / 2) {
-        camX = translateX + t8 / 2 - t2 / 2;
-        translateX = t2 / 2 - t8 / 2;
-      } else
-        camX = 0;
-      translateY = t1.posY;
-      if (translateY + t4 / 2 < t3 / 2)
-        camY = 0;
-      else {
-        t2 = t6.height;
-        if (typeof t2 !== "number")
-          return t2.$sub();
-        if (translateY < t2 - t4 / 2 - t3 / 2) {
-          camY = t2 - (t2 - translateY - t4 / 2 + t3 / 2);
-          translateY = t3 / 2 - t4 / 2;
-        } else {
-          camY = t2 - t3;
-          translateY = t3 - (t2 - translateY);
-        }
-      }
-      t5.setCamera$1(C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camX, 1)) + "," + C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camY, 1)));
-      transform = "translateZ(0) translateX(" + C.JSNumber_methods.toString$0(translateX) + "px) translateY(" + C.JSNumber_methods.toString$0(translateY) + "px)";
-      t2 = t1.facingRight;
-      t3 = t1.playerName;
-      if (!t2) {
-        transform += " scale(-1,1)";
-        J.set$transform$x(t3.style, "scale(-1,1)");
-      } else
-        J.set$transform$x(t3.style, "scale(1,1)");
-      J.set$transform$x(t1.playerCanvas.style, transform);
+      B.loop();
     }
   },
   closure0: {
@@ -6559,7 +6795,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 40, 10],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 41, 10],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6726,7 +6962,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:41;box_0,eagerError_2,pos_3",
+    "": "Closure:42;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -6763,7 +6999,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 40, 10],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 41, 10],
     $as_Completer: null
   },
   _Future: {
@@ -7034,7 +7270,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:42;target_1",
+    "": "Closure:43;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -7140,7 +7376,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:42;box_0,listener_7",
+    "": "Closure:43;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -7231,7 +7467,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:43;box_0,future_6",
+    "": "Closure:44;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7951,7 +8187,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:44;subscription_0,future_1",
+    "": "Closure:45;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -9966,7 +10202,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:45;box_0,this_1",
+    "": "Closure:46;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -10089,7 +10325,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:46;box_0",
+    "": "Closure:47;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -10151,7 +10387,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:47;",
+    "": "Closure:48;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -10166,7 +10402,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:47;",
+    "": "Closure:48;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -10176,7 +10412,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:47;",
+    "": "Closure:48;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -10243,7 +10479,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:47;",
+    "": "Closure:48;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -10259,7 +10495,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:47;",
+    "": "Closure:48;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -10631,6 +10867,10 @@ var $$ = {};
     },
     "%": "HTMLAnchorElement"
   },
+  AnimationEvent: {
+    "": "Event;animationName=",
+    "%": "WebKitAnimationEvent"
+  },
   AreaElement: {
     "": "HtmlElement;hostname=,href},port=,protocol=,target=",
     "%": "HTMLAreaElement"
@@ -10851,7 +11091,7 @@ var $$ = {};
       return receiver.stopPropagation();
     },
     $isEvent: true,
-    "%": "AudioProcessingEvent|AutocompleteErrorEvent|BeforeLoadEvent|CSSFontFaceLoadEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|HashChangeEvent|IDBVersionChangeEvent|MIDIConnectionEvent|MediaKeyEvent|MediaKeyMessageEvent|MediaKeyNeededEvent|MediaStreamEvent|MediaStreamTrackEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|RTCDTMFToneChangeEvent|RTCDataChannelEvent|RTCIceCandidateEvent|SecurityPolicyViolationEvent|SpeechInputEvent|SpeechRecognitionEvent|SpeechSynthesisEvent|StorageEvent|TrackEvent|TransitionEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent;Event"
+    "%": "AudioProcessingEvent|AutocompleteErrorEvent|BeforeLoadEvent|CSSFontFaceLoadEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|HashChangeEvent|IDBVersionChangeEvent|MIDIConnectionEvent|MediaKeyEvent|MediaKeyMessageEvent|MediaKeyNeededEvent|MediaStreamEvent|MediaStreamTrackEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|RTCDTMFToneChangeEvent|RTCDataChannelEvent|RTCIceCandidateEvent|SecurityPolicyViolationEvent|SpeechInputEvent|SpeechRecognitionEvent|SpeechSynthesisEvent|StorageEvent|TrackEvent|TransitionEvent|WebGLContextEvent|WebKitTransitionEvent;Event"
   },
   EventTarget: {
     "": "Interceptor;",
@@ -11642,6 +11882,9 @@ var $$ = {};
     "": "Object;",
     set$animation: function(receiver, value) {
       this.setProperty$3(receiver, P.Device_cssPrefix() + "animation", value, "");
+    },
+    get$animationName: function(receiver) {
+      return this.getPropertyValue$1(receiver, P.Device_cssPrefix() + "animation-name");
     },
     set$background: function(receiver, value) {
       this.setProperty$3(receiver, "background", value, "");
@@ -12702,7 +12945,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:48;this_0",
+    "": "Closure:49;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13685,48 +13928,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 49],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 50],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 50],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 51],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 50],
+    }, "call$1", "get$_fullscreenError", 2, 0, 51],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 51],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 52],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 51],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 52],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 51],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 52],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 52],
+    }, "call$1", "get$_keyDown", 2, 0, 53],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 52],
+    }, "call$1", "get$_keyUp", 2, 0, 53],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 53],
+    }, "call$1", "get$_mouseDown", 2, 0, 54],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 53],
+    }, "call$1", "get$_mouseUp", 2, 0, 54],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 53],
+    }, "call$1", "get$_mouseMove", 2, 0, 54],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 53],
+    }, "call$1", "get$_mouseWheel", 2, 0, 54],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 50],
+    }, "call$1", "get$_resize", 2, 0, 51],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -13766,9 +14009,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 50],
+    }, "call$1", "get$_onClick", 2, 0, 51],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 50],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 51],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -13832,7 +14075,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:54;this_0",
+    "": "Closure:55;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -13845,7 +14088,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:54;this_0",
+    "": "Closure:55;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -13858,7 +14101,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:54;this_0",
+    "": "Closure:55;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -13962,7 +14205,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:55;copies_3",
+    "": "Closure:56;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -15200,12 +15443,12 @@ W.Node.$isObject = true;
 J.JSInt.$isint = true;
 J.JSInt.$isnum = true;
 J.JSInt.$isObject = true;
+J.JSDouble.$isnum = true;
+J.JSDouble.$isObject = true;
 J.JSString.$isString = true;
 J.JSString.$isObject = true;
 W.Touch.$isTouch = true;
 W.Touch.$isObject = true;
-J.JSDouble.$isnum = true;
-J.JSDouble.$isObject = true;
 W.StyleSheet.$isObject = true;
 J.JSNumber.$isnum = true;
 J.JSNumber.$isObject = true;
@@ -15229,15 +15472,15 @@ W.ProgressEvent.$isObject = true;
 J.JSArray.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
+W.MessageEvent.$isMessageEvent = true;
+W.MessageEvent.$isEvent = true;
+W.MessageEvent.$isObject = true;
 W.TouchEvent.$isTouchEvent = true;
 W.TouchEvent.$isEvent = true;
 W.TouchEvent.$isObject = true;
 W.KeyboardEvent.$isKeyboardEvent = true;
 W.KeyboardEvent.$isEvent = true;
 W.KeyboardEvent.$isObject = true;
-W.MessageEvent.$isMessageEvent = true;
-W.MessageEvent.$isEvent = true;
-W.MessageEvent.$isObject = true;
 W.CloseEvent.$isEvent = true;
 W.CloseEvent.$isObject = true;
 W.NodeValidator.$isNodeValidator = true;
@@ -15288,6 +15531,8 @@ W.DivElement.$isElement = true;
 W.DivElement.$isNode = true;
 W.DivElement.$isEventTarget = true;
 W.DivElement.$isObject = true;
+B.Player.$isPlayer = true;
+B.Player.$isObject = true;
 P.Timer.$isTimer = true;
 P.Timer.$isObject = true;
 P.Future.$isFuture = true;
@@ -15488,6 +15733,9 @@ J.forEach$1$ax = function(receiver, a0) {
 };
 J.get$_key$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$_key(receiver);
+};
+J.get$animationName$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$animationName(receiver);
 };
 J.get$backgroundImage$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$backgroundImage(receiver);
@@ -16061,7 +16309,10 @@ $.interceptorsForUncacheableTags = null;
 $.initNativeDispatchFlag = null;
 $.ui_sounds = null;
 $.consolelistener = null;
+$.playerSocket = null;
+$.otherPlayers = null;
 $.playerInput = null;
+$.timeLast = 0;
 $.showFps = false;
 $.TouchScroller_HORIZONTAL = 0;
 $.TouchScroller_VERTICAL = 1;
@@ -16336,6 +16587,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__TouchEvent", args: [W.TouchEvent]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
+{func: "dynamic__String_Player", args: [J.JSString, B.Player]},
 {func: "dynamic__String_Animation", args: [J.JSString, B.Animation]},
 {func: "void__String", void: true, args: [J.JSString]},
 {func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
