@@ -5083,6 +5083,7 @@ var $$ = {};
       if (target.id === "BackFromChannelSelector") {
         document.querySelector("#ChannelSelectorScreen").hidden = true;
         document.querySelector("#MainScreen").hidden = false;
+        $.get$camera().dirty = true;
       }
       t1 = target.id;
       if (t1 === "ChatBubble" || t1 === "ChatBubbleText") {
