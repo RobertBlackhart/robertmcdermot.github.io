@@ -3652,11 +3652,13 @@ var $$ = {};
     t1 = $.CurrentPlayer.animations;
     t2 = J.getInterceptor$asx(map);
     otherPlayer.set$currentAnimation(t1.$index(t1, t2.$index(map, "animation")));
-    J.set$backgroundImage$x(otherPlayer.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(otherPlayer.currentAnimation)) + ")");
-    J.set$width$x(otherPlayer.avatar.style, J.toString$0(J.get$width$x(otherPlayer.currentAnimation)) + "px");
-    J.set$height$x(otherPlayer.avatar.style, J.toString$0(J.get$height$x(otherPlayer.currentAnimation)) + "px");
-    J.set$animation$x(otherPlayer.avatar.style, otherPlayer.currentAnimation.get$animationStyleString());
-    otherPlayer.canvasHeight = J.$add$ns(J.get$height$x(otherPlayer.currentAnimation), 50);
+    if (!J.contains$1$asx(J.get$backgroundImage$x(otherPlayer.avatar.style), J.get$backgroundImage$x(otherPlayer.currentAnimation))) {
+      J.set$backgroundImage$x(otherPlayer.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(otherPlayer.currentAnimation)) + ")");
+      J.set$width$x(otherPlayer.avatar.style, J.toString$0(J.get$width$x(otherPlayer.currentAnimation)) + "px");
+      J.set$height$x(otherPlayer.avatar.style, J.toString$0(J.get$height$x(otherPlayer.currentAnimation)) + "px");
+      J.set$animation$x(otherPlayer.avatar.style, otherPlayer.currentAnimation.get$animationStyleString());
+      otherPlayer.canvasHeight = J.$add$ns(J.get$height$x(otherPlayer.currentAnimation), 50);
+    }
     J.set$position$x(otherPlayer.playerCanvas.style, "absolute");
     otherPlayer.playerCanvas.id = C.JSString_methods.$add("player-", t2.$index(map, "username"));
     t1 = J.split$1$s(t2.$index(map, "xy"), ",");
@@ -3687,7 +3689,7 @@ var $$ = {};
     J.set$transform$x(otherPlayer.playerCanvas.style, transform);
   },
   loop: function() {
-    var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, map;
+    var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
     t1 = $.CurrentPlayer;
     t2 = $.get$game().updateTimeStep;
     t3 = t1.chatBubble;
@@ -3902,16 +3904,19 @@ var $$ = {};
     t1.forEach$1(t1, new B.loop_closure());
     t1 = $.timeLast + $.get$game().updateTimeStep;
     $.timeLast = t1;
-    if (t1 > 0.1) {
+    if (t1 > 0.03) {
       t1 = $.playerSocket;
       t1 = t1 != null && t1.readyState === 1;
     } else
       t1 = false;
     if (t1) {
+      xy = J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY));
+      if (J.$eq(xy, $.lastXY))
+        return;
       $.timeLast = 0;
       map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       map.$indexSet(map, "username", $.get$chat().username);
-      map.$indexSet(map, "xy", J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY)));
+      map.$indexSet(map, "xy", xy);
       map.$indexSet(map, "street", $.currentStreet.label);
       map.$indexSet(map, "facingRight", String($.CurrentPlayer.facingRight));
       map.$indexSet(map, "animation", J.get$animationName$x($.CurrentPlayer.currentAnimation));
@@ -16313,6 +16318,7 @@ $.playerSocket = null;
 $.otherPlayers = null;
 $.playerInput = null;
 $.timeLast = 0;
+$.lastXY = "";
 $.showFps = false;
 $.TouchScroller_HORIZONTAL = 0;
 $.TouchScroller_VERTICAL = 1;
