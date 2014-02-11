@@ -3491,6 +3491,14 @@ var $$ = {};
     t1.nameMeter.textContent = newValue;
     B.updateConsole("Setting name to \"" + H.S(value) + "\"");
   }, "call$1", "setName$closure", 2, 0, 0],
+  setLocation: [function(value) {
+    var loadStreet;
+    value = J.replaceFirst$2$s(value, "L", "G");
+    loadStreet = document.createElement("script", null);
+    J.set$src$x(loadStreet, "http://revdancatt.github.io/CAT422-glitch-location-viewer/locations/" + value + ".callback.json");
+    document.body.appendChild(loadStreet);
+    B.updateConsole("Teleporting to " + value);
+  }, "call$1", "setLocation$closure", 2, 0, 0],
   setSong: [function(value) {
     var t1, c, t2, t3;
     t1 = {};
@@ -3648,7 +3656,7 @@ var $$ = {};
     document.querySelector("#PlayerHolder").appendChild(otherPlayer.playerCanvas);
   },
   updateOtherPlayer: function(map, otherPlayer) {
-    var t1, t2, x, y, facingRight, transform;
+    var t1, t2, x, y;
     t1 = $.CurrentPlayer.animations;
     t2 = J.getInterceptor$asx(map);
     otherPlayer.set$currentAnimation(t1.$index(t1, t2.$index(map, "animation")));
@@ -3685,22 +3693,7 @@ var $$ = {};
         otherPlayer.chatBubble = null;
       }
     }
-    facingRight = J.$eq(t2.$index(map, "facingRight"), "true") && true;
-    t1 = otherPlayer.playerName;
-    if (!facingRight) {
-      transform = "" + " scale(-1,1)";
-      J.set$transform$x(t1.style, "scale(-1,1)");
-      t1 = otherPlayer.chatBubble;
-      if (t1 != null)
-        J.set$transform$x(t1.textElement.style, "scale(-1,1)");
-    } else {
-      J.set$transform$x(t1.style, "scale(1,1)");
-      t1 = otherPlayer.chatBubble;
-      if (t1 != null)
-        J.set$transform$x(t1.textElement.style, "scale(1,1)");
-      transform = "";
-    }
-    J.set$transform$x(otherPlayer.playerCanvas.style, transform);
+    otherPlayer.facingRight = J.$eq(t2.$index(map, "facingRight"), "true") && true;
   },
   removeOtherPlayer: function(map) {
     var t1, t2;
@@ -3926,7 +3919,7 @@ var $$ = {};
     t1.forEach$1(t1, new B.loop_closure());
     t1 = $.timeLast + $.get$game().updateTimeStep;
     $.timeLast = t1;
-    if (t1 > 0.03) {
+    if (t1 > 0.015) {
       t1 = $.playerSocket;
       t1 = t1 != null && t1.readyState === 1;
     } else
@@ -4901,7 +4894,7 @@ var $$ = {};
       var t1;
       $.get$chat().init$0();
       $.otherPlayers = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
-      t1 = W.WebSocket_WebSocket("ws://localhost:8080/playerUpdate", null);
+      t1 = W.WebSocket_WebSocket("ws://couserver.herokuapp.com/playerUpdate", null);
       $.playerSocket = t1;
       C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B.main____closure());
       t1 = B.Player$(null);
@@ -5081,6 +5074,14 @@ var $$ = {};
           t1.add$1(t1, "icon-collapse-alt");
         }
       }
+      if (target.id === "MapGlyph")
+        if (document.querySelector("#MapWindow").hidden === true) {
+          document.querySelector("#MapWindow").hidden = false;
+          document.querySelector(".ConsoleInput").focus();
+        } else
+          document.querySelector("#MapWindow").hidden = true;
+      if (target.id === "CloseMap")
+        document.querySelector("#MapWindow").hidden = true;
       if (target.className === "ChannelName") {
         t1 = target.id;
         t1 = C.JSString_methods.substring$1(t1, J.getInterceptor$asx(t1).indexOf$1(t1, "-") + 1);
@@ -5572,11 +5573,25 @@ var $$ = {};
   loop_closure: {
     "": "Closure:33;",
     call$2: function(username, otherPlayer) {
-      var x, y;
+      var x, transform, t1, t2;
       x = otherPlayer.get$posX();
-      y = otherPlayer.posY;
-      J.set$top$x(otherPlayer.playerCanvas.style, J.$add$ns(J.toString$0(y), "px"));
-      J.set$left$x(otherPlayer.playerCanvas.style, J.$add$ns(J.toString$0(x), "px"));
+      transform = "translateY(" + H.S(otherPlayer.posY) + "px) translateX(" + H.S(x) + "px) translateZ(0)";
+      t1 = otherPlayer.facingRight;
+      t2 = otherPlayer.playerName;
+      if (!t1) {
+        transform += " scale(-1,1)";
+        J.set$transform$x(t2.style, "scale(-1,1)");
+        t1 = otherPlayer.chatBubble;
+        if (t1 != null)
+          J.set$transform$x(t1.textElement.style, "scale(-1,1)");
+      } else {
+        transform += " scale(1,1)";
+        J.set$transform$x(t2.style, "scale(1,1)");
+        t1 = otherPlayer.chatBubble;
+        if (t1 != null)
+          J.set$transform$x(t1.textElement.style, "scale(1,1)");
+      }
+      J.set$transform$x(otherPlayer.playerCanvas.style, transform);
     }
   },
   TouchScroller: {
@@ -5655,7 +5670,7 @@ var $$ = {};
     }
   },
   UserInterface: {
-    "": "Object;commaFormatter,gameScreenWidth,gameScreenHeight,nameMeter,currantMeter,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent",
+    "": "Object;commaFormatter,gameScreenWidth,gameScreenHeight,nameMeter,currantMeter,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent,currLocation,map",
     init$0: function() {
       C._BeforeUnloadEventStreamProvider_beforeunload.forTarget$1(window).listen$1(new B.UserInterface_init_closure());
       B.resize();
@@ -5665,6 +5680,7 @@ var $$ = {};
       B.setMaxEnergy("100");
       B.setMood("100");
       B.setMaxMood("100");
+      this.currLocation.textContent = $.currentStreet.label;
     },
     _setEnergy$1: function(newValue) {
       var t1, t2, t3, angle;
@@ -6020,6 +6036,7 @@ var $$ = {};
       exitsElement.textContent = " Exits";
       t2 = t1.exits;
       t2.forEach$1(t2, new B.Street_load__closure1(exitsElement));
+      document.querySelector("#Location").textContent = t1.label;
       $.get$camera().dirty = true;
       t2 = this.c_1.future;
       if (t2._state !== 0)
@@ -16461,6 +16478,7 @@ Isolate.$lazy($, "COMMANDS", "COMMANDS", "get$COMMANDS", function() {
   t1.push(["setcurrants", "\"setcurrants <value>\" Changes the currant meters value", B.setCurrants$closure()]);
   t1.push(["setimg", "\"setimg <value>\" Changes the img meters value", B.setImg$closure()]);
   t1.push(["setname", "\"setname <value>\" Changes the players displayed name", B.setName$closure()]);
+  t1.push(["setlocation", "\"setlocation<tsid>\" Changes the current street", B.setLocation$closure()]);
   t1.push(["setsong", "\"setsong <value>\" Changes the currently playing song", B.setSong$closure()]);
   t1.push(["setvolume", "\"setvolume <1-100>\" Changes the volume of the current song", B.setVolume$closure()]);
   t1.push(["togglefps", "show or hide the fps display\"", B.toggleFps$closure()]);
@@ -16476,7 +16494,7 @@ Isolate.$lazy($, "twoDigit", "twoDigit", "get$twoDigit", function() {
   return T.NumberFormat_NumberFormat("#0", null);
 });
 Isolate.$lazy($, "ui", "ui", "get$ui", function() {
-  var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16;
+  var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18;
   t1 = T.NumberFormat_NumberFormat("#,###", null);
   t2 = document.querySelector("#PlayerName");
   t3 = document.querySelector("#CurrCurrants");
@@ -16493,8 +16511,10 @@ Isolate.$lazy($, "ui", "ui", "get$ui", function() {
   t14 = document.querySelector("#CurrMood");
   t15 = document.querySelector("#MaxMood");
   t16 = document.querySelector("#MoodPercent");
+  t17 = document.querySelector("#Location");
+  t18 = document.querySelector("#MapGlyph");
   J.set$innerHtml$x(t11, C.JSInt_methods.toString$0(100));
-  return new B.UserInterface(t1, null, null, t2, t3, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16);
+  return new B.UserInterface(t1, null, null, t2, t3, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16, t17, t18);
 });
 Isolate.$lazy($, "chat", "chat", "get$chat", function() {
   return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
