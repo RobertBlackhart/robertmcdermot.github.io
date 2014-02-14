@@ -3604,15 +3604,12 @@ var $$ = {};
         doneLoading.play();
       }
     }
-    P.print("checked volume stuffs");
     $.get$ui().init$0();
-    P.print("inited the ui");
     B.updateConsole("System: Initializing..");
     t1 = new B.Input(null, null, null, null, null, false, false);
     t1.Input$0();
     t1.init$0();
     $.playerInput = t1;
-    P.print("created player input and inited");
     B.updateConsole("System: Initialization Finished.");
     B.updateConsole("");
     B.updateConsole("COU DEVELOPMENT CONSOLE");
@@ -3649,7 +3646,6 @@ var $$ = {};
     t3 = t1.get$_requestAnimationFrame(t1);
     C.Window_methods._ensureRequestAnimationFrame$0(t2);
     t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
-    P.print("started the game");
   },
   createOtherPlayer: function(map) {
     var t1, otherPlayer, t2;
@@ -3920,8 +3916,10 @@ var $$ = {};
         J.set$transform$x(t2.textElement.style, "scale(1,1)");
     }
     J.set$transform$x(t1.playerCanvas.style, transform);
+    P.print("updated current player");
     t1 = $.otherPlayers;
     t1.forEach$1(t1, new B.loop_closure());
+    P.print("updated other players");
     t1 = $.timeLast + $.get$game().updateTimeStep;
     $.timeLast = t1;
     if (t1 > 0.015) {
@@ -3945,6 +3943,7 @@ var $$ = {};
         map.$indexSet(map, "bubbleText", t1.text);
       $.playerSocket.send(C.C_JsonCodec.encode$1(map));
     }
+    P.print("sent currentplayer info");
   },
   resize: function() {
     var gameScreen, t1, warningMessage;
@@ -6152,13 +6151,15 @@ var $$ = {};
     call$1: function(gameLoop) {
       var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
       if ($.showFps) {
+        J.set$display$x($.get$fpsDisplay().style, "block");
         now = P.DateTime$_now();
         t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
         t2 = $.get$fpsDisplay();
         t3 = $.get$twoDigit();
         t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
         $.last = now;
-      }
+      } else
+        J.set$display$x($.get$fpsDisplay().style, "none");
       sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
       year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
       sec -= year * 4435200;
@@ -6199,15 +6200,18 @@ var $$ = {};
       J.set$innerHtml$x(document.querySelector("#CurrDay"), data[3]);
       J.set$innerHtml$x(document.querySelector("#CurrTime"), data[4]);
       J.set$innerHtml$x(document.querySelector("#CurrDate"), data[2] + " of " + data[1]);
+      P.print("refreshed clock");
       P.DateTime$_now();
       t1 = $.currentStreet;
       t2 = J.getInterceptor(t1);
       if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
         t1.render$0();
+      P.print("rendered street");
       t1 = $.CurrentPlayer;
       t2 = J.getInterceptor(t1);
       if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
         t1.toString;
+      P.print("rendered player");
     }
   }
 },
