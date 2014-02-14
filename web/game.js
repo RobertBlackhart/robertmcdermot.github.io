@@ -3591,6 +3591,7 @@ var $$ = {};
     var t1, doneLoading, t2, t3;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
     P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure());
+    P.print("before check volume");
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = $.get$ASSET();
       if (t1.$index(t1, "game_loaded") != null) {
@@ -3603,12 +3604,15 @@ var $$ = {};
         doneLoading.play();
       }
     }
+    P.print("checked volume stuffs");
     $.get$ui().init$0();
+    P.print("inited the ui");
     B.updateConsole("System: Initializing..");
     t1 = new B.Input(null, null, null, null, null, false, false);
     t1.Input$0();
     t1.init$0();
     $.playerInput = t1;
+    P.print("created player input and inited");
     B.updateConsole("System: Initialization Finished.");
     B.updateConsole("");
     B.updateConsole("COU DEVELOPMENT CONSOLE");
@@ -3645,6 +3649,7 @@ var $$ = {};
     t3 = t1.get$_requestAnimationFrame(t1);
     C.Window_methods._ensureRequestAnimationFrame$0(t2);
     t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
+    P.print("started the game");
   },
   createOtherPlayer: function(map) {
     var t1, otherPlayer, t2;
@@ -4892,17 +4897,14 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1;
-      P.print("before chat init");
       $.get$chat().init$0();
-      P.print("chat inited");
       $.otherPlayers = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       t1 = W.WebSocket_WebSocket("ws://couserver.herokuapp.com/playerUpdate", null);
       $.playerSocket = t1;
       C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B.main____closure());
-      P.print("listening for other players");
-      $.CurrentPlayer = B.Player$(null);
-      P.print("made new player");
-      $.CurrentPlayer.loadAnimations$0().then$1(new B.main____closure0());
+      t1 = B.Player$(null);
+      $.CurrentPlayer = t1;
+      t1.loadAnimations$0().then$1(new B.main____closure0());
     }
   },
   main____closure: {
@@ -4933,7 +4935,6 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1, t2, playButton;
-      P.print("loaded animations");
       t1 = $.CurrentPlayer;
       t2 = t1.animations;
       t1.currentAnimation = t2.$index(t2, "idle");
@@ -4957,7 +4958,6 @@ var $$ = {};
         t1 = C.EventStreamProvider_click.forElement$1(playButton);
         t1.get$first(t1).then$1(new B.main_____closure());
       }
-      P.print("called start");
     }
   },
   main_____closure: {
