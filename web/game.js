@@ -4892,14 +4892,17 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1;
+      P.print("before chat init");
       $.get$chat().init$0();
+      P.print("chat inited");
       $.otherPlayers = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       t1 = W.WebSocket_WebSocket("ws://couserver.herokuapp.com/playerUpdate", null);
       $.playerSocket = t1;
       C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B.main____closure());
-      t1 = B.Player$(null);
-      $.CurrentPlayer = t1;
-      t1.loadAnimations$0().then$1(new B.main____closure0());
+      P.print("listening for other players");
+      $.CurrentPlayer = B.Player$(null);
+      P.print("made new player");
+      $.CurrentPlayer.loadAnimations$0().then$1(new B.main____closure0());
     }
   },
   main____closure: {
@@ -4930,6 +4933,7 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(_) {
       var t1, t2, playButton;
+      P.print("loaded animations");
       t1 = $.CurrentPlayer;
       t2 = t1.animations;
       t1.currentAnimation = t2.$index(t2, "idle");
@@ -4953,6 +4957,7 @@ var $$ = {};
         t1 = C.EventStreamProvider_click.forElement$1(playButton);
         t1.get$first(t1).then$1(new B.main_____closure());
       }
+      P.print("called start");
     }
   },
   main_____closure: {
@@ -5956,7 +5961,6 @@ var $$ = {};
     "": "Closure:3;this_0,c_1",
     call$1: function(_) {
       var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, filters, t4, t5, deco, x, y, w, h, z, t6, d, transform, exitsElement;
-      P.print("all decos loaded");
       t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = document.createElement("div", null);
@@ -5975,7 +5979,6 @@ var $$ = {};
       J.set$background$x(gradientCanvas.style, "-ms-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
       J.set$background$x(gradientCanvas.style, "-o-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
       $.get$layers().appendChild(gradientCanvas);
-      P.print("gradient canvas on");
       for (t2 = J.$index$asx(J.$index$asx(t1._data, "dynamic"), "layers"), t3 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), t3.addAll$1(t3, t2), t3 = t3.get$values(t3), t3 = H.setRuntimeTypeInfo(new H.MappedIterator(null, J.get$iterator$ax(t3._iterable), t3._f), [H.getTypeArgumentByIndex(t3, 0), H.getTypeArgumentByIndex(t3, 1)]); t3.moveNext$0();) {
         layer = t3._current;
         decoCanvas = document.createElement("div", null);
@@ -6031,7 +6034,6 @@ var $$ = {};
         for (t2 = J.get$iterator$ax(t2.$index(layer, "signposts")); t2.moveNext$0();)
           J.forEach$1$ax(H.listTypeCast(J.$index$asx(t2.get$current(), "connects")), new B.Street_load__closure0(t1));
         $.get$layers().appendChild(decoCanvas);
-        H.printString("attached layer");
       }
       exitsElement = document.querySelector("#Exits");
       t2 = J.get$children$x(exitsElement);
@@ -6039,14 +6041,12 @@ var $$ = {};
       exitsElement.textContent = " Exits";
       t2 = t1.exits;
       t2.forEach$1(t2, new B.Street_load__closure1(exitsElement));
-      P.print("made exits");
       document.querySelector("#Location").textContent = t1.label;
       $.get$camera().dirty = true;
       t2 = this.c_1.future;
       if (t2._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
-      P.print("load complete");
     }
   },
   Street_load__closure: {
