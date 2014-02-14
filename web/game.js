@@ -5857,7 +5857,6 @@ var $$ = {};
     "": "Object;label,_data,exits,bounds",
     load$0: function(_) {
       var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
-      P.print("load street");
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       t1 = J.get$children$x($.get$layers());
       t1.clear$0(t1);
@@ -5930,7 +5929,6 @@ var $$ = {};
     },
     Street$1: function(streetName) {
       var t1, playerHolder, t2;
-      P.print("new street");
       t1 = $.get$ASSET();
       t1 = t1.$index(t1, streetName).get$0();
       this._data = t1;
@@ -5958,6 +5956,7 @@ var $$ = {};
     "": "Closure:3;this_0,c_1",
     call$1: function(_) {
       var t1, gradientCanvas, t2, $top, bottom, t3, layer, decoCanvas, filters, t4, t5, deco, x, y, w, h, z, t6, d, transform, exitsElement;
+      P.print("all decos loaded");
       t1 = this.this_0;
       $.currentStreet = t1;
       gradientCanvas = document.createElement("div", null);
@@ -5976,6 +5975,7 @@ var $$ = {};
       J.set$background$x(gradientCanvas.style, "-ms-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
       J.set$background$x(gradientCanvas.style, "-o-linear-gradient(#" + H.S($top) + ", #" + H.S(bottom) + ")");
       $.get$layers().appendChild(gradientCanvas);
+      P.print("gradient canvas on");
       for (t2 = J.$index$asx(J.$index$asx(t1._data, "dynamic"), "layers"), t3 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), t3.addAll$1(t3, t2), t3 = t3.get$values(t3), t3 = H.setRuntimeTypeInfo(new H.MappedIterator(null, J.get$iterator$ax(t3._iterable), t3._f), [H.getTypeArgumentByIndex(t3, 0), H.getTypeArgumentByIndex(t3, 1)]); t3.moveNext$0();) {
         layer = t3._current;
         decoCanvas = document.createElement("div", null);
@@ -6031,6 +6031,7 @@ var $$ = {};
         for (t2 = J.get$iterator$ax(t2.$index(layer, "signposts")); t2.moveNext$0();)
           J.forEach$1$ax(H.listTypeCast(J.$index$asx(t2.get$current(), "connects")), new B.Street_load__closure0(t1));
         $.get$layers().appendChild(decoCanvas);
+        H.printString("attached layer");
       }
       exitsElement = document.querySelector("#Exits");
       t2 = J.get$children$x(exitsElement);
@@ -6038,12 +6039,14 @@ var $$ = {};
       exitsElement.textContent = " Exits";
       t2 = t1.exits;
       t2.forEach$1(t2, new B.Street_load__closure1(exitsElement));
+      P.print("made exits");
       document.querySelector("#Location").textContent = t1.label;
       $.get$camera().dirty = true;
       t2 = this.c_1.future;
       if (t2._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
+      P.print("load complete");
     }
   },
   Street_load__closure: {
