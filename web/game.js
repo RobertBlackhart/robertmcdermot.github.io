@@ -3493,7 +3493,7 @@ var $$ = {};
   }, "call$1", "setName$closure", 2, 0, 0],
   setLocation: [function(value) {
     var loadStreet;
-    value = J.replaceFirst$2$s(value, "L", "G");
+    value = C.JSString_methods.trim$0(J.replaceFirst$2$s(value, "L", "G"));
     loadStreet = document.createElement("script", null);
     J.set$src$x(loadStreet, "http://revdancatt.github.io/CAT422-glitch-location-viewer/locations/" + value + ".callback.json");
     document.body.appendChild(loadStreet);
@@ -3555,8 +3555,7 @@ var $$ = {};
     if (intvalue != null) {
       volumeSlider = H.interceptedTypeCast(document.querySelector("#VolumeSlider"), "$isInputElement");
       $.get$localStorage().setItem("prevVolume", volumeSlider.value);
-      volumeSlider.value = J.getInterceptor$s(value).trim$0(value);
-      H.interceptedTypeCast(document.querySelector("#rangevalue"), "$isOutputElement").value = C.JSString_methods.trim$0(value);
+      volumeSlider.value = J.trim$0$s(value);
       t1 = $.get$ui().currentSong;
       if (t1 != null)
         J.volume$1$x(t1, intvalue);
@@ -4370,7 +4369,7 @@ var $$ = {};
       if (t1 === "Local Chat") {
         map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
         map.$indexSet(map, "statusMessage", "hint");
-        map.$indexSet(map, "message", "Hint :\nYou can set your chat name by typing '/setname [name]'<br><br>You can get a list of people in this chat room by typing '/list'");
+        map.$indexSet(map, "message", "Hint :\nYou can set your chat name by typing '/setname my_name'<br><br>You can get a list of people in this chat room by typing '/list'");
         this._addmessage$1(map);
       }
       this.setupWebSocket$2(this.chatHistory, t1);
@@ -11418,7 +11417,6 @@ var $$ = {};
   },
   OutputElement: {
     "": "HtmlElement;name%,type=,value%",
-    $isOutputElement: true,
     "%": "HTMLOutputElement"
   },
   ParamElement: {
@@ -16478,7 +16476,7 @@ Isolate.$lazy($, "COMMANDS", "COMMANDS", "get$COMMANDS", function() {
   t1.push(["setcurrants", "\"setcurrants <value>\" Changes the currant meters value", B.setCurrants$closure()]);
   t1.push(["setimg", "\"setimg <value>\" Changes the img meters value", B.setImg$closure()]);
   t1.push(["setname", "\"setname <value>\" Changes the players displayed name", B.setName$closure()]);
-  t1.push(["setlocation", "\"setlocation<tsid>\" Changes the current street", B.setLocation$closure()]);
+  t1.push(["setlocation", "\"setlocation <tsid>\" Changes the current street", B.setLocation$closure()]);
   t1.push(["setsong", "\"setsong <value>\" Changes the currently playing song", B.setSong$closure()]);
   t1.push(["setvolume", "\"setvolume <1-100>\" Changes the volume of the current song", B.setVolume$closure()]);
   t1.push(["togglefps", "show or hide the fps display\"", B.toggleFps$closure()]);
