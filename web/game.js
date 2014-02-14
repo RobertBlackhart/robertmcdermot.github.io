@@ -5857,6 +5857,7 @@ var $$ = {};
     "": "Object;label,_data,exits,bounds",
     load$0: function(_) {
       var c, t1, decosToLoad, t2, deco, t3, assetsToLoad, decos;
+      P.print("load street");
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       t1 = J.get$children$x($.get$layers());
       t1.clear$0(t1);
@@ -5879,9 +5880,8 @@ var $$ = {};
     },
     render$0: function() {
       var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, transforms, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
-      if ($.get$camera().dirty) {
-        P.print("we're here");
-        t1 = $.get$camera();
+      t1 = $.get$camera();
+      if (t1.dirty) {
         t2 = t1._x;
         t3 = this.bounds;
         t4 = t3.width;
@@ -5904,7 +5904,6 @@ var $$ = {};
         if (typeof t1 !== "number")
           return t1.$div();
         currentPercentY = t1 / (t3 - t5);
-        P.print("percentX: " + H.S(currentPercentX) + ", percentY: " + H.S(currentPercentY));
         transforms = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
         for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
           canvas = t1._current;
@@ -5931,6 +5930,7 @@ var $$ = {};
     },
     Street$1: function(streetName) {
       var t1, playerHolder, t2;
+      P.print("new street");
       t1 = $.get$ASSET();
       t1 = t1.$index(t1, streetName).get$0();
       this._data = t1;
