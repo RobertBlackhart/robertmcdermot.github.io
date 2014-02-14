@@ -5903,6 +5903,7 @@ var $$ = {};
         if (typeof t1 !== "number")
           return t1.$div();
         currentPercentY = t1 / (t3 - t5);
+        P.print("percentX: " + H.S(currentPercentX) + ", percentY: " + H.S(currentPercentY));
         transforms = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
         for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
           canvas = t1._current;
