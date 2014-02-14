@@ -5879,8 +5879,9 @@ var $$ = {};
     },
     render$0: function() {
       var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, transforms, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
-      t1 = $.get$camera();
-      if (t1.dirty) {
+      if ($.get$camera().dirty) {
+        P.print("we're here");
+        t1 = $.get$camera();
         t2 = t1._x;
         t3 = this.bounds;
         t4 = t3.width;
