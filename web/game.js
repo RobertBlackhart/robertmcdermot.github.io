@@ -3555,8 +3555,8 @@ var $$ = {};
     if (intvalue != null) {
       volumeSlider = H.interceptedTypeCast(document.querySelector("#VolumeSlider"), "$isInputElement");
       $.get$localStorage().setItem("prevVolume", volumeSlider.value);
-      volumeSlider.value = J.getInterceptor$s(value).trim$0(value);
-      H.interceptedTypeCast(document.querySelector("#rangevalue"), "$isOutputElement").textContent = C.JSString_methods.trim$0(value);
+      volumeSlider.value = J.trim$0$s(value);
+      H.interceptedTypeCast(document.querySelector("#rangevalue"), "$isOutputElement").value = value;
       t1 = $.get$ui().currentSong;
       if (t1 != null)
         J.volume$1$x(t1, intvalue);
