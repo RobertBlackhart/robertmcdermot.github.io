@@ -3591,7 +3591,6 @@ var $$ = {};
     var t1, doneLoading, t2, t3;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
     P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure());
-    P.print("before check volume");
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
       t1 = $.get$ASSET();
       if (t1.$index(t1, "game_loaded") != null) {
@@ -3706,6 +3705,7 @@ var $$ = {};
   },
   loop: function() {
     var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
+    P.print("inside loop");
     t1 = $.CurrentPlayer;
     t2 = $.get$game().updateTimeStep;
     t3 = t1.chatBubble;
@@ -6150,6 +6150,7 @@ var $$ = {};
     "": "Closure:3;",
     call$1: function(gameLoop) {
       var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
+      P.print("inside render");
       if ($.showFps) {
         J.set$display$x($.get$fpsDisplay().style, "block");
         now = P.DateTime$_now();
