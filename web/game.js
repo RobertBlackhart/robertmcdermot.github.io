@@ -3672,6 +3672,8 @@ var $$ = {};
   loop: function(dt) {
     var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
     t1 = $.CurrentPlayer;
+    t1.toString;
+    P.print("delta time: " + H.S(dt));
     t2 = t1.chatBubble;
     if (t2 != null) {
       t3 = t2.timeToLive;
