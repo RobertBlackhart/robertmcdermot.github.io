@@ -589,11 +589,6 @@ var $$ = {};
         throw H.wrapException(new P.ArgumentError(other));
       return receiver - other;
     },
-    $mul: function(receiver, other) {
-      if (typeof other !== "number")
-        throw H.wrapException(new P.ArgumentError(other));
-      return receiver * other;
-    },
     $mod: function(receiver, other) {
       var result;
       if (typeof other !== "number")
@@ -3703,248 +3698,6 @@ var $$ = {};
     t2 = C.JSString_methods.$add("#player-", t2.$index(map, "username"));
     J.remove$0$ax(document.querySelector(t2));
   },
-  loop: function() {
-    var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
-    P.print("inside loop");
-    t1 = $.CurrentPlayer;
-    t2 = $.get$game().updateTimeStep;
-    t3 = t1.chatBubble;
-    if (t3 != null) {
-      t4 = t3.timeToLive;
-      if (t4 <= 0) {
-        J.remove$0$ax(t3.bubble);
-        t1.chatBubble = null;
-      } else {
-        t3.timeToLive = t4 - t2;
-        t1.playerCanvas.appendChild(t3.bubble);
-      }
-    }
-    t3 = $.playerInput;
-    if (t3.rightKey) {
-      t1.posX = J.$add$ns(t1.posX, $.CurrentPlayer.speed);
-      t1.facingRight = true;
-      t1.moving = true;
-    } else if (t3.leftKey) {
-      t1.posX = J.$sub$n(t1.posX, $.CurrentPlayer.speed);
-      t1.facingRight = false;
-      t1.moving = true;
-    } else
-      t1.moving = false;
-    if ($.playerInput.spaceKey && !t1.jumping) {
-      if (C.C__JSRandom.nextInt$1(4) === 3)
-        t1.yVel = -20;
-      else
-        t1.yVel = -15;
-      t1.jumping = true;
-    }
-    if (t1.doPhysicsApply) {
-      t2 = t1.yVel - t1.yAccel * t2;
-      t1.yVel = t2;
-      t1.posY = J.$tdiv$n(J.$add$ns(t1.posY, t2), 1);
-    } else {
-      if ($.playerInput.downKey)
-        t1.posY = J.$add$ns(t1.posY, $.CurrentPlayer.speed);
-      if ($.playerInput.upKey)
-        t1.posY = J.$sub$n(t1.posY, $.CurrentPlayer.speed);
-    }
-    if (J.$lt$n(t1.posX, 0))
-      t1.posX = 0;
-    t2 = t1.posX;
-    t3 = $.currentStreet.bounds.width;
-    t4 = t1.width;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    if (J.$gt$n(t2, t3 - t4)) {
-      t2 = $.currentStreet.bounds.width;
-      t3 = t1.width;
-      if (typeof t2 !== "number")
-        return t2.$sub();
-      t1.posX = t2 - t3;
-    }
-    t2 = t1.posY;
-    t3 = $.currentStreet.bounds.height;
-    t4 = t1.canvasHeight;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    if (typeof t4 !== "number")
-      return H.iae(t4);
-    if (J.$gt$n(t2, t3 - t4)) {
-      t2 = $.currentStreet.bounds.height;
-      t3 = t1.canvasHeight;
-      if (typeof t2 !== "number")
-        return t2.$sub();
-      if (typeof t3 !== "number")
-        return H.iae(t3);
-      t1.posY = t2 - t3;
-      t1.yVel = 0;
-      t1.jumping = false;
-    }
-    if (J.$lt$n(t1.posY, 0))
-      t1.posY = 0;
-    t2 = t1.moving;
-    if (!t2 && !t1.jumping) {
-      t2 = t1.animations;
-      t1.currentAnimation = t2.$index(t2, "idle");
-    } else if (t2 && !t1.jumping) {
-      t2 = t1.animations;
-      t1.currentAnimation = t2.$index(t2, "base");
-    } else {
-      t2 = t1.jumping;
-      t3 = t1.animations;
-      if (t2)
-        t1.currentAnimation = t3.$index(t3, "jump");
-      else
-        t1.currentAnimation = t3.$index(t3, "stillframe");
-    }
-    if (!J.contains$1$asx(J.get$backgroundImage$x(t1.avatar.style), J.get$backgroundImage$x(t1.currentAnimation))) {
-      J.set$backgroundImage$x(t1.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(t1.currentAnimation)) + ")");
-      J.set$width$x(t1.avatar.style, J.toString$0(J.get$width$x(t1.currentAnimation)) + "px");
-      J.set$height$x(t1.avatar.style, J.toString$0(J.get$height$x(t1.currentAnimation)) + "px");
-      J.set$animation$x(t1.avatar.style, t1.currentAnimation.get$animationStyleString());
-      t1.canvasHeight = J.$add$ns(J.get$height$x(t1.currentAnimation), 50);
-    }
-    translateX = t1.posX;
-    t2 = $.get$ui();
-    t3 = t2.gameScreenHeight;
-    t4 = t1.canvasHeight;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    if (typeof t4 !== "number")
-      return H.iae(t4);
-    $.get$camera()._y;
-    t3 = $.currentStreet.bounds.width;
-    t4 = t1.width;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    t2 = t2.gameScreenWidth;
-    if (typeof t2 !== "number")
-      return t2.$div();
-    if (J.$gt$n(translateX, t3 - t4 / 2 - t2 / 2)) {
-      t2 = $.currentStreet.bounds.width;
-      t3 = $.get$ui().gameScreenWidth;
-      if (typeof t2 !== "number")
-        return t2.$sub();
-      if (typeof t3 !== "number")
-        return H.iae(t3);
-      camX = t2 - t3;
-      translateX = J.$add$ns(J.$sub$n(t1.posX, t2), $.get$ui().gameScreenWidth);
-    } else {
-      t2 = J.$add$ns(t1.posX, t1.width / 2);
-      t3 = $.get$ui().gameScreenWidth;
-      if (typeof t3 !== "number")
-        return t3.$div();
-      if (J.$gt$n(t2, t3 / 2)) {
-        t2 = J.$add$ns(t1.posX, t1.width / 2);
-        t3 = $.get$ui().gameScreenWidth;
-        if (typeof t3 !== "number")
-          return t3.$div();
-        camX = J.$sub$n(t2, t3 / 2);
-        t3 = $.get$ui().gameScreenWidth;
-        if (typeof t3 !== "number")
-          return t3.$div();
-        translateX = t3 / 2 - t1.width / 2;
-      } else
-        camX = 0;
-    }
-    t2 = t1.posY;
-    t3 = t1.canvasHeight;
-    if (typeof t3 !== "number")
-      return t3.$div();
-    t3 = J.$add$ns(t2, t3 / 2);
-    t2 = $.get$ui().gameScreenHeight;
-    if (typeof t2 !== "number")
-      return t2.$div();
-    if (J.$lt$n(t3, t2 / 2)) {
-      translateY = t1.posY;
-      camY = 0;
-    } else {
-      t2 = t1.posY;
-      t3 = $.currentStreet.bounds.height;
-      t4 = t1.canvasHeight;
-      if (typeof t4 !== "number")
-        return t4.$div();
-      if (typeof t3 !== "number")
-        return t3.$sub();
-      t5 = $.get$ui().gameScreenHeight;
-      if (typeof t5 !== "number")
-        return t5.$div();
-      t5 = J.$lt$n(t2, t3 - t4 / 2 - t5 / 2);
-      t4 = $.currentStreet;
-      if (t5) {
-        t2 = t4.bounds.height;
-        t3 = t1.posY;
-        if (typeof t2 !== "number")
-          return t2.$sub();
-        if (typeof t3 !== "number")
-          return H.iae(t3);
-        t4 = t1.canvasHeight;
-        if (typeof t4 !== "number")
-          return t4.$div();
-        t5 = $.get$ui().gameScreenHeight;
-        if (typeof t5 !== "number")
-          return t5.$div();
-        camY = t2 - (t2 - t3 - t4 / 2 + t5 / 2);
-        translateY = t5 / 2 - t4 / 2;
-      } else {
-        t2 = t4.bounds.height;
-        t3 = $.get$ui().gameScreenHeight;
-        if (typeof t2 !== "number")
-          return t2.$sub();
-        if (typeof t3 !== "number")
-          return H.iae(t3);
-        camY = t2 - t3;
-        t4 = t1.posY;
-        if (typeof t4 !== "number")
-          return H.iae(t4);
-        translateY = t3 - (t2 - t4);
-      }
-    }
-    $.get$camera().setCamera$1(J.toString$0(J.$tdiv$n(camX, 1)) + "," + C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camY, 1)));
-    transform = C.JSString_methods.$add("translateZ(0) translateX(" + J.toString$0(translateX) + "px) translateY(", J.toString$0(translateY)) + "px)";
-    t2 = t1.facingRight;
-    t3 = t1.playerName;
-    if (!t2) {
-      transform += " scale(-1,1)";
-      J.set$transform$x(t3.style, "scale(-1,1)");
-      t2 = t1.chatBubble;
-      if (t2 != null)
-        J.set$transform$x(t2.textElement.style, "scale(-1,1)");
-    } else {
-      J.set$transform$x(t3.style, "scale(1,1)");
-      t2 = t1.chatBubble;
-      if (t2 != null)
-        J.set$transform$x(t2.textElement.style, "scale(1,1)");
-    }
-    J.set$transform$x(t1.playerCanvas.style, transform);
-    P.print("updated current player");
-    t1 = $.otherPlayers;
-    t1.forEach$1(t1, new B.loop_closure());
-    P.print("updated other players");
-    t1 = $.timeLast + $.get$game().updateTimeStep;
-    $.timeLast = t1;
-    if (t1 > 0.015) {
-      t1 = $.playerSocket;
-      t1 = t1 != null && t1.readyState === 1;
-    } else
-      t1 = false;
-    if (t1) {
-      if (J.$eq(J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY)), $.lastXY))
-        return;
-      xy = J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY));
-      $.timeLast = 0;
-      map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
-      map.$indexSet(map, "username", $.get$chat().username);
-      map.$indexSet(map, "xy", xy);
-      map.$indexSet(map, "street", $.currentStreet.label);
-      map.$indexSet(map, "facingRight", String($.CurrentPlayer.facingRight));
-      map.$indexSet(map, "animation", J.get$animationName$x($.CurrentPlayer.currentAnimation));
-      t1 = $.CurrentPlayer.chatBubble;
-      if (t1 != null)
-        map.$indexSet(map, "bubbleText", t1.text);
-      $.playerSocket.send(C.C_JsonCodec.encode$1(map));
-    }
-    P.print("sent currentplayer info");
-  },
   resize: function() {
     var gameScreen, t1, warningMessage;
     gameScreen = document.querySelector("#GameScreen");
@@ -4031,7 +3784,7 @@ var $$ = {};
       }}
   },
   Animation: {
-    "": "Object;backgroundImage>,animationName>,animationStyleString<,width>,height>",
+    "": "Object;backgroundImage>,animationName,animationStyleString<,width>,height>",
     load$0: function(_) {
       var c, temp, t1;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
@@ -5574,30 +5327,6 @@ var $$ = {};
   JoystickEvent: {
     "": "Object;"
   },
-  loop_closure: {
-    "": "Closure:33;",
-    call$2: function(username, otherPlayer) {
-      var x, transform, t1, t2;
-      x = otherPlayer.get$posX();
-      transform = "translateY(" + H.S(otherPlayer.posY) + "px) translateX(" + H.S(x) + "px) translateZ(0)";
-      t1 = otherPlayer.facingRight;
-      t2 = otherPlayer.playerName;
-      if (!t1) {
-        transform += " scale(-1,1)";
-        J.set$transform$x(t2.style, "scale(-1,1)");
-        t1 = otherPlayer.chatBubble;
-        if (t1 != null)
-          J.set$transform$x(t1.textElement.style, "scale(-1,1)");
-      } else {
-        transform += " scale(1,1)";
-        J.set$transform$x(t2.style, "scale(1,1)");
-        t1 = otherPlayer.chatBubble;
-        if (t1 != null)
-          J.set$transform$x(t1.textElement.style, "scale(1,1)");
-      }
-      J.set$transform$x(otherPlayer.playerCanvas.style, transform);
-    }
-  },
   TouchScroller: {
     "": "Object;_scrollDiv,_startX,_startY,_lastX,_lastY,_direction",
     TouchScroller$2: function(_scrollDiv, _direction) {
@@ -5783,7 +5512,7 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;posX<,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
+    "": "Object;posX,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
     loadAnimations$0: function() {
       var t1, futures;
       t1 = this.animations;
@@ -5819,7 +5548,6 @@ var $$ = {};
       $.get$gameScreen().appendChild(this.playerCanvas);
       this.canvasHeight = this.playerCanvas.clientHeight;
     },
-    $isPlayer: true,
     static: {Player$: function($name) {
         var t1 = new B.Player(null, null, null, null, null, null, null, -40, false, false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, null, true, null, null, null);
         t1.Player$1($name);
@@ -5827,7 +5555,7 @@ var $$ = {};
       }}
   },
   Player_loadAnimations_closure: {
-    "": "Closure:34;futures_0",
+    "": "Closure:33;futures_0",
     call$2: function($name, animation) {
       return this.futures_0.push(J.load$0$x(animation));
     }
@@ -5855,7 +5583,7 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]: " + H.S(error));
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 35]
+    }, "call$1", "get$setCamera", 2, 0, 34]
   },
   Street: {
     "": "Object;label,_data,exits,bounds",
@@ -5881,56 +5609,6 @@ var $$ = {};
       decos.load$1(decos, B.setStreetLoadBar$closure()).then$1(new B.Street_load_closure(this, c));
       return c.future;
     },
-    render$0: function() {
-      var t1, t2, t3, t4, t5, t6, currentPercentX, currentPercentY, transforms, canvas, canvasWidth, canvasHeight, offsetX, offsetY;
-      t1 = $.get$camera();
-      if (t1.dirty) {
-        t2 = t1._x;
-        t3 = this.bounds;
-        t4 = t3.width;
-        t5 = $.get$ui();
-        t6 = t5.gameScreenWidth;
-        if (typeof t4 !== "number")
-          return t4.$sub();
-        if (typeof t6 !== "number")
-          return H.iae(t6);
-        if (typeof t2 !== "number")
-          return t2.$div();
-        currentPercentX = t2 / (t4 - t6);
-        t1 = t1._y;
-        t3 = t3.height;
-        t5 = t5.gameScreenHeight;
-        if (typeof t3 !== "number")
-          return t3.$sub();
-        if (typeof t5 !== "number")
-          return H.iae(t5);
-        if (typeof t1 !== "number")
-          return t1.$div();
-        currentPercentY = t1 / (t3 - t5);
-        transforms = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
-        for (t1 = W._FrozenElementList$_wrap($.get$gameScreen().querySelectorAll(".streetcanvas"), null), t1 = t1.get$iterator(t1); t1.moveNext$0();) {
-          canvas = t1._current;
-          t2 = J.getInterceptor$x(canvas);
-          t3 = J.get$width$x(t2.get$style(canvas));
-          t3.toString;
-          canvasWidth = H.Primitives_parseInt(H.stringReplaceAllUnchecked(t3, "px", ""), null, null);
-          t3 = J.get$height$x(t2.get$style(canvas));
-          t3.toString;
-          canvasHeight = H.Primitives_parseInt(H.stringReplaceAllUnchecked(t3, "px", ""), null, null);
-          offsetX = J.$mul$n(J.$sub$n(canvasWidth, $.get$ui().gameScreenWidth), currentPercentX);
-          offsetY = J.$add$ns(J.$mul$n(J.$sub$n(canvasHeight, $.get$ui().gameScreenHeight), currentPercentY), H.Primitives_parseInt(t2.get$attributes(canvas)._element.getAttribute("ground_y"), null, null));
-          t2 = J.$add$ns(canvas.id, "translateZ(0) translateX(");
-          if (typeof offsetX !== "number")
-            return offsetX.$negate();
-          t2 = t2 + C.JSNumber_methods.toString$0(-offsetX) + "px) translateY(";
-          if (typeof offsetY !== "number")
-            return offsetY.$negate();
-          transforms.$indexSet(transforms, t2 + C.JSNumber_methods.toString$0(-offsetY) + "px)", canvas);
-        }
-        transforms.forEach$1(transforms, new B.Street_render_closure());
-        $.get$camera().dirty = false;
-      }
-    },
     Street$1: function(streetName) {
       var t1, playerHolder, t2;
       t1 = $.get$ASSET();
@@ -5949,7 +5627,6 @@ var $$ = {};
       J.set$position$x(playerHolder.style, "absolute");
       playerHolder.setAttribute("ground_y", "0");
     },
-    $isStreet: true,
     static: {Street$: function(streetName) {
         var t1 = new B.Street(null, null, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null);
         t1.Street$1(streetName);
@@ -6049,7 +5726,7 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "": "Closure:36;filters_2",
+    "": "Closure:35;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
       t1 = J.getInterceptor(filterName);
@@ -6095,7 +5772,7 @@ var $$ = {};
     }
   },
   Street_load__closure0: {
-    "": "Closure:37;this_3",
+    "": "Closure:36;this_3",
     call$1: function(exit) {
       var t1, t2;
       t1 = this.this_3.exits;
@@ -6104,7 +5781,7 @@ var $$ = {};
     }
   },
   Street_load__closure1: {
-    "": "Closure:38;exitsElement_4",
+    "": "Closure:37;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
       tsid = J.replaceFirst$2$s(tsid, "L", "G");
@@ -6116,16 +5793,8 @@ var $$ = {};
       this.exitsElement_4.appendChild(exitLabel);
     }
   },
-  Street_render_closure: {
-    "": "Closure:39;",
-    call$2: function(transform, canvas) {
-      var t1 = J.getInterceptor$x(canvas);
-      transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
-      J.set$transform$x(t1.get$style(canvas), transform);
-    }
-  },
   load_streets_closure: {
-    "": "Closure:40;c_0",
+    "": "Closure:38;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -6143,76 +5812,11 @@ var $$ = {};
   closure: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
-      B.loop();
     }
   },
   closure0: {
     "": "Closure:3;",
     call$1: function(gameLoop) {
-      var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
-      P.print("inside render");
-      if ($.showFps) {
-        J.set$display$x($.get$fpsDisplay().style, "block");
-        now = P.DateTime$_now();
-        t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
-        t2 = $.get$fpsDisplay();
-        t3 = $.get$twoDigit();
-        t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
-        $.last = now;
-      } else
-        J.set$display$x($.get$fpsDisplay().style, "none");
-      sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
-      year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
-      sec -= year * 4435200;
-      day_of_year = C.JSNumber_methods.toInt$0(Math.floor(sec / 14400));
-      sec -= day_of_year * 14400;
-      hour = C.JSNumber_methods.toInt$0(Math.floor(sec / 600));
-      minute = C.JSNumber_methods.toInt$0(Math.floor((sec - hour * 600) / 10));
-      MonthAndDay = G.day_to_md(day_of_year);
-      day_of_week = C.JSInt_methods.$mod(day_of_year + 307 * year, 8);
-      if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "1"))
-        suffix = "st";
-      else if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "2"))
-        suffix = "nd";
-      else
-        suffix = C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "3") ? "rd" : "th";
-      h = C.JSInt_methods.toString$0(hour);
-      m = C.JSInt_methods.toString$0(minute);
-      if (minute < 10)
-        m = "0" + C.JSInt_methods.toString$0(minute);
-      if (hour >= 12) {
-        if (hour > 12)
-          h = C.JSInt_methods.toString$0(hour - 12);
-        ampm = "pm";
-      } else
-        ampm = "am";
-      CurrentTime = (h === "0" ? C.JSInt_methods.toString$0(12) : h) + ":" + m + ampm;
-      t1 = "Year " + C.JSInt_methods.toString$0(year);
-      t2 = $.get$Months();
-      t3 = MonthAndDay[0] - 1;
-      if (t3 < 0 || t3 >= 12)
-        return H.ioore(t2, t3);
-      t3 = t2[t3];
-      t2 = C.JSInt_methods.toString$0(MonthAndDay[1]) + suffix;
-      t4 = $.get$Days_of_Week();
-      if (day_of_week < 0 || day_of_week >= 8)
-        return H.ioore(t4, day_of_week);
-      data = [t1, t3, t2, t4[day_of_week], CurrentTime];
-      J.set$innerHtml$x(document.querySelector("#CurrDay"), data[3]);
-      J.set$innerHtml$x(document.querySelector("#CurrTime"), data[4]);
-      J.set$innerHtml$x(document.querySelector("#CurrDate"), data[2] + " of " + data[1]);
-      P.print("refreshed clock");
-      P.DateTime$_now();
-      t1 = $.currentStreet;
-      t2 = J.getInterceptor(t1);
-      if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
-        t1.render$0();
-      P.print("rendered street");
-      t1 = $.CurrentPlayer;
-      t2 = J.getInterceptor(t1);
-      if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
-        t1.toString;
-      P.print("rendered player");
     }
   }
 },
@@ -6549,7 +6153,7 @@ var $$ = {};
         callback.call$0();
       } catch (exception) {
         H.unwrapException(exception);
-        milliseconds = C.JSNumber_methods._tdivFast$1(C.Duration_0._duration, 1000);
+        milliseconds = C.JSInt_methods._tdivFast$1(C.Duration_0._duration, 1000);
         H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, P._asyncRunCallback$closure());
         throw exception;
       }
@@ -6664,13 +6268,13 @@ var $$ = {};
       t1.toString;
       if (C.C__RootZone !== t1)
         callback = t1.bindCallback$1(callback);
-      milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
+      milliseconds = C.JSInt_methods._tdivFast$1(duration._duration, 1000);
       return H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
     }
     callback = t1.bindCallback$2$runGuarded(callback, true);
     if (C.C__RootZone !== t1)
       callback = t1.bindCallback$1(callback);
-    milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
+    milliseconds = C.JSInt_methods._tdivFast$1(duration._duration, 1000);
     return H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
   },
   Timer_Timer$periodic: function(duration, callback) {
@@ -6682,7 +6286,7 @@ var $$ = {};
     return P._rootCreatePeriodicTimer(t1, null, t1, duration, t1.bindUnaryCallback$2$runGuarded(callback, true));
   },
   _createTimer: function(duration, callback) {
-    var milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
+    var milliseconds = C.JSInt_methods._tdivFast$1(duration._duration, 1000);
     return H.TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
   },
   _rootHandleUncaughtError: function($self, $parent, zone, error, stackTrace) {
@@ -6740,7 +6344,7 @@ var $$ = {};
     var milliseconds;
     if (C.C__RootZone !== zone)
       callback = zone.bindUnaryCallback$1(callback);
-    milliseconds = C.JSNumber_methods._tdivFast$1(duration._duration, 1000);
+    milliseconds = C.JSInt_methods._tdivFast$1(duration._duration, 1000);
     return H.TimerImpl$periodic(milliseconds < 0 ? 0 : milliseconds, callback);
   },
   _AsyncError: {
@@ -6851,7 +6455,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 41, 10],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 39, 10],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -7018,7 +6622,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:42;box_0,eagerError_2,pos_3",
+    "": "Closure:40;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -7055,7 +6659,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 41, 10],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 39, 10],
     $as_Completer: null
   },
   _Future: {
@@ -7326,7 +6930,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:43;target_1",
+    "": "Closure:41;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -7432,7 +7036,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:43;box_0,listener_7",
+    "": "Closure:41;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -7523,7 +7127,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:44;box_0,future_6",
+    "": "Closure:42;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -8243,7 +7847,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:45;subscription_0,future_1",
+    "": "Closure:43;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -10258,7 +9862,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:46;box_0,this_1",
+    "": "Closure:44;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -10381,7 +9985,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:47;box_0",
+    "": "Closure:45;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -10443,7 +10047,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:48;",
+    "": "Closure:46;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -10458,7 +10062,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:48;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -10468,7 +10072,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:48;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -10483,13 +10087,10 @@ var $$ = {};
     $sub: function(_, other) {
       return P.Duration$(0, 0, this._duration - other.get$_duration(), 0, 0, 0);
     },
-    $mul: function(_, factor) {
-      return P.Duration$(0, 0, C.JSNumber_methods.toInt$0(C.JSNumber_methods.roundToDouble$0(this._duration * factor)), 0, 0, 0);
-    },
     $tdiv: function(_, quotient) {
       if (quotient === 0)
         throw H.wrapException(P.IntegerDivisionByZeroException$());
-      return P.Duration$(0, 0, C.JSNumber_methods.$tdiv(this._duration, quotient), 0, 0, 0);
+      return P.Duration$(0, 0, C.JSInt_methods.$tdiv(this._duration, quotient), 0, 0, 0);
     },
     $lt: function(_, other) {
       return this._duration < other.get$_duration();
@@ -10498,13 +10099,13 @@ var $$ = {};
       return this._duration > other.get$_duration();
     },
     $le: function(_, other) {
-      return C.JSNumber_methods.$le(this._duration, other.get$_duration());
+      return C.JSInt_methods.$le(this._duration, other.get$_duration());
     },
     $ge: function(_, other) {
-      return C.JSNumber_methods.$ge(this._duration, other.get$_duration());
+      return C.JSInt_methods.$ge(this._duration, other.get$_duration());
     },
     get$inMilliseconds: function() {
-      return C.JSNumber_methods._tdivFast$1(this._duration, 1000);
+      return C.JSInt_methods._tdivFast$1(this._duration, 1000);
     },
     $eq: function(_, other) {
       var t1;
@@ -10524,10 +10125,10 @@ var $$ = {};
       t2 = this._duration;
       if (t2 < 0)
         return "-" + H.S(P.Duration$(0, 0, -t2, 0, 0, 0));
-      twoDigitMinutes = t1.call$1(C.JSNumber_methods.remainder$1(C.JSNumber_methods._tdivFast$1(t2, 60000000), 60));
-      twoDigitSeconds = t1.call$1(C.JSNumber_methods.remainder$1(C.JSNumber_methods._tdivFast$1(t2, 1000000), 60));
-      sixDigitUs = new P.Duration_toString_sixDigits().call$1(C.JSNumber_methods.remainder$1(t2, 1000000));
-      return H.S(C.JSNumber_methods._tdivFast$1(t2, 3600000000)) + ":" + H.S(twoDigitMinutes) + ":" + H.S(twoDigitSeconds) + "." + H.S(sixDigitUs);
+      twoDigitMinutes = t1.call$1(C.JSInt_methods.remainder$1(C.JSInt_methods._tdivFast$1(t2, 60000000), 60));
+      twoDigitSeconds = t1.call$1(C.JSInt_methods.remainder$1(C.JSInt_methods._tdivFast$1(t2, 1000000), 60));
+      sixDigitUs = new P.Duration_toString_sixDigits().call$1(C.JSInt_methods.remainder$1(t2, 1000000));
+      return "" + C.JSInt_methods._tdivFast$1(t2, 3600000000) + ":" + H.S(twoDigitMinutes) + ":" + H.S(twoDigitSeconds) + "." + H.S(sixDigitUs);
     },
     $isDuration: true,
     static: {"": "Duration_MICROSECONDS_PER_MILLISECOND,Duration_MILLISECONDS_PER_SECOND,Duration_SECONDS_PER_MINUTE,Duration_MINUTES_PER_HOUR,Duration_HOURS_PER_DAY,Duration_MICROSECONDS_PER_SECOND,Duration_MICROSECONDS_PER_MINUTE,Duration_MICROSECONDS_PER_HOUR,Duration_MICROSECONDS_PER_DAY,Duration_MILLISECONDS_PER_MINUTE,Duration_MILLISECONDS_PER_HOUR,Duration_MILLISECONDS_PER_DAY,Duration_SECONDS_PER_HOUR,Duration_SECONDS_PER_DAY,Duration_MINUTES_PER_DAY,Duration_ZERO", Duration$: function(days, hours, microseconds, milliseconds, minutes, seconds) {
@@ -10535,27 +10136,27 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:48;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 100000)
-        return H.S(n);
+        return "" + n;
       if (n >= 10000)
-        return "0" + H.S(n);
+        return "0" + n;
       if (n >= 1000)
-        return "00" + H.S(n);
+        return "00" + n;
       if (n >= 100)
-        return "000" + H.S(n);
+        return "000" + n;
       if (n > 10)
-        return "0000" + H.S(n);
-      return "00000" + H.S(n);
+        return "0000" + n;
+      return "00000" + n;
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:48;",
+    "": "Closure:46;",
     call$1: function(n) {
       if (n >= 10)
-        return H.S(n);
-      return "0" + H.S(n);
+        return "" + n;
+      return "0" + n;
     }
   },
   Error: {
@@ -10914,7 +10515,7 @@ var $$ = {};
   },
   HtmlElement: {
     "": "Element;",
-    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
+    "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLDivElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
   },
   AnchorElement: {
     "": "HtmlElement;hostname=,href},port=,protocol=,target=,type%",
@@ -10922,10 +10523,6 @@ var $$ = {};
       return receiver.toString();
     },
     "%": "HTMLAnchorElement"
-  },
-  AnimationEvent: {
-    "": "Event;animationName=",
-    "%": "WebKitAnimationEvent"
   },
   AreaElement: {
     "": "HtmlElement;hostname=,href},port=,protocol=,target=",
@@ -11000,10 +10597,6 @@ var $$ = {};
     },
     $isCssStyleSheet: true,
     "%": "CSSStyleSheet"
-  },
-  DivElement: {
-    "": "HtmlElement;",
-    "%": "HTMLDivElement"
   },
   DocumentFragment: {
     "": "Node;",
@@ -11147,7 +10740,7 @@ var $$ = {};
       return receiver.stopPropagation();
     },
     $isEvent: true,
-    "%": "AudioProcessingEvent|AutocompleteErrorEvent|BeforeLoadEvent|CSSFontFaceLoadEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|HashChangeEvent|IDBVersionChangeEvent|MIDIConnectionEvent|MediaKeyEvent|MediaKeyMessageEvent|MediaKeyNeededEvent|MediaStreamEvent|MediaStreamTrackEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|RTCDTMFToneChangeEvent|RTCDataChannelEvent|RTCIceCandidateEvent|SecurityPolicyViolationEvent|SpeechInputEvent|SpeechRecognitionEvent|SpeechSynthesisEvent|StorageEvent|TrackEvent|TransitionEvent|WebGLContextEvent|WebKitTransitionEvent;Event"
+    "%": "AudioProcessingEvent|AutocompleteErrorEvent|BeforeLoadEvent|CSSFontFaceLoadEvent|CustomEvent|DeviceMotionEvent|DeviceOrientationEvent|HashChangeEvent|IDBVersionChangeEvent|MIDIConnectionEvent|MediaKeyEvent|MediaKeyMessageEvent|MediaKeyNeededEvent|MediaStreamEvent|MediaStreamTrackEvent|MutationEvent|OfflineAudioCompletionEvent|OverflowEvent|PageTransitionEvent|PopStateEvent|RTCDTMFToneChangeEvent|RTCDataChannelEvent|RTCIceCandidateEvent|SecurityPolicyViolationEvent|SpeechInputEvent|SpeechRecognitionEvent|SpeechSynthesisEvent|StorageEvent|TrackEvent|TransitionEvent|WebGLContextEvent|WebKitAnimationEvent|WebKitTransitionEvent;Event"
   },
   EventTarget: {
     "": "Interceptor;",
@@ -11937,9 +11530,6 @@ var $$ = {};
     "": "Object;",
     set$animation: function(receiver, value) {
       this.setProperty$3(receiver, P.Device_cssPrefix() + "animation", value, "");
-    },
-    get$animationName: function(receiver) {
-      return this.getPropertyValue$1(receiver, P.Device_cssPrefix() + "animation-name");
     },
     set$background: function(receiver, value) {
       this.setProperty$3(receiver, "background", value, "");
@@ -13000,7 +12590,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:49;this_0",
+    "": "Closure:47;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13313,18 +12903,6 @@ var $$ = {};
       if (typeof t2 !== "number")
         return H.iae(t2);
       t2 = new P.Point(t1 - t3, t4 - t2);
-      t2.$builtinTypeInfo = this.$builtinTypeInfo;
-      return t2;
-    },
-    $mul: function(_, factor) {
-      var t1, t2;
-      t1 = this.x;
-      if (typeof t1 !== "number")
-        return t1.$mul();
-      t2 = this.y;
-      if (typeof t2 !== "number")
-        return t2.$mul();
-      t2 = new P.Point(t1 * factor, t2 * factor);
       t2.$builtinTypeInfo = this.$builtinTypeInfo;
       return t2;
     },
@@ -13983,48 +13561,48 @@ var $$ = {};
         this._renderInterpolationFactor = this._accumulatedTime / t2;
         this.onRender$1(this);
       }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 50],
+    }, "call$1", "get$_requestAnimationFrame", 2, 0, 48],
     _fullscreenChange$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 51],
+    }, "call$1", "get$_fullscreenChange", 2, 0, 49],
     _fullscreenError$1: [function(_) {
       return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 51],
+    }, "call$1", "get$_fullscreenError", 2, 0, 49],
     _touchStartEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 52],
+    }, "call$1", "get$_touchStartEvent", 2, 0, 50],
     _touchMoveEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 52],
+    }, "call$1", "get$_touchMoveEvent", 2, 0, 50],
     _touchEndEvent$1: [function($event) {
       this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 52],
+    }, "call$1", "get$_touchEndEvent", 2, 0, 50],
     _keyDown$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 53],
+    }, "call$1", "get$_keyDown", 2, 0, 51],
     _keyUp$1: [function($event) {
       this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 53],
+    }, "call$1", "get$_keyUp", 2, 0, 51],
     _mouseDown$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 54],
+    }, "call$1", "get$_mouseDown", 2, 0, 52],
     _mouseUp$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 54],
+    }, "call$1", "get$_mouseUp", 2, 0, 52],
     _mouseMove$1: [function($event) {
       this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 54],
+    }, "call$1", "get$_mouseMove", 2, 0, 52],
     _mouseWheel$1: [function($event) {
       this._mouseEvents.push($event);
       J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 54],
+    }, "call$1", "get$_mouseWheel", 2, 0, 52],
     _resize$1: [function(_) {
       if (!this._resizePending)
         this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 51],
+    }, "call$1", "get$_resize", 2, 0, 49],
     onRender$1: function(arg0) {
       return this.onRender.call$1(arg0);
     },
@@ -14064,9 +13642,9 @@ var $$ = {};
     _onClick$1: [function($event) {
       if (this.lockOnClick)
         this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 51],
+    }, "call$1", "get$_onClick", 2, 0, 49],
     _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 51],
+    }, "call$1", "get$_onPointerLockChange", 2, 0, 49],
     PointerLock$1: function(gameLoop) {
       var t1 = this.gameLoop.element;
       t1.toString;
@@ -14130,7 +13708,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__start_closure: {
-    "": "Closure:55;this_0",
+    "": "Closure:53;this_0",
     call$1: function(touch) {
       var glTouch, t1, t2;
       glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
@@ -14143,7 +13721,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__end_closure: {
-    "": "Closure:55;this_0",
+    "": "Closure:53;this_0",
     call$1: function(touch) {
       var t1, t2, glTouch;
       t1 = this.this_0;
@@ -14156,7 +13734,7 @@ var $$ = {};
     }
   },
   GameLoopTouchSet__move_closure: {
-    "": "Closure:55;this_0",
+    "": "Closure:53;this_0",
     call$1: function(touch) {
       var t1, t2;
       t1 = this.this_0;
@@ -14170,23 +13748,6 @@ var $$ = {};
       if (!this.this_0._inTouchList$2(this.touches_1, identifier))
         P.print("Did not find " + H.S(identifier));
     }
-  }
-}],
-["glitchTime", "package:glitchTime/glitch-time.dart", , G, {
-  "": "",
-  day_to_md: function(id) {
-    var months, daysinMonths, cd, i, t1;
-    months = [29, 3, 53, 17, 73, 19, 13, 37, 5, 47, 11, 1];
-    daysinMonths = months[0] + months[1] + months[2] + months[3] + months[4] + months[5] + months[6] + months[7] + months[8] + months[9] + months[10] + months[11];
-    for (cd = 0, i = 0; i < daysinMonths; ++i) {
-      if (i >= 12)
-        return H.ioore(months, i);
-      t1 = months[i];
-      cd += t1;
-      if (cd > id)
-        return [i + 1, id + 1 - (cd - t1)];
-    }
-    return [0, 0];
   }
 }],
 ["html_common", "dart:html_common", , P, {
@@ -14260,7 +13821,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:56;copies_3",
+    "": "Closure:54;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -15492,18 +15053,18 @@ Isolate.$finishClasses($$, $, null);
 $$ = null;
 
 // Runtime type support
-W.Node.$isNode = true;
-W.Node.$isEventTarget = true;
-W.Node.$isObject = true;
 J.JSInt.$isint = true;
 J.JSInt.$isnum = true;
 J.JSInt.$isObject = true;
 J.JSDouble.$isnum = true;
 J.JSDouble.$isObject = true;
-J.JSString.$isString = true;
-J.JSString.$isObject = true;
 W.Touch.$isTouch = true;
 W.Touch.$isObject = true;
+W.Node.$isNode = true;
+W.Node.$isEventTarget = true;
+W.Node.$isObject = true;
+J.JSString.$isString = true;
+J.JSString.$isObject = true;
 W.StyleSheet.$isObject = true;
 J.JSNumber.$isnum = true;
 J.JSNumber.$isObject = true;
@@ -15581,13 +15142,6 @@ P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
 P._BufferingStreamSubscription.$is_EventSink = true;
 P._BufferingStreamSubscription.$isStreamSubscription = true;
 P._BufferingStreamSubscription.$isObject = true;
-W.DivElement.$isDivElement = true;
-W.DivElement.$isElement = true;
-W.DivElement.$isNode = true;
-W.DivElement.$isEventTarget = true;
-W.DivElement.$isObject = true;
-B.Player.$isPlayer = true;
-B.Player.$isObject = true;
 P.Timer.$isTimer = true;
 P.Timer.$isObject = true;
 P.Future.$isFuture = true;
@@ -15597,12 +15151,12 @@ W._Html5NodeValidator.$isNodeValidator = true;
 W._Html5NodeValidator.$isObject = true;
 W.EventTarget.$isEventTarget = true;
 W.EventTarget.$isObject = true;
-P.DateTime.$isDateTime = true;
-P.DateTime.$isObject = true;
 P._DelayedEvent.$is_DelayedEvent = true;
 P._DelayedEvent.$isObject = true;
 P._EventSink.$is_EventSink = true;
 P._EventSink.$isObject = true;
+P.DateTime.$isDateTime = true;
+P.DateTime.$isObject = true;
 P.Function.$isFunction = true;
 P.Function.$isObject = true;
 $.$signature_void_ = {func: "void_", void: true};
@@ -15734,11 +15288,6 @@ J.$lt$n = function(receiver, a0) {
     return receiver < a0;
   return J.getInterceptor$n(receiver).$lt(receiver, a0);
 };
-J.$mul$n = function(receiver, a0) {
-  if (typeof receiver == "number" && typeof a0 == "number")
-    return receiver * a0;
-  return J.getInterceptor$n(receiver).$mul(receiver, a0);
-};
 J.$sub$n = function(receiver, a0) {
   if (typeof receiver == "number" && typeof a0 == "number")
     return receiver - a0;
@@ -15788,9 +15337,6 @@ J.forEach$1$ax = function(receiver, a0) {
 };
 J.get$_key$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$_key(receiver);
-};
-J.get$animationName$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$animationName(receiver);
 };
 J.get$backgroundImage$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$backgroundImage(receiver);
@@ -16367,8 +15913,6 @@ $.consolelistener = null;
 $.playerSocket = null;
 $.otherPlayers = null;
 $.playerInput = null;
-$.timeLast = 0;
-$.lastXY = "";
 $.showFps = false;
 $.TouchScroller_HORIZONTAL = 0;
 $.TouchScroller_VERTICAL = 1;
@@ -16493,15 +16037,6 @@ Isolate.$lazy($, "COMMANDS", "COMMANDS", "get$COMMANDS", function() {
   t1.push(["togglefps", "show or hide the fps display\"", B.toggleFps$closure()]);
   return t1;
 });
-Isolate.$lazy($, "last", "last", "get$last", function() {
-  return P.DateTime$_now();
-});
-Isolate.$lazy($, "fpsDisplay", "fpsDisplay", "get$fpsDisplay", function() {
-  return document.querySelector("#fps");
-});
-Isolate.$lazy($, "twoDigit", "twoDigit", "get$twoDigit", function() {
-  return T.NumberFormat_NumberFormat("#0", null);
-});
 Isolate.$lazy($, "ui", "ui", "get$ui", function() {
   var t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18;
   t1 = T.NumberFormat_NumberFormat("#,###", null);
@@ -16588,12 +16123,6 @@ Isolate.$lazy($, "_buttonIds", "Keyboard__buttonIds", "get$Keyboard__buttonIds",
 Isolate.$lazy($, "_buttonIds", "Mouse__buttonIds", "get$Mouse__buttonIds", function() {
   return [0, 1, 2];
 });
-Isolate.$lazy($, "Months", "Months", "get$Months", function() {
-  return ["Primuary", "Spork", "Bruise", "Candy", "Fever", "Junuary", "Septa", "Remember", "Doom", "Widdershins", "Eleventy", "Recurse"];
-});
-Isolate.$lazy($, "Days_of_Week", "Days_of_Week", "get$Days_of_Week", function() {
-  return ["Hairday", "Moonday", "Twoday", "Weddingday", "Theday", "Fryday", "Standday", "Fabday"];
-});
 Isolate.$lazy($, "ASSET", "ASSET", "get$ASSET", function() {
   return H.fillLiteralMap([], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null));
 });
@@ -16646,13 +16175,11 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__TouchEvent", args: [W.TouchEvent]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
-{func: "dynamic__String_Player", args: [J.JSString, B.Player]},
 {func: "dynamic__String_Animation", args: [J.JSString, B.Animation]},
 {func: "void__String", void: true, args: [J.JSString]},
 {func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__Map", args: [[P.Map, J.JSString, J.JSString]]},
 {func: "dynamic__String_String", args: [J.JSString, J.JSString]},
-{func: "dynamic__String_DivElement", args: [J.JSString, W.DivElement]},
 {func: "dynamic__Asset", args: [E.Asset]},
 {func: "void__Object__StackTrace", void: true, args: [P.Object], opt: [P.StackTrace]},
 {func: "dynamic__Object", args: [P.Object]},
