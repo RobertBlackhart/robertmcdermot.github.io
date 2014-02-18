@@ -1834,6 +1834,22 @@ var $$ = {};
       return handleError.call$1(source);
     return parseInt(source, 10);
   },
+  Primitives_parseDouble: function(source, handleError) {
+    var result, trimmed;
+    if (typeof source !== "string")
+      H.throwExpression(new P.ArgumentError(source));
+    handleError = H.Primitives__throwFormatException$closure();
+    if (!/^\s*[+-]?(?:Infinity|NaN|(?:\.\d+|\d+(?:\.\d*)?)(?:[eE][+-]?\d+)?)\s*$/.test(source))
+      return handleError.call$1(source);
+    result = parseFloat(source);
+    if (isNaN(result)) {
+      trimmed = J.trim$0$s(source);
+      if (trimmed === "NaN" || trimmed === "+NaN" || trimmed === "-NaN")
+        return result;
+      return handleError.call$1(source);
+    }
+    return result;
+  },
   Primitives_objectTypeName: function(object) {
     var $name, decompiled;
     $name = C.JS_CONST_IX5(J.getInterceptor(object));
@@ -3635,14 +3651,15 @@ var $$ = {};
     }
     J.set$position$x(otherPlayer.playerCanvas.style, "absolute");
     otherPlayer.playerCanvas.id = C.JSString_methods.$add("player-", t2.$index(map, "username"));
+    P.print(t2.$index(map, "xy"));
     t1 = J.split$1$s(t2.$index(map, "xy"), ",");
     if (0 >= t1.length)
       return H.ioore(t1, 0);
-    x = H.Primitives_parseInt(t1[0], null, null);
+    x = H.Primitives_parseDouble(t1[0], null);
     t1 = J.split$1$s(t2.$index(map, "xy"), ",");
     if (1 >= t1.length)
       return H.ioore(t1, 1);
-    y = H.Primitives_parseInt(t1[1], null, null);
+    y = H.Primitives_parseDouble(t1[1], null);
     otherPlayer.posX = x;
     otherPlayer.posY = y;
     if (t2.$index(map, "bubbleText") != null) {
@@ -3685,11 +3702,11 @@ var $$ = {};
     }
     t2 = $.playerInput;
     if (t2.rightKey) {
-      t1.posX = J.$add$ns(t1.posX, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
+      t1.posX = J.$add$ns(t1.posX, $.CurrentPlayer.speed * dt);
       t1.facingRight = true;
       t1.moving = true;
     } else if (t2.leftKey) {
-      t1.posX = J.$sub$n(t1.posX, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
+      t1.posX = J.$sub$n(t1.posX, $.CurrentPlayer.speed * dt);
       t1.facingRight = false;
       t1.moving = true;
     } else
@@ -3704,12 +3721,12 @@ var $$ = {};
     if (t1.doPhysicsApply) {
       t2 = t1.yVel - t1.yAccel * dt;
       t1.yVel = t2;
-      t1.posY = J.$tdiv$n(J.$add$ns(t1.posY, t2), 1);
+      t1.posY = J.$add$ns(t1.posY, t2);
     } else {
       if ($.playerInput.downKey)
-        t1.posY = J.$add$ns(t1.posY, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
+        t1.posY = J.$add$ns(t1.posY, $.CurrentPlayer.speed * dt);
       if ($.playerInput.upKey)
-        t1.posY = J.$sub$n(t1.posY, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
+        t1.posY = J.$sub$n(t1.posY, $.CurrentPlayer.speed * dt);
     }
     if (J.$lt$n(t1.posX, 0))
       t1.posX = 0;
@@ -3892,11 +3909,7 @@ var $$ = {};
     if (t1) {
       if (J.$eq(J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY)), $.lastXY))
         return;
-      t1 = J.toString$0(J.$tdiv$n($.CurrentPlayer.posX, 1)) + ",";
-      t2 = $.CurrentPlayer.posY;
-      if (typeof t2 !== "number")
-        return t2.$div();
-      xy = t1 + C.JSNumber_methods.toString$0(t2 / 4294967294);
+      xy = J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY));
       $.timeLast = 0;
       map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       map.$indexSet(map, "username", $.get$chat().username);
@@ -5749,7 +5762,7 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;posX<,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
+    "": "Object;width>,height>,canvasHeight,speed,posX<,posY,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
     loadAnimations$0: function() {
       var t1, futures;
       t1 = this.animations;
