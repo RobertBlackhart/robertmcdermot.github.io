@@ -3909,6 +3909,7 @@ var $$ = {};
     if (t1) {
       if (J.$eq(J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY)), $.lastXY))
         return;
+      P.print("my y: " + H.S($.CurrentPlayer.posY));
       xy = J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY));
       $.timeLast = 0;
       map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
