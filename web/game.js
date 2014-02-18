@@ -1219,7 +1219,7 @@ var $$ = {};
     }
   },
   _EventLoop__runHelper_next: {
-    "": "Closure:8;this_0",
+    "": "Closure:7;this_0",
     call$0: function() {
       if (!this.this_0.runIteration$0())
         return;
@@ -1402,7 +1402,7 @@ var $$ = {};
       t1.close$0(t1);
       t1 = this.__isolate_helper$_controller;
       t1.close$0(t1);
-    }, "call$0", "get$close", 0, 0, 8],
+    }, "call$0", "get$close", 0, 0, 7],
     ReceivePortImpl$fromRawReceivePort$1: function(_rawPort) {
       var t1 = P.StreamController_StreamController(this.get$close(this), null, null, null, true, null);
       this.__isolate_helper$_controller = t1;
@@ -1564,7 +1564,7 @@ var $$ = {};
     }
   },
   _Copier_visitMap_closure: {
-    "": "Closure:20;box_0,this_1",
+    "": "Closure:19;box_0,this_1",
     call$2: function(key, val) {
       var t1 = this.this_1;
       J.$indexSet$ax(this.box_0.copy_0, t1._dispatch$1(key), t1._dispatch$1(val));
@@ -1749,14 +1749,14 @@ var $$ = {};
       }}
   },
   TimerImpl_internalCallback: {
-    "": "Closure:8;this_0,callback_1",
+    "": "Closure:7;this_0,callback_1",
     call$0: function() {
       this.this_0._handle = null;
       this.callback_1.call$0();
     }
   },
   TimerImpl_internalCallback0: {
-    "": "Closure:8;this_2,callback_3",
+    "": "Closure:7;this_2,callback_3",
     call$0: function() {
       this.this_2._handle = null;
       var t1 = init.globalState.topEventLoop;
@@ -3194,7 +3194,7 @@ var $$ = {};
     }
   },
   initHooks_closure0: {
-    "": "Closure:21;getUnknownTag_1",
+    "": "Closure:20;getUnknownTag_1",
     call$2: function(o, tag) {
       return this.getUnknownTag_1(o, tag);
     }
@@ -3696,20 +3696,20 @@ var $$ = {};
       t1.moving = false;
     if ($.playerInput.spaceKey && !t1.jumping) {
       if (C.C__JSRandom.nextInt$1(4) === 3)
-        t1.yVel = -20;
+        t1.yVel = -35;
       else
-        t1.yVel = -15;
+        t1.yVel = -28;
       t1.jumping = true;
     }
     if (t1.doPhysicsApply) {
       t2 = t1.yVel - t1.yAccel * dt;
       t1.yVel = t2;
-      t1.posY = J.$tdiv$n(J.$add$ns(t1.posY, t2), 1);
+      t1.posY = J.$add$ns(t1.posY, t2);
     } else {
       if ($.playerInput.downKey)
-        t1.posY = J.$add$ns(t1.posY, $.CurrentPlayer.speed);
+        t1.posY = J.$add$ns(t1.posY, $.CurrentPlayer.speed * dt);
       if ($.playerInput.upKey)
-        t1.posY = J.$sub$n(t1.posY, $.CurrentPlayer.speed);
+        t1.posY = J.$sub$n(t1.posY, $.CurrentPlayer.speed * dt);
     }
     if (J.$lt$n(t1.posX, 0))
       t1.posX = 0;
@@ -3892,7 +3892,11 @@ var $$ = {};
     if (t1) {
       if (J.$eq(J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY)), $.lastXY))
         return;
-      xy = J.$add$ns(J.$add$ns(J.toString$0($.CurrentPlayer.posX), ","), J.toString$0($.CurrentPlayer.posY));
+      t1 = J.toString$0(J.$tdiv$n($.CurrentPlayer.posX, 1)) + ",";
+      t2 = $.CurrentPlayer.posY;
+      if (typeof t2 !== "number")
+        return t2.$div();
+      xy = t1 + C.JSNumber_methods.toString$0(t2 / 4294967294);
       $.timeLast = 0;
       map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       map.$indexSet(map, "username", $.get$chat().username);
@@ -3970,74 +3974,9 @@ var $$ = {};
       J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
     }
   }, "call$1", "setStreetLoadBar$closure", 2, 0, 6],
-  gameLoop: [function(delta) {
-    var t1, now, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
-    t1 = J.$sub$n(delta, $.lastTime);
-    if (typeof t1 !== "number")
-      return t1.$div();
-    B.loop(t1 / 1000);
-    if ($.showFps) {
-      J.set$display$x($.get$fpsDisplay().style, "block");
-      now = P.DateTime$_now();
-      t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
-      t2 = $.get$fpsDisplay();
-      t3 = $.get$twoDigit();
-      t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
-      $.last = now;
-    } else
-      J.set$display$x($.get$fpsDisplay().style, "none");
-    sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
-    year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
-    sec -= year * 4435200;
-    day_of_year = C.JSNumber_methods.toInt$0(Math.floor(sec / 14400));
-    sec -= day_of_year * 14400;
-    hour = C.JSNumber_methods.toInt$0(Math.floor(sec / 600));
-    minute = C.JSNumber_methods.toInt$0(Math.floor((sec - hour * 600) / 10));
-    MonthAndDay = G.day_to_md(day_of_year);
-    day_of_week = C.JSInt_methods.$mod(day_of_year + 307 * year, 8);
-    if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "1"))
-      suffix = "st";
-    else if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "2"))
-      suffix = "nd";
-    else
-      suffix = C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "3") ? "rd" : "th";
-    h = C.JSInt_methods.toString$0(hour);
-    m = C.JSInt_methods.toString$0(minute);
-    if (minute < 10)
-      m = "0" + C.JSInt_methods.toString$0(minute);
-    if (hour >= 12) {
-      if (hour > 12)
-        h = C.JSInt_methods.toString$0(hour - 12);
-      ampm = "pm";
-    } else
-      ampm = "am";
-    CurrentTime = (h === "0" ? C.JSInt_methods.toString$0(12) : h) + ":" + m + ampm;
-    t1 = "Year " + C.JSInt_methods.toString$0(year);
-    t2 = $.get$Months();
-    t3 = MonthAndDay[0] - 1;
-    if (t3 < 0 || t3 >= 12)
-      return H.ioore(t2, t3);
-    t3 = t2[t3];
-    t2 = C.JSInt_methods.toString$0(MonthAndDay[1]) + suffix;
-    t4 = $.get$Days_of_Week();
-    if (day_of_week < 0 || day_of_week >= 8)
-      return H.ioore(t4, day_of_week);
-    data = [t1, t3, t2, t4[day_of_week], CurrentTime];
-    J.set$innerHtml$x(document.querySelector("#CurrDay"), data[3]);
-    J.set$innerHtml$x(document.querySelector("#CurrTime"), data[4]);
-    J.set$innerHtml$x(document.querySelector("#CurrDate"), data[2] + " of " + data[1]);
-    P.DateTime$_now();
-    t1 = $.currentStreet;
-    t2 = J.getInterceptor(t1);
-    if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
-      t1.render$0();
-    t1 = $.CurrentPlayer;
-    t2 = J.getInterceptor(t1);
-    if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
-      t1.toString;
-    $.lastTime = delta;
-    C.Window_methods.get$animationFrame(window).then$1(B.gameLoop$closure());
-  }, "call$1", "gameLoop$closure", 2, 0, 7],
+  gameLoop: function(delta) {
+    P.Timer_Timer$periodic(P.Duration$(0, 0, 0, 50, 0, 0), new B.gameLoop_closure(delta));
+  },
   ChatBubble: {
     "": "Object;text,timeToLive,bubble,textElement",
     ChatBubble$1: function(text) {
@@ -4233,7 +4172,7 @@ var $$ = {};
     }
   },
   loadSong_closure: {
-    "": "Closure:22;name_0,c_1",
+    "": "Closure:21;name_0,c_1",
     call$1: function(s) {
       var t1 = $.get$ui().jukebox;
       t1.$indexSet(t1, this.name_0, s);
@@ -4327,7 +4266,7 @@ var $$ = {};
     }
   },
   Chat_init_closure: {
-    "": "Closure:23;this_0",
+    "": "Closure:22;this_0",
     call$1: function($event) {
       var checkbox, t1;
       checkbox = H.interceptedTypeCast(J.get$target$x($event), "$isCheckboxInputElement");
@@ -4344,13 +4283,13 @@ var $$ = {};
     }
   },
   Chat_init_closure0: {
-    "": "Closure:24;this_1",
+    "": "Closure:23;this_1",
     call$1: function(element) {
       J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_1._showJoinMessages);
     }
   },
   Chat_init_closure1: {
-    "": "Closure:24;this_2",
+    "": "Closure:23;this_2",
     call$1: function(element) {
       J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_2._playMentionSound);
     }
@@ -4375,7 +4314,7 @@ var $$ = {};
       document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
     }, function() {
       return this.resetMessages$1(null);
-    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 25, 11],
+    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 24, 10],
     getDiv$0: function() {
       var t1, span, t2, input, t3, map;
       t1 = document.createElement("div", null);
@@ -4664,14 +4603,14 @@ var $$ = {};
       }}
   },
   TabContent_resetMessages_closure: {
-    "": "Closure:26;box_0",
+    "": "Closure:25;box_0",
     call$1: function(tabContent) {
       var t1 = this.box_0;
       t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
     }
   },
   TabContent_processInput_closure: {
-    "": "Closure:27;this_0,input_1",
+    "": "Closure:26;this_0,input_1",
     call$1: function(key) {
       var t1, t2, startIndex, t3, t4, t5, username, index;
       if (J.get$keyCode$x(key) === 9) {
@@ -4717,7 +4656,7 @@ var $$ = {};
     }
   },
   TabContent_processInput_closure0: {
-    "": "Closure:27;this_2,input_3",
+    "": "Closure:26;this_2,input_3",
     call$1: function(key) {
       var t1, t2;
       if (J.get$keyCode$x(key) !== 9)
@@ -4758,7 +4697,7 @@ var $$ = {};
     }
   },
   TabContent_setupWebSocket_closure0: {
-    "": "Closure:28;this_3,channelName_4",
+    "": "Closure:27;this_3,channelName_4",
     call$1: function(messageEvent) {
       var t1, map, t2, t3, prevUnread, t4, t5, selector;
       t1 = {};
@@ -4821,7 +4760,7 @@ var $$ = {};
     }
   },
   TabContent_setupWebSocket__closure0: {
-    "": "Closure:26;box_0",
+    "": "Closure:25;box_0",
     call$1: function(tabContent) {
       var t1 = this.box_0;
       t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
@@ -4858,7 +4797,7 @@ var $$ = {};
     }
   },
   TabContent__parseForUrls_closure: {
-    "": "Closure:29;box_0",
+    "": "Closure:28;box_0",
     call$1: function(m) {
       var url, t1;
       url = m.$index(m, 0);
@@ -4936,7 +4875,7 @@ var $$ = {};
     }
   },
   main____closure: {
-    "": "Closure:28;",
+    "": "Closure:27;",
     call$1: function($event) {
       var map, t1, t2;
       map = C.C_JsonCodec.decode$1(J.get$data$x($event));
@@ -5285,7 +5224,7 @@ var $$ = {};
     }
   },
   Input_init_closure3: {
-    "": "Closure:27;this_3",
+    "": "Closure:26;this_3",
     call$1: function(k) {
       var t1;
       if ((J.get$keyCode$x(k) === 38 || k.keyCode === 87) && !this.this_3.ignoreKeys)
@@ -5304,7 +5243,7 @@ var $$ = {};
     }
   },
   Input_init_closure4: {
-    "": "Closure:27;this_4",
+    "": "Closure:26;this_4",
     call$1: function(k) {
       var t1;
       if ((J.get$keyCode$x(k) === 38 || k.keyCode === 87) && !this.this_4.ignoreKeys)
@@ -5357,7 +5296,7 @@ var $$ = {};
     }
   },
   Input_init_closure7: {
-    "": "Closure:30;this_8",
+    "": "Closure:29;this_8",
     call$1: function($event) {
       var t1, target, t2;
       t1 = J.getInterceptor$x($event);
@@ -5372,7 +5311,7 @@ var $$ = {};
     }
   },
   Input_init_closure8: {
-    "": "Closure:30;this_9",
+    "": "Closure:29;this_9",
     call$1: function($event) {
       var target, t1;
       target = J.get$target$x($event);
@@ -5384,19 +5323,19 @@ var $$ = {};
     }
   },
   Input_init_closure9: {
-    "": "Closure:31;this_10",
+    "": "Closure:30;this_10",
     call$1: function($event) {
       return this.this_10.clickOrTouch$2($event, null);
     }
   },
   Input_init_closure10: {
-    "": "Closure:30;this_11",
+    "": "Closure:29;this_11",
     call$1: function($event) {
       return this.this_11.clickOrTouch$2(null, $event);
     }
   },
   Input_init_closure11: {
-    "": "Closure:28;",
+    "": "Closure:27;",
     call$1: function($event) {
       var street, label, map, t1, t2;
       street = C.C_JsonCodec.decode$1(J.get$data$x($event));
@@ -5423,7 +5362,7 @@ var $$ = {};
     }
   },
   Input_clickOrTouch_closure: {
-    "": "Closure:32;this_0",
+    "": "Closure:31;this_0",
     call$1: function(timer) {
       timer.cancel$0();
       this.this_0.touched = false;
@@ -5461,7 +5400,7 @@ var $$ = {};
       }}
   },
   Joystick_closure: {
-    "": "Closure:30;this_0",
+    "": "Closure:29;this_0",
     call$1: function($event) {
       var t1, t2, t3;
       t1 = J.getInterceptor$x($event);
@@ -5481,7 +5420,7 @@ var $$ = {};
     }
   },
   Joystick_closure0: {
-    "": "Closure:30;this_1",
+    "": "Closure:29;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
       t1 = J.getInterceptor$x($event);
@@ -5579,7 +5518,7 @@ var $$ = {};
     }
   },
   Joystick_closure1: {
-    "": "Closure:30;this_2",
+    "": "Closure:29;this_2",
     call$1: function($event) {
       var t1, t2;
       J.preventDefault$0$x($event);
@@ -5602,7 +5541,7 @@ var $$ = {};
     "": "Object;"
   },
   loop_closure: {
-    "": "Closure:33;",
+    "": "Closure:32;",
     call$2: function(username, otherPlayer) {
       var x, transform, t1, t2;
       x = otherPlayer.get$posX();
@@ -5643,7 +5582,7 @@ var $$ = {};
       }}
   },
   TouchScroller_closure: {
-    "": "Closure:30;this_0",
+    "": "Closure:29;this_0",
     call$1: function($event) {
       var t1, t2;
       t1 = J.getInterceptor$x($event);
@@ -5659,7 +5598,7 @@ var $$ = {};
     }
   },
   TouchScroller_closure0: {
-    "": "Closure:30;this_1",
+    "": "Closure:29;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, t5, t6, t7, t8;
       t1 = J.getInterceptor$x($event);
@@ -5810,7 +5749,7 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;posX<,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
+    "": "Object;width>,height>,canvasHeight,speed,posX<,posY,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
     loadAnimations$0: function() {
       var t1, futures;
       t1 = this.animations;
@@ -5826,7 +5765,7 @@ var $$ = {};
       var t1;
       this.width = 116;
       this.height = 137;
-      this.speed = 5;
+      this.speed = 300;
       this.yVel = 0;
       this.posX = 0;
       t1 = $.currentStreet.bounds.height;
@@ -5848,13 +5787,13 @@ var $$ = {};
     },
     $isPlayer: true,
     static: {Player$: function($name) {
-        var t1 = new B.Player(null, null, null, null, null, null, null, -40, false, false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, null, true, null, null, null);
+        var t1 = new B.Player(null, null, null, null, null, null, null, -60, false, false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, null, true, null, null, null);
         t1.Player$1($name);
         return t1;
       }}
   },
   Player_loadAnimations_closure: {
-    "": "Closure:34;futures_0",
+    "": "Closure:33;futures_0",
     call$2: function($name, animation) {
       return this.futures_0.push(J.load$0$x(animation));
     }
@@ -5882,7 +5821,7 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]: " + H.S(error));
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 35]
+    }, "call$1", "get$setCamera", 2, 0, 34]
   },
   Street: {
     "": "Object;label,_data,exits,bounds",
@@ -6076,7 +6015,7 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "": "Closure:36;filters_2",
+    "": "Closure:35;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
       t1 = J.getInterceptor(filterName);
@@ -6122,7 +6061,7 @@ var $$ = {};
     }
   },
   Street_load__closure0: {
-    "": "Closure:37;this_3",
+    "": "Closure:36;this_3",
     call$1: function(exit) {
       var t1, t2;
       t1 = this.this_3.exits;
@@ -6131,7 +6070,7 @@ var $$ = {};
     }
   },
   Street_load__closure1: {
-    "": "Closure:38;exitsElement_4",
+    "": "Closure:37;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
       tsid = J.replaceFirst$2$s(tsid, "L", "G");
@@ -6144,7 +6083,7 @@ var $$ = {};
     }
   },
   Street_render_closure: {
-    "": "Closure:39;",
+    "": "Closure:38;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -6152,7 +6091,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "": "Closure:40;c_0",
+    "": "Closure:39;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -6165,6 +6104,73 @@ var $$ = {};
       if (t2._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
+    }
+  },
+  gameLoop_closure: {
+    "": "Closure:31;delta_0",
+    call$1: function(timer) {
+      var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
+      B.loop(0.05);
+      if ($.showFps) {
+        J.set$display$x($.get$fpsDisplay().style, "block");
+        now = P.DateTime$_now();
+        t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
+        t2 = $.get$fpsDisplay();
+        t3 = $.get$twoDigit();
+        t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
+        $.last = now;
+      } else
+        J.set$display$x($.get$fpsDisplay().style, "none");
+      sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
+      year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
+      sec -= year * 4435200;
+      day_of_year = C.JSNumber_methods.toInt$0(Math.floor(sec / 14400));
+      sec -= day_of_year * 14400;
+      hour = C.JSNumber_methods.toInt$0(Math.floor(sec / 600));
+      minute = C.JSNumber_methods.toInt$0(Math.floor((sec - hour * 600) / 10));
+      MonthAndDay = G.day_to_md(day_of_year);
+      day_of_week = C.JSInt_methods.$mod(day_of_year + 307 * year, 8);
+      if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "1"))
+        suffix = "st";
+      else if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "2"))
+        suffix = "nd";
+      else
+        suffix = C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "3") ? "rd" : "th";
+      h = C.JSInt_methods.toString$0(hour);
+      m = C.JSInt_methods.toString$0(minute);
+      if (minute < 10)
+        m = "0" + C.JSInt_methods.toString$0(minute);
+      if (hour >= 12) {
+        if (hour > 12)
+          h = C.JSInt_methods.toString$0(hour - 12);
+        ampm = "pm";
+      } else
+        ampm = "am";
+      CurrentTime = (h === "0" ? C.JSInt_methods.toString$0(12) : h) + ":" + m + ampm;
+      t1 = "Year " + C.JSInt_methods.toString$0(year);
+      t2 = $.get$Months();
+      t3 = MonthAndDay[0] - 1;
+      if (t3 < 0 || t3 >= 12)
+        return H.ioore(t2, t3);
+      t3 = t2[t3];
+      t2 = C.JSInt_methods.toString$0(MonthAndDay[1]) + suffix;
+      t4 = $.get$Days_of_Week();
+      if (day_of_week < 0 || day_of_week >= 8)
+        return H.ioore(t4, day_of_week);
+      data = [t1, t3, t2, t4[day_of_week], CurrentTime];
+      J.set$innerHtml$x(document.querySelector("#CurrDay"), data[3]);
+      J.set$innerHtml$x(document.querySelector("#CurrTime"), data[4]);
+      J.set$innerHtml$x(document.querySelector("#CurrDate"), data[2] + " of " + data[1]);
+      P.DateTime$_now();
+      t1 = $.currentStreet;
+      t2 = J.getInterceptor(t1);
+      if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
+        t1.render$0();
+      t1 = $.CurrentPlayer;
+      t2 = J.getInterceptor(t1);
+      if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
+        t1.toString;
+      $.lastTime = this.delta_0;
     }
   }
 },
@@ -6508,7 +6514,7 @@ var $$ = {};
 
     }
     $._callbacksAreEnqueued = false;
-  }, "call$0", "_asyncRunCallback$closure", 0, 0, 8],
+  }, "call$0", "_asyncRunCallback$closure", 0, 0, 7],
   _scheduleAsyncCallback: function(callback) {
     $.get$_asyncCallbacks()._add$1(callback);
     if (!$._callbacksAreEnqueued) {
@@ -6565,17 +6571,17 @@ var $$ = {};
 
   },
   _nullDataHandler: [function(value) {
-  }, "call$1", "_nullDataHandler$closure", 2, 0, 9],
+  }, "call$1", "_nullDataHandler$closure", 2, 0, 8],
   _nullErrorHandler: [function(error, stackTrace) {
     var t1 = $.Zone__current;
     t1.toString;
     P._rootHandleUncaughtError(t1, null, t1, error, stackTrace);
   }, function(error) {
     return P._nullErrorHandler(error, null);
-  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 10, 11],
+  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 9, 10],
   _nullDoneHandler: [function() {
     return;
-  }, "call$0", "_nullDoneHandler$closure", 0, 0, 8],
+  }, "call$0", "_nullDoneHandler$closure", 0, 0, 7],
   _runUserCode: function(userCode, onSuccess, onError) {
     var e, s, exception, t1;
     try {
@@ -6717,10 +6723,10 @@ var $$ = {};
     },
     _onPause$0: [function() {
       return;
-    }, "call$0", "get$_onPause", 0, 0, 8],
+    }, "call$0", "get$_onPause", 0, 0, 7],
     _onResume$0: [function() {
       return;
-    }, "call$0", "get$_onResume", 0, 0, 8],
+    }, "call$0", "get$_onResume", 0, 0, 7],
     $as_ControllerSubscription: null,
     $asStreamSubscription: null,
     static: {"": "_BroadcastSubscription__STATE_EVENT_ID,_BroadcastSubscription__STATE_FIRING,_BroadcastSubscription__STATE_REMOVE_AFTER_FIRING"}
@@ -6803,7 +6809,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 41, 11],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 40, 10],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -6950,7 +6956,7 @@ var $$ = {};
     $isFuture: true
   },
   Future_wait_handleError: {
-    "": "Closure:20;box_0,eagerError_1",
+    "": "Closure:19;box_0,eagerError_1",
     call$2: function(theError, theStackTrace) {
       var t1, t2, remaining;
       t1 = this.box_0;
@@ -6970,7 +6976,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "": "Closure:42;box_0,eagerError_2,pos_3",
+    "": "Closure:41;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -7007,7 +7013,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 41, 11],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 40, 10],
     $as_Completer: null
   },
   _Future: {
@@ -7108,7 +7114,7 @@ var $$ = {};
       P._Future__propagateToListeners(this, listeners);
     }, function(error) {
       return this._completeError$2(error, null);
-    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 10, 11],
+    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 9, 10],
     _asyncComplete$1: function(value) {
       var t1, t2;
       t1 = J.getInterceptor(value);
@@ -7278,7 +7284,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "": "Closure:43;target_1",
+    "": "Closure:42;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -7384,7 +7390,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners__closure0: {
-    "": "Closure:43;box_0,listener_7",
+    "": "Closure:42;box_0,listener_7",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -7475,7 +7481,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "": "Closure:44;box_0,future_6",
+    "": "Closure:43;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -7708,7 +7714,7 @@ var $$ = {};
     }
   },
   _StreamController__recordCancel_complete: {
-    "": "Closure:8;this_0",
+    "": "Closure:7;this_0",
     call$0: function() {
       var t1 = this.this_0._doneFuture;
       if (t1 != null && t1._state === 0)
@@ -7806,10 +7812,10 @@ var $$ = {};
     },
     _onPause$0: [function() {
       this.get$_controller()._recordPause$1(this);
-    }, "call$0", "get$_onPause", 0, 0, 8],
+    }, "call$0", "get$_onPause", 0, 0, 7],
     _onResume$0: [function() {
       this.get$_controller()._recordResume$1(this);
-    }, "call$0", "get$_onResume", 0, 0, 8],
+    }, "call$0", "get$_onResume", 0, 0, 7],
     $as_BufferingStreamSubscription: null,
     $asStreamSubscription: null
   },
@@ -7929,9 +7935,9 @@ var $$ = {};
         this._addPending$1(C.C__DelayedDone);
     },
     _onPause$0: [function() {
-    }, "call$0", "get$_onPause", 0, 0, 8],
+    }, "call$0", "get$_onPause", 0, 0, 7],
     _onResume$0: [function() {
-    }, "call$0", "get$_onResume", 0, 0, 8],
+    }, "call$0", "get$_onResume", 0, 0, 7],
     _onCancel$0: function() {
     },
     _addPending$1: function($event) {
@@ -8041,7 +8047,7 @@ var $$ = {};
     static: {"": "_BufferingStreamSubscription__STATE_CANCEL_ON_ERROR,_BufferingStreamSubscription__STATE_CLOSED,_BufferingStreamSubscription__STATE_INPUT_PAUSED,_BufferingStreamSubscription__STATE_CANCELED,_BufferingStreamSubscription__STATE_WAIT_FOR_CANCEL,_BufferingStreamSubscription__STATE_IN_CALLBACK,_BufferingStreamSubscription__STATE_HAS_PENDING,_BufferingStreamSubscription__STATE_PAUSE_COUNT,_BufferingStreamSubscription__STATE_PAUSE_COUNT_SHIFT"}
   },
   _BufferingStreamSubscription__sendError_sendError: {
-    "": "Closure:8;this_0,error_1,stackTrace_2",
+    "": "Closure:7;this_0,error_1,stackTrace_2",
     call$0: function() {
       var t1, t2, t3, t4, t5;
       t1 = this.this_0;
@@ -8069,7 +8075,7 @@ var $$ = {};
     }
   },
   _BufferingStreamSubscription__sendDone_sendDone: {
-    "": "Closure:8;this_0",
+    "": "Closure:7;this_0",
     call$0: function() {
       var t1, t2;
       t1 = this.this_0;
@@ -8195,7 +8201,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:45;subscription_0,future_1",
+    "": "Closure:44;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -8349,10 +8355,10 @@ var $$ = {};
   "": "",
   _defaultEquals: [function(a, b) {
     return J.$eq(a, b);
-  }, "call$2", "_defaultEquals$closure", 4, 0, 12],
+  }, "call$2", "_defaultEquals$closure", 4, 0, 11],
   _defaultHashCode: [function(a) {
     return J.get$hashCode$(a);
-  }, "call$1", "_defaultHashCode$closure", 2, 0, 13],
+  }, "call$1", "_defaultHashCode$closure", 2, 0, 12],
   HashMap_HashMap: function(equals, hashCode, isValidKey, $K, $V) {
     return H.setRuntimeTypeInfo(new P._HashMap(0, null, null, null, null), [$K, $V]);
   },
@@ -9781,7 +9787,7 @@ var $$ = {};
     $isEfficientLength: true
   },
   Maps_mapToString_closure: {
-    "": "Closure:20;box_0,result_1",
+    "": "Closure:19;box_0,result_1",
     call$2: function(k, v) {
       var t1 = this.box_0;
       if (!t1.first_0)
@@ -9986,9 +9992,9 @@ var $$ = {};
   },
   _defaultToEncodable: [function(object) {
     return object.toJson$0();
-  }, "call$1", "_defaultToEncodable$closure", 2, 0, 14],
+  }, "call$1", "_defaultToEncodable$closure", 2, 0, 13],
   _convertJsonToDart_closure: {
-    "": "Closure:20;",
+    "": "Closure:19;",
     call$2: function(key, value) {
       return value;
     }
@@ -10210,7 +10216,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:46;box_0,this_1",
+    "": "Closure:45;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -10292,10 +10298,10 @@ var $$ = {};
   },
   identical: [function(a, b) {
     return a == null ? b == null : a === b;
-  }, "call$2", "identical$closure", 4, 0, 15],
+  }, "call$2", "identical$closure", 4, 0, 14],
   identityHashCode: [function(object) {
     return H.objectHashCode(object);
-  }, "call$1", "identityHashCode$closure", 2, 0, 16],
+  }, "call$1", "identityHashCode$closure", 2, 0, 15],
   List_List$filled: function($length, fill, $E) {
     var result, t1, i;
     result = J.JSArray_JSArray$fixed($length, $E);
@@ -10328,12 +10334,12 @@ var $$ = {};
   print: [function(object) {
     var line = H.S(object);
     H.printString(line);
-  }, "call$1", "print$closure", 2, 0, 17],
+  }, "call$1", "print$closure", 2, 0, 16],
   String_String$fromCharCodes: function(charCodes) {
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:47;box_0",
+    "": "Closure:46;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -10395,7 +10401,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:48;",
+    "": "Closure:47;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -10410,7 +10416,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:48;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -10420,7 +10426,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:48;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -10487,7 +10493,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:48;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -10503,7 +10509,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:48;",
+    "": "Closure:47;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -11624,14 +11630,6 @@ var $$ = {};
   },
   Window: {
     "": "EventTarget;",
-    get$animationFrame: function(receiver) {
-      var t1, completer;
-      t1 = J.JSNumber;
-      completer = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(t1)), [t1]);
-      this._ensureRequestAnimationFrame$0(receiver);
-      this._requestAnimationFrame$1(receiver, W._wrapZone(new W.Window_animationFrame_closure(completer)));
-      return completer.future;
-    },
     get$location: function(receiver) {
       var result = receiver.location;
       if (W.Window__isDartLocation(result) === true)
@@ -11639,29 +11637,6 @@ var $$ = {};
       if (null == receiver._location_wrapper)
         receiver._location_wrapper = new W._LocationWrapper(result);
       return receiver._location_wrapper;
-    },
-    _requestAnimationFrame$1: function(receiver, callback) {
-      return receiver.requestAnimationFrame(H.convertDartClosureToJS(callback, 1));
-    },
-    _ensureRequestAnimationFrame$0: function(receiver) {
-      if (!!(receiver.requestAnimationFrame && receiver.cancelAnimationFrame))
-        return;
-        (function($this) {
-   var vendors = ['ms', 'moz', 'webkit', 'o'];
-   for (var i = 0; i < vendors.length && !$this.requestAnimationFrame; ++i) {
-     $this.requestAnimationFrame = $this[vendors[i] + 'RequestAnimationFrame'];
-     $this.cancelAnimationFrame =
-         $this[vendors[i]+'CancelAnimationFrame'] ||
-         $this[vendors[i]+'CancelRequestAnimationFrame'];
-   }
-   if ($this.requestAnimationFrame && $this.cancelAnimationFrame) return;
-   $this.requestAnimationFrame = function(callback) {
-      return window.setTimeout(function() {
-        callback(Date.now());
-      }, 16 /* 16ms ~= 60fps */);
-   };
-   $this.cancelAnimationFrame = function(id) { clearTimeout(id); }
-  })(receiver);
     },
     toString$0: function(receiver) {
       return receiver.toString();
@@ -11737,7 +11712,7 @@ var $$ = {};
     "": "Object;",
     error$1: [function(_, arg) {
       return typeof console != "undefined" ? console.error(arg) : null;
-    }, "call$1", "get$error", 2, 0, 17],
+    }, "call$1", "get$error", 2, 0, 16],
     static: {"": "Console__safeConsole"}
   },
   Interceptor_CssStyleDeclarationBase: {
@@ -12010,7 +11985,7 @@ var $$ = {};
     }
   },
   HttpRequest_request_closure0: {
-    "": "Closure:20;xhr_0",
+    "": "Closure:19;xhr_0",
     call$2: function(header, value) {
       this.xhr_0.setRequestHeader(header, value);
     }
@@ -12121,13 +12096,13 @@ var $$ = {};
     $isEfficientLength: true
   },
   Storage_keys_closure: {
-    "": "Closure:20;keys_0",
+    "": "Closure:19;keys_0",
     call$2: function(k, v) {
       return this.keys_0.push(k);
     }
   },
   Storage_values_closure: {
-    "": "Closure:20;values_0",
+    "": "Closure:19;values_0",
     call$2: function(k, v) {
       return this.values_0.push(v);
     }
@@ -12147,15 +12122,6 @@ var $$ = {};
       return [W.Touch];
     },
     $isEfficientLength: true
-  },
-  Window_animationFrame_closure: {
-    "": "Closure:3;completer_0",
-    call$1: function(time) {
-      var t1 = this.completer_0.future;
-      if (t1._state !== 0)
-        H.throwExpression(new P.StateError("Future already completed"));
-      t1._asyncComplete$1(time);
-    }
   },
   _BeforeUnloadEvent: {
     "": "_WrappedEvent;_returnValue,wrapped",
@@ -12423,7 +12389,7 @@ var $$ = {};
       }
       t1 = this._html$_controller;
       t1.close$0(t1);
-    }, "call$0", "get$close", 0, 0, 8],
+    }, "call$0", "get$close", 0, 0, 7],
     _html$_StreamPool$broadcast$0: function($T) {
       this._html$_controller = P.StreamController_StreamController$broadcast(this.get$close(this), null, true, $T);
     }
@@ -12470,9 +12436,9 @@ var $$ = {};
         return t1;
       }, _Html5NodeValidator__standardAttributeValidator: [function(element, attributeName, value, context) {
         return true;
-      }, "call$4", "_Html5NodeValidator__standardAttributeValidator$closure", 8, 0, 18], _Html5NodeValidator__uriAttributeValidator: [function(element, attributeName, value, context) {
+      }, "call$4", "_Html5NodeValidator__standardAttributeValidator$closure", 8, 0, 17], _Html5NodeValidator__uriAttributeValidator: [function(element, attributeName, value, context) {
         return context.get$uriPolicy().allowsUri$1(value);
-      }, "call$4", "_Html5NodeValidator__uriAttributeValidator$closure", 8, 0, 18]}
+      }, "call$4", "_Html5NodeValidator__uriAttributeValidator$closure", 8, 0, 17]}
   },
   ImmutableListMixin: {
     "": "Object;",
@@ -12825,7 +12791,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:49;this_0",
+    "": "Closure:48;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13528,7 +13494,7 @@ var $$ = {};
     return t1;
   },
   convertNativeToDart_AcceptStructuredClone_findSlot: {
-    "": "Closure:13;values_0,copies_1",
+    "": "Closure:12;values_0,copies_1",
     call$1: function(value) {
       var t1, $length, i, t2;
       t1 = this.values_0;
@@ -13553,7 +13519,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:50;copies_3",
+    "": "Closure:49;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14056,7 +14022,7 @@ var $$ = {};
           return false;
         t1 = $.numberFormatSymbols;
         return t1.containsKey$1(t1, localeName);
-      }, "call$1", "NumberFormat_localeExists$closure", 2, 0, 19]}
+      }, "call$1", "NumberFormat_localeExists$closure", 2, 0, 18]}
   },
   NumberFormat_NumberFormat_closure: {
     "": "Closure:3;newPattern_0",
@@ -14650,7 +14616,7 @@ var $$ = {};
     }
   },
   Asset_load_closure2: {
-    "": "Closure:23;this_5,c_6",
+    "": "Closure:22;this_5,c_6",
     call$1: function(err) {
       var t1;
       P.print("Error in loading Audio : " + H.S(this.this_5._uri));
@@ -14863,14 +14829,14 @@ P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
 P._BufferingStreamSubscription.$is_EventSink = true;
 P._BufferingStreamSubscription.$isStreamSubscription = true;
 P._BufferingStreamSubscription.$isObject = true;
+P.Timer.$isTimer = true;
+P.Timer.$isObject = true;
 W.DivElement.$isDivElement = true;
 W.DivElement.$isElement = true;
 W.DivElement.$isNode = true;
 W.DivElement.$isObject = true;
 B.Player.$isPlayer = true;
 B.Player.$isObject = true;
-P.Timer.$isTimer = true;
-P.Timer.$isObject = true;
 P.Future.$isFuture = true;
 P.Future.$isObject = true;
 W._Html5NodeValidator.$is_Html5NodeValidator = true;
@@ -15858,7 +15824,6 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "Future__String", ret: P.Future, args: [J.JSString]},
 {func: "args0"},
 {func: "dynamic__int", args: [J.JSInt]},
-{func: "dynamic__num", args: [J.JSNumber]},
 {func: "void_", void: true},
 {func: "void__dynamic", void: true, args: [null]},
 {func: "void__dynamic__StackTrace", void: true, args: [null], opt: [P.StackTrace]},
