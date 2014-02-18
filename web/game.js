@@ -3993,7 +3993,7 @@ var $$ = {};
     t1 = J.$sub$n(delta, $.lastTime);
     if (typeof t1 !== "number")
       return t1.$div();
-    B.loop(0.05);
+    B.loop(t1 / 1000);
     if ($.showFps) {
       J.set$display$x($.get$fpsDisplay().style, "block");
       now = P.DateTime$_now();
