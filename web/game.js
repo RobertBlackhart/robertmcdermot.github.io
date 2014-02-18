@@ -374,7 +374,7 @@ var $$ = {};
     toString$0: function(receiver) {
       return H.Primitives_objectToString(receiver);
     },
-    "%": "ArrayBuffer|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
+    "%": "ArrayBuffer|Blob|DOMError|DOMImplementation|File|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
   },
   JSBool: {
     "": "bool/Interceptor;",
@@ -531,7 +531,7 @@ var $$ = {};
     static: {JSArray_JSArray$fixed: function($length, $E) {
         var t1;
         if (typeof $length !== "number" || Math.floor($length) !== $length || $length < 0)
-          throw H.wrapException(P.ArgumentError$("Length must be a non-negative integer: " + H.S($length)));
+          throw H.wrapException(new P.ArgumentError("Length must be a non-negative integer: " + H.S($length)));
         t1 = H.setRuntimeTypeInfo(new Array($length), [$E]);
         t1.fixed$length = init;
         return t1;
@@ -560,9 +560,6 @@ var $$ = {};
         return t1 + 0;
       }
       throw H.wrapException(P.UnsupportedError$('' + receiver));
-    },
-    floor$0: function(receiver) {
-      return this.toInt$0(Math.floor(receiver));
     },
     roundToDouble$0: function(receiver) {
       if (receiver < 0)
@@ -1222,7 +1219,7 @@ var $$ = {};
     }
   },
   _EventLoop__runHelper_next: {
-    "": "Closure:7;this_0",
+    "": "Closure:8;this_0",
     call$0: function() {
       if (!this.this_0.runIteration$0())
         return;
@@ -1405,7 +1402,7 @@ var $$ = {};
       t1.close$0(t1);
       t1 = this.__isolate_helper$_controller;
       t1.close$0(t1);
-    }, "call$0", "get$close", 0, 0, 7],
+    }, "call$0", "get$close", 0, 0, 8],
     ReceivePortImpl$fromRawReceivePort$1: function(_rawPort) {
       var t1 = P.StreamController_StreamController(this.get$close(this), null, null, null, true, null);
       this.__isolate_helper$_controller = t1;
@@ -1752,14 +1749,14 @@ var $$ = {};
       }}
   },
   TimerImpl_internalCallback: {
-    "": "Closure:7;this_0,callback_1",
+    "": "Closure:8;this_0,callback_1",
     call$0: function() {
       this.this_0._handle = null;
       this.callback_1.call$0();
     }
   },
   TimerImpl_internalCallback0: {
-    "": "Closure:7;this_2,callback_3",
+    "": "Closure:8;this_2,callback_3",
     call$0: function() {
       this.this_2._handle = null;
       var t1 = init.globalState.topEventLoop;
@@ -1874,14 +1871,14 @@ var $$ = {};
     for (t1 = new H.ListIterator(codePoints, codePoints.length, 0, null); t1.moveNext$0();) {
       i = t1._current;
       if (typeof i !== "number" || Math.floor(i) !== i)
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
       if (i <= 65535)
         a.push(i);
       else if (i <= 1114111) {
         a.push(55296 + (C.JSInt_methods._shrOtherPositive$1(i - 65536, 10) & 1023));
         a.push(56320 + (i & 1023));
       } else
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
     }
     return H.Primitives__fromCharCodeApply(a);
   },
@@ -1890,9 +1887,9 @@ var $$ = {};
     for (t1 = new H.ListIterator(charCodes, charCodes.length, 0, null); t1.moveNext$0();) {
       i = t1._current;
       if (typeof i !== "number" || Math.floor(i) !== i)
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
       if (i < 0)
-        throw H.wrapException(P.ArgumentError$(i));
+        throw H.wrapException(new P.ArgumentError(i));
       if (i > 65535)
         return H.Primitives_stringFromCodePoints(charCodes);
     }
@@ -3398,7 +3395,7 @@ var $$ = {};
     document.querySelector(".ConsoleInput").focus();
     t1 = document.querySelector(".ConsoleInput");
     t1.toString;
-    t1 = C.EventStreamProvider_keyup.forElement$1(t1);
+    t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(t1, C.EventStreamProvider_keyup._eventType, false), [null]);
     t1 = H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.showConsole_closure()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)]);
     t1._tryResume$0();
     $.consolelistener = t1;
@@ -3588,7 +3585,7 @@ var $$ = {};
     B.load_audio().then$1(new B.main_closure());
   }, "call$0", "main$closure", 0, 0, 5],
   start: function() {
-    var t1, doneLoading, t2, t3;
+    var t1, doneLoading;
     J.set$opacity$x(document.querySelector("#LoadingScreen").style, "0.0");
     P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.start_closure());
     if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
@@ -3613,38 +3610,7 @@ var $$ = {};
     B.updateConsole("");
     B.updateConsole("COU DEVELOPMENT CONSOLE");
     B.updateConsole("For a list of commands type \"help\"");
-    t1 = $.get$game();
-    if (!t1._initialized) {
-      C.EventStreamProvider_webkitfullscreenerror.forTarget$1(document).listen$1(t1.get$_fullscreenError());
-      C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(t1.get$_fullscreenChange());
-      t2 = t1.element;
-      t2.toString;
-      t3 = C.EventStreamProvider_touchstart.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchStartEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-      t3 = C.EventStreamProvider_touchend.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchEndEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-      t3 = C.EventStreamProvider_touchcancel.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchEndEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-      t3 = C.EventStreamProvider_touchmove.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_touchMoveEvent()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-      C.EventStreamProvider_keydown.forTarget$1(window).listen$1(t1.get$_keyDown());
-      C.EventStreamProvider_keyup.forTarget$1(window).listen$1(t1.get$_keyUp());
-      C.EventStreamProvider_resize.forTarget$1(window).listen$1(t1.get$_resize());
-      t3 = C.EventStreamProvider_mousemove.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseMove()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-      t3 = C.EventStreamProvider_mousedown.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseDown()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-      t3 = C.EventStreamProvider_mouseup.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(t1.get$_mouseUp()), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
-      t2 = C._CustomEventStreamProvider__determineMouseWheelEventType.forElement$1(t2);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(t1.get$_mouseWheel()), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      t1._initialized = true;
-    }
-    t1._interrupt = false;
-    t2 = window;
-    t3 = t1.get$_requestAnimationFrame(t1);
-    C.Window_methods._ensureRequestAnimationFrame$0(t2);
-    t1._rafId = C.Window_methods._html$_requestAnimationFrame$1(t2, W._wrapZone(t3));
+    B.gameLoop(0);
   },
   createOtherPlayer: function(map) {
     var t1, otherPlayer, t2;
@@ -3706,8 +3672,6 @@ var $$ = {};
   loop: function(dt) {
     var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
     t1 = $.CurrentPlayer;
-    t1.toString;
-    P.print("delta time: " + H.S(dt));
     t2 = t1.chatBubble;
     if (t2 != null) {
       t3 = t2.timeToLive;
@@ -3721,11 +3685,11 @@ var $$ = {};
     }
     t2 = $.playerInput;
     if (t2.rightKey) {
-      t1.posX = J.$add$ns(t1.posX, $.CurrentPlayer.speed);
+      t1.posX = J.$add$ns(t1.posX, $.CurrentPlayer.speed * dt);
       t1.facingRight = true;
       t1.moving = true;
     } else if (t2.leftKey) {
-      t1.posX = J.$sub$n(t1.posX, $.CurrentPlayer.speed);
+      t1.posX = J.$sub$n(t1.posX, $.CurrentPlayer.speed * dt);
       t1.facingRight = false;
       t1.moving = true;
     } else
@@ -4006,6 +3970,74 @@ var $$ = {};
       J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
     }
   }, "call$1", "setStreetLoadBar$closure", 2, 0, 6],
+  gameLoop: [function(delta) {
+    var t1, now, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
+    t1 = J.$sub$n(delta, $.lastTime);
+    if (typeof t1 !== "number")
+      return t1.$div();
+    B.loop(t1 / 1000);
+    if ($.showFps) {
+      J.set$display$x($.get$fpsDisplay().style, "block");
+      now = P.DateTime$_now();
+      t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
+      t2 = $.get$fpsDisplay();
+      t3 = $.get$twoDigit();
+      t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
+      $.last = now;
+    } else
+      J.set$display$x($.get$fpsDisplay().style, "none");
+    sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
+    year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
+    sec -= year * 4435200;
+    day_of_year = C.JSNumber_methods.toInt$0(Math.floor(sec / 14400));
+    sec -= day_of_year * 14400;
+    hour = C.JSNumber_methods.toInt$0(Math.floor(sec / 600));
+    minute = C.JSNumber_methods.toInt$0(Math.floor((sec - hour * 600) / 10));
+    MonthAndDay = G.day_to_md(day_of_year);
+    day_of_week = C.JSInt_methods.$mod(day_of_year + 307 * year, 8);
+    if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "1"))
+      suffix = "st";
+    else if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "2"))
+      suffix = "nd";
+    else
+      suffix = C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "3") ? "rd" : "th";
+    h = C.JSInt_methods.toString$0(hour);
+    m = C.JSInt_methods.toString$0(minute);
+    if (minute < 10)
+      m = "0" + C.JSInt_methods.toString$0(minute);
+    if (hour >= 12) {
+      if (hour > 12)
+        h = C.JSInt_methods.toString$0(hour - 12);
+      ampm = "pm";
+    } else
+      ampm = "am";
+    CurrentTime = (h === "0" ? C.JSInt_methods.toString$0(12) : h) + ":" + m + ampm;
+    t1 = "Year " + C.JSInt_methods.toString$0(year);
+    t2 = $.get$Months();
+    t3 = MonthAndDay[0] - 1;
+    if (t3 < 0 || t3 >= 12)
+      return H.ioore(t2, t3);
+    t3 = t2[t3];
+    t2 = C.JSInt_methods.toString$0(MonthAndDay[1]) + suffix;
+    t4 = $.get$Days_of_Week();
+    if (day_of_week < 0 || day_of_week >= 8)
+      return H.ioore(t4, day_of_week);
+    data = [t1, t3, t2, t4[day_of_week], CurrentTime];
+    J.set$innerHtml$x(document.querySelector("#CurrDay"), data[3]);
+    J.set$innerHtml$x(document.querySelector("#CurrTime"), data[4]);
+    J.set$innerHtml$x(document.querySelector("#CurrDate"), data[2] + " of " + data[1]);
+    P.DateTime$_now();
+    t1 = $.currentStreet;
+    t2 = J.getInterceptor(t1);
+    if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
+      t1.render$0();
+    t1 = $.CurrentPlayer;
+    t2 = J.getInterceptor(t1);
+    if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
+      t1.toString;
+    $.lastTime = delta;
+    C.Window_methods.get$animationFrame(window).then$1(B.gameLoop$closure());
+  }, "call$1", "gameLoop$closure", 2, 0, 7],
   ChatBubble: {
     "": "Object;text,timeToLive,bubble,textElement",
     ChatBubble$1: function(text) {
@@ -4229,7 +4261,7 @@ var $$ = {};
       newValue0 = J.getInterceptor$asx(newValue).get$length(newValue) >= 17 ? C.JSString_methods.substring$2(newValue, 0, 15) + "..." : newValue;
       t1.nameMeter.textContent = newValue0;
       B.updateConsole("Setting name to \"" + newValue + "\"");
-      C.EventStreamProvider_change._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null)).listen$1(new B.Chat_init_closure(this));
+      H.setRuntimeTypeInfo(new W._ElementListEventStreamImpl(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null), false, C.EventStreamProvider_change._eventType), [null]).listen$1(new B.Chat_init_closure(this));
       if ($.get$localStorage().getItem("showJoinMessages") != null)
         if ($.get$localStorage().getItem("showJoinMessages") === "true") {
           this._showJoinMessages = true;
@@ -4278,7 +4310,7 @@ var $$ = {};
       t1 = J.getInterceptor$x(radioButton);
       t1.set$name(radioButton, "tabgroup");
       t1.set$checked(radioButton, checked);
-      t1 = C.EventStreamProvider_click.forElement$1(radioButton);
+      t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(radioButton, C.EventStreamProvider_click._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(tabContent.get$resetMessages()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       label = document.createElement("label", null);
       label.toString;
@@ -4343,7 +4375,7 @@ var $$ = {};
       document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
     }, function() {
       return this.resetMessages$1(null);
-    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 25, 10],
+    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 25, 11],
     getDiv$0: function() {
       var t1, span, t2, input, t3, map;
       t1 = document.createElement("div", null);
@@ -4381,9 +4413,9 @@ var $$ = {};
     processInput$1: function(input) {
       var t1;
       input.toString;
-      t1 = C.EventStreamProvider_keydown.forElement$1(input);
+      t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(input, C.EventStreamProvider_keydown._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.TabContent_processInput_closure(this, input)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
-      t1 = C.EventStreamProvider_keyup.forElement$1(input);
+      t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(input, C.EventStreamProvider_keyup._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.TabContent_processInput_closure0(this, input)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
     },
     parseInput$1: function(input) {
@@ -4951,7 +4983,7 @@ var $$ = {};
         playButton = document.querySelector("#PlayButton");
         playButton.textContent = "Play";
         J.set$display$x(playButton.style, "inline-block");
-        t1 = C.EventStreamProvider_click.forElement$1(playButton);
+        t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(playButton, C.EventStreamProvider_click._eventType, false), [null]);
         t1.get$first(t1).then$1(new B.main_____closure());
       }
     }
@@ -4977,11 +5009,11 @@ var $$ = {};
       C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(new B.Input_init_closure());
       volumeSlider = document.querySelector("#VolumeSlider");
       volumeSlider.toString;
-      t1 = C.EventStreamProvider_change.forElement$1(volumeSlider);
+      t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(volumeSlider, C.EventStreamProvider_change._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure0(volumeSlider)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       chatInputs = W._FrozenElementList$_wrap(document.querySelectorAll(".Typing"), null);
-      C.EventStreamProvider_focus._forElementList$1(chatInputs).listen$1(new B.Input_init_closure1(this));
-      C.EventStreamProvider_blur._forElementList$1(chatInputs).listen$1(new B.Input_init_closure2(this));
+      H.setRuntimeTypeInfo(new W._ElementListEventStreamImpl(chatInputs, false, C.EventStreamProvider_focus._eventType), [null]).listen$1(new B.Input_init_closure1(this));
+      H.setRuntimeTypeInfo(new W._ElementListEventStreamImpl(chatInputs, false, C.EventStreamProvider_blur._eventType), [null]).listen$1(new B.Input_init_closure2(this));
       C.EventStreamProvider_keydown.forTarget$1(document).listen$1(new B.Input_init_closure3(this));
       C.EventStreamProvider_keyup.forTarget$1(document).listen$1(new B.Input_init_closure4(this));
       joystick = B.Joystick$(document.querySelector("#Joystick"), document.querySelector("#Knob"));
@@ -4998,7 +5030,7 @@ var $$ = {};
       C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure11());
       t1 = document.body;
       t1.toString;
-      t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
+      t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(t1, C.EventStreamProvider_contextmenu._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure12(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       $.playerInput = this;
     },
@@ -5140,7 +5172,7 @@ var $$ = {};
         J.remove$0$ax(document.querySelector("#RightClickMenu"));
     },
     showClickMenu$4: function(Click, title, description, options) {
-      var t, t1, t2, t3, y, x, newOptions, option, menuitem, t4, t5;
+      var t, t1, t2, t3, y, x, newOptions, option, menuitem, t4;
       this.hideClickMenu$0();
       t = document.querySelector("#RC_Template");
       document.body.appendChild(J.clone$1$x(J.get$content$x(t), true));
@@ -5182,20 +5214,19 @@ var $$ = {};
       document.querySelector("#ClickTitle").textContent = title;
       document.querySelector("#ClickDesc").textContent = description;
       newOptions = [];
-      for (t1 = new H.ListIterator(options, 0, 0, null); t1.moveNext$0();) {
+      for (t1 = new H.ListIterator(options, 0, 0, null), t2 = C.EventStreamProvider_click._eventType; t1.moveNext$0();) {
         option = t1._current;
         menuitem = document.createElement("div", null);
-        t2 = J.get$classes$x(menuitem);
-        t2.add$1(t2, "RCItem");
+        t3 = J.get$classes$x(menuitem);
+        t3.add$1(t3, "RCItem");
         menuitem.textContent = J.$index$asx(option, 0);
-        t2 = C.EventStreamProvider_click.forElement$1(menuitem);
-        t3 = t2._eventType;
-        t4 = t2._useCapture;
-        t5 = new W._EventStreamSubscription(0, t2._target, t3, W._wrapZone(new B.Input_showClickMenu_closure(option)), t4);
-        t5.$builtinTypeInfo = [H.getTypeArgumentByIndex(t2, 0)];
-        t2 = t5._onData;
-        if (t2 != null && t5._pauseCount <= 0)
-          J.addEventListener$3$x(t5._target, t3, t2, t4);
+        t3 = new W._ElementEventStreamImpl(menuitem, t2, false);
+        t3.$builtinTypeInfo = [null];
+        t4 = new W._EventStreamSubscription(0, menuitem, t2, W._wrapZone(new B.Input_showClickMenu_closure(option)), false);
+        t4.$builtinTypeInfo = [H.getTypeArgumentByIndex(t3, 0)];
+        t3 = t4._onData;
+        if (t3 != null && t4._pauseCount <= 0)
+          J.addEventListener$3$x(t4._target, t2, t3, false);
         newOptions.push(menuitem);
       }
       t1 = J.get$children$x(document.querySelector("#RCActionList"));
@@ -5416,11 +5447,11 @@ var $$ = {};
       var t1, t2;
       t1 = this._knob;
       t1.toString;
-      t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
+      t2 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(t1, C.EventStreamProvider_touchstart._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Joystick_closure(this)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      t2 = C.EventStreamProvider_touchmove.forElement$1(t1);
+      t2 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(t1, C.EventStreamProvider_touchmove._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Joystick_closure0(this)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      t1 = C.EventStreamProvider_touchend.forElement$1(t1);
+      t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(t1, C.EventStreamProvider_touchend._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Joystick_closure1(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
     },
     static: {Joystick$: function(_joystick, _knob) {
@@ -5600,9 +5631,9 @@ var $$ = {};
       var t1, t2;
       t1 = this._scrollDiv;
       t1.toString;
-      t2 = C.EventStreamProvider_touchstart.forElement$1(t1);
+      t2 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(t1, C.EventStreamProvider_touchstart._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.TouchScroller_closure(this)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
-      t1 = C.EventStreamProvider_touchmove.forElement$1(t1);
+      t1 = H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(t1, C.EventStreamProvider_touchmove._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.TouchScroller_closure0(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
     },
     static: {"": "TouchScroller_HORIZONTAL,TouchScroller_VERTICAL,TouchScroller_BOTH", TouchScroller$: function(_scrollDiv, _direction) {
@@ -6135,77 +6166,6 @@ var $$ = {};
         H.throwExpression(new P.StateError("Future already completed"));
       t2._asyncComplete$1(t1);
     }
-  },
-  closure: {
-    "": "Closure:3;",
-    call$1: function(gameLoop) {
-      B.loop($.get$game().updateTimeStep);
-    }
-  },
-  closure0: {
-    "": "Closure:3;",
-    call$1: function(gameLoop) {
-      var now, t1, t2, t3, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t4, data;
-      if ($.showFps) {
-        J.set$display$x($.get$fpsDisplay().style, "block");
-        now = P.DateTime$_now();
-        t1 = C.JSNumber_methods._tdivFast$1(P.Duration$(0, 0, 0, now.millisecondsSinceEpoch - $.get$last().millisecondsSinceEpoch, 0, 0)._duration, 1000);
-        t2 = $.get$fpsDisplay();
-        t3 = $.get$twoDigit();
-        t2.textContent = "fps:" + t3.format$1(t3, 1 / (t1 / 1000));
-        $.last = now;
-      } else
-        J.set$display$x($.get$fpsDisplay().style, "none");
-      sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
-      year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
-      sec -= year * 4435200;
-      day_of_year = C.JSNumber_methods.toInt$0(Math.floor(sec / 14400));
-      sec -= day_of_year * 14400;
-      hour = C.JSNumber_methods.toInt$0(Math.floor(sec / 600));
-      minute = C.JSNumber_methods.toInt$0(Math.floor((sec - hour * 600) / 10));
-      MonthAndDay = G.day_to_md(day_of_year);
-      day_of_week = C.JSInt_methods.$mod(day_of_year + 307 * year, 8);
-      if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "1"))
-        suffix = "st";
-      else if (C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "2"))
-        suffix = "nd";
-      else
-        suffix = C.JSString_methods.endsWith$1(C.JSInt_methods.toString$0(MonthAndDay[1]), "3") ? "rd" : "th";
-      h = C.JSInt_methods.toString$0(hour);
-      m = C.JSInt_methods.toString$0(minute);
-      if (minute < 10)
-        m = "0" + C.JSInt_methods.toString$0(minute);
-      if (hour >= 12) {
-        if (hour > 12)
-          h = C.JSInt_methods.toString$0(hour - 12);
-        ampm = "pm";
-      } else
-        ampm = "am";
-      CurrentTime = (h === "0" ? C.JSInt_methods.toString$0(12) : h) + ":" + m + ampm;
-      t1 = "Year " + C.JSInt_methods.toString$0(year);
-      t2 = $.get$Months();
-      t3 = MonthAndDay[0] - 1;
-      if (t3 < 0 || t3 >= 12)
-        return H.ioore(t2, t3);
-      t3 = t2[t3];
-      t2 = C.JSInt_methods.toString$0(MonthAndDay[1]) + suffix;
-      t4 = $.get$Days_of_Week();
-      if (day_of_week < 0 || day_of_week >= 8)
-        return H.ioore(t4, day_of_week);
-      data = [t1, t3, t2, t4[day_of_week], CurrentTime];
-      J.set$innerHtml$x(document.querySelector("#CurrDay"), data[3]);
-      J.set$innerHtml$x(document.querySelector("#CurrTime"), data[4]);
-      J.set$innerHtml$x(document.querySelector("#CurrDate"), data[2] + " of " + data[1]);
-      P.DateTime$_now();
-      t1 = $.currentStreet;
-      t2 = J.getInterceptor(t1);
-      if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
-        t1.render$0();
-      t1 = $.CurrentPlayer;
-      t2 = J.getInterceptor(t1);
-      if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
-        t1.toString;
-    }
   }
 },
 1],
@@ -6548,7 +6508,7 @@ var $$ = {};
 
     }
     $._callbacksAreEnqueued = false;
-  }, "call$0", "_asyncRunCallback$closure", 0, 0, 7],
+  }, "call$0", "_asyncRunCallback$closure", 0, 0, 8],
   _scheduleAsyncCallback: function(callback) {
     $.get$_asyncCallbacks()._add$1(callback);
     if (!$._callbacksAreEnqueued) {
@@ -6605,17 +6565,17 @@ var $$ = {};
 
   },
   _nullDataHandler: [function(value) {
-  }, "call$1", "_nullDataHandler$closure", 2, 0, 8],
+  }, "call$1", "_nullDataHandler$closure", 2, 0, 9],
   _nullErrorHandler: [function(error, stackTrace) {
     var t1 = $.Zone__current;
     t1.toString;
     P._rootHandleUncaughtError(t1, null, t1, error, stackTrace);
   }, function(error) {
     return P._nullErrorHandler(error, null);
-  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 9, 10],
+  }, null, "call$2", "call$1", "_nullErrorHandler$closure", 2, 2, 10, 11],
   _nullDoneHandler: [function() {
     return;
-  }, "call$0", "_nullDoneHandler$closure", 0, 0, 7],
+  }, "call$0", "_nullDoneHandler$closure", 0, 0, 8],
   _runUserCode: function(userCode, onSuccess, onError) {
     var e, s, exception, t1;
     try {
@@ -6757,10 +6717,10 @@ var $$ = {};
     },
     _onPause$0: [function() {
       return;
-    }, "call$0", "get$_onPause", 0, 0, 7],
+    }, "call$0", "get$_onPause", 0, 0, 8],
     _onResume$0: [function() {
       return;
-    }, "call$0", "get$_onResume", 0, 0, 7],
+    }, "call$0", "get$_onResume", 0, 0, 8],
     $as_ControllerSubscription: null,
     $asStreamSubscription: null,
     static: {"": "_BroadcastSubscription__STATE_EVENT_ID,_BroadcastSubscription__STATE_FIRING,_BroadcastSubscription__STATE_REMOVE_AFTER_FIRING"}
@@ -6843,7 +6803,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 41, 10],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 41, 11],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -7047,7 +7007,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 41, 10],
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 41, 11],
     $as_Completer: null
   },
   _Future: {
@@ -7148,7 +7108,7 @@ var $$ = {};
       P._Future__propagateToListeners(this, listeners);
     }, function(error) {
       return this._completeError$2(error, null);
-    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 9, 10],
+    }, "_completeError$1", "call$2", "call$1", "get$_completeError", 2, 2, 10, 11],
     _asyncComplete$1: function(value) {
       var t1, t2;
       t1 = J.getInterceptor(value);
@@ -7164,7 +7124,7 @@ var $$ = {};
         return;
       }
       if (this._state !== 0)
-        H.throwExpression(new P.StateError("Future already completed"));
+        H.throwExpression(P.StateError$("Future already completed"));
       this._state = 1;
       t1 = this._zone;
       t1.toString;
@@ -7748,7 +7708,7 @@ var $$ = {};
     }
   },
   _StreamController__recordCancel_complete: {
-    "": "Closure:7;this_0",
+    "": "Closure:8;this_0",
     call$0: function() {
       var t1 = this.this_0._doneFuture;
       if (t1 != null && t1._state === 0)
@@ -7846,10 +7806,10 @@ var $$ = {};
     },
     _onPause$0: [function() {
       this.get$_controller()._recordPause$1(this);
-    }, "call$0", "get$_onPause", 0, 0, 7],
+    }, "call$0", "get$_onPause", 0, 0, 8],
     _onResume$0: [function() {
       this.get$_controller()._recordResume$1(this);
-    }, "call$0", "get$_onResume", 0, 0, 7],
+    }, "call$0", "get$_onResume", 0, 0, 8],
     $as_BufferingStreamSubscription: null,
     $asStreamSubscription: null
   },
@@ -7969,9 +7929,9 @@ var $$ = {};
         this._addPending$1(C.C__DelayedDone);
     },
     _onPause$0: [function() {
-    }, "call$0", "get$_onPause", 0, 0, 7],
+    }, "call$0", "get$_onPause", 0, 0, 8],
     _onResume$0: [function() {
-    }, "call$0", "get$_onResume", 0, 0, 7],
+    }, "call$0", "get$_onResume", 0, 0, 8],
     _onCancel$0: function() {
     },
     _addPending$1: function($event) {
@@ -8081,7 +8041,7 @@ var $$ = {};
     static: {"": "_BufferingStreamSubscription__STATE_CANCEL_ON_ERROR,_BufferingStreamSubscription__STATE_CLOSED,_BufferingStreamSubscription__STATE_INPUT_PAUSED,_BufferingStreamSubscription__STATE_CANCELED,_BufferingStreamSubscription__STATE_WAIT_FOR_CANCEL,_BufferingStreamSubscription__STATE_IN_CALLBACK,_BufferingStreamSubscription__STATE_HAS_PENDING,_BufferingStreamSubscription__STATE_PAUSE_COUNT,_BufferingStreamSubscription__STATE_PAUSE_COUNT_SHIFT"}
   },
   _BufferingStreamSubscription__sendError_sendError: {
-    "": "Closure:7;this_0,error_1,stackTrace_2",
+    "": "Closure:8;this_0,error_1,stackTrace_2",
     call$0: function() {
       var t1, t2, t3, t4, t5;
       t1 = this.this_0;
@@ -8109,7 +8069,7 @@ var $$ = {};
     }
   },
   _BufferingStreamSubscription__sendDone_sendDone: {
-    "": "Closure:7;this_0",
+    "": "Closure:8;this_0",
     call$0: function() {
       var t1, t2;
       t1 = this.this_0;
@@ -8389,10 +8349,10 @@ var $$ = {};
   "": "",
   _defaultEquals: [function(a, b) {
     return J.$eq(a, b);
-  }, "call$2", "_defaultEquals$closure", 4, 0, 11],
+  }, "call$2", "_defaultEquals$closure", 4, 0, 12],
   _defaultHashCode: [function(a) {
     return J.get$hashCode$(a);
-  }, "call$1", "_defaultHashCode$closure", 2, 0, 12],
+  }, "call$1", "_defaultHashCode$closure", 2, 0, 13],
   HashMap_HashMap: function(equals, hashCode, isValidKey, $K, $V) {
     return H.setRuntimeTypeInfo(new P._HashMap(0, null, null, null, null), [$K, $V]);
   },
@@ -10026,7 +9986,7 @@ var $$ = {};
   },
   _defaultToEncodable: [function(object) {
     return object.toJson$0();
-  }, "call$1", "_defaultToEncodable$closure", 2, 0, 13],
+  }, "call$1", "_defaultToEncodable$closure", 2, 0, 14],
   _convertJsonToDart_closure: {
     "": "Closure:20;",
     call$2: function(key, value) {
@@ -10332,10 +10292,10 @@ var $$ = {};
   },
   identical: [function(a, b) {
     return a == null ? b == null : a === b;
-  }, "call$2", "identical$closure", 4, 0, 14],
+  }, "call$2", "identical$closure", 4, 0, 15],
   identityHashCode: [function(object) {
     return H.objectHashCode(object);
-  }, "call$1", "identityHashCode$closure", 2, 0, 15],
+  }, "call$1", "identityHashCode$closure", 2, 0, 16],
   List_List$filled: function($length, fill, $E) {
     var result, t1, i;
     result = J.JSArray_JSArray$fixed($length, $E);
@@ -10368,7 +10328,7 @@ var $$ = {};
   print: [function(object) {
     var line = H.S(object);
     H.printString(line);
-  }, "call$1", "print$closure", 2, 0, 16],
+  }, "call$1", "print$closure", 2, 0, 17],
   String_String$fromCharCodes: function(charCodes) {
     return H.Primitives_stringFromCharCodes(charCodes);
   },
@@ -10810,14 +10770,6 @@ var $$ = {};
     t1 = t1.where$1(t1, new W.Element_Element$html_closure());
     return t1.get$single(t1);
   },
-  Element__determineMouseWheelEventType: [function(e) {
-    if (e.onwheel !== undefined)
-      return "wheel";
-    else if (e.onmousewheel !== undefined)
-      return "mousewheel";
-    else
-      return "DOMMouseScroll";
-  }, "call$1", "Element__determineMouseWheelEventType$closure", 2, 0, 17],
   _ElementFactoryProvider_createElement_tag: function(tag, typeExtension) {
     return document.createElement(tag);
   },
@@ -10880,11 +10832,6 @@ var $$ = {};
     }
 
   },
-  _JenkinsSmiHash_combine: function(hash, value) {
-    hash = 536870911 & hash + value;
-    hash = 536870911 & hash + ((524287 & hash) << 10 >>> 0);
-    return hash ^ hash >>> 6;
-  },
   _convertNativeToDart_EventTarget: function(e) {
     var $window, t1;
     if (e == null)
@@ -10909,7 +10856,7 @@ var $$ = {};
     "%": "HTMLAppletElement|HTMLBRElement|HTMLBaseFontElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
   },
   AnchorElement: {
-    "": "HtmlElement;hostname=,href},port=,protocol=,target=,type%",
+    "": "HtmlElement;hostname=,href},port=,protocol=,target=,type}",
     toString$0: function(receiver) {
       return receiver.toString();
     },
@@ -10931,20 +10878,16 @@ var $$ = {};
     "": "Event;",
     "%": "BeforeUnloadEvent"
   },
-  Blob: {
-    "": "Interceptor;type=",
-    "%": "Blob|File"
-  },
   BodyElement: {
     "": "HtmlElement;",
     get$onLoad: function(receiver) {
-      return C.EventStreamProvider_load0.forElement$1(receiver);
+      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_load0._eventType, false), [null]);
     },
     $isBodyElement: true,
     "%": "HTMLBodyElement"
   },
   ButtonElement: {
-    "": "HtmlElement;name%,type%,value%",
+    "": "HtmlElement;name%,type},value%",
     "%": "HTMLButtonElement"
   },
   CanvasElement: {
@@ -11114,13 +11057,13 @@ var $$ = {};
       return receiver.innerHTML;
     },
     get$onLoad: function(receiver) {
-      return C.EventStreamProvider_load0.forElement$1(receiver);
+      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_load0._eventType, false), [null]);
     },
     $isElement: true,
     "%": ";Element"
   },
   EmbedElement: {
-    "": "HtmlElement;height=,name%,src},type%,width=",
+    "": "HtmlElement;height=,name%,src},type},width=",
     "%": "HTMLEmbedElement"
   },
   ErrorEvent: {
@@ -11128,7 +11071,7 @@ var $$ = {};
     "%": "ErrorEvent"
   },
   Event: {
-    "": "Interceptor;timeStamp=,type=",
+    "": "Interceptor;",
     get$target: function(receiver) {
       return W._convertNativeToDart_EventTarget(receiver.target);
     },
@@ -11153,7 +11096,7 @@ var $$ = {};
     "%": ";EventTarget"
   },
   FieldSetElement: {
-    "": "HtmlElement;name%,type=",
+    "": "HtmlElement;name%",
     "%": "HTMLFieldSetElement"
   },
   FormElement: {
@@ -11217,7 +11160,7 @@ var $$ = {};
     "%": "HTMLImageElement"
   },
   InputElement: {
-    "": "HtmlElement;checked%,height=,name%,src},type%,value%,width=",
+    "": "HtmlElement;checked%,height=,name%,src},type},value%,width=",
     $isInputElement: true,
     $isElement: true,
     $isNode: true,
@@ -11236,7 +11179,7 @@ var $$ = {};
     "%": "KeyboardEvent"
   },
   KeygenElement: {
-    "": "HtmlElement;name%,type=",
+    "": "HtmlElement;name%",
     "%": "HTMLKeygenElement"
   },
   LIElement: {
@@ -11244,7 +11187,7 @@ var $$ = {};
     "%": "HTMLLIElement"
   },
   LinkElement: {
-    "": "HtmlElement;href},type%",
+    "": "HtmlElement;href},type}",
     "%": "HTMLLinkElement"
   },
   Location: {
@@ -11277,13 +11220,13 @@ var $$ = {};
       return receiver.play();
     },
     get$onEnded: function(receiver) {
-      return C.EventStreamProvider_ended.forElement$1(receiver);
+      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_ended._eventType, false), [null]);
     },
     get$onPause: function(receiver) {
-      return C.EventStreamProvider_pause.forElement$1(receiver);
+      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_pause._eventType, false), [null]);
     },
     get$onPlay: function(receiver) {
-      return C.EventStreamProvider_play.forElement$1(receiver);
+      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_play._eventType, false), [null]);
     },
     "%": "HTMLAudioElement;HTMLMediaElement"
   },
@@ -11322,19 +11265,13 @@ var $$ = {};
     "%": "MIDIOutput"
   },
   MidiPort: {
-    "": "EventTarget;id=,type=",
+    "": "EventTarget;id=",
     "%": "MIDIInput;MIDIPort"
   },
   MouseEvent: {
-    "": "UIEvent;button=,_clientX:clientX=",
-    get$client: function(receiver) {
-      return H.setRuntimeTypeInfo(new P.Point(receiver.clientX, receiver.clientY), [null]);
-    },
-    get$movement: function(receiver) {
-      return H.setRuntimeTypeInfo(new P.Point(receiver.webkitMovementX, receiver.webkitMovementY), [null]);
-    },
+    "": "UIEvent;",
     $isMouseEvent: true,
-    "%": ";DragEvent|MSPointerEvent|MouseEvent|PointerEvent"
+    "%": "DragEvent|MSPointerEvent|MouseEvent|MouseScrollEvent|MouseWheelEvent|PointerEvent|WheelEvent"
   },
   Node: {
     "": "EventTarget;",
@@ -11407,11 +11344,11 @@ var $$ = {};
     "%": "NodeList|RadioNodeList"
   },
   OListElement: {
-    "": "HtmlElement;type%",
+    "": "HtmlElement;type}",
     "%": "HTMLOListElement"
   },
   ObjectElement: {
-    "": "HtmlElement;data=,height=,name%,type%,width=",
+    "": "HtmlElement;data=,height=,name%,type},width=",
     "%": "HTMLObjectElement"
   },
   OptionElement: {
@@ -11419,7 +11356,7 @@ var $$ = {};
     "%": "HTMLOptionElement"
   },
   OutputElement: {
-    "": "HtmlElement;name%,type=,value%",
+    "": "HtmlElement;name%,value%",
     "%": "HTMLOutputElement"
   },
   ParamElement: {
@@ -11447,11 +11384,11 @@ var $$ = {};
     "%": "Range"
   },
   ScriptElement0: {
-    "": "HtmlElement;src},type%",
+    "": "HtmlElement;src},type}",
     "%": "HTMLScriptElement"
   },
   SelectElement: {
-    "": "HtmlElement;length=,name%,type=,value%",
+    "": "HtmlElement;length=,name%,value%",
     "%": "HTMLSelectElement"
   },
   ShadowRoot: {
@@ -11462,7 +11399,7 @@ var $$ = {};
     "%": "ShadowRoot"
   },
   SourceElement: {
-    "": "HtmlElement;src},type%",
+    "": "HtmlElement;src},type}",
     "%": "HTMLSourceElement"
   },
   SpeechRecognitionError: {
@@ -11514,11 +11451,11 @@ var $$ = {};
     "%": "Storage"
   },
   StyleElement: {
-    "": "HtmlElement;type%",
+    "": "HtmlElement;type}",
     "%": "HTMLStyleElement"
   },
   StyleSheet: {
-    "": "Interceptor;type=",
+    "": "Interceptor;",
     "%": ";StyleSheet"
   },
   TableElement: {
@@ -11598,7 +11535,7 @@ var $$ = {};
     "%": "HTMLTemplateElement"
   },
   TextAreaElement: {
-    "": "HtmlElement;name%,type=,value%",
+    "": "HtmlElement;name%,value%",
     "%": "HTMLTextAreaElement"
   },
   TextEvent: {
@@ -11606,7 +11543,7 @@ var $$ = {};
     "%": "TextEvent"
   },
   Touch: {
-    "": "Interceptor;identifier=",
+    "": "Interceptor;",
     get$target: function(receiver) {
       return W._convertNativeToDart_EventTarget(receiver.target);
     },
@@ -11685,47 +11622,16 @@ var $$ = {};
     },
     "%": "WebSocket"
   },
-  WheelEvent: {
-    "": "MouseEvent;",
-    get$deltaY: function(receiver) {
-      var detail;
-      if (receiver.deltaY !== undefined)
-        return receiver.deltaY;
-      else if (receiver.wheelDelta !== undefined)
-        return -receiver.wheelDelta;
-      else if (receiver.detail !== undefined) {
-        if (receiver.axis == MouseScrollEvent.VERTICAL_AXIS) {
-          detail = receiver.detail;
-          if (Math.abs(detail) < 100)
-            return -detail * 40;
-          return -detail;
-        }
-        return 0;
-      }
-      throw H.wrapException(P.UnsupportedError$("deltaY is not supported"));
-    },
-    get$deltaX: function(receiver) {
-      var detail;
-      if (receiver.deltaX !== undefined)
-        return receiver.deltaX;
-      else if (receiver.wheelDeltaX !== undefined)
-        return -receiver.wheelDeltaX;
-      else if (receiver.detail !== undefined) {
-        if (receiver.axis !== undefined && receiver.axis == MouseScrollEvent.HORIZONTAL_AXIS) {
-          detail = receiver.detail;
-          if (detail < 100)
-            return -detail * 40;
-          return -detail;
-        }
-        return 0;
-      }
-      throw H.wrapException(P.UnsupportedError$("deltaX is not supported"));
-    },
-    $isWheelEvent: true,
-    "%": "MouseScrollEvent|MouseWheelEvent|WheelEvent"
-  },
   Window: {
     "": "EventTarget;",
+    get$animationFrame: function(receiver) {
+      var t1, completer;
+      t1 = J.JSNumber;
+      completer = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(t1)), [t1]);
+      this._ensureRequestAnimationFrame$0(receiver);
+      this._requestAnimationFrame$1(receiver, W._wrapZone(new W.Window_animationFrame_closure(completer)));
+      return completer.future;
+    },
     get$location: function(receiver) {
       var result = receiver.location;
       if (W.Window__isDartLocation(result) === true)
@@ -11734,7 +11640,7 @@ var $$ = {};
         receiver._location_wrapper = new W._LocationWrapper(result);
       return receiver._location_wrapper;
     },
-    _html$_requestAnimationFrame$1: function(receiver, callback) {
+    _requestAnimationFrame$1: function(receiver, callback) {
       return receiver.requestAnimationFrame(H.convertDartClosureToJS(callback, 1));
     },
     _ensureRequestAnimationFrame$0: function(receiver) {
@@ -11766,55 +11672,6 @@ var $$ = {};
   _Attr: {
     "": "Node;name=,value=",
     "%": "Attr"
-  },
-  _ClientRect: {
-    "": "Interceptor;height=,left=,top=,width=",
-    toString$0: function(receiver) {
-      return "Rectangle (" + H.S(receiver.left) + ", " + H.S(receiver.top) + ") " + H.S(receiver.width) + " x " + H.S(receiver.height);
-    },
-    $eq: function(receiver, other) {
-      var t1, t2, t3;
-      if (other == null)
-        return false;
-      t1 = J.getInterceptor$x(other);
-      if (typeof other !== "object" || other === null || !t1.$isRectangle)
-        return false;
-      t2 = receiver.left;
-      t3 = t1.get$left(other);
-      if (t2 == null ? t3 == null : t2 === t3) {
-        t2 = receiver.top;
-        t3 = t1.get$top(other);
-        if (t2 == null ? t3 == null : t2 === t3) {
-          t2 = receiver.width;
-          t3 = t1.get$width(other);
-          if (t2 == null ? t3 == null : t2 === t3) {
-            t2 = receiver.height;
-            t1 = t1.get$height(other);
-            t1 = t2 == null ? t1 == null : t2 === t1;
-          } else
-            t1 = false;
-        } else
-          t1 = false;
-      } else
-        t1 = false;
-      return t1;
-    },
-    get$hashCode: function(receiver) {
-      var t1, t2, t3, t4, hash;
-      t1 = J.get$hashCode$(receiver.left);
-      t2 = J.get$hashCode$(receiver.top);
-      t3 = J.get$hashCode$(receiver.width);
-      t4 = J.get$hashCode$(receiver.height);
-      t4 = W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(0, t1), t2), t3), t4);
-      hash = 536870911 & t4 + ((67108863 & t4) << 3 >>> 0);
-      hash ^= hash >>> 11;
-      return 536870911 & hash + ((16383 & hash) << 15 >>> 0);
-    },
-    $isRectangle: true,
-    $asRectangle: function() {
-      return [null];
-    },
-    "%": "ClientRect|DOMRect"
   },
   _NamedNodeMap: {
     "": "Interceptor_ListMixin_ImmutableListMixin2;",
@@ -11880,10 +11737,7 @@ var $$ = {};
     "": "Object;",
     error$1: [function(_, arg) {
       return typeof console != "undefined" ? console.error(arg) : null;
-    }, "call$1", "get$error", 2, 0, 16],
-    timeStamp$1: [function(_, arg) {
-      return typeof console != "undefined" ? console.timeStamp(arg) : null;
-    }, "call$1", "get$timeStamp", 2, 0, 16],
+    }, "call$1", "get$error", 2, 0, 17],
     static: {"": "Console__safeConsole"}
   },
   Interceptor_CssStyleDeclarationBase: {
@@ -12174,7 +12028,7 @@ var $$ = {};
       if (t2) {
         t2 = t3.future;
         if (t2._state !== 0)
-          H.throwExpression(new P.StateError("Future already completed"));
+          H.throwExpression(P.StateError$("Future already completed"));
         t2._asyncComplete$1(t1);
       } else
         t3.completeError$1(e);
@@ -12293,6 +12147,15 @@ var $$ = {};
       return [W.Touch];
     },
     $isEfficientLength: true
+  },
+  Window_animationFrame_closure: {
+    "": "Closure:3;completer_0",
+    call$1: function(time) {
+      var t1 = this.completer_0.future;
+      if (t1._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t1._asyncComplete$1(time);
+    }
   },
   _BeforeUnloadEvent: {
     "": "_WrappedEvent;_returnValue,wrapped",
@@ -12450,18 +12313,6 @@ var $$ = {};
     },
     forTarget$1: function(e) {
       return this.forTarget$2$useCapture(e, false);
-    },
-    forElement$2$useCapture: function(e, useCapture) {
-      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(e, this._eventType, useCapture), [null]);
-    },
-    forElement$1: function(e) {
-      return this.forElement$2$useCapture(e, false);
-    },
-    _forElementList$2$useCapture: function(e, useCapture) {
-      return H.setRuntimeTypeInfo(new W._ElementListEventStreamImpl(e, useCapture, this._eventType), [null]);
-    },
-    _forElementList$1: function(e) {
-      return this._forElementList$2$useCapture(e, false);
     }
   },
   _EventStream: {
@@ -12572,7 +12423,7 @@ var $$ = {};
       }
       t1 = this._html$_controller;
       t1.close$0(t1);
-    }, "call$0", "get$close", 0, 0, 7],
+    }, "call$0", "get$close", 0, 0, 8],
     _html$_StreamPool$broadcast$0: function($T) {
       this._html$_controller = P.StreamController_StreamController$broadcast(this.get$close(this), null, true, $T);
     }
@@ -12582,18 +12433,6 @@ var $$ = {};
     call$0: function() {
       var t1 = this.this_0;
       return t1.remove$1(t1, this.stream_1);
-    }
-  },
-  _CustomEventStreamProvider: {
-    "": "Object;_eventTypeGetter",
-    _eventTypeGetter$1: function(arg0) {
-      return this._eventTypeGetter.call$1(arg0);
-    },
-    forElement$2$useCapture: function(e, useCapture) {
-      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(e, this._eventTypeGetter$1(e), useCapture), [null]);
-    },
-    forElement$1: function(e) {
-      return this.forElement$2$useCapture(e, false);
     }
   },
   _Html5NodeValidator: {
@@ -12835,12 +12674,6 @@ var $$ = {};
     get$target: function(_) {
       return J.get$target$x(this.wrapped);
     },
-    get$timeStamp: function(_) {
-      return J.get$timeStamp$x(this.wrapped);
-    },
-    get$type: function(_) {
-      return J.get$type$x(this.wrapped);
-    },
     preventDefault$0: function(_) {
       J.preventDefault$0$x(this.wrapped);
     },
@@ -13015,7 +12848,7 @@ var $$ = {};
     "%": "SVGFEBlendElement"
   },
   FEColorMatrixElement: {
-    "": "SvgElement;type=,values=,height=,width=,x=,y=",
+    "": "SvgElement;values=,height=,width=,x=,y=",
     "%": "SVGFEColorMatrixElement"
   },
   FEComponentTransferElement: {
@@ -13079,7 +12912,7 @@ var $$ = {};
     "%": "SVGFETileElement"
   },
   FETurbulenceElement: {
-    "": "SvgElement;type=,height=,width=,x=,y=",
+    "": "SvgElement;height=,width=,x=,y=",
     "%": "SVGFETurbulenceElement"
   },
   FilterElement: {
@@ -13111,12 +12944,12 @@ var $$ = {};
     "%": "SVGRectElement"
   },
   ScriptElement: {
-    "": "SvgElement;type%",
+    "": "SvgElement;type}",
     $isScriptElement: true,
     "%": "SVGScriptElement"
   },
   StyleElement0: {
-    "": "SvgElement;type%",
+    "": "SvgElement;type}",
     "%": "SVGStyleElement"
   },
   SvgElement: {
@@ -13204,7 +13037,7 @@ var $$ = {};
 }],
 ["dart.math", "dart:math", , P, {
   "": "",
-  _JenkinsSmiHash_combine0: function(hash, value) {
+  _JenkinsSmiHash_combine: function(hash, value) {
     hash = 536870911 & hash + value;
     hash = 536870911 & hash + ((524287 & hash) << 10 >>> 0);
     return hash ^ hash >>> 6;
@@ -13268,7 +13101,7 @@ var $$ = {};
       var t1, t2;
       t1 = J.get$hashCode$(this.x);
       t2 = J.get$hashCode$(this.y);
-      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(0, t1), t2));
+      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(0, t1), t2));
     },
     $add: function(_, other) {
       var t1, t2, t3, t4;
@@ -13328,20 +13161,21 @@ var $$ = {};
       return "Rectangle (" + H.S(this.get$left(this)) + ", " + H.S(this.top) + ") " + H.S(this.width) + " x " + H.S(this.height);
     },
     $eq: function(_, other) {
-      var t1, t2, t3;
+      var t1, t2;
       if (other == null)
         return false;
-      t1 = J.getInterceptor$x(other);
+      t1 = J.getInterceptor(other);
       if (typeof other !== "object" || other === null || !t1.$isRectangle)
         return false;
-      if (J.$eq(this.get$left(this), t1.get$left(other)))
-        if (J.$eq(this.top, t1.get$top(other))) {
-          t2 = this.width;
-          t3 = t1.get$width(other);
-          if (t2 == null ? t3 == null : t2 === t3) {
-            t2 = this.height;
-            t1 = t1.get$height(other);
-            t1 = t2 == null ? t1 == null : t2 === t1;
+      if (J.$eq(this.get$left(this), other.left))
+        if (J.$eq(this.top, other.top)) {
+          t1 = this.width;
+          t2 = other.width;
+          if (t1 == null ? t2 == null : t1 === t2) {
+            t1 = this.height;
+            t2 = other.height;
+            t2 = t1 == null ? t2 == null : t1 === t2;
+            t1 = t2;
           } else
             t1 = false;
         } else
@@ -13356,13 +13190,12 @@ var $$ = {};
       t2 = J.get$hashCode$(this.top);
       t3 = J.get$hashCode$(this.width);
       t4 = J.get$hashCode$(this.height);
-      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(0, t1), t2), t3), t4));
+      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(0, t1), t2), t3), t4));
     }
   },
   Rectangle: {
-    "": "_RectangleBase;left>,top>,width>,height>",
+    "": "_RectangleBase;left>,top,width>,height>",
     $isRectangle: true,
-    $asRectangle: null,
     $as_RectangleBase: null
   }
 }],
@@ -13632,538 +13465,6 @@ var $$ = {};
     throw "Unable to print message: " + String(string);
   }
 }],
-["game_loop_common", "package:game_loop/game_loop_common.dart", , B, {
-  "": "",
-  GameLoop: {
-    "": "Object;",
-    processTimers$0: function() {
-      var t1, _timersLength, t2, i;
-      t1 = this._timers;
-      _timersLength = t1.length;
-      for (t2 = this.updateTimeStep, i = 0; i < _timersLength; ++i)
-        t1[i]._update$1(t2);
-      for (i = _timersLength - 1; i >= 0; --i)
-        t1[i].get$_isDead();
-    },
-    onUpdate$1: function(arg0) {
-      return this.onUpdate.call$1(arg0);
-    }
-  },
-  DigitalButton: {
-    "": "Object;buttonId,framePressed?,frameReleased?,timePressed,timeReleased",
-    get$down: function() {
-      return this.framePressed > this.frameReleased;
-    },
-    $isDigitalButton: true
-  },
-  DigitalButtonEvent: {
-    "": "Object;down<,frame,buttonId,time",
-    toString$0: function(_) {
-      return "Button: " + H.S(this.buttonId) + " DOWN: " + this.down + " [" + this.frame + "@" + H.S(this.time) + "]";
-    }
-  },
-  DigitalInput: {
-    "": "Object;",
-    digitalButtonEvent$1: function($event) {
-      var t1, button;
-      t1 = this.buttons;
-      button = t1.$index(t1, $event.buttonId);
-      if (button == null)
-        return;
-      if ($event.down) {
-        if (!button.get$down()) {
-          button.set$framePressed($event.frame);
-          button.timePressed = $event.time;
-        }
-      } else {
-        button.set$frameReleased($event.frame);
-        button.timeReleased = $event.time;
-      }
-    },
-    DigitalInput$2: function(gameLoop, buttonIds) {
-      var t1, t2, buttonId;
-      for (t1 = new H.ListIterator(buttonIds, buttonIds.length, 0, null), t2 = this.buttons; t1.moveNext$0();) {
-        buttonId = t1._current;
-        t2.$indexSet(t2, buttonId, new B.DigitalButton(buttonId, 0, 0, 0, 0));
-      }
-    }
-  },
-  GameLoopTimer: {
-    "": "Object;",
-    $isGameLoopTimer: true
-  }
-}],
-["game_loop_html", "package:game_loop/game_loop_html.dart", , G, {
-  "": "",
-  GameLoopGamepad: {
-    "": "Object;gameLoop,buttons,sticks",
-    static: {"": "GameLoopGamepad_BUTTON0,GameLoopGamepad_BUTTON1,GameLoopGamepad_BUTTON2,GameLoopGamepad_BUTTON3,GameLoopGamepad_BUTTON4,GameLoopGamepad_BUTTON5,GameLoopGamepad_BUTTON6"}
-  },
-  GameLoopHtml: {
-    "": "GameLoop;element,_frameCounter,_initialized,_interrupt,_previousFrameTime,_frameTime,_resizePending,_nextResize,game_loop_html$GameLoopHtml$maxAccumulatedTime,_accumulatedTime,_gameTime,_renderInterpolationFactor,resizeLimit,processAllKeyboardEvents,_pointerLock,_keyboard,_mouse,_gamepad0,_lastMousePos,_touchSet,_rafId,_touchEvents,_keyboardEvents,_mouseEvents,onRender,onResize,onFullscreenChange,onPointerLockChange,onTouchStart,onTouchEnd,onKeyDown,_game_loop_html$_state,updateTimeStep,maxAccumulatedTime,_timers,onUpdate,_game_loop_common$_state",
-    get$width: function(_) {
-      var t1, t2, t3, t4;
-      t1 = this.element;
-      t2 = t1.clientLeft;
-      t3 = t1.clientTop;
-      t4 = t1.clientWidth;
-      t1 = t1.clientHeight;
-      new P.Rectangle(t2, t3, t4, t1).$builtinTypeInfo = [null];
-      return t4;
-    },
-    get$height: function(_) {
-      var t1, t2, t3, t4;
-      t1 = this.element;
-      t2 = t1.clientLeft;
-      t3 = t1.clientTop;
-      t4 = t1.clientWidth;
-      t1 = t1.clientHeight;
-      new P.Rectangle(t2, t3, t4, t1).$builtinTypeInfo = [null];
-      return t1;
-    },
-    _processKeyboardEvents$0: function() {
-      var t1, t2, keyboardEvent, t3, t4, buttonId;
-      if (!this.processAllKeyboardEvents) {
-        t1 = document.activeElement;
-        t2 = document.body;
-        t2 = t1 == null ? t2 == null : t1 === t2;
-        t1 = t2;
-      } else
-        t1 = true;
-      if (t1)
-        for (t1 = this._keyboardEvents, t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
-          keyboardEvent = t1._current;
-          t2 = J.getInterceptor$x(keyboardEvent);
-          t3 = t2.get$type(keyboardEvent);
-          t4 = t2.get$timeStamp(keyboardEvent);
-          if (typeof t4 !== "number")
-            return t4.$div();
-          buttonId = t2.get$keyCode(keyboardEvent);
-          t2 = this._frameCounter;
-          this._keyboard.digitalButtonEvent$1(new B.DigitalButtonEvent(t3 === "keydown", t2, buttonId, t4 / 1000));
-        }
-      C.JSArray_methods.set$length(this._keyboardEvents, 0);
-    },
-    _processMouseEvents$0: function() {
-      var t1, docElem, box, t2, canvasX, canvasY, t3, mouseEvent, t4, t5, t6, t7, t8, time, mouseX, x, y, clampX, withinCanvas, t9, clampY, dx, dy, buttonId;
-      t1 = this._mouse;
-      t1._wheelDx = 0;
-      t1._wheelDy = 0;
-      t1._dx = 0;
-      t1._dy = 0;
-      docElem = document.documentElement;
-      t1 = this.element;
-      box = t1.getBoundingClientRect();
-      t2 = J.getInterceptor$x(box);
-      canvasX = J.floor$0$n(J.$sub$n(J.$add$ns(t2.get$left(box), window.pageXOffset), docElem.clientLeft));
-      canvasY = J.floor$0$n(J.$sub$n(J.$add$ns(t2.get$top(box), window.pageYOffset), docElem.clientTop));
-      for (t2 = this._mouseEvents, t3 = new H.ListIterator(t2, t2.length, 0, null); t3.moveNext$0();) {
-        mouseEvent = t3._current;
-        t4 = J.getInterceptor$x(mouseEvent);
-        t5 = t4.get$type(mouseEvent);
-        t6 = t4.get$type(mouseEvent);
-        t7 = t4.get$type(mouseEvent);
-        t8 = t4.get$timeStamp(mouseEvent);
-        if (typeof t8 !== "number")
-          return t8.$div();
-        time = t8 / 1000;
-        if (t5 === "mousemove") {
-          mouseX = t4.get$page(mouseEvent).x;
-          t5 = mouseEvent.pageX;
-          t6 = mouseEvent.pageY;
-          new P.Point(t5, t6).$builtinTypeInfo = [null];
-          if (typeof mouseX !== "number")
-            return mouseX.$sub();
-          x = mouseX - canvasX;
-          if (typeof t6 !== "number")
-            return t6.$sub();
-          y = t6 - canvasY;
-          if (mouseX < canvasX) {
-            clampX = 0;
-            withinCanvas = false;
-          } else {
-            t5 = t1.clientLeft;
-            t7 = t1.clientTop;
-            t8 = t1.clientWidth;
-            t9 = t1.clientHeight;
-            new P.Rectangle(t5, t7, t8, t9).$builtinTypeInfo = [null];
-            if (typeof t8 !== "number")
-              return H.iae(t8);
-            if (mouseX > canvasX + t8) {
-              t5 = t1.clientLeft;
-              t7 = t1.clientTop;
-              clampX = t1.clientWidth;
-              t8 = t1.clientHeight;
-              new P.Rectangle(t5, t7, clampX, t8).$builtinTypeInfo = [null];
-              withinCanvas = false;
-            } else {
-              clampX = x;
-              withinCanvas = true;
-            }
-          }
-          if (t6 < canvasY) {
-            clampY = 0;
-            withinCanvas = false;
-          } else {
-            t5 = t1.clientLeft;
-            t7 = t1.clientTop;
-            t8 = t1.clientWidth;
-            t9 = t1.clientHeight;
-            new P.Rectangle(t5, t7, t8, t9).$builtinTypeInfo = [null];
-            if (typeof t9 !== "number")
-              return H.iae(t9);
-            if (t6 > canvasY + t9) {
-              t5 = t1.clientLeft;
-              t6 = t1.clientTop;
-              t7 = t1.clientWidth;
-              clampY = t1.clientHeight;
-              new P.Rectangle(t5, t6, t7, clampY).$builtinTypeInfo = [null];
-              withinCanvas = false;
-            } else
-              clampY = y;
-          }
-          t5 = this._pointerLock;
-          t5.toString;
-          t6 = document.webkitPointerLockElement;
-          t5 = t5.gameLoop.element;
-          if (t6 == null ? t5 == null : t6 === t5) {
-            dx = t4.get$movement(mouseEvent).x;
-            t5 = mouseEvent.webkitMovementX;
-            dy = mouseEvent.webkitMovementY;
-            new P.Point(t5, dy).$builtinTypeInfo = [null];
-          } else {
-            t5 = t4.get$client(mouseEvent).x;
-            t6 = this._lastMousePos.x;
-            if (typeof t5 !== "number")
-              return t5.$sub();
-            if (typeof t6 !== "number")
-              return H.iae(t6);
-            dx = t5 - t6;
-            t6 = mouseEvent.clientX;
-            t5 = mouseEvent.clientY;
-            new P.Point(t6, t5).$builtinTypeInfo = [null];
-            t6 = this._lastMousePos.y;
-            if (typeof t5 !== "number")
-              return t5.$sub();
-            if (typeof t6 !== "number")
-              return H.iae(t6);
-            dy = t5 - t6;
-            t6 = new P.Point(mouseEvent.clientX, mouseEvent.clientY);
-            t6.$builtinTypeInfo = [null];
-            this._lastMousePos = t6;
-          }
-          t4 = new P.Point(t4.get$_clientX(mouseEvent), mouseEvent.clientY);
-          t4.$builtinTypeInfo = [null];
-          this._lastMousePos = t4;
-          t4 = this._frameCounter;
-          t5 = this._mouse;
-          t5._game_loop_html$_x = x;
-          t5._game_loop_html$_y = y;
-          t5._time = time;
-          t5._frame = t4;
-          t4 = t5._dx;
-          if (typeof dx !== "number")
-            return H.iae(dx);
-          t5._dx = t4 + dx;
-          t4 = t5._dy;
-          if (typeof dy !== "number")
-            return H.iae(dy);
-          t5._dy = t4 + dy;
-          t5._clampX = clampX;
-          t5._clampY = clampY;
-          t5._withinCanvas = withinCanvas;
-        } else {
-          t5 = this._mouse;
-          if (t6 === "mousewheel") {
-            H.interceptedTypeCast(mouseEvent, "$isWheelEvent");
-            t4 = t4.get$deltaX(mouseEvent);
-            t6 = C.WheelEvent_methods.get$deltaY(mouseEvent);
-            t7 = t5._wheelDx;
-            if (typeof t4 !== "number")
-              return H.iae(t4);
-            t5._wheelDx = t7 + t4;
-            t4 = t5._wheelDy;
-            if (typeof t6 !== "number")
-              return H.iae(t6);
-            t5._wheelDy = t4 + t6;
-          } else {
-            buttonId = t4.get$button(mouseEvent);
-            t5.digitalButtonEvent$1(new B.DigitalButtonEvent(t7 === "mousedown", this._frameCounter, buttonId, time));
-          }
-        }
-      }
-      C.JSArray_methods.set$length(t2, 0);
-    },
-    _processTouchEvents$0: function() {
-      var t1, t2, touchEvent;
-      for (t1 = this._touchEvents, t2 = new H.ListIterator(t1, t1.length, 0, null); t2.moveNext$0();) {
-        touchEvent = t2._current;
-        switch (J.get$type$x(touchEvent)) {
-          case 3:
-            this._touchSet._start$1(touchEvent.get$event());
-            break;
-          case 2:
-            this._touchSet._game_loop_html$_end$1(touchEvent.get$event());
-            break;
-          case 1:
-            this._touchSet._move$1(touchEvent.get$event());
-            break;
-          default:
-            throw H.wrapException(new P.StateError("Invalid _GameLoopTouchEven type."));
-        }
-      }
-      C.JSArray_methods.set$length(t1, 0);
-    },
-    _requestAnimationFrame$1: [function(_, _0) {
-      var t1, t2;
-      if (this._previousFrameTime == null) {
-        t1 = P.DateTime$_now().millisecondsSinceEpoch / 1000;
-        this._frameTime = t1;
-        this._previousFrameTime = t1;
-        this._processKeyboardEvents$0();
-        this._processMouseEvents$0();
-        this._processTouchEvents$0();
-        t1 = window;
-        t2 = this.get$_requestAnimationFrame(this);
-        C.Window_methods._ensureRequestAnimationFrame$0(t1);
-        this._rafId = C.Window_methods._html$_requestAnimationFrame$1(t1, W._wrapZone(t2));
-        return;
-      }
-      if (this._interrupt) {
-        this._rafId = null;
-        return;
-      }
-      t1 = window;
-      t2 = this.get$_requestAnimationFrame(this);
-      C.Window_methods._ensureRequestAnimationFrame$0(t1);
-      this._rafId = C.Window_methods._html$_requestAnimationFrame$1(t1, W._wrapZone(t2));
-      this._previousFrameTime = this._frameTime;
-      t2 = P.DateTime$_now().millisecondsSinceEpoch / 1000;
-      this._frameTime = t2;
-      t1 = this._previousFrameTime;
-      if (typeof t1 !== "number")
-        return H.iae(t1);
-      t1 = this._accumulatedTime + (t2 - t1);
-      this._accumulatedTime = t1;
-      t2 = this.game_loop_html$GameLoopHtml$maxAccumulatedTime;
-      if (t1 > t2) {
-        this._accumulatedTime = t2;
-        t1 = t2;
-      }
-      for (t2 = this.updateTimeStep; t1 >= t2;) {
-        this._frameCounter = this._frameCounter + 1;
-        this._processKeyboardEvents$0();
-        this._processMouseEvents$0();
-        this._processTouchEvents$0();
-        this.processTimers$0();
-        this._gameTime = this._gameTime + t2;
-        if (this.onUpdate != null)
-          this.onUpdate$1(this);
-        t1 = this._accumulatedTime - t2;
-        this._accumulatedTime = t1;
-      }
-      if (this._resizePending)
-        t1 = false;
-      else
-        t1 = false;
-      if (t1) {
-        this.onResize$1(this, this);
-        this._nextResize = this._frameTime + this.resizeLimit;
-        this._resizePending = false;
-      }
-      if (this.onRender != null) {
-        this._renderInterpolationFactor = this._accumulatedTime / t2;
-        this.onRender$1(this);
-      }
-    }, "call$1", "get$_requestAnimationFrame", 2, 0, 50],
-    _fullscreenChange$1: [function(_) {
-      return;
-    }, "call$1", "get$_fullscreenChange", 2, 0, 51],
-    _fullscreenError$1: [function(_) {
-      return;
-    }, "call$1", "get$_fullscreenError", 2, 0, 51],
-    _touchStartEvent$1: [function($event) {
-      this._touchEvents.push(new G._GameLoopTouchEvent($event, 3));
-      J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchStartEvent", 2, 0, 52],
-    _touchMoveEvent$1: [function($event) {
-      this._touchEvents.push(new G._GameLoopTouchEvent($event, 1));
-      J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchMoveEvent", 2, 0, 52],
-    _touchEndEvent$1: [function($event) {
-      this._touchEvents.push(new G._GameLoopTouchEvent($event, 2));
-      J.preventDefault$0$x($event);
-    }, "call$1", "get$_touchEndEvent", 2, 0, 52],
-    _keyDown$1: [function($event) {
-      this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyDown", 2, 0, 53],
-    _keyUp$1: [function($event) {
-      this._keyboardEvents.push($event);
-    }, "call$1", "get$_keyUp", 2, 0, 53],
-    _mouseDown$1: [function($event) {
-      this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseDown", 2, 0, 54],
-    _mouseUp$1: [function($event) {
-      this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseUp", 2, 0, 54],
-    _mouseMove$1: [function($event) {
-      this._mouseEvents.push($event);
-    }, "call$1", "get$_mouseMove", 2, 0, 54],
-    _mouseWheel$1: [function($event) {
-      this._mouseEvents.push($event);
-      J.preventDefault$0$x($event);
-    }, "call$1", "get$_mouseWheel", 2, 0, 54],
-    _resize$1: [function(_) {
-      if (!this._resizePending)
-        this._resizePending = true;
-    }, "call$1", "get$_resize", 2, 0, 51],
-    onRender$1: function(arg0) {
-      return this.onRender.call$1(arg0);
-    },
-    onResize$1: function($receiver, arg0) {
-      return this.onResize.call$1(arg0);
-    },
-    GameLoopHtml$1: function(element) {
-      var t1 = new G.Keyboard(this, P.LinkedHashMap_LinkedHashMap(null, null, null, J.JSInt, B.DigitalButton), null);
-      t1.DigitalInput$2(this, $.get$Keyboard__buttonIds());
-      this._keyboard = t1;
-      t1 = new G.Mouse(0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, this, P.LinkedHashMap_LinkedHashMap(null, null, null, J.JSInt, B.DigitalButton), null);
-      t1.DigitalInput$2(this, $.get$Mouse__buttonIds());
-      this._mouse = t1;
-      this._gamepad0 = new G.GameLoopGamepad(this, null, null);
-      t1 = new G.PointerLock(this, true);
-      t1.PointerLock$1(this);
-      this._pointerLock = t1;
-      this._touchSet = new G.GameLoopTouchSet(P.LinkedHashMap_LinkedHashMap(null, null, null, J.JSInt, G.GameLoopTouch), this);
-    }
-  },
-  Keyboard: {
-    "": "DigitalInput;gameLoop,buttons,interceptor",
-    static: {"": "Keyboard_A,Keyboard_B,Keyboard_C,Keyboard_D,Keyboard_E,Keyboard_F,Keyboard_G,Keyboard_H,Keyboard_I,Keyboard_J,Keyboard_K,Keyboard_L,Keyboard_M,Keyboard_N,Keyboard_O,Keyboard_P,Keyboard_Q,Keyboard_R,Keyboard_S,Keyboard_T,Keyboard_U,Keyboard_V,Keyboard_W,Keyboard_X,Keyboard_Y,Keyboard_Z,Keyboard_SHIFT,Keyboard_CTRL,Keyboard_ALT,Keyboard_SPACE,Keyboard_ZERO,Keyboard_ONE,Keyboard_TWO,Keyboard_THREE,Keyboard_FOUR,Keyboard_FIVE,Keyboard_SIX,Keyboard_SEVEN,Keyboard_EIGHT,Keyboard_NINE,Keyboard_ENTER,Keyboard_UP,Keyboard_DOWN,Keyboard_LEFT,Keyboard_RIGHT,Keyboard_ESCAPE,Keyboard_APOSTROPHE,Keyboard_BACKSLASH,Keyboard_BACKSPACE,Keyboard_CAPS_LOCK,Keyboard_CLOSE_SQUARE_BRACKET,Keyboard_COMMA,Keyboard_CONTEXT_MENU,Keyboard_DASH,Keyboard_DELETE,Keyboard_END,Keyboard_EQUALS,Keyboard_F1,Keyboard_F2,Keyboard_F3,Keyboard_F4,Keyboard_F5,Keyboard_F6,Keyboard_F7,Keyboard_F8,Keyboard_F9,Keyboard_F10,Keyboard_F11,Keyboard_F12,Keyboard_FF_EQUALS,Keyboard_FF_SEMICOLON,Keyboard_FIRST_MEDIA_KEY,Keyboard_HOME,Keyboard_INSERT,Keyboard_LAST_MEDIA_KEY,Keyboard_MAC_ENTER,Keyboard_MAC_FF_META,Keyboard_META,Keyboard_NUM_CENTER,Keyboard_NUM_DELETE,Keyboard_NUM_DIVISION,Keyboard_NUM_EAST,Keyboard_NUM_EIGHT,Keyboard_NUM_FIVE,Keyboard_NUM_FOUR,Keyboard_NUM_INSERT,Keyboard_NUM_MINUS,Keyboard_NUM_MULTIPLY,Keyboard_NUM_NINE,Keyboard_NUM_NORTH,Keyboard_NUM_NORTH_EAST,Keyboard_NUM_NORTH_WEST,Keyboard_NUM_ONE,Keyboard_NUM_PERIOD,Keyboard_NUM_PLUS,Keyboard_NUM_SEVEN,Keyboard_NUM_SIX,Keyboard_NUM_SOUTH,Keyboard_NUM_SOUTH_EAST,Keyboard_NUM_SOUTH_WEST,Keyboard_NUM_THREE,Keyboard_NUM_TWO,Keyboard_NUM_WEST,Keyboard_NUM_ZERO,Keyboard_NUMLOCK,Keyboard_OPEN_SQUARE_BRACKET,Keyboard_PAGE_UP,Keyboard_PAGE_DOWN,Keyboard_PAUSE,Keyboard_PERIOD,Keyboard_PRINT_SCREEN,Keyboard_QUESTION_MARK,Keyboard_SCROLL_LOCK,Keyboard_SEMICOLON,Keyboard_SINGLE_QUOTE,Keyboard_SLASH,Keyboard_TAB,Keyboard_TILDE,Keyboard_WIN_IME,Keyboard_WIN_KEY,Keyboard_WIN_KEY_FF_LINUX,Keyboard_WIN_KEY_LEFT,Keyboard_WIN_KEY_RIGHT,Keyboard__buttonIds"}
-  },
-  Mouse: {
-    "": "DigitalInput;_dx,_dy,_game_loop_html$_x,_game_loop_html$_y,_clampX,_clampY,_wheelDx,_wheelDy,_withinCanvas,_time,_frame,gameLoop,buttons,interceptor",
-    get$x: function(_) {
-      return this._game_loop_html$_x;
-    },
-    get$y: function(_) {
-      return this._game_loop_html$_y;
-    },
-    static: {"": "Mouse_LEFT,Mouse_MIDDLE,Mouse_RIGHT,Mouse__buttonIds"}
-  },
-  PointerLock: {
-    "": "Object;gameLoop,lockOnClick",
-    _onClick$1: [function($event) {
-      if (this.lockOnClick)
-        this.gameLoop.element.webkitRequestPointerLock();
-    }, "call$1", "get$_onClick", 2, 0, 51],
-    _onPointerLockChange$1: [function($event) {
-    }, "call$1", "get$_onPointerLockChange", 2, 0, 51],
-    PointerLock$1: function(gameLoop) {
-      var t1 = this.gameLoop.element;
-      t1.toString;
-      t1 = C.EventStreamProvider_click.forElement$1(t1);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(this.get$_onClick()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
-      C.EventStreamProvider_webkitpointerlockchange.forTarget$1(document).listen$1(this.get$_onPointerLockChange());
-    }
-  },
-  _GameLoopTouchEvent: {
-    "": "Object;event<,type>",
-    $is_GameLoopTouchEvent: true,
-    static: {"": "_GameLoopTouchEvent_Move,_GameLoopTouchEvent_End,_GameLoopTouchEvent_Start"}
-  },
-  GameLoopTouchPosition: {
-    "": "Object;x>,y>,dx,dy,time,frame",
-    $isGameLoopTouchPosition: true
-  },
-  GameLoopTouch: {
-    "": "Object;id>,positions<",
-    $isGameLoopTouch: true
-  },
-  GameLoopTouchSet: {
-    "": "Object;activeTouches,gameLoop",
-    _addPosition$2: function(glTouch, touch) {
-      var t1, t2, t3, t4;
-      t1 = H.setRuntimeTypeInfo(new P.Point(touch.pageX, touch.pageY), [null]);
-      t2 = H.setRuntimeTypeInfo(new P.Point(touch.pageX, touch.pageY), [null]);
-      t3 = this.gameLoop;
-      t4 = t3._gameTime;
-      t3 = t3._frameCounter;
-      glTouch.get$positions().push(new G.GameLoopTouchPosition(t1.x, t2.y, 0, 0, t4, t3));
-    },
-    _start$1: function($event) {
-      J.forEach$1$ax(J.get$changedTouches$x($event), new G.GameLoopTouchSet__start_closure(this));
-      this._verifyTouchList$1($event.touches);
-    },
-    _game_loop_html$_end$1: function($event) {
-      J.forEach$1$ax(J.get$changedTouches$x($event), new G.GameLoopTouchSet__end_closure(this));
-      this._verifyTouchList$1($event.touches);
-    },
-    _move$1: function($event) {
-      J.forEach$1$ax(J.get$changedTouches$x($event), new G.GameLoopTouchSet__move_closure(this));
-      this._verifyTouchList$1($event.touches);
-    },
-    _inTouchList$2: function(touches, identifier) {
-      var t1, i, t2;
-      for (t1 = touches.length, i = 0; i < t1; ++i) {
-        t2 = touches[i].identifier;
-        if (t2 == null ? identifier == null : t2 === identifier)
-          return true;
-      }
-      return false;
-    },
-    _verifyTouchList$1: function(touches) {
-      var t1, t2;
-      t1 = touches.length;
-      t2 = this.activeTouches;
-      if (t1 !== t2._collection$_length)
-        P.print("" + t1 + " " + t2._collection$_length);
-      t2.forEach$1(t2, new G.GameLoopTouchSet__verifyTouchList_closure(this, touches));
-    }
-  },
-  GameLoopTouchSet__start_closure: {
-    "": "Closure:55;this_0",
-    call$1: function(touch) {
-      var glTouch, t1, t2;
-      glTouch = new G.GameLoopTouch(J.get$identifier$x(touch), H.setRuntimeTypeInfo([], [G.GameLoopTouchPosition]));
-      t1 = this.this_0;
-      t2 = t1.activeTouches;
-      if (t2.$index(t2, touch.identifier) != null)
-        return;
-      t2.$indexSet(t2, touch.identifier, glTouch);
-      t1._addPosition$2(glTouch, touch);
-    }
-  },
-  GameLoopTouchSet__end_closure: {
-    "": "Closure:55;this_0",
-    call$1: function(touch) {
-      var t1, t2, glTouch;
-      t1 = this.this_0;
-      t2 = t1.activeTouches;
-      glTouch = t2.$index(t2, J.get$identifier$x(touch));
-      if (glTouch == null)
-        return;
-      t2.remove$1(t2, touch.identifier);
-      t1._addPosition$2(glTouch, touch);
-    }
-  },
-  GameLoopTouchSet__move_closure: {
-    "": "Closure:55;this_0",
-    call$1: function(touch) {
-      var t1, t2;
-      t1 = this.this_0;
-      t2 = t1.activeTouches;
-      t1._addPosition$2(t2.$index(t2, J.get$identifier$x(touch)), touch);
-    }
-  },
-  GameLoopTouchSet__verifyTouchList_closure: {
-    "": "Closure:20;this_0,touches_1",
-    call$2: function(identifier, touch) {
-      if (!this.this_0._inTouchList$2(this.touches_1, identifier))
-        P.print("Did not find " + H.S(identifier));
-    }
-  }
-}],
 ["glitchTime", "package:glitchTime/glitch-time.dart", , G, {
   "": "",
   day_to_md: function(id) {
@@ -14227,7 +13528,7 @@ var $$ = {};
     return t1;
   },
   convertNativeToDart_AcceptStructuredClone_findSlot: {
-    "": "Closure:12;values_0,copies_1",
+    "": "Closure:13;values_0,copies_1",
     call$1: function(value) {
       var t1, $length, i, t2;
       t1 = this.values_0;
@@ -14252,7 +13553,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:56;copies_3",
+    "": "Closure:50;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -15188,7 +14489,7 @@ var $$ = {};
   Asset: {
     "": "Object;_asset,loaded,_uri,name",
     load$1: function(_, statusElement) {
-      var t1, t2, t3, t4, c, loading, ext, audio, result, t5, filename, source, sourceAlt;
+      var t1, t2, t3, t4, c, loading, ext, audio, result, filename, source, sourceAlt;
       t1 = {};
       t2 = this._uri;
       t3 = J.getInterceptor$s(t2).split$1(t2, "/");
@@ -15221,29 +14522,30 @@ var $$ = {};
           if (C.JSString_methods.endsWith$1(t2, C.JSString_methods.$add(".", ext))) {
             P.Timer_Timer(new P.Duration(2000000), new E.Asset_load_closure0(t1, this, c));
             audio = W.AudioElement_AudioElement(null);
-            t3 = C.EventStreamProvider_loadeddata.forElement$1(audio);
+            t3 = new W._ElementEventStreamImpl(audio, C.EventStreamProvider_loadeddata._eventType, false);
+            t3.$builtinTypeInfo = [null];
             t3 = t3.get$first(t3);
             t4 = $.Zone__current;
             t4.toString;
             result = new P._Future(0, t4, null, null, new E.Asset_load_closure1(t1), null, P._registerErrorHandler(null, t4), null);
             result.$builtinTypeInfo = [null];
             t3._addListener$1(result);
-            t1 = C.EventStreamProvider_error.forElement$1(audio);
-            t3 = t1._eventType;
-            t4 = t1._useCapture;
-            t5 = new W._EventStreamSubscription(0, t1._target, t3, W._wrapZone(new E.Asset_load_closure2(this, c)), t4);
-            t5.$builtinTypeInfo = [H.getTypeArgumentByIndex(t1, 0)];
-            t1 = t5._onData;
-            if (t1 != null && t5._pauseCount <= 0)
-              J.addEventListener$3$x(t5._target, t3, t1, t4);
-            t1 = C.EventStreamProvider_canplaythrough.forElement$1(audio);
-            t3 = t1._eventType;
-            t4 = t1._useCapture;
-            t5 = new W._EventStreamSubscription(0, t1._target, t3, W._wrapZone(new E.Asset_load_closure3(this, c, audio)), t4);
-            t5.$builtinTypeInfo = [H.getTypeArgumentByIndex(t1, 0)];
-            t1 = t5._onData;
-            if (t1 != null && t5._pauseCount <= 0)
-              J.addEventListener$3$x(t5._target, t3, t1, t4);
+            t1 = C.EventStreamProvider_error._eventType;
+            t3 = new W._ElementEventStreamImpl(audio, t1, false);
+            t3.$builtinTypeInfo = [null];
+            t4 = new W._EventStreamSubscription(0, audio, t1, W._wrapZone(new E.Asset_load_closure2(this, c)), false);
+            t4.$builtinTypeInfo = [H.getTypeArgumentByIndex(t3, 0)];
+            t3 = t4._onData;
+            if (t3 != null && t4._pauseCount <= 0)
+              J.addEventListener$3$x(t4._target, t1, t3, false);
+            t1 = C.EventStreamProvider_canplaythrough._eventType;
+            t3 = new W._ElementEventStreamImpl(audio, t1, false);
+            t3.$builtinTypeInfo = [null];
+            t4 = new W._EventStreamSubscription(0, audio, t1, W._wrapZone(new E.Asset_load_closure3(this, c, audio)), false);
+            t4.$builtinTypeInfo = [H.getTypeArgumentByIndex(t3, 0)];
+            t3 = t4._onData;
+            if (t3 != null && t4._pauseCount <= 0)
+              J.addEventListener$3$x(t4._target, t1, t3, false);
             filename = C.JSString_methods.substring$2(t2, 0, C.JSString_methods.lastIndexOf$1(t2, "."));
             if (J.$eq(ext, "ogg")) {
               source = document.createElement("source", null);
@@ -15484,17 +14786,15 @@ Isolate.$finishClasses($$, $, null);
 $$ = null;
 
 // Runtime type support
-W.Node.$isNode = true;
-W.Node.$isEventTarget = true;
-W.Node.$isObject = true;
 J.JSInt.$isint = true;
 J.JSInt.$isnum = true;
 J.JSInt.$isObject = true;
 J.JSDouble.$isnum = true;
 J.JSDouble.$isObject = true;
+W.Node.$isNode = true;
+W.Node.$isObject = true;
 J.JSString.$isString = true;
 J.JSString.$isObject = true;
-W.Touch.$isTouch = true;
 W.Touch.$isObject = true;
 W.StyleSheet.$isObject = true;
 J.JSNumber.$isnum = true;
@@ -15504,7 +14804,6 @@ P.Duration.$isObject = true;
 P.Object.$isObject = true;
 W.Element.$isElement = true;
 W.Element.$isNode = true;
-W.Element.$isEventTarget = true;
 W.Element.$isObject = true;
 P.Match.$isMatch = true;
 P.Match.$isObject = true;
@@ -15512,7 +14811,6 @@ W.BeforeUnloadEvent.$isEvent = true;
 W.BeforeUnloadEvent.$isObject = true;
 W.Event.$isEvent = true;
 W.Event.$isObject = true;
-W.HttpRequest.$isEventTarget = true;
 W.HttpRequest.$isObject = true;
 W.ProgressEvent.$isEvent = true;
 W.ProgressEvent.$isObject = true;
@@ -15539,14 +14837,6 @@ P.Stream.$isStream = true;
 P.Stream.$isObject = true;
 P.StreamSubscription.$isStreamSubscription = true;
 P.StreamSubscription.$isObject = true;
-W.WheelEvent.$isMouseEvent = true;
-W.WheelEvent.$isEvent = true;
-W.WheelEvent.$isObject = true;
-G._GameLoopTouchEvent.$isObject = true;
-B.GameLoopTimer.$isObject = true;
-B.DigitalButton.$isObject = true;
-G.GameLoopTouch.$isObject = true;
-G.GameLoopTouchPosition.$isObject = true;
 H.RawReceivePortImpl.$isObject = true;
 H._IsolateEvent.$isObject = true;
 H._IsolateContext.$isObject = true;
@@ -15576,7 +14866,6 @@ P._BufferingStreamSubscription.$isObject = true;
 W.DivElement.$isDivElement = true;
 W.DivElement.$isElement = true;
 W.DivElement.$isNode = true;
-W.DivElement.$isEventTarget = true;
 W.DivElement.$isObject = true;
 B.Player.$isPlayer = true;
 B.Player.$isObject = true;
@@ -15587,14 +14876,12 @@ P.Future.$isObject = true;
 W._Html5NodeValidator.$is_Html5NodeValidator = true;
 W._Html5NodeValidator.$isNodeValidator = true;
 W._Html5NodeValidator.$isObject = true;
-W.EventTarget.$isEventTarget = true;
-W.EventTarget.$isObject = true;
-P.DateTime.$isDateTime = true;
-P.DateTime.$isObject = true;
 P._DelayedEvent.$is_DelayedEvent = true;
 P._DelayedEvent.$isObject = true;
 P._EventSink.$is_EventSink = true;
 P._EventSink.$isObject = true;
+P.DateTime.$isDateTime = true;
+P.DateTime.$isObject = true;
 P.Function.$isFunction = true;
 P.Function.$isObject = true;
 $.$signature_void_ = {func: "void_", void: true};
@@ -15772,9 +15059,6 @@ J.createFragment$3$treeSanitizer$validator$x = function(receiver, a0, a1, a2) {
 J.elementAt$1$ax = function(receiver, a0) {
   return J.getInterceptor$ax(receiver).elementAt$1(receiver, a0);
 };
-J.floor$0$n = function(receiver) {
-  return J.getInterceptor$n(receiver).floor$0(receiver);
-};
 J.forEach$1$ax = function(receiver, a0) {
   return J.getInterceptor$ax(receiver).forEach$1(receiver, a0);
 };
@@ -15789,9 +15073,6 @@ J.get$backgroundImage$x = function(receiver) {
 };
 J.get$bottom$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$bottom(receiver);
-};
-J.get$changedTouches$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$changedTouches(receiver);
 };
 J.get$checked$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$checked(receiver);
@@ -15828,9 +15109,6 @@ J.get$height$x = function(receiver) {
 };
 J.get$id$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$id(receiver);
-};
-J.get$identifier$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$identifier(receiver);
 };
 J.get$innerHtml$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$innerHtml(receiver);
@@ -15870,12 +15148,6 @@ J.get$style$x = function(receiver) {
 };
 J.get$target$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$target(receiver);
-};
-J.get$timeStamp$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$timeStamp(receiver);
-};
-J.get$type$x = function(receiver) {
-  return J.getInterceptor$x(receiver).get$type(receiver);
 };
 J.get$value$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$value(receiver);
@@ -16086,20 +15358,14 @@ C.EventStreamProvider_load = new W.EventStreamProvider("load");
 C.EventStreamProvider_load0 = new W.EventStreamProvider("load");
 C.EventStreamProvider_loadeddata = new W.EventStreamProvider("loadeddata");
 C.EventStreamProvider_message = new W.EventStreamProvider("message");
-C.EventStreamProvider_mousedown = new W.EventStreamProvider("mousedown");
-C.EventStreamProvider_mousemove = new W.EventStreamProvider("mousemove");
-C.EventStreamProvider_mouseup = new W.EventStreamProvider("mouseup");
 C.EventStreamProvider_open = new W.EventStreamProvider("open");
 C.EventStreamProvider_pause = new W.EventStreamProvider("pause");
 C.EventStreamProvider_play = new W.EventStreamProvider("play");
 C.EventStreamProvider_resize = new W.EventStreamProvider("resize");
-C.EventStreamProvider_touchcancel = new W.EventStreamProvider("touchcancel");
 C.EventStreamProvider_touchend = new W.EventStreamProvider("touchend");
 C.EventStreamProvider_touchmove = new W.EventStreamProvider("touchmove");
 C.EventStreamProvider_touchstart = new W.EventStreamProvider("touchstart");
 C.EventStreamProvider_webkitfullscreenchange = new W.EventStreamProvider("webkitfullscreenchange");
-C.EventStreamProvider_webkitfullscreenerror = new W.EventStreamProvider("webkitfullscreenerror");
-C.EventStreamProvider_webkitpointerlockchange = new W.EventStreamProvider("webkitpointerlockchange");
 C.HttpRequest_methods = W.HttpRequest.prototype;
 C.JSArray_methods = J.JSArray.prototype;
 C.JSBool_methods = J.JSBool.prototype;
@@ -16336,10 +15602,8 @@ C.Type_Ucj = H.createRuntimeType('_NativeTypedArrayOfDouble');
 C.Type_oqh = H.createRuntimeType('Uint64List');
 C.Type_qxd = H.createRuntimeType('Int64List');
 C.UnknownJavaScriptObject_methods = J.UnknownJavaScriptObject.prototype;
-C.WheelEvent_methods = W.WheelEvent.prototype;
 C.Window_methods = W.Window.prototype;
 C._BeforeUnloadEventStreamProvider_beforeunload = new W._BeforeUnloadEventStreamProvider("beforeunload");
-C._CustomEventStreamProvider__determineMouseWheelEventType = new W._CustomEventStreamProvider(W.Element__determineMouseWheelEventType$closure());
 $.controlPort = null;
 $.RawReceivePortImpl__nextFreeId = 1;
 $.Primitives_mirrorFunctionCacheName = "$cachedFunction";
@@ -16367,6 +15631,7 @@ $.TouchScroller_VERTICAL = 1;
 $.TouchScroller_BOTH = 2;
 $.CurrentPlayer = null;
 $.currentStreet = null;
+$.lastTime = 0;
 $.printToZone = null;
 $._callbacksAreEnqueued = false;
 $.Zone__current = C.C__RootZone;
@@ -16534,19 +15799,6 @@ Isolate.$lazy($, "layers", "layers", "get$layers", function() {
 Isolate.$lazy($, "localStorage", "localStorage", "get$localStorage", function() {
   return window.localStorage;
 });
-Isolate.$lazy($, "gameCanvas", "gameCanvas", "get$gameCanvas", function() {
-  var e = document.createElement("canvas", null);
-  return e;
-});
-Isolate.$lazy($, "game", "game", "get$game", function() {
-  var t1, t2;
-  t1 = $.get$gameCanvas();
-  t2 = new G.GameLoopHtml(t1, 0, false, false, null, 0, false, 0, 0.03, 0, 0, 0, 0.05, true, null, null, null, null, H.setRuntimeTypeInfo(new P.Point(0, 0), [null]), null, null, H.setRuntimeTypeInfo([], [G._GameLoopTouchEvent]), H.setRuntimeTypeInfo([], [W.KeyboardEvent]), H.setRuntimeTypeInfo([], [W.MouseEvent]), null, null, null, null, null, null, null, null, 0.015, 0.03, H.setRuntimeTypeInfo([], [B.GameLoopTimer]), null, null);
-  t2.GameLoopHtml$1(t1);
-  t2.onUpdate = new B.closure();
-  t2.onRender = new B.closure0();
-  return t2;
-});
 Isolate.$lazy($, "_toStringList", "IterableMixinWorkaround__toStringList", "get$IterableMixinWorkaround__toStringList", function() {
   return [];
 });
@@ -16573,12 +15825,6 @@ Isolate.$lazy($, "_allowedElements", "_Html5NodeValidator__allowedElements", "ge
 });
 Isolate.$lazy($, "_attributeValidators", "_Html5NodeValidator__attributeValidators", "get$_Html5NodeValidator__attributeValidators", function() {
   return H.fillLiteralMap([], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null));
-});
-Isolate.$lazy($, "_buttonIds", "Keyboard__buttonIds", "get$Keyboard__buttonIds", function() {
-  return [65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 16, 17, 18, 32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 13, 38, 40, 37, 39, 27, 192, 220, 8, 20, 221, 188, 93, 189, 46, 35, 187, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 61, 59, 166, 36, 45, 183, 3, 224, 91, 12, 46, 111, 39, 104, 101, 100, 45, 109, 106, 105, 38, 33, 36, 97, 110, 107, 103, 102, 40, 34, 35, 99, 98, 37, 96, 144, 219, 33, 34, 19, 190, 44, 63, 145, 186, 222, 191, 9, 192, 229, 224, 0, 91, 92];
-});
-Isolate.$lazy($, "_buttonIds", "Mouse__buttonIds", "get$Mouse__buttonIds", function() {
-  return [0, 1, 2];
 });
 Isolate.$lazy($, "Months", "Months", "get$Months", function() {
   return ["Primuary", "Spork", "Bruise", "Candy", "Fever", "Junuary", "Septa", "Remember", "Doom", "Widdershins", "Eleventy", "Recurse"];
@@ -16612,6 +15858,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "Future__String", ret: P.Future, args: [J.JSString]},
 {func: "args0"},
 {func: "dynamic__int", args: [J.JSInt]},
+{func: "dynamic__num", args: [J.JSNumber]},
 {func: "void_", void: true},
 {func: "void__dynamic", void: true, args: [null]},
 {func: "void__dynamic__StackTrace", void: true, args: [null], opt: [P.StackTrace]},
@@ -16622,7 +15869,6 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "bool__Object_Object", ret: J.JSBool, args: [P.Object, P.Object]},
 {func: "int__Object", ret: J.JSInt, args: [P.Object]},
 {func: "void__Object", void: true, args: [P.Object]},
-{func: "String__EventTarget", ret: J.JSString, args: [W.EventTarget]},
 {func: "bool__Element_String_String__Html5NodeValidator", ret: J.JSBool, args: [W.Element, J.JSString, J.JSString, W._Html5NodeValidator]},
 {func: "bool__dynamic", ret: J.JSBool, args: [null]},
 {func: "args2", args: [null, null]},
@@ -16655,12 +15901,6 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__Symbol_dynamic", args: [P.Symbol, null]},
 {func: "String__int", ret: J.JSString, args: [J.JSInt]},
 {func: "void__Node", void: true, args: [W.Node]},
-{func: "void__num", void: true, args: [J.JSNumber]},
-{func: "void__Event", void: true, args: [W.Event]},
-{func: "void__TouchEvent", void: true, args: [W.TouchEvent]},
-{func: "void__KeyboardEvent", void: true, args: [W.KeyboardEvent]},
-{func: "void__MouseEvent", void: true, args: [W.MouseEvent]},
-{func: "dynamic__Touch", args: [W.Touch]},
 {func: "dynamic__int_dynamic", args: [J.JSInt, null]},
 ];
 $ = null;
