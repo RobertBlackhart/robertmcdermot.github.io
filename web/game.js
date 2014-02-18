@@ -1814,8 +1814,7 @@ var $$ = {};
   }, "call$1", "Primitives__throwFormatException$closure", 2, 0, 0],
   Primitives_parseInt: function(source, radix, handleError) {
     var match, t1;
-    if (handleError == null)
-      handleError = H.Primitives__throwFormatException$closure();
+    handleError = H.Primitives__throwFormatException$closure();
     if (typeof source !== "string")
       H.throwExpression(new P.ArgumentError(source));
     match = /^\s*[+-]?((0x[a-f0-9]+)|(\d+)|([a-z0-9]+))\s*$/i.exec(source);
@@ -1834,19 +1833,6 @@ var $$ = {};
     if (match == null)
       return handleError.call$1(source);
     return parseInt(source, 10);
-  },
-  Primitives_parseDouble: function(source, handleError) {
-    var result, trimmed;
-    if (!/^\s*[+-]?(?:Infinity|NaN|(?:\.\d+|\d+(?:\.\d*)?)(?:[eE][+-]?\d+)?)\s*$/.test(source))
-      return handleError.call$1(source);
-    result = parseFloat(source);
-    if (isNaN(result)) {
-      trimmed = C.JSString_methods.trim$0(source);
-      if (trimmed === "NaN" || trimmed === "+NaN" || trimmed === "-NaN")
-        return result;
-      return handleError.call$1(source);
-    }
-    return result;
   },
   Primitives_objectTypeName: function(object) {
     var $name, decompiled;
@@ -3652,11 +3638,11 @@ var $$ = {};
     t1 = J.split$1$s(t2.$index(map, "xy"), ",");
     if (0 >= t1.length)
       return H.ioore(t1, 0);
-    x = P.num_parse(t1[0], null);
+    x = H.Primitives_parseInt(t1[0], null, null);
     t1 = J.split$1$s(t2.$index(map, "xy"), ",");
     if (1 >= t1.length)
       return H.ioore(t1, 1);
-    y = P.num_parse(t1[1], null);
+    y = H.Primitives_parseInt(t1[1], null, null);
     otherPlayer.posX = x;
     otherPlayer.posY = y;
     if (t2.$index(map, "bubbleText") != null) {
@@ -3699,31 +3685,31 @@ var $$ = {};
     }
     t2 = $.playerInput;
     if (t2.rightKey) {
-      t1.posX = J.$add$ns(t1.posX, $.CurrentPlayer.speed * dt);
+      t1.posX = J.$add$ns(t1.posX, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
       t1.facingRight = true;
       t1.moving = true;
     } else if (t2.leftKey) {
-      t1.posX = J.$sub$n(t1.posX, $.CurrentPlayer.speed * dt);
+      t1.posX = J.$sub$n(t1.posX, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
       t1.facingRight = false;
       t1.moving = true;
     } else
       t1.moving = false;
     if ($.playerInput.spaceKey && !t1.jumping) {
       if (C.C__JSRandom.nextInt$1(4) === 3)
-        t1.yVel = -35;
+        t1.yVel = -38;
       else
-        t1.yVel = -28;
+        t1.yVel = -30;
       t1.jumping = true;
     }
     if (t1.doPhysicsApply) {
       t2 = t1.yVel - t1.yAccel * dt;
       t1.yVel = t2;
-      t1.posY = J.$add$ns(t1.posY, t2);
+      t1.posY = J.$tdiv$n(J.$add$ns(t1.posY, t2), 1);
     } else {
       if ($.playerInput.downKey)
-        t1.posY = J.$add$ns(t1.posY, $.CurrentPlayer.speed * dt);
+        t1.posY = J.$add$ns(t1.posY, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
       if ($.playerInput.upKey)
-        t1.posY = J.$sub$n(t1.posY, $.CurrentPlayer.speed * dt);
+        t1.posY = J.$sub$n(t1.posY, C.JSNumber_methods._tdivFast$1($.CurrentPlayer.speed * dt, 1));
     }
     if (J.$lt$n(t1.posX, 0))
       t1.posX = 0;
@@ -5763,7 +5749,7 @@ var $$ = {};
     }
   },
   Player: {
-    "": "Object;width>,height>,canvasHeight,speed,posX<,posY,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
+    "": "Object;posX<,posY,width>,height>,canvasHeight,speed,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
     loadAnimations$0: function() {
       var t1, futures;
       t1 = this.animations;
@@ -10345,20 +10331,6 @@ var $$ = {};
     }
     return fixedList;
   },
-  num_parse: function(input, onError) {
-    var source, result;
-    source = J.trim$0$s(input);
-    result = H.Primitives_parseInt(source, null, P.num__returnNull$closure());
-    if (result != null)
-      return result;
-    result = H.Primitives_parseDouble(source, P.num__returnNull$closure());
-    if (result != null)
-      return result;
-    throw H.wrapException(P.FormatException$(input));
-  },
-  num__returnNull: [function(_) {
-    return;
-  }, "call$1", "num__returnNull$closure", 2, 0, 3],
   print: [function(object) {
     var line = H.S(object);
     H.printString(line);
