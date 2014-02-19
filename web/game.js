@@ -5053,7 +5053,7 @@ var $$ = {};
       C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure7(this));
       C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure8(this));
       C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure9(this));
-      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
+      C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
       B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
       B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
       C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure11());
@@ -5070,8 +5070,6 @@ var $$ = {};
           return;
         target = J.get$target$x(mouseEvent);
       } else {
-        if (this.touched)
-          return;
         target = J.get$target$x(touchEvent);
         this.touched = true;
         P.Timer_Timer$periodic(P.Duration$(0, 0, 0, 100, 0, 0), new B.Input_clickOrTouch_closure(this));
