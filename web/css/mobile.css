@@ -169,6 +169,9 @@
 	top: 1px;
 	font-size: 14px;
 }
+#MapGlyph {
+	padding-right: 5px;
+}
 
 #ChatDisconnected {
 	display: none;
