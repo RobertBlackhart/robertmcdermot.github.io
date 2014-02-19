@@ -5146,11 +5146,11 @@ var $$ = {};
       if (target.id === "ThemeSwitcher")
         if (J.contains$1$asx(target.textContent, "Mobile")) {
           H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = false;
-          target.textContent = "View as Desktop";
+          target.textContent = "Desktop View";
           B.resize();
         } else {
           H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = true;
-          target.textContent = "View as Mobile";
+          target.textContent = "Mobile View";
           B.resize();
         }
       if (target.className === "ChannelName") {

@@ -38,7 +38,7 @@
 	position: absolute;
 	top: calc(2em + 19px);
 	width: 100%;
-	bottom: calc(2em + 16px);
+	bottom: calc(2em + 20px);
 	overflow-y: scroll;
 	background: white;
 }
@@ -286,6 +286,10 @@
 		right: 100px;
 		bottom: 5px;
 	}
+	#ThemeSwitcher {
+		top: 17px;
+		left: 150px;
+	}
 }
 
 @media (orientation: portrait) /* mobile device in portrait */
@@ -299,6 +303,7 @@
 		top: 1px;
 	}
 	#ImaginationText {
+		top: 30px;
 		left: 94px;
 	}
 	#EnergyText {
@@ -383,5 +388,8 @@
 		position: absolute;
 		right: 70px;
 		bottom: 30px;
+	}
+	#CurrentLocation {
+		max-width: 40%;
 	}
 }

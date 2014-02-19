@@ -1151,7 +1151,6 @@ textarea{resize: none;}
   opacity:0.6;
   left: 2px;
   bottom: 2px;
-  z-index:99;
 }
 
 .centered-icon {
