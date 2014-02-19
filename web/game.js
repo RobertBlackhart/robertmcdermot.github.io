@@ -5070,6 +5070,8 @@ var $$ = {};
           return;
         target = J.get$target$x(mouseEvent);
       } else {
+        if (this.touched)
+          return;
         target = J.get$target$x(touchEvent);
         this.touched = true;
         P.Timer_Timer$periodic(P.Duration$(0, 0, 0, 100, 0, 0), new B.Input_clickOrTouch_closure(this));
