@@ -158,12 +158,14 @@
 	background: white;
 }
 #CurrentLocation {
-  position: absolute;
-  display: inline-flex;
-  right: 100px;
-  top: 0px; 
-  color: mediumgrey;
-  font-size: 14px;
+	position: absolute;
+	display: inline-flex;
+	max-width: 45%;
+	max-height: 40px;
+	overflow-y: hidden;
+	right: 75px;
+	top: 1px;
+	font-size: 14px;
 }
 
 #ChatDisconnected {
@@ -201,6 +203,9 @@
 	}
 	#PlayerName {
 		left: 150px;
+	}
+	#ImaginationText {
+		left: 114px;
 	}
 	#EnergyText {
 		top: 40px;
@@ -290,7 +295,11 @@
 		left: 4px;
 	}
 	#PlayerName {
-		left: 150px;
+		left: 5px;
+		top: 1px;
+	}
+	#ImaginationText {
+		left: 94px;
 	}
 	#EnergyText {
 		top: 50px;
@@ -347,6 +356,7 @@
 	}
 	#ChatBubble {
 		position: absolute;
+		display: block;
 		right: -40px;
 		top: 35px;
 	}
