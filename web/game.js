@@ -3593,7 +3593,8 @@ var $$ = {};
       t1.doPhysicsApply = true;
   }, "call$1", "togglePhysics$closure", 2, 0, 3],
   main: [function() {
-    H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = true;
+    if ($.get$localStorage().getItem("interface") === "desktop")
+      H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = true;
     document.querySelector("#LoadStatus").textContent = "Loading Audio";
     var t1 = $.get$prevVolume();
     if (t1 != null) {
@@ -5053,7 +5054,7 @@ var $$ = {};
       C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure7(this));
       C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure8(this));
       C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure9(this));
-      C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
+      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
       B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
       B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
       C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure11());
@@ -5065,15 +5066,11 @@ var $$ = {};
     },
     clickOrTouch$2: function(mouseEvent, touchEvent) {
       var target, t1, t2, mute, chatMenu, loadingScreen, loadStreet, channelName, input, drawer;
-      if (mouseEvent != null) {
-        if (this.touched)
-          return;
-        target = J.get$target$x(mouseEvent);
-      } else {
-        target = J.get$target$x(touchEvent);
-        this.touched = true;
-        P.Timer_Timer$periodic(P.Duration$(0, 0, 0, 100, 0, 0), new B.Input_clickOrTouch_closure(this));
-      }
+      if (this.touched)
+        return;
+      this.touched = true;
+      P.Timer_Timer$periodic(P.Duration$(0, 0, 0, 200, 0, 0), new B.Input_clickOrTouch_closure(this));
+      target = mouseEvent != null ? J.get$target$x(mouseEvent) : J.get$target$x(touchEvent);
       t1 = J.getInterceptor$x(target);
       if (t1.get$id(target) === "ConsoleGlyph")
         if (document.querySelector("#DevConsole").hidden === true)
@@ -5147,10 +5144,12 @@ var $$ = {};
         if (J.contains$1$asx(target.textContent, "Mobile")) {
           H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = false;
           target.textContent = "Desktop View";
+          $.get$localStorage().setItem("interface", "mobile");
           B.resize();
         } else {
           H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = true;
           target.textContent = "Mobile View";
+          $.get$localStorage().setItem("interface", "desktop");
           B.resize();
         }
       if (target.className === "ChannelName") {
