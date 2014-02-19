@@ -3505,7 +3505,10 @@ var $$ = {};
     B.updateConsole("Setting name to \"" + H.S(value) + "\"");
   }, "call$1", "setName$closure", 2, 0, 0],
   setLocation: [function(value) {
-    var loadStreet;
+    var loadingScreen, loadStreet;
+    loadingScreen = document.querySelector("#MapLoadingScreen");
+    loadingScreen.className = "MapLoadingScreenIn";
+    J.set$opacity$x(loadingScreen.style, "1.0");
     value = C.JSString_methods.trim$0(J.replaceFirst$2$s(value, "L", "G"));
     loadStreet = document.createElement("script", null);
     J.set$src$x(loadStreet, "http://revdancatt.github.io/CAT422-glitch-location-viewer/locations/" + value + ".callback.json");
@@ -3582,7 +3585,15 @@ var $$ = {};
     else
       $.showFps = true;
   }, "call$1", "toggleFps$closure", 2, 0, 3],
+  togglePhysics: [function(nothing) {
+    var t1 = $.CurrentPlayer;
+    if (t1.doPhysicsApply)
+      t1.doPhysicsApply = false;
+    else
+      t1.doPhysicsApply = true;
+  }, "call$1", "togglePhysics$closure", 2, 0, 3],
   main: [function() {
+    H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = true;
     document.querySelector("#LoadStatus").textContent = "Loading Audio";
     var t1 = $.get$prevVolume();
     if (t1 != null) {
@@ -5132,6 +5143,16 @@ var $$ = {};
           document.querySelector("#MapWindow").hidden = true;
       if (target.id === "CloseMap")
         document.querySelector("#MapWindow").hidden = true;
+      if (target.id === "ThemeSwitcher")
+        if (J.contains$1$asx(target.textContent, "Mobile")) {
+          H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = false;
+          target.textContent = "View as Desktop";
+          B.resize();
+        } else {
+          H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = true;
+          target.textContent = "View as Mobile";
+          B.resize();
+        }
       if (target.className === "ChannelName") {
         t1 = target.id;
         t1 = C.JSString_methods.substring$1(t1, J.getInterceptor$asx(t1).indexOf$1(t1, "-") + 1);
@@ -5158,6 +5179,7 @@ var $$ = {};
       if (target.id === "BackFromChannelSelector") {
         document.querySelector("#ChannelSelectorScreen").hidden = true;
         document.querySelector("#MainScreen").hidden = false;
+        B.resize();
       }
       t1 = target.id;
       if (t1 === "ChatBubble" || t1 === "ChatBubbleText") {
@@ -7851,11 +7873,11 @@ var $$ = {};
       this._zone.toString;
       this._async$_onData = handleData;
     },
-    onError$1: function(_, handleError) {
+    onError$1: [function(_, handleError) {
       if (handleError == null)
         handleError = P._nullErrorHandler$closure();
       this._onError = P._registerErrorHandler(handleError, this._zone);
-    },
+    }, "call$1", "get$onError", 2, 0, 45],
     onDone$1: function(handleDone) {
       if (handleDone == null)
         handleDone = P._nullDoneHandler$closure();
@@ -8108,11 +8130,11 @@ var $$ = {};
       subscription.onDone$1(onDone);
       return subscription;
     },
-    listen$3$onDone$onError: function(onData, onDone, onError) {
-      return this.listen$4$cancelOnError$onDone$onError(onData, null, onDone, onError);
-    },
     listen$1: function(onData) {
       return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
+    },
+    listen$3$onDone$onError: function(onData, onDone, onError) {
+      return this.listen$4$cancelOnError$onDone$onError(onData, null, onDone, onError);
     },
     _createSubscription$1: function(cancelOnError) {
       var t1, t2;
@@ -8213,7 +8235,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "": "Closure:45;subscription_0,future_1",
+    "": "Closure:46;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -10228,7 +10250,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "": "Closure:46;box_0,this_1",
+    "": "Closure:47;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -10351,7 +10373,7 @@ var $$ = {};
     return H.Primitives_stringFromCharCodes(charCodes);
   },
   NoSuchMethodError_toString_closure: {
-    "": "Closure:47;box_0",
+    "": "Closure:48;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -10413,7 +10435,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "": "Closure:48;",
+    "": "Closure:49;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -10428,7 +10450,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "": "Closure:48;",
+    "": "Closure:49;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -10438,7 +10460,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "": "Closure:48;",
+    "": "Closure:49;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -10505,7 +10527,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "": "Closure:48;",
+    "": "Closure:49;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -10521,7 +10543,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "": "Closure:48;",
+    "": "Closure:49;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -10898,6 +10920,9 @@ var $$ = {};
   },
   BodyElement: {
     "": "HtmlElement;",
+    get$onError: function(receiver) {
+      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_error._eventType, false), [null]);
+    },
     get$onLoad: function(receiver) {
       return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_load0._eventType, false), [null]);
     },
@@ -10957,6 +10982,13 @@ var $$ = {};
   DivElement: {
     "": "HtmlElement;",
     "%": "HTMLDivElement"
+  },
+  Document: {
+    "": "Node;",
+    get$onError: function(receiver) {
+      return C.EventStreamProvider_error.forTarget$1(receiver);
+    },
+    "%": "Document|HTMLDocument|SVGDocument"
   },
   DocumentFragment: {
     "": "Node;",
@@ -11074,6 +11106,9 @@ var $$ = {};
     get$innerHtml: function(receiver) {
       return receiver.innerHTML;
     },
+    get$onError: function(receiver) {
+      return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_error._eventType, false), [null]);
+    },
     get$onLoad: function(receiver) {
       return H.setRuntimeTypeInfo(new W._ElementEventStreamImpl(receiver, C.EventStreamProvider_load0._eventType, false), [null]);
     },
@@ -11167,6 +11202,9 @@ var $$ = {};
   },
   HttpRequestEventTarget: {
     "": "EventTarget;",
+    get$onError: function(receiver) {
+      return C.EventStreamProvider_error0.forTarget$1(receiver);
+    },
     "%": ";XMLHttpRequestEventTarget"
   },
   IFrameElement: {
@@ -11206,6 +11244,7 @@ var $$ = {};
   },
   LinkElement: {
     "": "HtmlElement;href},type}",
+    $isLinkElement: true,
     "%": "HTMLLinkElement"
   },
   Location: {
@@ -11329,7 +11368,7 @@ var $$ = {};
       return receiver.replaceChild(newChild, oldChild);
     },
     $isNode: true,
-    "%": "Document|DocumentType|Entity|HTMLDocument|Notation|SVGDocument;Node"
+    "%": "DocumentType|Entity|Notation;Node"
   },
   NodeList: {
     "": "Interceptor_ListMixin_ImmutableListMixin0;",
@@ -11638,6 +11677,9 @@ var $$ = {};
     send$1: function(receiver, data) {
       return receiver.send(data);
     },
+    get$onError: function(receiver) {
+      return C.EventStreamProvider_error.forTarget$1(receiver);
+    },
     "%": "WebSocket"
   },
   Window: {
@@ -11683,6 +11725,9 @@ var $$ = {};
     },
     toString$0: function(receiver) {
       return receiver.toString();
+    },
+    get$onError: function(receiver) {
+      return C.EventStreamProvider_error.forTarget$1(receiver);
     },
     $isEventTarget: true,
     "%": "DOMWindow|Window"
@@ -11976,6 +12021,9 @@ var $$ = {};
     },
     get$style: function(_) {
       return W._CssStyleDeclarationSet$(this._elementList);
+    },
+    get$onError: function(_) {
+      return H.setRuntimeTypeInfo(new W._ElementListEventStreamImpl(this, false, C.EventStreamProvider_error._eventType), [null]);
     },
     _html$_FrozenElementList$_wrap$1: function(_nodeList, $T) {
       var t1 = C.NodeList_methods.where$1(this._nodeList, new W._FrozenElementList$_wrap_closure());
@@ -12388,6 +12436,8 @@ var $$ = {};
       this._target = null;
       this._onData = null;
     },
+    onError$1: [function(_, handleError) {
+    }, "call$1", "get$onError", 2, 0, 45],
     pause$1: function(_, resumeSignal) {
       if (this._target == null)
         return;
@@ -12843,7 +12893,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "": "Closure:49;this_0",
+    "": "Closure:50;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -13571,7 +13621,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "": "Closure:50;copies_3",
+    "": "Closure:51;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -14529,6 +14579,7 @@ var $$ = {};
             t3 = W.ImageElement_ImageElement(null, null, null);
             this._asset = t3;
             J.get$onLoad$x(t3).listen$1(new E.Asset_load_closure(this, c));
+            J.get$onError$x(this._asset).listen$1(new E.Asset_load_closure0(this, c));
             J.set$src$x(this._asset, t2);
             loading = true;
             break;
@@ -14538,20 +14589,20 @@ var $$ = {};
         for (t3 = new H.ListIterator($.get$audioExtensions(), 2, 0, null); loading = false, t3.moveNext$0();) {
           ext = t3._current;
           if (C.JSString_methods.endsWith$1(t2, C.JSString_methods.$add(".", ext))) {
-            P.Timer_Timer(new P.Duration(2000000), new E.Asset_load_closure0(t1, this, c));
+            P.Timer_Timer(new P.Duration(2000000), new E.Asset_load_closure1(t1, this, c));
             audio = W.AudioElement_AudioElement(null);
             t3 = new W._ElementEventStreamImpl(audio, C.EventStreamProvider_loadeddata._eventType, false);
             t3.$builtinTypeInfo = [null];
             t3 = t3.get$first(t3);
             t4 = $.Zone__current;
             t4.toString;
-            result = new P._Future(0, t4, null, null, new E.Asset_load_closure1(t1), null, P._registerErrorHandler(null, t4), null);
+            result = new P._Future(0, t4, null, null, new E.Asset_load_closure2(t1), null, P._registerErrorHandler(null, t4), null);
             result.$builtinTypeInfo = [null];
             t3._addListener$1(result);
             t1 = C.EventStreamProvider_error._eventType;
             t3 = new W._ElementEventStreamImpl(audio, t1, false);
             t3.$builtinTypeInfo = [null];
-            t4 = new W._EventStreamSubscription(0, audio, t1, W._wrapZone(new E.Asset_load_closure2(this, c)), false);
+            t4 = new W._EventStreamSubscription(0, audio, t1, W._wrapZone(new E.Asset_load_closure3(this, c)), false);
             t4.$builtinTypeInfo = [H.getTypeArgumentByIndex(t3, 0)];
             t3 = t4._onData;
             if (t3 != null && t4._pauseCount <= 0)
@@ -14559,7 +14610,7 @@ var $$ = {};
             t1 = C.EventStreamProvider_canplaythrough._eventType;
             t3 = new W._ElementEventStreamImpl(audio, t1, false);
             t3.$builtinTypeInfo = [null];
-            t4 = new W._EventStreamSubscription(0, audio, t1, W._wrapZone(new E.Asset_load_closure3(this, c, audio)), false);
+            t4 = new W._EventStreamSubscription(0, audio, t1, W._wrapZone(new E.Asset_load_closure4(this, c, audio)), false);
             t4.$builtinTypeInfo = [H.getTypeArgumentByIndex(t3, 0)];
             t3 = t4._onData;
             if (t3 != null && t4._pauseCount <= 0)
@@ -14600,7 +14651,7 @@ var $$ = {};
             t1 = W.HttpRequest_getString(t2, null, null);
             t3 = $.Zone__current;
             t3.toString;
-            result = new P._Future(0, t3, null, null, new E.Asset_load_closure4(this), null, P._registerErrorHandler(null, t3), null);
+            result = new P._Future(0, t3, null, null, new E.Asset_load_closure5(this), null, P._registerErrorHandler(null, t3), null);
             result.$builtinTypeInfo = [null];
             t1._addListener$1(result);
             t1 = c.future;
@@ -14617,7 +14668,7 @@ var $$ = {};
             t1 = W.HttpRequest_getString(t2, null, null);
             t3 = $.Zone__current;
             t3.toString;
-            result = new P._Future(0, t3, null, null, new E.Asset_load_closure5(this, c), null, P._registerErrorHandler(null, t3), null);
+            result = new P._Future(0, t3, null, null, new E.Asset_load_closure6(this, c), null, P._registerErrorHandler(null, t3), null);
             result.$builtinTypeInfo = [null];
             t1._addListener$1(result);
             loading = true;
@@ -14654,64 +14705,77 @@ var $$ = {};
     }
   },
   Asset_load_closure0: {
-    "": "Closure:5;box_0,this_3,c_4",
-    call$0: function() {
-      if (!this.box_0.data_0)
-        this.c_4.completeError$1("could not load resource: " + H.S(this.this_3._uri));
+    "": "Closure:3;this_3,c_4",
+    call$1: function(_) {
+      var t1, t2;
+      t1 = this.this_3;
+      t1._asset = null;
+      t1 = "Could not load image: " + H.S(t1._uri);
+      t2 = this.c_4.future;
+      if (t2._state !== 0)
+        H.throwExpression(new P.StateError("Future already completed"));
+      t2._asyncComplete$1(t1);
     }
   },
   Asset_load_closure1: {
+    "": "Closure:5;box_0,this_5,c_6",
+    call$0: function() {
+      if (!this.box_0.data_0)
+        this.c_6.completeError$1("could not load resource: " + H.S(this.this_5._uri));
+    }
+  },
+  Asset_load_closure2: {
     "": "Closure:3;box_0",
     call$1: function(_) {
       this.box_0.data_0 = true;
       return true;
     }
   },
-  Asset_load_closure2: {
-    "": "Closure:23;this_5,c_6",
+  Asset_load_closure3: {
+    "": "Closure:23;this_7,c_8",
     call$1: function(err) {
       var t1;
-      P.print("Error in loading Audio : " + H.S(this.this_5._uri));
-      t1 = this.c_6.future;
+      P.print("Error in loading Audio : " + H.S(this.this_7._uri));
+      t1 = this.c_8.future;
       if (t1._state === 0)
         t1._asyncComplete$1(err);
     }
   },
-  Asset_load_closure3: {
-    "": "Closure:3;this_7,c_8,audio_9",
+  Asset_load_closure4: {
+    "": "Closure:3;this_9,c_10,audio_11",
     call$1: function(_) {
       var t1, t2;
       t1 = $.get$ASSET();
-      t2 = this.this_7;
+      t2 = this.this_9;
       t1.$indexSet(t1, t2.name, t2);
-      t2._asset = this.audio_9;
+      t2._asset = this.audio_11;
       t2.loaded = true;
-      t1 = this.c_8.future;
+      t1 = this.c_10.future;
       if (t1._state === 0)
         t1._asyncComplete$1(t2);
     }
   },
-  Asset_load_closure4: {
-    "": "Closure:0;this_10",
+  Asset_load_closure5: {
+    "": "Closure:0;this_12",
     call$1: function(string) {
       var t1, t2;
-      t1 = this.this_10;
+      t1 = this.this_12;
       t1._asset = string;
       t1.loaded = true;
       t2 = $.get$ASSET();
       t2.$indexSet(t2, t1.name, t1);
     }
   },
-  Asset_load_closure5: {
-    "": "Closure:0;this_11,c_12",
+  Asset_load_closure6: {
+    "": "Closure:0;this_13,c_14",
     call$1: function(string) {
       var t1, t2;
       t1 = $.get$ASSET();
-      t2 = this.this_11;
+      t2 = this.this_13;
       t1.$indexSet(t1, t2.name, t2);
       t2._asset = C.C_JsonCodec.decode$1(string);
       t2.loaded = true;
-      t1 = this.c_12.future;
+      t1 = this.c_14.future;
       if (t1._state !== 0)
         H.throwExpression(new P.StateError("Future already completed"));
       t1._asyncComplete$1(t2);
@@ -15151,6 +15215,9 @@ J.get$name$x = function(receiver) {
 };
 J.get$nodes$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$nodes(receiver);
+};
+J.get$onError$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$onError(receiver);
 };
 J.get$onLoad$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$onLoad(receiver);
@@ -15766,6 +15833,7 @@ Isolate.$lazy($, "COMMANDS", "COMMANDS", "get$COMMANDS", function() {
   t1.push(["setsong", "\"setsong <value>\" Changes the currently playing song", B.setSong$closure()]);
   t1.push(["setvolume", "\"setvolume <1-100>\" Changes the volume of the current song", B.setVolume$closure()]);
   t1.push(["togglefps", "show or hide the fps display\"", B.toggleFps$closure()]);
+  t1.push(["togglePhysics", "enable or disable jumping and falling to the groud\"", B.togglePhysics$closure()]);
   return t1;
 });
 Isolate.$lazy($, "last", "last", "get$last", function() {
@@ -15914,6 +15982,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__Object", args: [P.Object]},
 {func: "dynamic__dynamic__dynamic", args: [null], opt: [null]},
 {func: "dynamic__bool", args: [J.JSBool]},
+{func: "void__Function", void: true, args: [P.Function]},
 {func: "dynamic__dynamic_StackTrace", args: [null, P.StackTrace]},
 {func: "dynamic__String_Object", args: [J.JSString, P.Object]},
 {func: "dynamic__Symbol_dynamic", args: [P.Symbol, null]},
