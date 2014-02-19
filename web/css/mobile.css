@@ -121,6 +121,78 @@
   -webkit-transform: scale(2);
   -o-transform: scale(2);
 }
+#MobileFullscreen {
+	position: absolute;
+	display: inline;
+	top: 10px;
+	right: 20px;
+	left: auto;
+	z-index: 0;
+}
+#MobileFullscreenReset {
+	position: absolute;
+	display: none;
+	top: 10px;
+	right: 20px;
+	left: auto;
+	z-index: 0;
+}
+#MobileAudioGlyph {
+	position: absolute;
+	display: inline;
+	top:10px;
+	right: 50px;
+	left: auto;
+	z-index: 0;
+}
+#ThemeSwitcher {
+	display: inline-block;
+	position: absolute;
+	top: 5px;
+	bottom: auto;
+	right: auto;
+	left: 250px;
+	border: 3px solid;
+	border-radius: 10px;
+	padding: 3px;
+	background: white;
+}
+#CurrentLocation {
+  position: absolute;
+  display: inline-flex;
+  right: 100px;
+  top: 0px; 
+  color: mediumgrey;
+  font-size: 14px;
+}
+
+#ChatDisconnected {
+	display: none;
+}
+#Footer {
+	display: none;
+}
+.PopWindowBody {
+	display: none;
+}
+#TopRight {
+	display: none;
+}
+#SizeWarning {
+	display: none;
+}
+#SoundCloudWidget {
+	display: none;
+}
+#ChatPane {
+	display: none;
+}
+#ChatSettingsIcon {
+	display: none;
+}
+#InventoryBar, #InventoryBag{
+	display: none;
+}
 
 @media (orientation: landscape) /* mobile device in landscape */
 {
@@ -179,33 +251,6 @@
 		border-radius: 50%;
 		background: #fff;
 	}
-	#ChatDisconnected {
-		display: none;
-	}
-	#Footer {
-		display: none;
-	}
-	.PopWindowBody {
-		display: none;
-	}
-	#TopRight {
-		display: none;
-	}
-	#SizeWarning {
-		display: none;
-	}
-	#SoundCloudWidget {
-		display: none;
-	}
-	#ChatPane {
-		display: none;
-	}
-	#ChatSettingsIcon {
-		display: none;
-	}
-	#InventoryBar, #InventoryBag{
-		display: none;
-	}
 	#ChatBubble {
 		display: block;
 		position: absolute;
@@ -235,24 +280,6 @@
 		position: absolute;
 		right: 100px;
 		bottom: 5px;
-	}
-	#MobileFullscreen {
-		position: absolute;
-		display: inline;
-		top: 10px;
-		right: 20px;
-	}
-	#MobileFullscreenReset {
-		position: absolute;
-		display: none;
-		top: 10px;
-		right: 20px;
-	}
-	#MobileAudioGlyph {
-		position: absolute;
-		display: inline;
-		top:10px;
-		right: 50px;
 	}
 }
 
@@ -318,33 +345,6 @@
 		border-radius: 50%;
 		background: #fff;
 	}
-	#ChatDisconnected {
-		display: none;
-	}
-	#Footer {
-		display: none;
-	}
-	.PopWindowBody {
-		display: none;
-	}
-	#TopRight {
-		display: none;
-	}
-	#SizeWarning {
-		display: none;
-	}
-	#SoundCloudWidget {
-		display: none;
-	}
-	#ChatPane {
-		display: none;
-	}
-	#ChatSettingsIcon {
-		display: none;
-	}
-	#InventoryBar, #InventoryBag{
-		display: none;
-	}
 	#ChatBubble {
 		position: absolute;
 		right: -40px;
@@ -373,23 +373,5 @@
 		position: absolute;
 		right: 70px;
 		bottom: 30px;
-	}
-	#MobileFullscreen {
-		position: absolute;
-		display: inline;
-		top: 10px;
-		right: 20px;
-	}
-	#MobileFullscreenReset {
-		position: absolute;
-		display: none;
-		top: 10px;
-		right: 20px;
-	}
-	#MobileAudioGlyph {
-		position: absolute;
-		display: inline;
-		top:10px;
-		right: 50px;
 	}
 }
