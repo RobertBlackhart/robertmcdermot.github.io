@@ -4,7 +4,7 @@
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*The default styles, basic buttons*/
-* {
+*:not(input){
    font-family: 'RockoFLFBold', sans-serif;
    cursor: default;
   -webkit-touch-callout: none;
@@ -385,12 +385,39 @@ textarea{resize: none;}
     transition-duration: 0.2s;
     transition-timing-function: linear;
     transition-delay: 0.5s;
-    -webkit-transition-property:opacity;
-    -webkit-transition-duration:0.2s;
-    -webkit-transition-timing-function:linear;
-    -webkit-transition-delay:0.5s;
+	
+	-webkit-animation: spin 15s infinite linear;
+    -moz-animation: spin 15s infinite linear;
+    animation: spin 15s infinite linear;
     
+    @-webkit-keyframes spin {
+		from {
+			-webkit-transform: rotate(0deg);
+		}
+		to {
+			-webkit-transform: rotate(360deg);
+		}
+	}
+	
+	@-moz-keyframes spin {
+		from {
+			-moz-transform: rotate(0deg);
+		}
+		to {
+			-moz-transform: rotate(360deg);
+		}
+	}
+	
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
 }
+
 #MoodText {
     position:absolute;
     top: 26px;
@@ -696,6 +723,13 @@ textarea{resize: none;}
     -o-user-select: text;
     user-select: text; 
 }
+.ClickableStreetLink {
+	cursor: pointer;
+text-decoration: underline;
+}
+.Emoticon {
+	height: 1em;
+}
 .tabs {
   position: relative;
 }
@@ -770,7 +804,6 @@ textarea{resize: none;}
     position:absolute;
     top:20px;
     right: 20px;
-    color: #ba381a;
 }
 .PopWindowBody {
    font-family: 'RockoFLFBold', sans-serif;
@@ -952,6 +985,7 @@ textarea{resize: none;}
   top:15px; 
   color:mediumgrey;
   font-size: 14px;
+  white-space: nowrap;
 }
 #Location{
   color:#005c73;
@@ -1264,11 +1298,13 @@ textarea{resize: none;}
 	background: white;
 	padding: 2px;
 	border-radius: 5px;
-	max-width: 250px;
-	max-height: 90px;
 	position: relative;
 	top: -110px;
 	left: 110px;
+}
+.ChatBubbleMax {
+	max-width: 250px;
+	max-height: 90px;
 }
 .PlayerChatBubble::before {
 	background: white;
