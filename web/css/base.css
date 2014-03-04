@@ -761,7 +761,7 @@ text-decoration: underline;
   float: left;
   cursor: pointer;
 }
-.tab label {
+.tab .tabLabel {
 	background: #eee; 
 	padding: 4px; 
 	border: 1px solid #ccc; 
@@ -781,6 +781,10 @@ text-decoration: underline;
   top: 28px;
   left: 0;
   right: 0;
+  display: none;
+}
+.settingsContent {
+	margin-top: 10px;
 }
 [type=radio]:checked ~ label {
   background: white;
@@ -789,6 +793,7 @@ text-decoration: underline;
 }
 [type=radio]:checked ~ label ~ .content {
   z-index: 1;
+  display: block;
 }
 .Counter
 {

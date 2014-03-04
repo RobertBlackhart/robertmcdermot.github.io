@@ -3625,7 +3625,7 @@ var $$ = {};
       }
     $.get$ui().init$0();
     B.updateConsole("System: Initializing..");
-    t1 = new B.Input(null, null, null, null, null, H.fillLiteralMap(["LeftBindingPrimary", 65, "LeftBindingAlt", 37, "RightBindingPrimary", 68, "RightBindingAlt", 39, "UpBindingPrimary", 87, "UpBindingAlt", 38, "DownBindingPrimary", 83, "DownBindingAlt", 40, "JumpBindingPrimary", 32, "JumpBindingAlt", 32], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null)), false, false);
+    t1 = new B.Input(null, null, null, null, null, H.fillLiteralMap(["LeftBindingPrimary", 65, "LeftBindingAlt", 37, "RightBindingPrimary", 68, "RightBindingAlt", 39, "UpBindingPrimary", 87, "UpBindingAlt", 38, "DownBindingPrimary", 83, "DownBindingAlt", 40, "JumpBindingPrimary", 32, "JumpBindingAlt", 32], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null)), false, false, false, null, null);
     t1.Input$0();
     t1.init$0();
     $.playerInput = t1;
@@ -3741,28 +3741,6 @@ var $$ = {};
       keyPressed = "num lock";
     if (t1.$eq(keyCode, 145))
       keyPressed = "scroll lock";
-    if (t1.$eq(keyCode, 186))
-      keyPressed = ";";
-    if (t1.$eq(keyCode, 187))
-      keyPressed = "=";
-    if (t1.$eq(keyCode, 188))
-      keyPressed = ",";
-    if (t1.$eq(keyCode, 189))
-      keyPressed = "-";
-    if (t1.$eq(keyCode, 190))
-      keyPressed = ".";
-    if (t1.$eq(keyCode, 191))
-      keyPressed = "/";
-    if (t1.$eq(keyCode, 192))
-      keyPressed = "`";
-    if (t1.$eq(keyCode, 219))
-      keyPressed = "[";
-    if (t1.$eq(keyCode, 220))
-      keyPressed = "\\";
-    if (t1.$eq(keyCode, 221))
-      keyPressed = "]";
-    if (t1.$eq(keyCode, 222))
-      keyPressed = "'";
     return t1.$eq(keyCode, 225) ? "alt" : keyPressed;
   },
   loop: function(dt) {
@@ -4474,6 +4452,7 @@ var $$ = {};
       t1 = t1.get$onClick(radioButton);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(tabContent.get$resetMessages()), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       label = document.createElement("label", null);
+      label.className = "tabLabel";
       label.toString;
       label.setAttribute("for", "tab-" + H.stringReplaceAllUnchecked(channelName, " ", "_"));
       label.id = "label-" + H.stringReplaceAllUnchecked(channelName, " ", "_");
@@ -5320,36 +5299,45 @@ var $$ = {};
     }
   },
   Input: {
-    "^": "Object;leftKey,rightKey,upKey,downKey,jumpKey,keys,ignoreKeys,touched",
+    "^": "Object;leftKey,rightKey,upKey,downKey,jumpKey,keys,ignoreKeys,touched,clickUsed,keyPressSub,keyDownSub",
     init$0: function() {
       var volumeSlider, t1, chatInputs, joystick;
-      this.keys.forEach$1(0, new B.Input_init_closure(this));
-      C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(new B.Input_init_closure0());
+      this.setupKeyBindings$0();
+      C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(new B.Input_init_closure());
       volumeSlider = document.querySelector("#VolumeSlider");
       t1 = J.get$onChange$x(volumeSlider);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure1(volumeSlider)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure0(volumeSlider)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       chatInputs = W._FrozenElementList$_wrap(document.querySelectorAll(".Typing"), null);
-      C.EventStreamProvider_focus._forElementList$1(chatInputs).listen$1(new B.Input_init_closure2(this));
-      C.EventStreamProvider_blur._forElementList$1(chatInputs).listen$1(new B.Input_init_closure3(this));
-      C.EventStreamProvider_keydown.forTarget$1(document).listen$1(new B.Input_init_closure4(this));
-      C.EventStreamProvider_keyup.forTarget$1(document).listen$1(new B.Input_init_closure5(this));
+      C.EventStreamProvider_focus._forElementList$1(chatInputs).listen$1(new B.Input_init_closure1(this));
+      C.EventStreamProvider_blur._forElementList$1(chatInputs).listen$1(new B.Input_init_closure2(this));
+      C.EventStreamProvider_keydown.forTarget$1(document).listen$1(new B.Input_init_closure3(this));
+      C.EventStreamProvider_keyup.forTarget$1(document).listen$1(new B.Input_init_closure4(this));
       joystick = B.Joystick$(document.querySelector("#Joystick"), document.querySelector("#Knob"));
       t1 = joystick._moveController;
-      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure6(this, joystick));
+      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure5(this, joystick));
       t1 = joystick._releaseController;
-      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure7(this));
-      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure8(this));
-      C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure9(this));
-      C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
-      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure11(this));
+      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure6(this));
+      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure7(this));
+      C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure8(this));
+      C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure9(this));
+      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
       B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
       B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
-      C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure12());
+      C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure11());
       t1 = document.body;
       t1.toString;
       t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure13(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure12(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       $.playerInput = this;
+    },
+    setupKeyBindings$0: function() {
+      var t1 = this.keyPressSub;
+      if (t1 != null)
+        t1.cancel$0();
+      t1 = this.keyDownSub;
+      if (t1 != null)
+        t1.cancel$0();
+      this.keys.forEach$1(0, new B.Input_setupKeyBindings_closure(this));
     },
     clickOrTouch$2: function(mouseEvent, touchEvent) {
       var t1, target, t2, mute, settings, t3, chatMenu, loadingScreen, loadStreet, channelName, input, drawer;
@@ -5401,11 +5389,15 @@ var $$ = {};
         }
       }
       if (J.get$classes$x(t1.target_0).readClasses$0().contains$1(0, "KeyBindingOption")) {
+        if (!this.clickUsed)
+          this.setupKeyBindings$0();
         J.set$text$x(t1.target_0, "(press key to change)");
         t2 = document.body;
         t2.toString;
         t2 = C.EventStreamProvider_keydown.forElement$1(t2);
-        t2.get$first(t2).then$1(new B.Input_clickOrTouch_closure0(t1));
+        t2 = H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_clickOrTouch_closure0(t1, this)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)]);
+        t2._tryResume$0();
+        this.keyDownSub = t2;
       }
       if (J.get$id$x(t1.target_0) === "ChatSettingsIcon") {
         chatMenu = document.querySelector("#ChatSettingsMenu");
@@ -5599,28 +5591,6 @@ var $$ = {};
     }
   },
   Input_init_closure: {
-    "^": "Closure:32;this_0",
-    call$2: function(action, keyCode) {
-      var t1, key, t2;
-      t1 = this.this_0;
-      if ($.get$localStorage().getItem(action) != null) {
-        t1 = t1.keys;
-        t1.$indexSet(0, action, H.Primitives_parseInt($.get$localStorage().getItem(action), null, null));
-      } else {
-        t1 = t1.keys;
-        $.get$localStorage().setItem(action, J.toString$0(t1.$index(0, action)));
-      }
-      key = B.fromKeyCode(t1.$index(0, action));
-      if (key === "") {
-        t2 = "#" + H.S(action);
-        document.querySelector(t2).textContent = P.String_String$fromCharCode(t1.$index(0, action));
-      } else {
-        t1 = "#" + H.S(action);
-        document.querySelector(t1).textContent = key;
-      }
-    }
-  },
-  Input_init_closure0: {
     "^": "Closure:3;",
     call$1: function(_) {
       var t1;
@@ -5639,31 +5609,31 @@ var $$ = {};
       }
     }
   },
-  Input_init_closure1: {
-    "^": "Closure:3;volumeSlider_1",
+  Input_init_closure0: {
+    "^": "Closure:3;volumeSlider_0",
     call$1: function(_) {
-      B.setVolume(J.get$value$x(this.volumeSlider_1), false);
+      B.setVolume(J.get$value$x(this.volumeSlider_0), false);
+    }
+  },
+  Input_init_closure1: {
+    "^": "Closure:3;this_1",
+    call$1: function(_) {
+      this.this_1.ignoreKeys = true;
     }
   },
   Input_init_closure2: {
     "^": "Closure:3;this_2",
     call$1: function(_) {
-      this.this_2.ignoreKeys = true;
+      this.this_2.ignoreKeys = false;
     }
   },
   Input_init_closure3: {
-    "^": "Closure:3;this_3",
-    call$1: function(_) {
-      this.this_3.ignoreKeys = false;
-    }
-  },
-  Input_init_closure4: {
-    "^": "Closure:29;this_4",
+    "^": "Closure:29;this_3",
     call$1: function(k) {
       var t1, t2, t3, t4, t5;
       t1 = J.getInterceptor$x(k);
       t2 = t1.get$keyCode(k);
-      t3 = this.this_4;
+      t3 = this.this_3;
       t4 = t3.keys;
       t5 = t4.$index(0, "UpBindingPrimary");
       if (t2 == null ? t5 != null : t2 !== t5) {
@@ -5721,13 +5691,13 @@ var $$ = {};
         t3.jumpKey = true;
     }
   },
-  Input_init_closure5: {
-    "^": "Closure:29;this_5",
+  Input_init_closure4: {
+    "^": "Closure:29;this_4",
     call$1: function(k) {
       var t1, t2, t3, t4, t5;
       t1 = J.getInterceptor$x(k);
       t2 = t1.get$keyCode(k);
-      t3 = this.this_5;
+      t3 = this.this_4;
       t4 = t3.keys;
       t5 = t4.$index(0, "UpBindingPrimary");
       if (t2 == null ? t5 != null : t2 !== t5) {
@@ -5785,12 +5755,12 @@ var $$ = {};
         t3.jumpKey = false;
     }
   },
-  Input_init_closure6: {
-    "^": "Closure:3;this_6,joystick_7",
+  Input_init_closure5: {
+    "^": "Closure:3;this_5,joystick_6",
     call$1: function(_) {
       var t1, t2;
-      t1 = this.joystick_7;
-      t2 = this.this_6;
+      t1 = this.joystick_6;
+      t2 = this.this_5;
       if (t1.UP)
         t2.upKey = true;
       else
@@ -5809,18 +5779,18 @@ var $$ = {};
         t2.rightKey = false;
     }
   },
-  Input_init_closure7: {
-    "^": "Closure:3;this_8",
+  Input_init_closure6: {
+    "^": "Closure:3;this_7",
     call$1: function(_) {
-      var t1 = this.this_8;
+      var t1 = this.this_7;
       t1.upKey = false;
       t1.downKey = false;
       t1.rightKey = false;
       t1.leftKey = false;
     }
   },
-  Input_init_closure8: {
-    "^": "Closure:33;this_9",
+  Input_init_closure7: {
+    "^": "Closure:32;this_8",
     call$1: function($event) {
       var t1, target, t2;
       t1 = J.getInterceptor$x($event);
@@ -5828,37 +5798,37 @@ var $$ = {};
       t2 = J.getInterceptor$x(target);
       if (t2.get$id(target) === "AButton") {
         t1.preventDefault$0($event);
-        this.this_9.jumpKey = true;
+        this.this_8.jumpKey = true;
       }
       if (t2.get$id(target) === "BButton")
         t1.preventDefault$0($event);
     }
   },
-  Input_init_closure9: {
-    "^": "Closure:33;this_10",
+  Input_init_closure8: {
+    "^": "Closure:32;this_9",
     call$1: function($event) {
       var target, t1;
       target = J.get$target$x($event);
       t1 = J.getInterceptor$x(target);
       if (t1.get$id(target) === "AButton")
-        this.this_10.jumpKey = false;
+        this.this_9.jumpKey = false;
       if (t1.get$id(target) === "BButton")
         ;
     }
   },
-  Input_init_closure10: {
-    "^": "Closure:34;this_11",
+  Input_init_closure9: {
+    "^": "Closure:33;this_10",
     call$1: function($event) {
-      return this.this_11.clickOrTouch$2($event, null);
+      return this.this_10.clickOrTouch$2($event, null);
+    }
+  },
+  Input_init_closure10: {
+    "^": "Closure:32;this_11",
+    call$1: function($event) {
+      return this.this_11.clickOrTouch$2(null, $event);
     }
   },
   Input_init_closure11: {
-    "^": "Closure:33;this_12",
-    call$1: function($event) {
-      return this.this_12.clickOrTouch$2(null, $event);
-    }
-  },
-  Input_init_closure12: {
     "^": "Closure:30;",
     call$1: function($event) {
       var street, t1, label, tsid, map;
@@ -5879,10 +5849,32 @@ var $$ = {};
       B.Street$(label).load$0(0);
     }
   },
-  Input_init_closure13: {
-    "^": "Closure:3;this_13",
+  Input_init_closure12: {
+    "^": "Closure:3;this_12",
     call$1: function(e) {
-      return this.this_13.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
+      return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
+    }
+  },
+  Input_setupKeyBindings_closure: {
+    "^": "Closure:34;this_0",
+    call$2: function(action, keyCode) {
+      var t1, key, t2;
+      t1 = this.this_0;
+      if ($.get$localStorage().getItem(action) != null) {
+        t1 = t1.keys;
+        t1.$indexSet(0, action, H.Primitives_parseInt($.get$localStorage().getItem(action), null, null));
+      } else {
+        t1 = t1.keys;
+        $.get$localStorage().setItem(action, J.toString$0(t1.$index(0, action)));
+      }
+      key = B.fromKeyCode(t1.$index(0, action));
+      if (key === "") {
+        t2 = "#" + H.S(action);
+        document.querySelector(t2).textContent = P.String_String$fromCharCode(t1.$index(0, action));
+      } else {
+        t1 = "#" + H.S(action);
+        document.querySelector(t1).textContent = key;
+      }
     }
   },
   Input_clickOrTouch_closure: {
@@ -5893,36 +5885,42 @@ var $$ = {};
     }
   },
   Input_clickOrTouch_closure0: {
-    "^": "Closure:29;box_0",
+    "^": "Closure:29;box_0,this_2",
     call$1: function($event) {
-      var t1, key, t2;
-      t1 = J.getInterceptor$x($event);
-      key = B.fromKeyCode(t1.get$keyCode($event));
-      t2 = this.box_0;
+      var t1, t2, key, keyCode, t3;
+      t1 = this.this_2;
+      t1.keyDownSub.cancel$0();
+      t2 = J.getInterceptor$x($event);
+      key = B.fromKeyCode(t2.get$keyCode($event));
+      keyCode = t2.get$keyCode($event);
+      t3 = this.box_0;
       if (key === "") {
-        t1 = document.body;
-        t1.toString;
-        t1 = C.EventStreamProvider_keypress.forElement$1(t1);
-        t1.get$first(t1).then$1(new B.Input_clickOrTouch__closure(t2));
+        t2 = document.body;
+        t2.toString;
+        t2 = C.EventStreamProvider_keypress.forElement$1(t2);
+        t2 = H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B.Input_clickOrTouch__closure(t3, t1, keyCode)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)]);
+        t2._tryResume$0();
+        t1.keyPressSub = t2;
       } else {
-        J.set$text$x(t2.target_0, key);
-        $.playerInput.keys.$indexSet(0, J.get$id$x(t2.target_0), t1.get$keyCode($event));
-        $.get$localStorage().setItem(J.get$id$x(t2.target_0), J.toString$0(t1.get$keyCode($event)));
+        J.set$text$x(t3.target_0, key);
+        $.playerInput.keys.$indexSet(0, J.get$id$x(t3.target_0), t2.get$keyCode($event));
+        $.get$localStorage().setItem(J.get$id$x(t3.target_0), J.toString$0(t2.get$keyCode($event)));
       }
     }
   },
   Input_clickOrTouch__closure: {
-    "^": "Closure:29;box_0",
+    "^": "Closure:29;box_0,this_3,keyCode_4",
     call$1: function($event) {
       var keyEvent, t1, t2;
+      this.this_3.keyPressSub.cancel$0();
       keyEvent = new W.KeyEvent(null, null, null, null, null, $event, null);
       keyEvent.KeyEvent$wrap$1($event);
       t1 = this.box_0;
       t2 = t1.target_0;
-      J.set$text$x(t2, P.String_String$fromCharCode(J.get$type$x($event) === "keypress" ? keyEvent._shadowCharCode : 0));
-      t2 = J.getInterceptor$x($event);
-      $.playerInput.keys.$indexSet(0, J.get$id$x(t1.target_0), t2.get$keyCode($event));
-      $.get$localStorage().setItem(J.get$id$x(t1.target_0), J.toString$0(t2.get$keyCode($event)));
+      J.set$text$x(t2, P.String_String$fromCharCode(J.get$type$x($event) === "keypress" ? keyEvent._shadowCharCode : 0).toUpperCase());
+      t2 = this.keyCode_4;
+      $.playerInput.keys.$indexSet(0, J.get$id$x(t1.target_0), t2);
+      $.get$localStorage().setItem(J.get$id$x(t1.target_0), J.toString$0(t2));
     }
   },
   Input_showClickMenu_closure: {
@@ -5957,7 +5955,7 @@ var $$ = {};
       }}
   },
   Joystick_closure: {
-    "^": "Closure:33;this_0",
+    "^": "Closure:32;this_0",
     call$1: function($event) {
       var t1, t2, t3;
       t1 = J.getInterceptor$x($event);
@@ -5977,7 +5975,7 @@ var $$ = {};
     }
   },
   Joystick_closure0: {
-    "^": "Closure:33;this_1",
+    "^": "Closure:32;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
       t1 = J.getInterceptor$x($event);
@@ -6075,7 +6073,7 @@ var $$ = {};
     }
   },
   Joystick_closure1: {
-    "^": "Closure:33;this_2",
+    "^": "Closure:32;this_2",
     call$1: function($event) {
       var t1, t2;
       J.preventDefault$0$x($event);
@@ -6169,7 +6167,7 @@ var $$ = {};
       }}
   },
   TouchScroller_closure: {
-    "^": "Closure:33;this_0",
+    "^": "Closure:32;this_0",
     call$1: function($event) {
       var t1, t2;
       t1 = J.getInterceptor$x($event);
@@ -6185,7 +6183,7 @@ var $$ = {};
     }
   },
   TouchScroller_closure0: {
-    "^": "Closure:33;this_1",
+    "^": "Closure:32;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, t5, t6, t7, t8;
       t1 = J.getInterceptor$x($event);
@@ -6596,7 +6594,7 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "^": "Closure:32;filters_2",
+    "^": "Closure:34;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
       t1 = J.getInterceptor(filterName);
@@ -16681,9 +16679,9 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__KeyboardEvent", args: [W.KeyboardEvent]},
 {func: "dynamic__MessageEvent", args: [W.MessageEvent]},
 {func: "dynamic__Match", args: [P.Match]},
-{func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__TouchEvent", args: [W.TouchEvent]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
+{func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__Timer", args: [P.Timer]},
 {func: "dynamic__String_Player", args: [J.JSString, B.Player]},
 {func: "dynamic__String_Animation", args: [J.JSString, B.Animation]},
