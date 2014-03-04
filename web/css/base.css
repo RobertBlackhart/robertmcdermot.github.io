@@ -784,7 +784,9 @@ text-decoration: underline;
   display: none;
 }
 .settingsContent {
-	margin-top: 10px;
+	margin-top: 4px;
+	padding-top: 10px;
+	border-top: 1px solid;
 }
 [type=radio]:checked ~ label {
   background: white;
@@ -844,6 +846,11 @@ text-decoration: underline;
    top:65px;
    right:0px;
    height:320px;
+}
+.SettingsWindowBody {
+	padding: 10px;
+	font-size: 1.2em;
+	max-height: calc(100% - 92px);
 }
 
 //TODO: Dynamic position
