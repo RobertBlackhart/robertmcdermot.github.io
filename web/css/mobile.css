@@ -165,7 +165,7 @@
 	max-height: 40px;
 	overflow-y: hidden;
 	overflow-x: hidden;
-	right: 65px;
+	right: 60px;
 	top: -39px;
 	font-size: 14px;
 }
@@ -395,7 +395,7 @@
 		bottom: 30px;
 	}
 	#CurrentLocation {
-		max-width: 38%;
+		max-width: 40%;
 	}
 	#ThemeSwitcher {
 		top: 1px;

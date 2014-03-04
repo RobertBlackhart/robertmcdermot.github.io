@@ -312,7 +312,7 @@ var $$ = {};
     toString$0: function(receiver) {
       return H.Primitives_objectToString(receiver);
     },
-    "%": "ArrayBuffer|Blob|DOMError|DOMImplementation|File|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
+    "%": "ArrayBuffer|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString"
   },
   JSBool: {
     "^": "bool/Interceptor;",
@@ -388,7 +388,7 @@ var $$ = {};
       return list.join(separator);
     },
     elementAt$1: function(receiver, index) {
-      if (index < 0 || index >= receiver.length)
+      if (index >>> 0 !== index || index >= receiver.length)
         return H.ioore(receiver, index);
       return receiver[index];
     },
@@ -641,12 +641,17 @@ var $$ = {};
       return receiver + other;
     },
     endsWith$1: function(receiver, other) {
-      var otherLength, t1;
-      otherLength = other.length;
-      t1 = receiver.length;
-      if (otherLength > t1)
+      var t1, otherLength, t2;
+      if (typeof other !== "string")
+        H.throwExpression(new P.ArgumentError(other));
+      t1 = J.getInterceptor$asx(other);
+      otherLength = t1.get$length(other);
+      t2 = receiver.length;
+      if (J.$gt$n(otherLength, t2))
         return false;
-      return other === this.substring$1(receiver, t1 - otherLength);
+      if (typeof otherLength !== "number")
+        return H.iae(otherLength);
+      return t1.$eq(other, this.substring$1(receiver, t2 - otherLength));
     },
     replaceAll$2: function(receiver, from, to) {
       return H.stringReplaceAllUnchecked(receiver, from, to);
@@ -736,15 +741,31 @@ var $$ = {};
       return this.indexOf$2($receiver, pattern, 0);
     },
     lastIndexOf$2: function(receiver, pattern, start) {
-      var t1, t2;
+      var t1, t2, i;
+      if (pattern == null)
+        H.throwExpression(new P.ArgumentError(null));
       start = receiver.length;
-      t1 = pattern.length;
-      if (typeof start !== "number")
-        return start.$add();
-      t2 = receiver.length;
-      if (start + t1 > t2)
-        start = t2 - t1;
-      return receiver.lastIndexOf(pattern, start);
+      if (typeof pattern === "string") {
+        t1 = pattern.length;
+        if (typeof start !== "number")
+          return start.$add();
+        t2 = receiver.length;
+        if (start + t1 > t2)
+          start = t2 - t1;
+        return receiver.lastIndexOf(pattern, start);
+      }
+      t1 = J.getInterceptor$s(pattern);
+      i = start;
+      while (true) {
+        if (typeof i !== "number")
+          return i.$ge();
+        if (!(i >= 0))
+          break;
+        if (t1.matchAsPrefix$2(pattern, receiver, i) != null)
+          return i;
+        --i;
+      }
+      return -1;
     },
     lastIndexOf$1: function($receiver, pattern) {
       return this.lastIndexOf$2($receiver, pattern, null);
@@ -3247,7 +3268,7 @@ var $$ = {};
       return H._MatchImplementation$(this, match);
     },
     matchAsPrefix$2: function(_, string, start) {
-      if (start > string.length)
+      if (start < 0 || start > string.length)
         throw H.wrapException(P.RangeError$range(start, 0, string.length));
       return this._execAnchored$2(string, start);
     },
@@ -3604,7 +3625,7 @@ var $$ = {};
       }
     $.get$ui().init$0();
     B.updateConsole("System: Initializing..");
-    t1 = new B.Input(null, null, null, null, null, false, false);
+    t1 = new B.Input(null, null, null, null, null, H.fillLiteralMap(["LeftBindingPrimary", 65, "LeftBindingAlt", 37, "RightBindingPrimary", 68, "RightBindingAlt", 39, "UpBindingPrimary", 87, "UpBindingAlt", 38, "DownBindingPrimary", 83, "DownBindingAlt", 40, "JumpBindingPrimary", 32, "JumpBindingAlt", 32], P.LinkedHashMap_LinkedHashMap(null, null, null, null, null)), false, false);
     t1.Input$0();
     t1.init$0();
     $.playerInput = t1;
@@ -3613,6 +3634,136 @@ var $$ = {};
     B.updateConsole("COU DEVELOPMENT CONSOLE");
     B.updateConsole("For a list of commands type \"help\"");
     B.gameLoop(0);
+  },
+  fromKeyCode: function(keyCode) {
+    var t1, keyPressed;
+    t1 = J.getInterceptor(keyCode);
+    keyPressed = t1.$eq(keyCode, 8) ? "backspace" : "";
+    if (t1.$eq(keyCode, 9))
+      keyPressed = "tab";
+    if (t1.$eq(keyCode, 13))
+      keyPressed = "enter";
+    if (t1.$eq(keyCode, 16))
+      keyPressed = "shift";
+    if (t1.$eq(keyCode, 17))
+      keyPressed = "ctrl";
+    if (t1.$eq(keyCode, 18))
+      keyPressed = "alt";
+    if (t1.$eq(keyCode, 19))
+      keyPressed = "pause/break";
+    if (t1.$eq(keyCode, 20))
+      keyPressed = "caps lock";
+    if (t1.$eq(keyCode, 27))
+      keyPressed = "escape";
+    if (t1.$eq(keyCode, 32))
+      keyPressed = "space";
+    if (t1.$eq(keyCode, 33))
+      keyPressed = "page up";
+    if (t1.$eq(keyCode, 34))
+      keyPressed = "page down";
+    if (t1.$eq(keyCode, 35))
+      keyPressed = "end";
+    if (t1.$eq(keyCode, 36))
+      keyPressed = "home";
+    if (t1.$eq(keyCode, 37))
+      keyPressed = "left arrow";
+    if (t1.$eq(keyCode, 38))
+      keyPressed = "up arrow";
+    if (t1.$eq(keyCode, 39))
+      keyPressed = "right arrow";
+    if (t1.$eq(keyCode, 40))
+      keyPressed = "down arrow";
+    if (t1.$eq(keyCode, 45))
+      keyPressed = "insert";
+    if (t1.$eq(keyCode, 46))
+      keyPressed = "delete";
+    if (t1.$eq(keyCode, 91))
+      keyPressed = "left window";
+    if (t1.$eq(keyCode, 92))
+      keyPressed = "right window";
+    if (t1.$eq(keyCode, 93))
+      keyPressed = "select key";
+    if (t1.$eq(keyCode, 96))
+      keyPressed = "numpad 0";
+    if (t1.$eq(keyCode, 97))
+      keyPressed = "numpad 1";
+    if (t1.$eq(keyCode, 98))
+      keyPressed = "numpad 2";
+    if (t1.$eq(keyCode, 99))
+      keyPressed = "numpad 3";
+    if (t1.$eq(keyCode, 100))
+      keyPressed = "numpad 4";
+    if (t1.$eq(keyCode, 101))
+      keyPressed = "numpad 5";
+    if (t1.$eq(keyCode, 102))
+      keyPressed = "numpad 6";
+    if (t1.$eq(keyCode, 103))
+      keyPressed = "numpad 7";
+    if (t1.$eq(keyCode, 104))
+      keyPressed = "numpad 8";
+    if (t1.$eq(keyCode, 105))
+      keyPressed = "numpad 9";
+    if (t1.$eq(keyCode, 106))
+      keyPressed = "multiply";
+    if (t1.$eq(keyCode, 107))
+      keyPressed = "add";
+    if (t1.$eq(keyCode, 109))
+      keyPressed = "subtract";
+    if (t1.$eq(keyCode, 110))
+      keyPressed = "decimal point";
+    if (t1.$eq(keyCode, 111))
+      keyPressed = "divide";
+    if (t1.$eq(keyCode, 112))
+      keyPressed = "F1";
+    if (t1.$eq(keyCode, 113))
+      keyPressed = "F2";
+    if (t1.$eq(keyCode, 114))
+      keyPressed = "F3";
+    if (t1.$eq(keyCode, 115))
+      keyPressed = "F4";
+    if (t1.$eq(keyCode, 116))
+      keyPressed = "F5";
+    if (t1.$eq(keyCode, 117))
+      keyPressed = "F6";
+    if (t1.$eq(keyCode, 118))
+      keyPressed = "F7";
+    if (t1.$eq(keyCode, 119))
+      keyPressed = "F8";
+    if (t1.$eq(keyCode, 120))
+      keyPressed = "F9";
+    if (t1.$eq(keyCode, 121))
+      keyPressed = "F10";
+    if (t1.$eq(keyCode, 122))
+      keyPressed = "F11";
+    if (t1.$eq(keyCode, 123))
+      keyPressed = "F12";
+    if (t1.$eq(keyCode, 144))
+      keyPressed = "num lock";
+    if (t1.$eq(keyCode, 145))
+      keyPressed = "scroll lock";
+    if (t1.$eq(keyCode, 186))
+      keyPressed = ";";
+    if (t1.$eq(keyCode, 187))
+      keyPressed = "=";
+    if (t1.$eq(keyCode, 188))
+      keyPressed = ",";
+    if (t1.$eq(keyCode, 189))
+      keyPressed = "-";
+    if (t1.$eq(keyCode, 190))
+      keyPressed = ".";
+    if (t1.$eq(keyCode, 191))
+      keyPressed = "/";
+    if (t1.$eq(keyCode, 192))
+      keyPressed = "`";
+    if (t1.$eq(keyCode, 219))
+      keyPressed = "[";
+    if (t1.$eq(keyCode, 220))
+      keyPressed = "\\";
+    if (t1.$eq(keyCode, 221))
+      keyPressed = "]";
+    if (t1.$eq(keyCode, 222))
+      keyPressed = "'";
+    return t1.$eq(keyCode, 225) ? "alt" : keyPressed;
   },
   loop: function(dt) {
     var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
@@ -3640,7 +3791,7 @@ var $$ = {};
       t1.moving = true;
     } else
       t1.moving = false;
-    if ($.playerInput.spaceKey && !t1.jumping) {
+    if ($.playerInput.jumpKey && !t1.jumping) {
       if (C.C__JSRandom.nextInt$1(4) === 3)
         t1.yVel = -1200;
       else
@@ -4044,14 +4195,13 @@ var $$ = {};
     C.Window_methods.get$animationFrame(window).then$1(B.gameLoop$closure());
   }, "call$1", "gameLoop$closure", 2, 0, 8],
   ChatBubble: {
-    "^": "Object;text,timeToLive,bubble,textElement",
+    "^": "Object;text',timeToLive,bubble,textElement",
     ChatBubble$1: function(text) {
       var t1, t2;
-      t1 = J.$add$ns(J.$mul$n(J.get$length$asx(this.text), 0.1), 3);
+      t1 = J.$add$ns(J.$mul$n(J.get$length$asx(this.text), 0.03), 3);
       this.timeToLive = t1;
-      if (J.$gt$n(t1, 15))
-        this.timeToLive = 15;
-      this.timeToLive = 5000;
+      if (J.$gt$n(t1, 10))
+        this.timeToLive = 10;
       t1 = document.createElement("div", null);
       t2 = J.getInterceptor$x(t1);
       t2.get$classes(t1).add$1(0, "PlayerChatBubble");
@@ -4258,6 +4408,7 @@ var $$ = {};
     "^": "Object;_showJoinMessages,_playMentionSound,tabContentMap,username",
     init$0: function() {
       var t1, newValue, newValue0;
+      new E.Asset(null, false, "assets/emoticons/emoticons.json", null).load$0(0).then$1(new B.Chat_init_closure());
       if ($.get$localStorage().getItem("username") != null) {
         t1 = $.get$localStorage().getItem("username");
         this.username = t1;
@@ -4272,7 +4423,7 @@ var $$ = {};
       newValue0 = J.getInterceptor$asx(newValue).get$length(newValue) >= 17 ? C.JSString_methods.substring$2(newValue, 0, 15) + "..." : newValue;
       t1.nameMeter.textContent = newValue0;
       B.updateConsole("Setting name to \"" + newValue + "\"");
-      C.EventStreamProvider_change._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null)).listen$1(new B.Chat_init_closure(this));
+      C.EventStreamProvider_change._forElementList$1(W._FrozenElementList$_wrap(document.querySelectorAll(".ChatSettingsCheckbox"), null)).listen$1(new B.Chat_init_closure0(this));
       if ($.get$localStorage().getItem("showJoinMessages") != null)
         if ($.get$localStorage().getItem("showJoinMessages") === "true") {
           this._showJoinMessages = true;
@@ -4287,7 +4438,7 @@ var $$ = {};
         $.get$localStorage().setItem("showJoinMessages", C.JSBool_methods.toString$0(false));
       }
       t1 = W._FrozenElementList$_wrap(document.querySelectorAll("#ShowJoinMessages"), null);
-      t1.forEach$1(t1, new B.Chat_init_closure0(this));
+      t1.forEach$1(t1, new B.Chat_init_closure1(this));
       if ($.get$localStorage().getItem("playMentionSound") != null)
         if ($.get$localStorage().getItem("playMentionSound") === "true") {
           this._playMentionSound = true;
@@ -4302,7 +4453,7 @@ var $$ = {};
         $.get$localStorage().setItem("showJoinMessages", C.JSBool_methods.toString$0(true));
       }
       t1 = W._FrozenElementList$_wrap(document.querySelectorAll("#PlayMentionSound"), null);
-      t1.forEach$1(t1, new B.Chat_init_closure1(this));
+      t1.forEach$1(t1, new B.Chat_init_closure2(this));
       this.addChatTab$2("Global Chat", true);
       this.addChatTab$2("Other Chat", false);
       J.get$children$x(document.querySelector("#ChatPane")).add$1(0, B.TabContent$("Local Chat", true).getDiv$0());
@@ -4333,10 +4484,19 @@ var $$ = {};
       t1.add$1(0, label);
       t1.add$1(0, $content);
       J.get$children$x(document.querySelector("#ChatTabs")).add$1(0, tab);
-    }
+    },
+    static: {"^": "Chat__COLORS,Chat__EMOTICONS"}
   },
   Chat_init_closure: {
-    "^": "Closure:24;this_0",
+    "^": "Closure:24;",
+    call$1: function(asset) {
+      var t1 = J.$index$asx(asset.get$0(), "names");
+      $.Chat__EMOTICONS = t1;
+      return t1;
+    }
+  },
+  Chat_init_closure0: {
+    "^": "Closure:25;this_0",
     call$1: function($event) {
       var checkbox, t1;
       checkbox = H.interceptedTypeCast(J.get$target$x($event), "$isCheckboxInputElement");
@@ -4352,20 +4512,20 @@ var $$ = {};
       }
     }
   },
-  Chat_init_closure0: {
-    "^": "Closure:25;this_1",
+  Chat_init_closure1: {
+    "^": "Closure:26;this_1",
     call$1: function(element) {
       J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_1._showJoinMessages);
     }
   },
-  Chat_init_closure1: {
-    "^": "Closure:25;this_2",
+  Chat_init_closure2: {
+    "^": "Closure:26;this_2",
     call$1: function(element) {
       J.set$checked$x(H.interceptedTypeCast(element, "$isCheckboxInputElement"), this.this_2._playMentionSound);
     }
   },
   TabContent: {
-    "^": "Object;connectedUsers,inputHistory,channelName,lastWord,useSpanForTitle,tabInserted,webSocket<,chatDiv,chatHistory,unreadMessages<,tabSearchIndex,numMessages,inputHistoryPointer,_chatServerUrl",
+    "^": "Object;connectedUsers,inputHistory,channelName,lastWord,useSpanForTitle,tabInserted,webSocket<,chatDiv,chatHistory,unreadMessages<,tabSearchIndex,numMessages,inputHistoryPointer,emoticonPointer,_chatServerUrl",
     resetMessages$1: [function($event) {
       var t1, t2, selector;
       t1 = {};
@@ -4383,7 +4543,7 @@ var $$ = {};
       document.querySelector("#ChatBubbleText").textContent = C.JSInt_methods.toString$0(t1.totalUnread_0);
     }, function() {
       return this.resetMessages$1(null);
-    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 26, 12],
+    }, "resetMessages$0", "call$1", "call$0", "get$resetMessages", 0, 2, 27, 12],
     getDiv$0: function() {
       var t1, span, t2, input, map;
       t1 = document.createElement("div", null);
@@ -4662,11 +4822,14 @@ var $$ = {};
         index += t1.codeUnitAt$1(username, i);
         ++i;
       }
-      t1 = $.get$TabContent__COLORS();
-      t2 = C.JSInt_methods.$mod(index, 12);
-      if (t2 >= 13)
-        return H.ioore(t1, t2);
-      return t1[t2];
+      t1 = $.get$chat();
+      t1.toString;
+      t2 = $.get$Chat__COLORS();
+      t1.toString;
+      t1 = C.JSInt_methods.$mod(index, 12);
+      if (t1 >= 13)
+        return H.ioore(t2, t1);
+      return t2[t1];
     },
     TabContent$2: function(channelName, useSpanForTitle) {
       var t1, conversationStack, conversation, channelList, channel;
@@ -4685,59 +4848,146 @@ var $$ = {};
       channel.id = "channelName-" + H.stringReplaceAllUnchecked(t1, " ", "_");
       J.get$children$x(channelList).add$1(0, channel);
     },
-    static: {"^": "TabContent__COLORS,TabContent__EMOTICONS", TabContent$: function(channelName, useSpanForTitle) {
-        var t1 = new B.TabContent([], [], channelName, "", useSpanForTitle, false, null, null, null, 0, 0, 0, 0, "ws://couserver.herokuapp.com");
+    static: {TabContent$: function(channelName, useSpanForTitle) {
+        var t1 = new B.TabContent([], [], channelName, "", useSpanForTitle, false, null, null, null, 0, 0, 0, 0, 0, "ws://couserver.herokuapp.com");
         t1.TabContent$2(channelName, useSpanForTitle);
         return t1;
       }}
   },
   TabContent_resetMessages_closure: {
-    "^": "Closure:27;box_0",
+    "^": "Closure:28;box_0",
     call$1: function(tabContent) {
       var t1 = this.box_0;
       t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
     }
   },
   TabContent_processInput_closure: {
-    "^": "Closure:28;this_0,input_1",
+    "^": "Closure:29;this_0,input_1",
     call$1: function(key) {
-      var t1, t2, t3, startIndex, t4, t5, username, index;
-      if (J.get$keyCode$x(key) === 38) {
-        t1 = this.this_0;
-        t1 = t1.inputHistoryPointer < t1.inputHistory.length;
+      var t1, t2, t3, t4, value, lastColon, count, setNext, t5, $name, startIndex, i, username, index;
+      t1 = J.getInterceptor$x(key);
+      if (t1.get$keyCode(key) === 38) {
+        t2 = this.this_0;
+        t2 = t2.inputHistoryPointer < t2.inputHistory.length;
       } else
-        t1 = false;
-      if (t1) {
-        t1 = this.this_0;
-        t2 = t1.inputHistory;
-        t3 = t1.inputHistoryPointer;
-        if (t3 < 0 || t3 >= t2.length)
-          return H.ioore(t2, t3);
-        J.set$value$x(this.input_1, t2[t3]);
-        t3 = t1.inputHistoryPointer;
-        if (t3 < t2.length - 1)
-          t1.inputHistoryPointer = t3 + 1;
+        t2 = false;
+      if (t2) {
+        t2 = this.this_0;
+        t3 = t2.inputHistory;
+        t4 = t2.inputHistoryPointer;
+        if (t4 < 0 || t4 >= t3.length)
+          return H.ioore(t3, t4);
+        J.set$value$x(this.input_1, t3[t4]);
+        t4 = t2.inputHistoryPointer;
+        if (t4 < t3.length - 1)
+          t2.inputHistoryPointer = t4 + 1;
       }
-      if (key.keyCode === 40) {
-        t1 = this.this_0;
-        t2 = t1.inputHistoryPointer;
-        t3 = this.input_1;
-        if (t2 > 0) {
-          --t2;
-          t1.inputHistoryPointer = t2;
-          t1 = t1.inputHistory;
-          if (t2 >= t1.length)
-            return H.ioore(t1, t2);
-          J.set$value$x(t3, t1[t2]);
+      if (t1.get$keyCode(key) === 40) {
+        t2 = this.this_0;
+        t3 = t2.inputHistoryPointer;
+        t4 = this.input_1;
+        if (t3 > 0) {
+          --t3;
+          t2.inputHistoryPointer = t3;
+          t2 = t2.inputHistory;
+          if (t3 >= t2.length)
+            return H.ioore(t2, t3);
+          J.set$value$x(t4, t2[t3]);
         } else
-          J.set$value$x(t3, "");
+          J.set$value$x(t4, "");
       }
-      if (key.keyCode === 9) {
-        key.preventDefault();
+      if (t1.get$keyCode(key) === 9) {
+        t1.preventDefault$0(key);
         t1 = this.input_1;
         t2 = J.getInterceptor$x(t1);
+        if (J.endsWith$1$s(t2.get$value(t1), ":")) {
+          value = t2.get$value(t1);
+          if (!(J.getInterceptor$asx(value).get$length(value) > 1 && C.JSString_methods.startsWith$1(C.JSString_methods.substring$1(value, C.JSString_methods.lastIndexOf$1(value, ":") - 1), " :")))
+            t3 = value.length === 1 && C.JSString_methods.startsWith$1(value, ":");
+          else
+            t3 = true;
+          if (t3) {
+            t3 = C.JSString_methods.substring$2(value, 0, C.JSString_methods.lastIndexOf$1(value, ":") + 1);
+            $.get$chat().toString;
+            t4 = this.this_0;
+            t2.set$value(t1, C.JSString_methods.$add(t3, J.elementAt$1$ax($.Chat__EMOTICONS, t4.emoticonPointer)) + ":");
+            t3 = t4.emoticonPointer + 1;
+            t4.emoticonPointer = t3;
+            $.get$chat().toString;
+            if (t3 === J.get$length$asx($.Chat__EMOTICONS))
+              t4.emoticonPointer = 0;
+          } else if (value.length > 1 && !C.JSString_methods.startsWith$1(C.JSString_methods.substring$1(value, C.JSString_methods.lastIndexOf$1(value, ":") - 1), " :")) {
+            lastColon = C.JSString_methods.lastIndexOf$1(value, ":");
+            t3 = this.this_0;
+            count = 0;
+            setNext = false;
+            while (true) {
+              $.get$chat().toString;
+              t4 = J.$mul$n(J.get$length$asx($.Chat__EMOTICONS), 2);
+              if (typeof t4 !== "number")
+                return H.iae(t4);
+              if (!(count < t4))
+                break;
+              t4 = $.get$chat();
+              t5 = $.Chat__EMOTICONS;
+              t4.toString;
+              t4 = J.get$length$asx(t5);
+              if (typeof t4 !== "number")
+                return H.iae(t4);
+              $name = J.elementAt$1$ax(t5, C.JSInt_methods.$mod(count, t4));
+              if (setNext) {
+                $.get$chat().toString;
+                t4 = J.get$length$asx(J.elementAt$1$ax($.Chat__EMOTICONS, t3.emoticonPointer));
+                if (typeof t4 !== "number")
+                  return H.iae(t4);
+                t2.set$value(t1, C.JSString_methods.$add(C.JSString_methods.substring$2(value, 0, lastColon - t4), $name) + ":");
+                t4 = t3.emoticonPointer + 1;
+                t3.emoticonPointer = t4;
+                $.get$chat().toString;
+                if (t4 === J.get$length$asx($.Chat__EMOTICONS))
+                  t3.emoticonPointer = 0;
+                break;
+              }
+              t4 = J.getInterceptor$asx($name);
+              t5 = t4.get$length($name);
+              if (typeof t5 !== "number")
+                return H.iae(t5);
+              C.JSString_methods.substring$2(value, lastColon - t5, lastColon);
+              t4 = t4.get$length($name);
+              if (typeof t4 !== "number")
+                return H.iae(t4);
+              t4 = C.JSString_methods.substring$2(value, lastColon - t4, lastColon) === $name;
+              if (t4) {
+                $.get$chat().toString;
+                t4 = J.get$length$asx($.Chat__EMOTICONS);
+                if (typeof t4 !== "number")
+                  return H.iae(t4);
+                t3.emoticonPointer = C.JSInt_methods.$mod(count, t4);
+                setNext = true;
+              } else
+                setNext = false;
+              ++count;
+            }
+          }
+          return;
+        }
         startIndex = J.lastIndexOf$1$asx(t2.get$value(t1), " ") === -1 ? 0 : J.lastIndexOf$1$asx(t2.get$value(t1), " ") + 1;
         t3 = this.this_0;
+        i = 0;
+        while (true) {
+          t4 = J.get$length$asx(t3.connectedUsers);
+          if (typeof t4 !== "number")
+            return H.iae(t4);
+          if (!(i < t4))
+            break;
+          $name = J.elementAt$1$ax(t3.connectedUsers, i);
+          if (J.endsWith$1$s(t2.get$value(t1), $name)) {
+            t4 = t2.get$value(t1);
+            t2.set$value(t1, C.JSString_methods.substring$2(t4, 0, J.getInterceptor$asx(t4).lastIndexOf$1(t4, $name)));
+            break;
+          }
+          ++i;
+        }
         if (!t3.tabInserted)
           t3.lastWord = J.substring$1$s(t2.get$value(t1), startIndex);
         while (true) {
@@ -4775,12 +5025,13 @@ var $$ = {};
     }
   },
   TabContent_processInput_closure0: {
-    "^": "Closure:28;this_2,input_3",
+    "^": "Closure:29;this_2,input_3",
     call$1: function(key) {
       var t1, t2, t3, t4, t5;
-      if (J.get$keyCode$x(key) !== 9)
+      t1 = J.getInterceptor$x(key);
+      if (t1.get$keyCode(key) !== 9)
         this.this_2.tabInserted = false;
-      if (key.keyCode !== 13)
+      if (t1.get$keyCode(key) !== 13)
         return;
       t1 = this.input_3;
       t2 = J.getInterceptor$x(t1);
@@ -4823,7 +5074,7 @@ var $$ = {};
     }
   },
   TabContent_setupWebSocket_closure0: {
-    "^": "Closure:29;this_3,channelName_4",
+    "^": "Closure:30;this_3,channelName_4",
     call$1: function(messageEvent) {
       var t1, map, t2, t3, prevUnread, t4, t5, selector;
       t1 = {};
@@ -4888,7 +5139,7 @@ var $$ = {};
     }
   },
   TabContent_setupWebSocket__closure0: {
-    "^": "Closure:27;box_0",
+    "^": "Closure:28;box_0",
     call$1: function(tabContent) {
       var t1 = this.box_0;
       t1.totalUnread_0 = t1.totalUnread_0 + tabContent.get$unreadMessages();
@@ -4929,7 +5180,7 @@ var $$ = {};
     }
   },
   TabContent__parseForUrls_closure: {
-    "^": "Closure:30;box_0",
+    "^": "Closure:31;box_0",
     call$1: function(m) {
       var url, t1;
       url = m.$index(0, 0);
@@ -4950,12 +5201,13 @@ var $$ = {};
     }
   },
   TabContent__parseForEmoticons_closure: {
-    "^": "Closure:30;box_0",
+    "^": "Closure:31;box_0",
     call$1: function(m) {
       var match, t1;
       match = m.$index(0, 1);
+      $.get$chat().toString;
       t1 = this.box_0;
-      if (C.JSArray_methods.contains$1($.get$TabContent__EMOTICONS(), match))
+      if (J.contains$1$asx($.Chat__EMOTICONS, match) === true)
         t1.returnString_0 = t1.returnString_0 + ("<img class ='Emoticon' src='assets/emoticons/" + H.S(match) + ".svg'></img>");
       else
         t1.returnString_0 = C.JSString_methods.$add(t1.returnString_0, m.$index(0, 0));
@@ -5068,150 +5320,187 @@ var $$ = {};
     }
   },
   Input: {
-    "^": "Object;leftKey,rightKey,upKey,downKey,spaceKey,ignoreKeys,touched",
+    "^": "Object;leftKey,rightKey,upKey,downKey,jumpKey,keys,ignoreKeys,touched",
     init$0: function() {
       var volumeSlider, t1, chatInputs, joystick;
-      C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(new B.Input_init_closure());
+      this.keys.forEach$1(0, new B.Input_init_closure(this));
+      C.EventStreamProvider_webkitfullscreenchange.forTarget$1(document).listen$1(new B.Input_init_closure0());
       volumeSlider = document.querySelector("#VolumeSlider");
       t1 = J.get$onChange$x(volumeSlider);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure0(volumeSlider)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure1(volumeSlider)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       chatInputs = W._FrozenElementList$_wrap(document.querySelectorAll(".Typing"), null);
-      C.EventStreamProvider_focus._forElementList$1(chatInputs).listen$1(new B.Input_init_closure1(this));
-      C.EventStreamProvider_blur._forElementList$1(chatInputs).listen$1(new B.Input_init_closure2(this));
-      C.EventStreamProvider_keydown.forTarget$1(document).listen$1(new B.Input_init_closure3(this));
-      C.EventStreamProvider_keyup.forTarget$1(document).listen$1(new B.Input_init_closure4(this));
+      C.EventStreamProvider_focus._forElementList$1(chatInputs).listen$1(new B.Input_init_closure2(this));
+      C.EventStreamProvider_blur._forElementList$1(chatInputs).listen$1(new B.Input_init_closure3(this));
+      C.EventStreamProvider_keydown.forTarget$1(document).listen$1(new B.Input_init_closure4(this));
+      C.EventStreamProvider_keyup.forTarget$1(document).listen$1(new B.Input_init_closure5(this));
       joystick = B.Joystick$(document.querySelector("#Joystick"), document.querySelector("#Knob"));
       t1 = joystick._moveController;
-      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure5(this, joystick));
+      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure6(this, joystick));
       t1 = joystick._releaseController;
-      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure6(this));
-      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure7(this));
-      C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure8(this));
-      C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure9(this));
-      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
+      H.setRuntimeTypeInfo(new P._BroadcastStream(t1), [H.getTypeArgumentByIndex(t1, 0)]).listen$1(new B.Input_init_closure7(this));
+      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure8(this));
+      C.EventStreamProvider_touchend.forTarget$1(document).listen$1(new B.Input_init_closure9(this));
+      C.EventStreamProvider_click.forTarget$1(document).listen$1(new B.Input_init_closure10(this));
+      C.EventStreamProvider_touchstart.forTarget$1(document).listen$1(new B.Input_init_closure11(this));
       B.TouchScroller$(document.querySelector("#MobileInventory"), $.TouchScroller_HORIZONTAL);
       B.TouchScroller$(document.querySelector("#MobileInventoryBag"), $.TouchScroller_HORIZONTAL);
-      C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure11());
+      C.EventStreamProvider_message.forTarget$1(window).listen$1(new B.Input_init_closure12());
       t1 = document.body;
       t1.toString;
       t1 = C.EventStreamProvider_contextmenu.forElement$1(t1);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure12(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._target, t1._eventType, W._wrapZone(new B.Input_init_closure13(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
       $.playerInput = this;
     },
     clickOrTouch$2: function(mouseEvent, touchEvent) {
-      var target, t1, t2, mute, chatMenu, loadingScreen, loadStreet, channelName, input, drawer;
+      var t1, target, t2, mute, settings, t3, chatMenu, loadingScreen, loadStreet, channelName, input, drawer;
+      t1 = {};
       if (this.touched)
         return;
       this.touched = true;
       P.Timer_Timer$periodic(P.Duration$(0, 0, 0, 200, 0, 0), new B.Input_clickOrTouch_closure(this));
-      target = mouseEvent != null ? J.get$target$x(mouseEvent) : J.get$target$x(touchEvent);
-      t1 = J.getInterceptor$x(target);
-      if (t1.get$id(target) === "ConsoleGlyph")
+      t1.target_0 = null;
+      if (mouseEvent != null) {
+        target = J.get$target$x(mouseEvent);
+        t1.target_0 = target;
+        t2 = target;
+      } else {
+        target = J.get$target$x(touchEvent);
+        t1.target_0 = target;
+        t2 = target;
+      }
+      if (J.get$id$x(t2) === "ConsoleGlyph")
         if (document.querySelector("#DevConsole").hidden === true)
           B.showConsole();
         else {
           document.querySelector("#DevConsole").hidden = true;
           $.consolelistener.cancel$0();
         }
-      if (t1.get$id(target) === "CloseConsole") {
+      if (J.get$id$x(t1.target_0) === "CloseConsole") {
         document.querySelector("#DevConsole").hidden = true;
         $.consolelistener.cancel$0();
       }
-      if (J.contains$1$asx(t1.get$className(target), "FullscreenGlyph"))
+      if (J.contains$1$asx(J.get$className$x(t1.target_0), "FullscreenGlyph"))
         document.documentElement.webkitRequestFullscreen();
-      if (J.contains$1$asx(target.className, "FullscreenResetGlyph"))
+      if (J.contains$1$asx(J.get$className$x(t1.target_0), "FullscreenResetGlyph"))
         document.webkitExitFullscreen();
-      t2 = target.parentElement.id;
-      if (t2 === "AudioGlyph" || t2 === "MobileAudioGlyph") {
+      if (J.get$id$x(J.get$parent$x(t1.target_0)) === "AudioGlyph" || J.get$id$x(J.get$parent$x(t1.target_0)) === "MobileAudioGlyph") {
         mute = $.get$localStorage().getItem("isMuted") === "0" ? "1" : "0";
         $.get$ui()._setMute$1(mute);
       }
-      if (target.id === "ChatSettingsIcon") {
+      t2 = J.get$id$x(t1.target_0);
+      if (t2 === "SettingsGlyph" || t2 === "CloseSettings") {
+        settings = document.querySelector("#Settings");
+        t2 = settings.hidden;
+        t3 = $.playerInput;
+        if (t2 === true) {
+          settings.hidden = false;
+          t3.ignoreKeys = true;
+        } else {
+          settings.hidden = true;
+          t3.ignoreKeys = false;
+        }
+      }
+      if (J.get$classes$x(t1.target_0).readClasses$0().contains$1(0, "KeyBindingOption")) {
+        J.set$text$x(t1.target_0, "(press key to change)");
+        t2 = document.body;
+        t2.toString;
+        t2 = C.EventStreamProvider_keydown.forElement$1(t2);
+        t2.get$first(t2).then$1(new B.Input_clickOrTouch_closure0(t1));
+      }
+      if (J.get$id$x(t1.target_0) === "ChatSettingsIcon") {
         chatMenu = document.querySelector("#ChatSettingsMenu");
         if (chatMenu.hidden === true)
           chatMenu.hidden = false;
         else
           chatMenu.hidden = true;
       }
-      if (target.id === "MobileChatSettingsIcon") {
+      if (J.get$id$x(t1.target_0) === "MobileChatSettingsIcon") {
         chatMenu = document.querySelector("#MobileChatSettingsMenu");
         if (chatMenu.hidden === true)
           chatMenu.hidden = false;
         else
           chatMenu.hidden = true;
       }
-      if (target.className === "ExitLabel") {
+      if (J.get$className$x(t1.target_0) === "ExitLabel") {
         loadingScreen = document.querySelector("#MapLoadingScreen");
         loadingScreen.className = "MapLoadingScreenIn";
         J.set$opacity$x(loadingScreen.style, "1.0");
         loadStreet = document.createElement("script", null);
-        J.set$src$x(loadStreet, target.getAttribute("url"));
+        J.set$src$x(loadStreet, J.get$attributes$x(t1.target_0)._element.getAttribute("url"));
         document.body.appendChild(loadStreet);
       }
-      if (target.id === "Exits")
-        if (t1.get$classes(target).readClasses$0().contains$1(0, "ExitsExpanded")) {
-          t1.get$classes(target).clear$0(0);
-          t1.get$classes(target).add$1(0, "ExitsCollapsed");
-          t1.get$classes(target).add$1(0, "icon-expand-alt");
+      t2 = t1.target_0;
+      t3 = J.getInterceptor$x(t2);
+      if (t3.get$id(t2) === "Exits") {
+        t2 = t3.get$classes(t2).readClasses$0().contains$1(0, "ExitsExpanded");
+        t3 = t1.target_0;
+        if (t2) {
+          J.get$classes$x(t3).clear$0(0);
+          J.get$classes$x(t1.target_0).add$1(0, "ExitsCollapsed");
+          J.get$classes$x(t1.target_0).add$1(0, "icon-expand-alt");
         } else {
-          t1.get$classes(target).clear$0(0);
-          t1.get$classes(target).add$1(0, "ExitsExpanded");
-          t1.get$classes(target).add$1(0, "icon-collapse-alt");
+          J.get$classes$x(t3).clear$0(0);
+          J.get$classes$x(t1.target_0).add$1(0, "ExitsExpanded");
+          J.get$classes$x(t1.target_0).add$1(0, "icon-collapse-alt");
         }
-      if (target.id === "MapGlyph")
+      }
+      if (J.get$id$x(t1.target_0) === "MapGlyph")
         if (document.querySelector("#MapWindow").hidden === true) {
           document.querySelector("#MapWindow").hidden = false;
           document.querySelector(".ConsoleInput").focus();
         } else
           document.querySelector("#MapWindow").hidden = true;
-      if (target.id === "CloseMap")
+      if (J.get$id$x(t1.target_0) === "CloseMap")
         document.querySelector("#MapWindow").hidden = true;
-      if (target.id === "ThemeSwitcher")
-        if (J.contains$1$asx(target.textContent, "Mobile")) {
+      t2 = t1.target_0;
+      t3 = J.getInterceptor$x(t2);
+      if (t3.get$id(t2) === "ThemeSwitcher")
+        if (J.contains$1$asx(t3.get$text(t2), "Mobile")) {
           H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = false;
-          target.textContent = "Desktop View";
+          J.set$text$x(t1.target_0, "Desktop View");
           $.get$localStorage().setItem("interface", "mobile");
           B.resize();
         } else {
           H.interceptedTypeCast(document.querySelector("#MobileStyle"), "$isLinkElement").disabled = true;
-          target.textContent = "Mobile View";
+          J.set$text$x(t1.target_0, "Mobile View");
           $.get$localStorage().setItem("interface", "desktop");
           B.resize();
         }
-      if (target.className === "ChannelName") {
-        t1 = target.id;
-        t1 = C.JSString_methods.substring$1(t1, J.getInterceptor$asx(t1).indexOf$1(t1, "-") + 1);
-        channelName = H.stringReplaceAllUnchecked(t1, "_", " ");
+      t2 = t1.target_0;
+      if (J.get$className$x(t2) === "ChannelName") {
+        t2 = t2.id;
+        t2 = C.JSString_methods.substring$1(t2, J.getInterceptor$asx(t2).indexOf$1(t2, "-") + 1);
+        channelName = H.stringReplaceAllUnchecked(t2, "_", " ");
         document.querySelector("#ChatChannelTitle").textContent = channelName;
         $.get$chat().tabContentMap.$index(0, channelName).resetMessages$1(mouseEvent);
         input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
         $.get$chat().tabContentMap.$index(0, channelName).processInput$1(input);
         document.querySelector("#ChatScreen").hidden = false;
         document.querySelector("#ChannelSelectorScreen").hidden = true;
-        t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
-        t1.set$zIndex(t1, "0");
-        t1 = "#conversation-" + H.stringReplaceAllUnchecked(channelName, " ", "_");
-        J.set$zIndex$x(document.querySelector(t1).style, "1");
+        t2 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
+        t2.set$zIndex(t2, "0");
+        t2 = "#conversation-" + H.stringReplaceAllUnchecked(channelName, " ", "_");
+        J.set$zIndex$x(document.querySelector(t2).style, "1");
       }
-      if (target.id === "BackFromChat") {
-        t1 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
-        t1.set$zIndex(t1, "0");
+      if (J.get$id$x(t1.target_0) === "BackFromChat") {
+        t2 = W._CssStyleDeclarationSet$(W._FrozenElementList$_wrap(document.querySelectorAll(".Conversation"), null)._elementList);
+        t2.set$zIndex(t2, "0");
         document.querySelector("#ChatScreen").hidden = true;
         document.querySelector("#ChannelSelectorScreen").hidden = false;
       }
-      if (target.id === "BackFromChannelSelector") {
+      if (J.get$id$x(t1.target_0) === "BackFromChannelSelector") {
         document.querySelector("#ChannelSelectorScreen").hidden = true;
         document.querySelector("#MainScreen").hidden = false;
         B.resize();
       }
-      t1 = target.id;
-      if (t1 === "ChatBubble" || t1 === "ChatBubbleText") {
+      t2 = J.get$id$x(t1.target_0);
+      if (t2 === "ChatBubble" || t2 === "ChatBubbleText") {
         if (J.get$display$x(document.querySelector("#ChatBubbleDisconnect").style) === "inline-block")
           return;
         document.querySelector("#ChannelSelectorScreen").hidden = false;
         document.querySelector("#MainScreen").hidden = true;
       }
-      if (target.id === "SendButton") {
+      if (J.get$id$x(t1.target_0) === "SendButton") {
         channelName = document.querySelector("#ChatChannelTitle").textContent;
         input = H.interceptedTypeCast(document.querySelector("#MobileChatInput"), "$isTextInputElement");
         if (J.trim$0$s(J.get$value$x(input)).length === 0)
@@ -5219,7 +5508,7 @@ var $$ = {};
         $.get$chat().tabContentMap.$index(0, channelName).parseInput$1(input.value);
         input.value = "";
       }
-      if (target.id === "InventoryTitle") {
+      if (J.get$id$x(t1.target_0) === "InventoryTitle") {
         drawer = document.querySelector("#InventoryDrawer");
         t1 = J.get$bottom$x(drawer.style);
         t2 = drawer.style;
@@ -5306,10 +5595,32 @@ var $$ = {};
       this.rightKey = false;
       this.upKey = false;
       this.downKey = false;
-      this.spaceKey = false;
+      this.jumpKey = false;
     }
   },
   Input_init_closure: {
+    "^": "Closure:32;this_0",
+    call$2: function(action, keyCode) {
+      var t1, key, t2;
+      t1 = this.this_0;
+      if ($.get$localStorage().getItem(action) != null) {
+        t1 = t1.keys;
+        t1.$indexSet(0, action, H.Primitives_parseInt($.get$localStorage().getItem(action), null, null));
+      } else {
+        t1 = t1.keys;
+        $.get$localStorage().setItem(action, J.toString$0(t1.$index(0, action)));
+      }
+      key = B.fromKeyCode(t1.$index(0, action));
+      if (key === "") {
+        t2 = "#" + H.S(action);
+        document.querySelector(t2).textContent = P.String_String$fromCharCode(t1.$index(0, action));
+      } else {
+        t1 = "#" + H.S(action);
+        document.querySelector(t1).textContent = key;
+      }
+    }
+  },
+  Input_init_closure0: {
     "^": "Closure:3;",
     call$1: function(_) {
       var t1;
@@ -5328,68 +5639,158 @@ var $$ = {};
       }
     }
   },
-  Input_init_closure0: {
-    "^": "Closure:3;volumeSlider_0",
-    call$1: function(_) {
-      B.setVolume(J.get$value$x(this.volumeSlider_0), false);
-    }
-  },
   Input_init_closure1: {
-    "^": "Closure:3;this_1",
+    "^": "Closure:3;volumeSlider_1",
     call$1: function(_) {
-      this.this_1.ignoreKeys = true;
+      B.setVolume(J.get$value$x(this.volumeSlider_1), false);
     }
   },
   Input_init_closure2: {
     "^": "Closure:3;this_2",
     call$1: function(_) {
-      this.this_2.ignoreKeys = false;
+      this.this_2.ignoreKeys = true;
     }
   },
   Input_init_closure3: {
-    "^": "Closure:28;this_3",
-    call$1: function(k) {
-      var t1;
-      if ((J.get$keyCode$x(k) === 38 || k.keyCode === 87) && !this.this_3.ignoreKeys)
-        this.this_3.upKey = true;
-      t1 = k.keyCode;
-      if ((t1 === 40 || t1 === 83) && !this.this_3.ignoreKeys)
-        this.this_3.downKey = true;
-      t1 = k.keyCode;
-      if ((t1 === 37 || t1 === 65) && !this.this_3.ignoreKeys)
-        this.this_3.leftKey = true;
-      t1 = k.keyCode;
-      if ((t1 === 39 || t1 === 68) && !this.this_3.ignoreKeys)
-        this.this_3.rightKey = true;
-      if (k.keyCode === 32 && !this.this_3.ignoreKeys)
-        this.this_3.spaceKey = true;
+    "^": "Closure:3;this_3",
+    call$1: function(_) {
+      this.this_3.ignoreKeys = false;
     }
   },
   Input_init_closure4: {
-    "^": "Closure:28;this_4",
+    "^": "Closure:29;this_4",
     call$1: function(k) {
-      var t1;
-      if ((J.get$keyCode$x(k) === 38 || k.keyCode === 87) && !this.this_4.ignoreKeys)
-        this.this_4.upKey = false;
-      t1 = k.keyCode;
-      if ((t1 === 40 || t1 === 83) && !this.this_4.ignoreKeys)
-        this.this_4.downKey = false;
-      t1 = k.keyCode;
-      if ((t1 === 37 || t1 === 65) && !this.this_4.ignoreKeys)
-        this.this_4.leftKey = false;
-      t1 = k.keyCode;
-      if ((t1 === 39 || t1 === 68) && !this.this_4.ignoreKeys)
-        this.this_4.rightKey = false;
-      if (k.keyCode === 32 && !this.this_4.ignoreKeys)
-        this.this_4.spaceKey = false;
+      var t1, t2, t3, t4, t5;
+      t1 = J.getInterceptor$x(k);
+      t2 = t1.get$keyCode(k);
+      t3 = this.this_4;
+      t4 = t3.keys;
+      t5 = t4.$index(0, "UpBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "UpBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.upKey = true;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "DownBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "DownBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.downKey = true;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "LeftBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "LeftBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.leftKey = true;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "RightBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "RightBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.rightKey = true;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "JumpBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t1 = t1.get$keyCode(k);
+        t4 = t4.$index(0, "JumpBindingAlt");
+        t4 = t1 == null ? t4 == null : t1 === t4;
+        t1 = t4;
+      } else
+        t1 = true;
+      if (t1 && !t3.ignoreKeys)
+        t3.jumpKey = true;
     }
   },
   Input_init_closure5: {
-    "^": "Closure:3;this_5,joystick_6",
+    "^": "Closure:29;this_5",
+    call$1: function(k) {
+      var t1, t2, t3, t4, t5;
+      t1 = J.getInterceptor$x(k);
+      t2 = t1.get$keyCode(k);
+      t3 = this.this_5;
+      t4 = t3.keys;
+      t5 = t4.$index(0, "UpBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "UpBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.upKey = false;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "DownBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "DownBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.downKey = false;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "LeftBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "LeftBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.leftKey = false;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "RightBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t2 = t1.get$keyCode(k);
+        t5 = t4.$index(0, "RightBindingAlt");
+        t5 = t2 == null ? t5 == null : t2 === t5;
+        t2 = t5;
+      } else
+        t2 = true;
+      if (t2 && !t3.ignoreKeys)
+        t3.rightKey = false;
+      t2 = t1.get$keyCode(k);
+      t5 = t4.$index(0, "JumpBindingPrimary");
+      if (t2 == null ? t5 != null : t2 !== t5) {
+        t1 = t1.get$keyCode(k);
+        t4 = t4.$index(0, "JumpBindingAlt");
+        t4 = t1 == null ? t4 == null : t1 === t4;
+        t1 = t4;
+      } else
+        t1 = true;
+      if (t1 && !t3.ignoreKeys)
+        t3.jumpKey = false;
+    }
+  },
+  Input_init_closure6: {
+    "^": "Closure:3;this_6,joystick_7",
     call$1: function(_) {
       var t1, t2;
-      t1 = this.joystick_6;
-      t2 = this.this_5;
+      t1 = this.joystick_7;
+      t2 = this.this_6;
       if (t1.UP)
         t2.upKey = true;
       else
@@ -5408,18 +5809,18 @@ var $$ = {};
         t2.rightKey = false;
     }
   },
-  Input_init_closure6: {
-    "^": "Closure:3;this_7",
+  Input_init_closure7: {
+    "^": "Closure:3;this_8",
     call$1: function(_) {
-      var t1 = this.this_7;
+      var t1 = this.this_8;
       t1.upKey = false;
       t1.downKey = false;
       t1.rightKey = false;
       t1.leftKey = false;
     }
   },
-  Input_init_closure7: {
-    "^": "Closure:31;this_8",
+  Input_init_closure8: {
+    "^": "Closure:33;this_9",
     call$1: function($event) {
       var t1, target, t2;
       t1 = J.getInterceptor$x($event);
@@ -5427,38 +5828,38 @@ var $$ = {};
       t2 = J.getInterceptor$x(target);
       if (t2.get$id(target) === "AButton") {
         t1.preventDefault$0($event);
-        this.this_8.spaceKey = true;
+        this.this_9.jumpKey = true;
       }
       if (t2.get$id(target) === "BButton")
         t1.preventDefault$0($event);
     }
   },
-  Input_init_closure8: {
-    "^": "Closure:31;this_9",
+  Input_init_closure9: {
+    "^": "Closure:33;this_10",
     call$1: function($event) {
       var target, t1;
       target = J.get$target$x($event);
       t1 = J.getInterceptor$x(target);
       if (t1.get$id(target) === "AButton")
-        this.this_9.spaceKey = false;
+        this.this_10.jumpKey = false;
       if (t1.get$id(target) === "BButton")
         ;
     }
   },
-  Input_init_closure9: {
-    "^": "Closure:32;this_10",
-    call$1: function($event) {
-      return this.this_10.clickOrTouch$2($event, null);
-    }
-  },
   Input_init_closure10: {
-    "^": "Closure:31;this_11",
+    "^": "Closure:34;this_11",
     call$1: function($event) {
-      return this.this_11.clickOrTouch$2(null, $event);
+      return this.this_11.clickOrTouch$2($event, null);
     }
   },
   Input_init_closure11: {
-    "^": "Closure:29;",
+    "^": "Closure:33;this_12",
+    call$1: function($event) {
+      return this.this_12.clickOrTouch$2(null, $event);
+    }
+  },
+  Input_init_closure12: {
+    "^": "Closure:30;",
     call$1: function($event) {
       var street, t1, label, tsid, map;
       street = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
@@ -5478,17 +5879,50 @@ var $$ = {};
       B.Street$(label).load$0(0);
     }
   },
-  Input_init_closure12: {
-    "^": "Closure:3;this_12",
+  Input_init_closure13: {
+    "^": "Closure:3;this_13",
     call$1: function(e) {
-      return this.this_12.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
+      return this.this_13.showClickMenu$4(e, "Testing Right Click", "this is a demo", []);
     }
   },
   Input_clickOrTouch_closure: {
-    "^": "Closure:33;this_0",
+    "^": "Closure:35;this_1",
     call$1: function(timer) {
       timer.cancel$0();
-      this.this_0.touched = false;
+      this.this_1.touched = false;
+    }
+  },
+  Input_clickOrTouch_closure0: {
+    "^": "Closure:29;box_0",
+    call$1: function($event) {
+      var t1, key, t2;
+      t1 = J.getInterceptor$x($event);
+      key = B.fromKeyCode(t1.get$keyCode($event));
+      t2 = this.box_0;
+      if (key === "") {
+        t1 = document.body;
+        t1.toString;
+        t1 = C.EventStreamProvider_keypress.forElement$1(t1);
+        t1.get$first(t1).then$1(new B.Input_clickOrTouch__closure(t2));
+      } else {
+        J.set$text$x(t2.target_0, key);
+        $.playerInput.keys.$indexSet(0, J.get$id$x(t2.target_0), t1.get$keyCode($event));
+        $.get$localStorage().setItem(J.get$id$x(t2.target_0), J.toString$0(t1.get$keyCode($event)));
+      }
+    }
+  },
+  Input_clickOrTouch__closure: {
+    "^": "Closure:29;box_0",
+    call$1: function($event) {
+      var keyEvent, t1, t2;
+      keyEvent = new W.KeyEvent(null, null, null, null, null, $event, null);
+      keyEvent.KeyEvent$wrap$1($event);
+      t1 = this.box_0;
+      t2 = t1.target_0;
+      J.set$text$x(t2, P.String_String$fromCharCode(J.get$type$x($event) === "keypress" ? keyEvent._shadowCharCode : 0));
+      t2 = J.getInterceptor$x($event);
+      $.playerInput.keys.$indexSet(0, J.get$id$x(t1.target_0), t2.get$keyCode($event));
+      $.get$localStorage().setItem(J.get$id$x(t1.target_0), J.toString$0(t2.get$keyCode($event)));
     }
   },
   Input_showClickMenu_closure: {
@@ -5523,7 +5957,7 @@ var $$ = {};
       }}
   },
   Joystick_closure: {
-    "^": "Closure:31;this_0",
+    "^": "Closure:33;this_0",
     call$1: function($event) {
       var t1, t2, t3;
       t1 = J.getInterceptor$x($event);
@@ -5543,7 +5977,7 @@ var $$ = {};
     }
   },
   Joystick_closure0: {
-    "^": "Closure:31;this_1",
+    "^": "Closure:33;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, x, y, angle, yOnCircle, xOnCircle;
       t1 = J.getInterceptor$x($event);
@@ -5641,7 +6075,7 @@ var $$ = {};
     }
   },
   Joystick_closure1: {
-    "^": "Closure:31;this_2",
+    "^": "Closure:33;this_2",
     call$1: function($event) {
       var t1, t2;
       J.preventDefault$0$x($event);
@@ -5663,7 +6097,7 @@ var $$ = {};
     "^": "Object;"
   },
   loop_closure: {
-    "^": "Closure:34;",
+    "^": "Closure:36;",
     call$2: function(username, otherPlayer) {
       var x, transform, t1, t2;
       x = otherPlayer.get$posX();
@@ -5687,7 +6121,7 @@ var $$ = {};
     }
   },
   _setupPlayerSocket_closure: {
-    "^": "Closure:29;",
+    "^": "Closure:30;",
     call$1: function($event) {
       var map, t1;
       map = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
@@ -5735,7 +6169,7 @@ var $$ = {};
       }}
   },
   TouchScroller_closure: {
-    "^": "Closure:31;this_0",
+    "^": "Closure:33;this_0",
     call$1: function($event) {
       var t1, t2;
       t1 = J.getInterceptor$x($event);
@@ -5751,7 +6185,7 @@ var $$ = {};
     }
   },
   TouchScroller_closure0: {
-    "^": "Closure:31;this_1",
+    "^": "Closure:33;this_1",
     call$1: function($event) {
       var t1, t2, t3, t4, t5, t6, t7, t8;
       t1 = J.getInterceptor$x($event);
@@ -5946,7 +6380,7 @@ var $$ = {};
       }}
   },
   Player_loadAnimations_closure: {
-    "^": "Closure:35;futures_0",
+    "^": "Closure:37;futures_0",
     call$2: function($name, animation) {
       return this.futures_0.push(J.load$0$x(animation));
     }
@@ -5974,7 +6408,7 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]: " + H.S(error));
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 36]
+    }, "call$1", "get$setCamera", 2, 0, 38]
   },
   Street: {
     "^": "Object;label,_data,exits,bounds",
@@ -6162,7 +6596,7 @@ var $$ = {};
     }
   },
   Street_load__closure: {
-    "^": "Closure:37;filters_2",
+    "^": "Closure:32;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
       t1 = J.getInterceptor(filterName);
@@ -6208,14 +6642,14 @@ var $$ = {};
     }
   },
   Street_load__closure0: {
-    "^": "Closure:38;this_3",
+    "^": "Closure:39;this_3",
     call$1: function(exit) {
       var t1 = J.getInterceptor$asx(exit);
       this.this_3.exits.$indexSet(0, t1.$index(exit, "label"), t1.$index(exit, "tsid"));
     }
   },
   Street_load__closure1: {
-    "^": "Closure:39;exitsElement_4",
+    "^": "Closure:40;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
       tsid = J.replaceFirst$2$s(tsid, "L", "G");
@@ -6228,7 +6662,7 @@ var $$ = {};
     }
   },
   Street_render_closure: {
-    "^": "Closure:40;",
+    "^": "Closure:41;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -6236,7 +6670,7 @@ var $$ = {};
     }
   },
   load_streets_closure: {
-    "^": "Closure:41;c_0",
+    "^": "Closure:24;c_0",
     call$1: function(streetList) {
       var toLoad, t1, t2;
       toLoad = [];
@@ -6344,6 +6778,16 @@ var $$ = {};
           throw H.wrapException(P.ConcurrentModificationError$(this));
       }
       return false;
+    },
+    fold$2: function(_, initialValue, combine) {
+      var $length, value, i;
+      $length = this.get$length(this);
+      for (value = initialValue, i = 0; i < $length; ++i) {
+        value = combine.call$2(value, this.elementAt$1(0, i));
+        if ($length !== this.get$length(this))
+          throw H.wrapException(P.ConcurrentModificationError$(this));
+      }
+      return value;
     },
     $isEfficientLength: true
   },
@@ -7571,6 +8015,8 @@ var $$ = {};
       var t1, future;
       t1 = {};
       t1.index_0 = index;
+      if (typeof index !== "number" || Math.floor(index) !== index || index < 0)
+        throw H.wrapException(new P.ArgumentError(index));
       future = P._Future$(H.getRuntimeTypeArgument(this, "Stream", 0));
       t1.subscription_1 = null;
       t1.subscription_1 = this.listen$4$cancelOnError$onDone$onError(new P.Stream_elementAt_closure(t1, this, future), true, new P.Stream_elementAt_closure0(t1, future), future.get$_completeError());
@@ -7702,7 +8148,7 @@ var $$ = {};
   Stream_elementAt_closure0: {
     "^": "Closure:6;box_0,future_3",
     call$0: function() {
-      this.future_3._completeError$1(new P.RangeError("value " + this.box_0.index_0));
+      this.future_3._completeError$1(new P.RangeError("value " + H.S(this.box_0.index_0)));
     }
   },
   StreamSubscription: {
@@ -8420,6 +8866,9 @@ var $$ = {};
   },
   _RootZone: {
     "^": "_BaseZone;",
+    get$parent: function(_) {
+      return;
+    },
     $index: function(_, key) {
       return;
     },
@@ -9718,7 +10167,7 @@ var $$ = {};
     },
     elementAt$1: function(_, index) {
       var t1, remaining, element;
-      if (index < 0)
+      if (typeof index !== "number" || Math.floor(index) !== index || index < 0)
         throw H.wrapException(P.RangeError$value(index));
       for (t1 = this.get$iterator(this), remaining = index; t1.moveNext$0();) {
         element = t1.get$current();
@@ -9895,12 +10344,12 @@ var $$ = {};
     },
     elementAt$1: function(_, index) {
       var t1, t2, t3;
-      if (index > this.get$length(this))
+      if (index < 0 || index > this.get$length(this))
         throw H.wrapException(P.RangeError$range(index, 0, this.get$length(this)));
       t1 = this._table;
       t2 = t1.length;
       t3 = (this._head + index & t2 - 1) >>> 0;
-      if (t3 >= t2)
+      if (t3 < 0 || t3 >= t2)
         return H.ioore(t1, t3);
       return t1[t3];
     },
@@ -10373,7 +10822,7 @@ var $$ = {};
   List_List$filled: function($length, fill, $E) {
     var result, t1, i;
     result = J.JSArray_JSArray$fixed($length, $E);
-    if ($length !== 0 && true)
+    if ($length !== 0 && fill != null)
       for (t1 = result.length, i = 0; i < t1; ++i)
         result[i] = fill;
     return result;
@@ -10405,6 +10854,9 @@ var $$ = {};
   }, "call$1", "print$closure", 2, 0, 18],
   String_String$fromCharCodes: function(charCodes) {
     return H.Primitives_stringFromCharCodes(charCodes);
+  },
+  String_String$fromCharCode: function(charCode) {
+    return P.String_String$fromCharCodes(P.List_List$filled(1, charCode, J.JSInt));
   },
   NoSuchMethodError_toString_closure: {
     "^": "Closure:50;box_0",
@@ -10906,6 +11358,11 @@ var $$ = {};
     }
 
   },
+  _convertNativeToDart_Window: function(win) {
+    if (win == null)
+      return;
+    return W._DOMWindowCrossFrame__createSafe(win);
+  },
   _convertNativeToDart_EventTarget: function(e) {
     var $window, t1;
     if (e == null)
@@ -10932,7 +11389,7 @@ var $$ = {};
     "%": "HTMLAppletElement|HTMLBRElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLFontElement|HTMLFrameElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMenuElement|HTMLModElement|HTMLOptGroupElement|HTMLParagraphElement|HTMLPreElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLUListElement|HTMLUnknownElement;HTMLElement"
   },
   AnchorElement: {
-    "^": "HtmlElement;target=,type},hostname=,href},port=,protocol=",
+    "^": "HtmlElement;target=,type%,hostname=,href},port=,protocol=",
     toString$0: function(receiver) {
       return receiver.toString();
     },
@@ -10957,6 +11414,10 @@ var $$ = {};
     "^": "Event;",
     "%": "BeforeUnloadEvent"
   },
+  Blob: {
+    "^": "Interceptor;type=",
+    "%": "Blob|File"
+  },
   BodyElement: {
     "^": "HtmlElement;",
     get$onError: function(receiver) {
@@ -10970,7 +11431,7 @@ var $$ = {};
     "%": "HTMLBodyElement"
   },
   ButtonElement: {
-    "^": "HtmlElement;name%,type},value%",
+    "^": "HtmlElement;name%,type%,value%",
     "%": "HTMLButtonElement"
   },
   CanvasElement: {
@@ -11169,7 +11630,7 @@ var $$ = {};
     "%": ";Element"
   },
   EmbedElement: {
-    "^": "HtmlElement;height=,name%,src},type},width=",
+    "^": "HtmlElement;height=,name%,src},type%,width=",
     "%": "HTMLEmbedElement"
   },
   ErrorEvent: {
@@ -11177,7 +11638,10 @@ var $$ = {};
     "%": "ErrorEvent"
   },
   Event: {
-    "^": "Interceptor;",
+    "^": "Interceptor;type=",
+    get$currentTarget: function(receiver) {
+      return W._convertNativeToDart_EventTarget(receiver.currentTarget);
+    },
     get$target: function(receiver) {
       return W._convertNativeToDart_EventTarget(receiver.target);
     },
@@ -11202,7 +11666,7 @@ var $$ = {};
     "%": ";EventTarget"
   },
   FieldSetElement: {
-    "^": "HtmlElement;name%",
+    "^": "HtmlElement;name%,type=",
     "%": "HTMLFieldSetElement"
   },
   FormElement: {
@@ -11227,7 +11691,7 @@ var $$ = {};
       throw H.wrapException(P.UnsupportedError$("Cannot resize immutable List."));
     },
     elementAt$1: function(receiver, index) {
-      if (index < 0 || index >= receiver.length)
+      if (index >>> 0 !== index || index >= receiver.length)
         return H.ioore(receiver, index);
       return receiver[index];
     },
@@ -11269,7 +11733,7 @@ var $$ = {};
     "%": "HTMLImageElement"
   },
   InputElement: {
-    "^": "HtmlElement;checked%,height=,name%,src},type},value%,width=",
+    "^": "HtmlElement;checked%,height=,name%,src},type%,value%,width=",
     $isInputElement: true,
     $isElement: true,
     $isEventTarget: true,
@@ -11288,7 +11752,7 @@ var $$ = {};
     "%": "KeyboardEvent"
   },
   KeygenElement: {
-    "^": "HtmlElement;name%",
+    "^": "HtmlElement;name%,type=",
     "%": "HTMLKeygenElement"
   },
   LIElement: {
@@ -11296,7 +11760,7 @@ var $$ = {};
     "%": "HTMLLIElement"
   },
   LinkElement: {
-    "^": "HtmlElement;href},type}",
+    "^": "HtmlElement;href},type%",
     $isLinkElement: true,
     "%": "HTMLLinkElement"
   },
@@ -11375,7 +11839,7 @@ var $$ = {};
     "%": "MIDIOutput"
   },
   MidiPort: {
-    "^": "EventTarget;id=",
+    "^": "EventTarget;id=,type=",
     "%": "MIDIInput;MIDIPort"
   },
   MouseEvent: {
@@ -11384,7 +11848,7 @@ var $$ = {};
     "%": "DragEvent|MSPointerEvent|MouseEvent|MouseScrollEvent|MouseWheelEvent|PointerEvent|WheelEvent"
   },
   Node: {
-    "^": "EventTarget;",
+    "^": "EventTarget;parent:parentElement=,text:textContent%",
     get$nodes: function(receiver) {
       return new W._ChildNodeListLazy(receiver);
     },
@@ -11441,7 +11905,7 @@ var $$ = {};
       throw H.wrapException(P.UnsupportedError$("Cannot resize immutable List."));
     },
     elementAt$1: function(receiver, index) {
-      if (index < 0 || index >= receiver.length)
+      if (index >>> 0 !== index || index >= receiver.length)
         return H.ioore(receiver, index);
       return receiver[index];
     },
@@ -11454,11 +11918,11 @@ var $$ = {};
     "%": "NodeList|RadioNodeList"
   },
   OListElement: {
-    "^": "HtmlElement;type}",
+    "^": "HtmlElement;type%",
     "%": "HTMLOListElement"
   },
   ObjectElement: {
-    "^": "HtmlElement;data=,height=,name%,type},width=",
+    "^": "HtmlElement;data=,height=,name%,type%,width=",
     "%": "HTMLObjectElement"
   },
   OptionElement: {
@@ -11466,7 +11930,7 @@ var $$ = {};
     "%": "HTMLOptionElement"
   },
   OutputElement: {
-    "^": "HtmlElement;name%,value%",
+    "^": "HtmlElement;name%,type=,value%",
     "%": "HTMLOutputElement"
   },
   ParamElement: {
@@ -11494,11 +11958,11 @@ var $$ = {};
     "%": "Range"
   },
   ScriptElement0: {
-    "^": "HtmlElement;src},type}",
+    "^": "HtmlElement;src},type%",
     "%": "HTMLScriptElement"
   },
   SelectElement: {
-    "^": "HtmlElement;length=,name%,value%",
+    "^": "HtmlElement;length=,name%,type=,value%",
     "%": "HTMLSelectElement"
   },
   ShadowRoot: {
@@ -11509,7 +11973,7 @@ var $$ = {};
     "%": "ShadowRoot"
   },
   SourceElement: {
-    "^": "HtmlElement;src},type}",
+    "^": "HtmlElement;src},type%",
     "%": "HTMLSourceElement"
   },
   SpeechRecognitionError: {
@@ -11561,11 +12025,11 @@ var $$ = {};
     "%": "Storage"
   },
   StyleElement: {
-    "^": "HtmlElement;type}",
+    "^": "HtmlElement;type%",
     "%": "HTMLStyleElement"
   },
   StyleSheet: {
-    "^": "Interceptor;",
+    "^": "Interceptor;type=",
     "%": ";StyleSheet"
   },
   TableElement: {
@@ -11642,7 +12106,7 @@ var $$ = {};
     "%": "HTMLTemplateElement"
   },
   TextAreaElement: {
-    "^": "HtmlElement;name%,value%",
+    "^": "HtmlElement;name%,type=,value%",
     "%": "HTMLTextAreaElement"
   },
   TextEvent: {
@@ -11695,7 +12159,7 @@ var $$ = {};
       throw H.wrapException(new P.StateError("More than one element"));
     },
     elementAt$1: function(receiver, index) {
-      if (index < 0 || index >= receiver.length)
+      if (index >>> 0 !== index || index >= receiver.length)
         return H.ioore(receiver, index);
       return receiver[index];
     },
@@ -11773,6 +12237,9 @@ var $$ = {};
    $this.cancelAnimationFrame = function(id) { clearTimeout(id); }
   })(receiver);
     },
+    get$parent: function(receiver) {
+      return W._convertNativeToDart_Window(receiver.parent);
+    },
     toString$0: function(receiver) {
       return receiver.toString();
     },
@@ -11809,7 +12276,7 @@ var $$ = {};
       throw H.wrapException(P.UnsupportedError$("Cannot resize immutable List."));
     },
     elementAt$1: function(receiver, index) {
-      if (index < 0 || index >= receiver.length)
+      if (index >>> 0 !== index || index >= receiver.length)
         return H.ioore(receiver, index);
       return receiver[index];
     },
@@ -11839,7 +12306,7 @@ var $$ = {};
       throw H.wrapException(P.UnsupportedError$("Cannot resize immutable List."));
     },
     elementAt$1: function(receiver, index) {
-      if (index < 0 || index >= receiver.length)
+      if (index >>> 0 !== index || index >= receiver.length)
         return H.ioore(receiver, index);
       return receiver[index];
     },
@@ -12078,6 +12545,9 @@ var $$ = {};
     },
     set$length: function(_, newLength) {
       throw H.wrapException(P.UnsupportedError$("Cannot modify list"));
+    },
+    get$classes: function(_) {
+      return W._MultiElementCssClassSet$(this._elementList);
     },
     get$style: function(_) {
       return W._CssStyleDeclarationSet$(this._elementList);
@@ -12413,6 +12883,67 @@ var $$ = {};
     },
     _matches$1: function(node) {
       return node.namespaceURI == null;
+    }
+  },
+  _MultiElementCssClassSet: {
+    "^": "CssClassSetImpl;_elementIterable,_elementCssClassSetIterable",
+    readClasses$0: function() {
+      var s = P.LinkedHashSet_LinkedHashSet(null, null, null, J.JSString);
+      this._elementCssClassSetIterable.forEach$1(0, new W._MultiElementCssClassSet_readClasses_closure(s));
+      return s;
+    },
+    writeClasses$1: function(s) {
+      var classes, t1;
+      classes = C.JSArray_methods.join$1(P.List_List$from(s, true, null), " ");
+      for (t1 = this._elementIterable, t1 = new H.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();)
+        J.set$className$x(t1._current, classes);
+    },
+    modify$1: function(f) {
+      this._elementCssClassSetIterable.forEach$1(0, new W._MultiElementCssClassSet_modify_closure(f));
+    },
+    remove$1: function(_, value) {
+      return this._modifyWithReturnValue$1(new W._MultiElementCssClassSet_remove_closure(value));
+    },
+    _modifyWithReturnValue$1: function(f) {
+      return this._elementCssClassSetIterable.fold$2(0, false, new W._MultiElementCssClassSet__modifyWithReturnValue_closure(f));
+    },
+    _MultiElementCssClassSet$1: function(_elementIterable) {
+      this._elementCssClassSetIterable = H.setRuntimeTypeInfo(new H.MappedListIterable(P.List_List$from(this._elementIterable, true, null), new W._MultiElementCssClassSet_closure()), [null, null]);
+    },
+    static: {_MultiElementCssClassSet$: function(_elementIterable) {
+        var t1 = new W._MultiElementCssClassSet(_elementIterable, null);
+        t1._MultiElementCssClassSet$1(_elementIterable);
+        return t1;
+      }}
+  },
+  _MultiElementCssClassSet_closure: {
+    "^": "Closure:3;",
+    call$1: function(e) {
+      return new W._ElementCssClassSet(e);
+    }
+  },
+  _MultiElementCssClassSet_readClasses_closure: {
+    "^": "Closure:3;s_0",
+    call$1: function(e) {
+      return this.s_0.addAll$1(0, e.readClasses$0());
+    }
+  },
+  _MultiElementCssClassSet_modify_closure: {
+    "^": "Closure:3;f_0",
+    call$1: function(e) {
+      return e.modify$1(this.f_0);
+    }
+  },
+  _MultiElementCssClassSet_remove_closure: {
+    "^": "Closure:3;value_0",
+    call$1: function(e) {
+      return J.remove$1$ax(e, this.value_0);
+    }
+  },
+  _MultiElementCssClassSet__modifyWithReturnValue_closure: {
+    "^": "Closure:21;f_0",
+    call$2: function(prevValue, element) {
+      return this.f_0.call$1(element) === true || prevValue === true;
     }
   },
   _ElementCssClassSet: {
@@ -12792,8 +13323,14 @@ var $$ = {};
   },
   _WrappedEvent: {
     "^": "Object;",
+    get$currentTarget: function(_) {
+      return J.get$currentTarget$x(this.wrapped);
+    },
     get$target: function(_) {
       return J.get$target$x(this.wrapped);
+    },
+    get$type: function(_) {
+      return J.get$type$x(this.wrapped);
     },
     preventDefault$0: function(_) {
       J.preventDefault$0$x(this.wrapped);
@@ -12824,6 +13361,9 @@ var $$ = {};
   },
   _DOMWindowCrossFrame: {
     "^": "Object;_window",
+    get$parent: function(_) {
+      return W._DOMWindowCrossFrame__createSafe(this._window.parent);
+    },
     addEventListener$3: function(_, type, listener, useCapture) {
       return H.throwExpression(P.UnimplementedError$(null));
     },
@@ -12837,6 +13377,28 @@ var $$ = {};
         else
           return new W._DOMWindowCrossFrame(w);
       }}
+  },
+  KeyEvent: {
+    "^": "_WrappedEvent;_parent,_shadowAltKey,_shadowCharCode,_shadowKeyCode,_currentTarget,wrapped,_selector",
+    get$keyCode: function(_) {
+      return this._shadowKeyCode;
+    },
+    get$currentTarget: function(_) {
+      return this._currentTarget;
+    },
+    get$page: function(_) {
+      return J.get$page$x(this._parent);
+    },
+    KeyEvent$wrap$1: function($parent) {
+      this._parent = $parent;
+      this._shadowAltKey = $parent.altKey;
+      this._shadowCharCode = $parent.charCode;
+      this._shadowKeyCode = $parent.keyCode;
+      this._currentTarget = J.get$currentTarget$x($parent);
+    },
+    $isKeyboardEvent: true,
+    $isEvent: true,
+    static: {"^": "KeyEvent__keyboardEventDispatchRecord,KeyEvent_keyDownEvent,KeyEvent_keyUpEvent,KeyEvent_keyPressEvent"}
   },
   _LocationWrapper: {
     "^": "Object;_ptr",
@@ -12975,7 +13537,7 @@ var $$ = {};
     "%": "SVGFEBlendElement"
   },
   FEColorMatrixElement: {
-    "^": "SvgElement;values=,height=,width=,x=,y=",
+    "^": "SvgElement;type=,values=,height=,width=,x=,y=",
     "%": "SVGFEColorMatrixElement"
   },
   FEComponentTransferElement: {
@@ -13039,7 +13601,7 @@ var $$ = {};
     "%": "SVGFETileElement"
   },
   FETurbulenceElement: {
-    "^": "SvgElement;height=,width=,x=,y=",
+    "^": "SvgElement;type=,height=,width=,x=,y=",
     "%": "SVGFETurbulenceElement"
   },
   FilterElement: {
@@ -13075,12 +13637,12 @@ var $$ = {};
     "%": "SVGRectElement"
   },
   ScriptElement: {
-    "^": "SvgElement;type}",
+    "^": "SvgElement;type%",
     $isScriptElement: true,
     "%": "SVGScriptElement"
   },
   StyleElement0: {
-    "^": "SvgElement;type}",
+    "^": "SvgElement;type%",
     "%": "SVGStyleElement"
   },
   SvgElement: {
@@ -14866,7 +15428,7 @@ var $$ = {};
     }
   },
   Asset_load_closure3: {
-    "^": "Closure:24;this_7,c_8",
+    "^": "Closure:25;this_7,c_8",
     call$1: function(err) {
       var t1;
       P.print("Error in loading Audio : " + H.S(this.this_7._uri));
@@ -15267,6 +15829,9 @@ J.createFragment$3$treeSanitizer$validator$x = function(receiver, a0, a1, a2) {
 J.elementAt$1$ax = function(receiver, a0) {
   return J.getInterceptor$ax(receiver).elementAt$1(receiver, a0);
 };
+J.endsWith$1$s = function(receiver, a0) {
+  return J.getInterceptor$s(receiver).endsWith$1(receiver, a0);
+};
 J.forEach$1$ax = function(receiver, a0) {
   return J.getInterceptor$ax(receiver).forEach$1(receiver, a0);
 };
@@ -15275,6 +15840,9 @@ J.get$_key$x = function(receiver) {
 };
 J.get$animationName$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$animationName(receiver);
+};
+J.get$attributes$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$attributes(receiver);
 };
 J.get$backgroundImage$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$backgroundImage(receiver);
@@ -15296,6 +15864,9 @@ J.get$classes$x = function(receiver) {
 };
 J.get$content$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$content(receiver);
+};
+J.get$currentTarget$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$currentTarget(receiver);
 };
 J.get$data$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$data(receiver);
@@ -15357,6 +15928,12 @@ J.get$onKeyUp$x = function(receiver) {
 J.get$onLoad$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$onLoad(receiver);
 };
+J.get$page$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$page(receiver);
+};
+J.get$parent$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$parent(receiver);
+};
 J.get$responseText$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$responseText(receiver);
 };
@@ -15368,6 +15945,9 @@ J.get$style$x = function(receiver) {
 };
 J.get$target$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$target(receiver);
+};
+J.get$type$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$type(receiver);
 };
 J.get$value$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$value(receiver);
@@ -15501,6 +16081,9 @@ J.set$position$x = function(receiver, value) {
 J.set$src$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$src(receiver, value);
 };
+J.set$text$x = function(receiver, value) {
+  return J.getInterceptor$x(receiver).set$text(receiver, value);
+};
 J.set$textAlign$x = function(receiver, value) {
   return J.getInterceptor$x(receiver).set$textAlign(receiver, value);
 };
@@ -15575,6 +16158,7 @@ C.EventStreamProvider_error = new W.EventStreamProvider("error");
 C.EventStreamProvider_error0 = new W.EventStreamProvider("error");
 C.EventStreamProvider_focus = new W.EventStreamProvider("focus");
 C.EventStreamProvider_keydown = new W.EventStreamProvider("keydown");
+C.EventStreamProvider_keypress = new W.EventStreamProvider("keypress");
 C.EventStreamProvider_keyup = new W.EventStreamProvider("keyup");
 C.EventStreamProvider_load = new W.EventStreamProvider("load");
 C.EventStreamProvider_load0 = new W.EventStreamProvider("load");
@@ -15836,6 +16420,7 @@ $.dispatchRecordsForInstanceTags = null;
 $.interceptorsForUncacheableTags = null;
 $.initNativeDispatchFlag = null;
 $.ui_sounds = null;
+$.Chat__EMOTICONS = null;
 $.consolelistener = null;
 $.playerSocket = null;
 $.otherPlayers = null;
@@ -15947,11 +16532,8 @@ Isolate.$lazy($, "prevVolume", "prevVolume", "get$prevVolume", function() {
 Isolate.$lazy($, "isMuted", "isMuted", "get$isMuted", function() {
   return $.get$localStorage().getItem("isMuted");
 });
-Isolate.$lazy($, "_COLORS", "TabContent__COLORS", "get$TabContent__COLORS", function() {
+Isolate.$lazy($, "_COLORS", "Chat__COLORS", "get$Chat__COLORS", function() {
   return ["aqua", "blue", "fuchsia", "gray", "green", "lime", "maroon", "navy", "olive", "orange", "purple", "red", "teal"];
-});
-Isolate.$lazy($, "_EMOTICONS", "TabContent__EMOTICONS", "get$TabContent__EMOTICONS", function() {
-  return ["beryl", "piggy", "guano", "crab"];
 });
 Isolate.$lazy($, "COMMANDS", "COMMANDS", "get$COMMANDS", function() {
   var t1 = H.setRuntimeTypeInfo([], [J.JSArray]);
@@ -16091,6 +16673,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "args2", args: [null, null]},
 {func: "dynamic__dynamic_String", args: [null, J.JSString]},
 {func: "dynamic__Scound", args: [Z.Scound]},
+{func: "dynamic__Asset", args: [E.Asset]},
 {func: "dynamic__Event", args: [W.Event]},
 {func: "dynamic__Element", args: [W.Element]},
 {func: "void___MouseEvent", void: true, opt: [W.MouseEvent]},
@@ -16098,17 +16681,16 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__KeyboardEvent", args: [W.KeyboardEvent]},
 {func: "dynamic__MessageEvent", args: [W.MessageEvent]},
 {func: "dynamic__Match", args: [P.Match]},
+{func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__TouchEvent", args: [W.TouchEvent]},
 {func: "dynamic__MouseEvent", args: [W.MouseEvent]},
 {func: "dynamic__Timer", args: [P.Timer]},
 {func: "dynamic__String_Player", args: [J.JSString, B.Player]},
 {func: "dynamic__String_Animation", args: [J.JSString, B.Animation]},
 {func: "void__String", void: true, args: [J.JSString]},
-{func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__Map", args: [[P.Map, J.JSString, J.JSString]]},
 {func: "dynamic__String_String", args: [J.JSString, J.JSString]},
 {func: "dynamic__String_DivElement", args: [J.JSString, W.DivElement]},
-{func: "dynamic__Asset", args: [E.Asset]},
 {func: "void__Object__StackTrace", void: true, args: [P.Object], opt: [P.StackTrace]},
 {func: "dynamic__Object", args: [P.Object]},
 {func: "dynamic__dynamic__dynamic", args: [null], opt: [null]},
