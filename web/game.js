@@ -3638,7 +3638,7 @@ var $$ = {};
   fromKeyCode: function(keyCode) {
     var t1, keyPressed;
     t1 = J.getInterceptor(keyCode);
-    keyPressed = t1.$eq(keyCode, 8) ? "backspace" : "";
+    keyPressed = t1.$eq(keyCode, 8) ? "backspace" : null;
     if (t1.$eq(keyCode, 9))
       keyPressed = "tab";
     if (t1.$eq(keyCode, 13))
@@ -3677,6 +3677,78 @@ var $$ = {};
       keyPressed = "insert";
     if (t1.$eq(keyCode, 46))
       keyPressed = "delete";
+    if (t1.$eq(keyCode, 48))
+      keyPressed = "0";
+    if (t1.$eq(keyCode, 49))
+      keyPressed = "1";
+    if (t1.$eq(keyCode, 50))
+      keyPressed = "2";
+    if (t1.$eq(keyCode, 51))
+      keyPressed = "3";
+    if (t1.$eq(keyCode, 52))
+      keyPressed = "4";
+    if (t1.$eq(keyCode, 53))
+      keyPressed = "5";
+    if (t1.$eq(keyCode, 54))
+      keyPressed = "6";
+    if (t1.$eq(keyCode, 55))
+      keyPressed = "7";
+    if (t1.$eq(keyCode, 56))
+      keyPressed = "8";
+    if (t1.$eq(keyCode, 57))
+      keyPressed = "9";
+    if (t1.$eq(keyCode, 65))
+      keyPressed = "A";
+    if (t1.$eq(keyCode, 66))
+      keyPressed = "B";
+    if (t1.$eq(keyCode, 67))
+      keyPressed = "C";
+    if (t1.$eq(keyCode, 68))
+      keyPressed = "D";
+    if (t1.$eq(keyCode, 69))
+      keyPressed = "E";
+    if (t1.$eq(keyCode, 70))
+      keyPressed = "F";
+    if (t1.$eq(keyCode, 71))
+      keyPressed = "G";
+    if (t1.$eq(keyCode, 72))
+      keyPressed = "H";
+    if (t1.$eq(keyCode, 73))
+      keyPressed = "I";
+    if (t1.$eq(keyCode, 74))
+      keyPressed = "J";
+    if (t1.$eq(keyCode, 75))
+      keyPressed = "K";
+    if (t1.$eq(keyCode, 76))
+      keyPressed = "L";
+    if (t1.$eq(keyCode, 77))
+      keyPressed = "M";
+    if (t1.$eq(keyCode, 78))
+      keyPressed = "N";
+    if (t1.$eq(keyCode, 79))
+      keyPressed = "O";
+    if (t1.$eq(keyCode, 80))
+      keyPressed = "P";
+    if (t1.$eq(keyCode, 81))
+      keyPressed = "Q";
+    if (t1.$eq(keyCode, 82))
+      keyPressed = "R";
+    if (t1.$eq(keyCode, 83))
+      keyPressed = "S";
+    if (t1.$eq(keyCode, 84))
+      keyPressed = "T";
+    if (t1.$eq(keyCode, 85))
+      keyPressed = "U";
+    if (t1.$eq(keyCode, 86))
+      keyPressed = "V";
+    if (t1.$eq(keyCode, 87))
+      keyPressed = "W";
+    if (t1.$eq(keyCode, 88))
+      keyPressed = "X";
+    if (t1.$eq(keyCode, 89))
+      keyPressed = "Y";
+    if (t1.$eq(keyCode, 90))
+      keyPressed = "Z";
     if (t1.$eq(keyCode, 91))
       keyPressed = "left window";
     if (t1.$eq(keyCode, 92))
@@ -3741,7 +3813,27 @@ var $$ = {};
       keyPressed = "num lock";
     if (t1.$eq(keyCode, 145))
       keyPressed = "scroll lock";
-    return t1.$eq(keyCode, 225) ? "alt" : keyPressed;
+    if (t1.$eq(keyCode, 186))
+      keyPressed = ";";
+    if (t1.$eq(keyCode, 187))
+      keyPressed = "=";
+    if (t1.$eq(keyCode, 188))
+      keyPressed = ",";
+    if (t1.$eq(keyCode, 189))
+      keyPressed = "-";
+    if (t1.$eq(keyCode, 190))
+      keyPressed = ".";
+    if (t1.$eq(keyCode, 191))
+      keyPressed = "/";
+    if (t1.$eq(keyCode, 192))
+      keyPressed = "`";
+    if (t1.$eq(keyCode, 219))
+      keyPressed = "[";
+    if (t1.$eq(keyCode, 220))
+      keyPressed = "\\";
+    if (t1.$eq(keyCode, 221))
+      keyPressed = "]";
+    return t1.$eq(keyCode, 222) ? "'" : keyPressed;
   },
   loop: function(dt) {
     var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
@@ -6630,10 +6722,8 @@ var $$ = {};
     "^": "Closure:34;filters_2",
     call$2: function(filterName, value) {
       var t1, t2;
-      if ($.get$localStorage().getItem("GraphicsBlur") === "true" && J.$eq(filterName, "blur")) {
-        P.print("blurred lines");
+      if ($.get$localStorage().getItem("GraphicsBlur") === "true" && J.$eq(filterName, "blur"))
         this.filters_2.push(C.JSString_methods.$add("blur(", J.toString$0(value)) + "px)");
-      }
       t1 = J.getInterceptor(filterName);
       if (t1.$eq(filterName, "brightness")) {
         t2 = J.getInterceptor$n(value);
