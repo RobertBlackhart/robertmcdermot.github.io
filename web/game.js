@@ -5967,10 +5967,10 @@ var $$ = {};
   Input_setupKeyBindings_closure: {
     "^": "Closure:34;this_0",
     call$2: function(action, keyCode) {
-      var storedValue, t1, key, t2;
-      storedValue = $.get$localStorage().getItem(action).split(".");
+      var t1, storedValue, key, t2;
       t1 = this.this_0;
       if ($.get$localStorage().getItem(action) != null) {
+        storedValue = $.get$localStorage().getItem(action).split(".");
         t1 = t1.keys;
         if (0 >= storedValue.length)
           return H.ioore(storedValue, 0);
@@ -5978,10 +5978,11 @@ var $$ = {};
       } else {
         t1 = t1.keys;
         $.get$localStorage().setItem(action, J.toString$0(t1.$index(0, action)));
+        storedValue = null;
       }
       key = B.fromKeyCode(t1.$index(0, action));
       if (key === "")
-        if (storedValue.length > 1) {
+        if (storedValue != null && storedValue.length > 1) {
           t1 = "#" + H.S(action);
           t1 = document.querySelector(t1);
           if (1 >= storedValue.length)
