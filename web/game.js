@@ -3472,7 +3472,7 @@ var $$ = {};
     intvalue = H.Primitives_parseInt(value, null, null);
     if (intvalue != null) {
       t1 = $.get$ui();
-      t1.currants = intvalue;
+      t1._currants = intvalue;
       t1.currantMeter.textContent = t1.commaFormatter.format$1(0, intvalue);
       $.get$localStorage().setItem("currants", value);
       B.updateConsole("Setting currants to " + H.S(value));
@@ -3483,7 +3483,9 @@ var $$ = {};
     intvalue = H.Primitives_parseInt(value, null, null);
     if (intvalue != null) {
       t1 = $.get$ui();
+      t1._img = intvalue;
       t1.imgMeter.textContent = t1.commaFormatter.format$1(0, intvalue);
+      $.get$localStorage().setItem("img", value);
       B.updateConsole("Setting Img to " + H.S(value));
     }
   }, "call$1", "setImg$closure", 2, 0, 0],
@@ -3640,7 +3642,7 @@ var $$ = {};
   fromKeyCode: function(keyCode) {
     var t1, keyPressed;
     t1 = J.getInterceptor(keyCode);
-    keyPressed = t1.$eq(keyCode, 8) ? "backspace" : null;
+    keyPressed = t1.$eq(keyCode, 8) ? "backspace" : "";
     if (t1.$eq(keyCode, 9))
       keyPressed = "tab";
     if (t1.$eq(keyCode, 13))
@@ -3679,78 +3681,6 @@ var $$ = {};
       keyPressed = "insert";
     if (t1.$eq(keyCode, 46))
       keyPressed = "delete";
-    if (t1.$eq(keyCode, 48))
-      keyPressed = "0";
-    if (t1.$eq(keyCode, 49))
-      keyPressed = "1";
-    if (t1.$eq(keyCode, 50))
-      keyPressed = "2";
-    if (t1.$eq(keyCode, 51))
-      keyPressed = "3";
-    if (t1.$eq(keyCode, 52))
-      keyPressed = "4";
-    if (t1.$eq(keyCode, 53))
-      keyPressed = "5";
-    if (t1.$eq(keyCode, 54))
-      keyPressed = "6";
-    if (t1.$eq(keyCode, 55))
-      keyPressed = "7";
-    if (t1.$eq(keyCode, 56))
-      keyPressed = "8";
-    if (t1.$eq(keyCode, 57))
-      keyPressed = "9";
-    if (t1.$eq(keyCode, 65))
-      keyPressed = "A";
-    if (t1.$eq(keyCode, 66))
-      keyPressed = "B";
-    if (t1.$eq(keyCode, 67))
-      keyPressed = "C";
-    if (t1.$eq(keyCode, 68))
-      keyPressed = "D";
-    if (t1.$eq(keyCode, 69))
-      keyPressed = "E";
-    if (t1.$eq(keyCode, 70))
-      keyPressed = "F";
-    if (t1.$eq(keyCode, 71))
-      keyPressed = "G";
-    if (t1.$eq(keyCode, 72))
-      keyPressed = "H";
-    if (t1.$eq(keyCode, 73))
-      keyPressed = "I";
-    if (t1.$eq(keyCode, 74))
-      keyPressed = "J";
-    if (t1.$eq(keyCode, 75))
-      keyPressed = "K";
-    if (t1.$eq(keyCode, 76))
-      keyPressed = "L";
-    if (t1.$eq(keyCode, 77))
-      keyPressed = "M";
-    if (t1.$eq(keyCode, 78))
-      keyPressed = "N";
-    if (t1.$eq(keyCode, 79))
-      keyPressed = "O";
-    if (t1.$eq(keyCode, 80))
-      keyPressed = "P";
-    if (t1.$eq(keyCode, 81))
-      keyPressed = "Q";
-    if (t1.$eq(keyCode, 82))
-      keyPressed = "R";
-    if (t1.$eq(keyCode, 83))
-      keyPressed = "S";
-    if (t1.$eq(keyCode, 84))
-      keyPressed = "T";
-    if (t1.$eq(keyCode, 85))
-      keyPressed = "U";
-    if (t1.$eq(keyCode, 86))
-      keyPressed = "V";
-    if (t1.$eq(keyCode, 87))
-      keyPressed = "W";
-    if (t1.$eq(keyCode, 88))
-      keyPressed = "X";
-    if (t1.$eq(keyCode, 89))
-      keyPressed = "Y";
-    if (t1.$eq(keyCode, 90))
-      keyPressed = "Z";
     if (t1.$eq(keyCode, 91))
       keyPressed = "left window";
     if (t1.$eq(keyCode, 92))
@@ -3815,27 +3745,7 @@ var $$ = {};
       keyPressed = "num lock";
     if (t1.$eq(keyCode, 145))
       keyPressed = "scroll lock";
-    if (t1.$eq(keyCode, 186))
-      keyPressed = ";";
-    if (t1.$eq(keyCode, 187))
-      keyPressed = "=";
-    if (t1.$eq(keyCode, 188))
-      keyPressed = ",";
-    if (t1.$eq(keyCode, 189))
-      keyPressed = "-";
-    if (t1.$eq(keyCode, 190))
-      keyPressed = ".";
-    if (t1.$eq(keyCode, 191))
-      keyPressed = "/";
-    if (t1.$eq(keyCode, 192))
-      keyPressed = "`";
-    if (t1.$eq(keyCode, 219))
-      keyPressed = "[";
-    if (t1.$eq(keyCode, 220))
-      keyPressed = "\\";
-    if (t1.$eq(keyCode, 221))
-      keyPressed = "]";
-    return t1.$eq(keyCode, 222) ? "'" : keyPressed;
+    return t1.$eq(keyCode, 225) ? "alt" : keyPressed;
   },
   loop: function(dt) {
     var t1, xy, map;
@@ -6044,7 +5954,7 @@ var $$ = {};
   streetSocketSetup_closure0: {
     "^": "Closure:30;",
     call$1: function($event) {
-      var map, styleSheet, keyframes, error, t1, id, exception, element;
+      var map, styleSheet, keyframes, error, t1, id, exception, t2, element, circle, $parent, inner, $content;
       map = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
       if (J.$index$asx(map, "remove") != null) {
         t1 = "#" + H.S(J.$index$asx(map, "remove"));
@@ -6072,17 +5982,40 @@ var $$ = {};
             P.print(error);
           }
 
+          t1 = map;
+          t2 = J.getInterceptor$asx(t1);
+          id = t2.$index(t1, "id");
           element = document.createElement("div", null);
-          J.set$backgroundImage$x(element.style, C.JSString_methods.$add("url(", J.$index$asx(map, "url")) + ")");
+          circle = document.createElement("div", null);
+          circle.id = C.JSString_methods.$add("q", id);
+          circle.className = "circle";
+          J.set$position$x(circle.style, "absolute");
+          J.set$left$x(circle.style, J.$add$ns(J.toString$0(t2.$index(t1, "x")), "px"));
+          J.set$bottom$x(circle.style, J.$add$ns(J.toString$0(t2.$index(t1, "y")), "px"));
+          $parent = document.createElement("div", null);
+          $parent.id = C.JSString_methods.$add("qq", id);
+          $parent.className = "parent";
+          J.set$position$x($parent.style, "absolute");
+          J.set$left$x($parent.style, J.$add$ns(J.toString$0(t2.$index(t1, "x")), "px"));
+          J.set$bottom$x($parent.style, J.$add$ns(J.toString$0(t2.$index(t1, "y")), "px"));
+          inner = document.createElement("div", null);
+          inner.className = "inner";
+          $content = document.createElement("div", null);
+          $content.className = "quoinString";
+          $parent.appendChild(inner);
+          inner.appendChild($content);
+          J.set$backgroundImage$x(element.style, C.JSString_methods.$add("url(", t2.$index(t1, "url")) + ")");
           element.id = id;
-          element.className = J.$index$asx(map, "type");
-          J.set$animation$x(element.style, J.$index$asx(map, "animation"));
+          element.className = J.$add$ns(t2.$index(t1, "type"), " quoin");
+          J.set$animation$x(element.style, t2.$index(t1, "animation"));
           J.set$position$x(element.style, "absolute");
-          J.set$left$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "x")), "px"));
-          J.set$bottom$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "y")), "px"));
-          J.set$width$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "width")), "px"));
-          J.set$height$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "height")), "px"));
+          J.set$left$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "x")), "px"));
+          J.set$bottom$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "y")), "px"));
+          J.set$width$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "width")), "px"));
+          J.set$height$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "height")), "px"));
           document.querySelector("#PlayerHolder").appendChild(element);
+          document.querySelector("#PlayerHolder").appendChild(circle);
+          document.querySelector("#PlayerHolder").appendChild($parent);
         } else {
           t1 = "#" + H.S(id);
           if (J.get$display$x(document.querySelector(t1).style) === "none") {
@@ -6200,7 +6133,7 @@ var $$ = {};
     }
   },
   UserInterface: {
-    "^": "Object;commaFormatter,gameScreenWidth,gameScreenHeight,nameMeter,currantMeter,currants,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent,currLocation,map",
+    "^": "Object;commaFormatter,gameScreenWidth,gameScreenHeight,nameMeter,currantMeter,_currants,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent,_img,currLocation,map",
     init$0: function() {
       C._BeforeUnloadEventStreamProvider_beforeunload.forTarget$1(window).listen$1(new B.UserInterface_init_closure());
       B.resize();
@@ -6210,12 +6143,17 @@ var $$ = {};
       B.setMood("100");
       B.setMaxMood("100");
       if ($.get$localStorage().getItem("currants") != null)
-        this.currants = H.Primitives_parseInt($.get$localStorage().getItem("currants"), null, null);
-      B.setCurrants(J.toString$0(this.currants));
+        this._currants = H.Primitives_parseInt($.get$localStorage().getItem("currants"), null, null);
+      if ($.get$localStorage().getItem("img") != null)
+        this._img = H.Primitives_parseInt($.get$localStorage().getItem("img"), null, null);
+      B.setCurrants(J.toString$0(this._currants));
+      B.setImg(J.toString$0(this._img));
       this.currLocation.textContent = $.currentStreet.label;
     },
     _setEnergy$1: function(newValue) {
       var t1, t2, t3, angle;
+      if (J.$gt$n(newValue, this._maxenergy))
+        return;
       this._energy = newValue;
       t1 = this._currEnergyText;
       J.get$classes$x(t1.parentElement.parentElement).toggle$2("changed", true);
@@ -6243,21 +6181,23 @@ var $$ = {};
     },
     _setMood$1: function(newValue) {
       var t1, t2, t3;
+      t1 = this._maxmood;
+      if (J.$gt$n(newValue, t1))
+        return;
       this._mood = newValue;
-      t1 = this._currMoodText;
-      J.get$classes$x(t1.parentElement).toggle$2("changed", true);
+      t2 = this._currMoodText;
+      J.get$classes$x(t2.parentElement).toggle$2("changed", true);
       P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 1), new B.UserInterface__setMood_closure(this));
-      t1.textContent = J.toString$0(this._mood);
-      t1 = this._mood;
-      t2 = this._maxmood;
-      if (typeof t1 !== "number")
-        return t1.$div();
-      this._moodPercent.textContent = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(100 * (t1 / t2)));
-      t1 = this._moodmeterImageLow.style;
+      t2.textContent = J.toString$0(this._mood);
+      t2 = this._mood;
+      if (typeof t2 !== "number")
+        return t2.$div();
+      this._moodPercent.textContent = C.JSInt_methods.toString$0(C.JSNumber_methods.toInt$0(100 * (t2 / t1)));
+      t2 = this._moodmeterImageLow.style;
       t3 = this._mood;
       if (typeof t3 !== "number")
         return t3.$div();
-      J.set$opacity$x(t1, C.JSDouble_methods.toString$0(0.7 - t3 / t2));
+      J.set$opacity$x(t2, C.JSDouble_methods.toString$0(0.7 - t3 / t1));
       t1 = this._moodmeterImageEmpty;
       if (J.$le$n(this._mood, 0))
         J.set$opacity$x(t1.style, C.JSInt_methods.toString$0(1));
@@ -6532,7 +6472,7 @@ var $$ = {};
       }
       J.set$transform$x(this.playerCanvas.style, transform);
       avatarRect = this.avatar.getBoundingClientRect();
-      t1 = W._FrozenElementList$_wrap(document.querySelectorAll(".currant"), null);
+      t1 = W._FrozenElementList$_wrap(document.querySelectorAll(".quoin"), null);
       t1.forEach$1(t1, new B.Player_update_closure(this, avatarRect));
     },
     Player$1: function($name) {
@@ -6576,7 +6516,7 @@ var $$ = {};
   Player_update_closure: {
     "^": "Closure:26;this_0,avatarRect_1",
     call$1: function(element) {
-      var t1, currant, t2, t3, t4, dropSound, map;
+      var t1, currant, t2, t3, t4, dropSound, amt, quoinText, map;
       t1 = J.getInterceptor$x(element);
       currant = t1.getBoundingClientRect$0(element);
       t2 = $.streetSocket;
@@ -6599,14 +6539,52 @@ var $$ = {};
           J.set$volume$x(dropSound, t2 / 100);
           dropSound.play();
         }
-        J.set$display$x(t1.get$style(element), "none");
-        B.setCurrants(J.toString$0(J.$add$ns(J.$add$ns($.get$ui().currants, this.this_0.rand.nextInt$1(4)), 1)));
+        amt = this.this_0.rand.nextInt$1(4) + 1;
+        t2 = C.JSString_methods.$add("#qq", t1.get$id(element)) + " .quoinString";
+        quoinText = document.querySelector(t2);
+        if (t1.get$classes(element).readClasses$0().contains$1(0, "currant")) {
+          quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + "\u20a1";
+          B.setCurrants(J.toString$0(J.$add$ns($.get$ui()._currants, amt)));
+        }
+        if (t1.get$classes(element).readClasses$0().contains$1(0, "mood")) {
+          quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + " mood";
+          B.setMood(J.toString$0(J.$add$ns($.get$ui()._mood, amt)));
+        }
+        if (t1.get$classes(element).readClasses$0().contains$1(0, "energy")) {
+          quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + " energy";
+          B.setEnergy(J.toString$0(J.$add$ns($.get$ui()._energy, amt)));
+        }
+        if (t1.get$classes(element).readClasses$0().contains$1(0, "img")) {
+          quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + " iMG";
+          B.setImg(J.toString$0(J.$add$ns($.get$ui()._img, amt)));
+        }
+        t1 = C.JSString_methods.$add("#q", element.id);
+        J.get$classes$x(document.querySelector(t1)).add$1(0, "circleExpand");
+        t1 = C.JSString_methods.$add("#qq", element.id);
+        J.get$classes$x(document.querySelector(t1)).add$1(0, "circleExpand");
+        P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 2), new B.Player_update__closure(element));
+        P.Timer_Timer(P.Duration$(0, 0, 0, 800, 0, 0), new B.Player_update__closure0(element));
+        J.set$display$x(element.style, "none");
         map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
         map.$indexSet(0, "remove", element.id);
         map.$indexSet(0, "type", "quoin");
         map.$indexSet(0, "streetName", $.currentStreet.label);
         $.streetSocket.send(C.JsonCodec_null_null.encode$1(map));
       }
+    }
+  },
+  Player_update__closure: {
+    "^": "Closure:6;element_2",
+    call$0: function() {
+      var t1 = C.JSString_methods.$add("#qq", this.element_2.id);
+      return J.get$classes$x(document.querySelector(t1)).remove$1(0, "circleExpand");
+    }
+  },
+  Player_update__closure0: {
+    "^": "Closure:6;element_3",
+    call$0: function() {
+      var t1 = C.JSString_methods.$add("#q", this.element_3.id);
+      return J.get$classes$x(document.querySelector(t1)).remove$1(0, "circleExpand");
     }
   },
   Camera: {
@@ -16880,7 +16858,7 @@ Isolate.$lazy($, "ui", "ui", "get$ui", function() {
   t17 = document.querySelector("#Location");
   t18 = document.querySelector("#MapGlyph");
   J.set$innerHtml$x(t11, C.JSInt_methods.toString$0(100));
-  return new B.UserInterface(t1, null, null, t2, t3, 0, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16, t17, t18);
+  return new B.UserInterface(t1, null, null, t2, t3, 0, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16, 0, t17, t18);
 });
 Isolate.$lazy($, "chat", "chat", "get$chat", function() {
   return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
