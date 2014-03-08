@@ -6115,7 +6115,10 @@ var $$ = {};
           document.querySelector("#PlayerHolder").appendChild(element);
         } else {
           t1 = "#" + H.S(id);
-          J.set$display$x(document.querySelector(t1).style, "block");
+          if (J.get$display$x(document.querySelector(t1).style) === "none") {
+            t1 = "#" + H.S(id);
+            J.set$display$x(document.querySelector(t1).style, "block");
+          }
         }
       }
     }
