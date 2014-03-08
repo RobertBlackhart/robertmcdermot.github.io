@@ -6094,9 +6094,8 @@ var $$ = {};
           styleSheet = H.interceptedTypeCast(t1[0], "$isCssStyleSheet");
           try {
             keyframes = J.$index$asx(map, "keyframes");
-            J.insertRule$2$x(styleSheet, keyframes, 1);
-            P.print("@" + J.substring$1$s(keyframes, 9));
             J.insertRule$2$x(styleSheet, "@" + J.substring$1$s(keyframes, 9), 1);
+            J.insertRule$2$x(styleSheet, keyframes, 1);
           } catch (exception) {
             t1 = H.unwrapException(exception);
             error = t1;
