@@ -3787,6 +3787,7 @@ var $$ = {};
       map.$indexSet(0, "streetName", streetName);
       map.$indexSet(0, "message", "left");
       $.streetSocket.send(C.JsonCodec_null_null.encode$1(map));
+      $.reconnect = false;
       $.streetSocket.close();
     }
     t1 = W.WebSocket_WebSocket($.streetEventServer, null);
@@ -3795,6 +3796,9 @@ var $$ = {};
     t1 = $.streetSocket;
     t1.toString;
     C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B.streetSocketSetup_closure0());
+    t1 = $.streetSocket;
+    t1.toString;
+    C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B.streetSocketSetup_closure1());
   },
   _setupPlayerSocket: function() {
     var t1 = W.WebSocket_WebSocket($.multiplayerServer, null);
@@ -4029,7 +4033,7 @@ var $$ = {};
   Animation_load_closure: {
     "^": "Closure:3;this_0,c_1,temp_2",
     call$1: function(_) {
-      var width, endPos, styleSheet, stillframe, endPos0, styleSheet0, base, styleSheet1, idle, frame32, styleSheet2, jump, t1, t2, height, t3, exception;
+      var width, endPos, styleSheet, stillframe, stillframe0, endPos0, styleSheet0, base, base0, styleSheet1, idle, idle0, frame32, styleSheet2, jump, jump0, t1, t2, height, t3, exception;
       t1 = this.temp_2;
       t2 = J.getInterceptor$x(t1);
       width = t2.get$width(t1);
@@ -4047,8 +4051,13 @@ var $$ = {};
         try {
           stillframe = "@keyframes stillframe { from { background-position: " + J.toString$0(endPos) + "px;} to { background-position: -" + J.toString$0(endPos) + "px;}}";
           J.insertRule$2$x(styleSheet, stillframe, 1);
-          stillframe = "@-webkit-keyframes stillframe { from { background-position: " + J.toString$0(endPos) + "px;} to { background-position: -" + J.toString$0(endPos) + "px;}}";
-          J.insertRule$2$x(styleSheet, stillframe, 1);
+        } catch (exception) {
+          H.unwrapException(exception);
+        }
+
+        try {
+          stillframe0 = "@-webkit-keyframes stillframe { from { background-position: " + J.toString$0(endPos) + "px;} to { background-position: -" + J.toString$0(endPos) + "px;}}";
+          J.insertRule$2$x(styleSheet, stillframe0, 1);
         } catch (exception) {
           H.unwrapException(exception);
         }
@@ -4063,11 +4072,16 @@ var $$ = {};
         if (0 >= t3.length)
           return H.ioore(t3, 0);
         styleSheet0 = H.interceptedTypeCast(t3[0], "$isCssStyleSheet");
-        base = "@keyframes base { from { background-position: 0px;} to { background-position: -" + J.toString$0(endPos0) + "px;}}";
         try {
+          base = "@keyframes base { from { background-position: 0px;} to { background-position: -" + J.toString$0(endPos0) + "px;}}";
           J.insertRule$2$x(styleSheet0, base, 1);
-          base = "@-webkit-keyframes base { from { background-position: 0px;} to { background-position: -" + J.toString$0(endPos0) + "px;}}";
-          J.insertRule$2$x(styleSheet0, base, 1);
+        } catch (exception) {
+          H.unwrapException(exception);
+        }
+
+        try {
+          base0 = "@-webkit-keyframes base { from { background-position: 0px;} to { background-position: -" + J.toString$0(endPos0) + "px;}}";
+          J.insertRule$2$x(styleSheet0, base0, 1);
         } catch (exception) {
           H.unwrapException(exception);
         }
@@ -4083,11 +4097,16 @@ var $$ = {};
         if (0 >= t3.length)
           return H.ioore(t3, 0);
         styleSheet1 = H.interceptedTypeCast(t3[0], "$isCssStyleSheet");
-        idle = "@keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + J.toString$0(width) + "px 0px;}}";
         try {
+          idle = "@keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + J.toString$0(width) + "px 0px;}}";
           J.insertRule$2$x(styleSheet1, idle, 1);
-          idle = "@-webkit-keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + J.toString$0(width) + "px 0px;}}";
-          J.insertRule$2$x(styleSheet1, idle, 1);
+        } catch (exception) {
+          H.unwrapException(exception);
+        }
+
+        try {
+          idle0 = "@-webkit-keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + J.toString$0(width) + "px 0px;}}";
+          J.insertRule$2$x(styleSheet1, idle0, 1);
         } catch (exception) {
           H.unwrapException(exception);
         }
@@ -4103,11 +4122,16 @@ var $$ = {};
         if (0 >= t2.length)
           return H.ioore(t2, 0);
         styleSheet2 = H.interceptedTypeCast(t2[0], "$isCssStyleSheet");
-        jump = " @keyframes jump { from { background-position: 0px;} to { background-position: -" + J.toString$0(frame32) + "px;}}";
         try {
+          jump = " @keyframes jump { from { background-position: 0px;} to { background-position: -" + J.toString$0(frame32) + "px;}}";
           J.insertRule$2$x(styleSheet2, jump, 1);
-          jump = "@-webkit-keyframes jump { from { background-position: 0px;} to { background-position: -" + J.toString$0(frame32) + "px;}}";
-          J.insertRule$2$x(styleSheet2, jump, 1);
+        } catch (exception) {
+          H.unwrapException(exception);
+        }
+
+        try {
+          jump0 = "@-webkit-keyframes jump { from { background-position: 0px;} to { background-position: -" + J.toString$0(frame32) + "px;}}";
+          J.insertRule$2$x(styleSheet2, jump0, 1);
         } catch (exception) {
           H.unwrapException(exception);
         }
@@ -5954,65 +5978,67 @@ var $$ = {};
   streetSocketSetup_closure0: {
     "^": "Closure:30;",
     call$1: function($event) {
-      var map, styleSheet, keyframes, error, t1, id, exception, t2, element, circle, $parent, inner, $content;
+      var styleSheet, keyframes, map, t1, t2, id, exception, element, circle, $parent, inner, $content;
       map = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
-      if (J.$index$asx(map, "remove") != null) {
-        t1 = "#" + H.S(J.$index$asx(map, "remove"));
-        t1 = document.querySelector(t1) != null;
+      t1 = J.getInterceptor$asx(map);
+      if (t1.$index(map, "remove") != null) {
+        t2 = "#" + H.S(t1.$index(map, "remove"));
+        t2 = document.querySelector(t2) != null;
       } else
-        t1 = false;
-      if (t1) {
-        t1 = "#" + H.S(J.$index$asx(map, "remove"));
+        t2 = false;
+      if (t2) {
+        t1 = "#" + H.S(t1.$index(map, "remove"));
         J.set$display$x(document.querySelector(t1).style, "none");
-      } else if (J.$index$asx(map, "remove") == null) {
-        id = J.$index$asx(map, "id");
-        t1 = "#" + H.S(id);
-        if (document.querySelector(t1) == null) {
-          t1 = document.styleSheets;
-          if (0 >= t1.length)
-            return H.ioore(t1, 0);
-          styleSheet = H.interceptedTypeCast(t1[0], "$isCssStyleSheet");
+      } else if (t1.$index(map, "remove") == null) {
+        id = t1.$index(map, "id");
+        t2 = "#" + H.S(id);
+        if (document.querySelector(t2) == null) {
+          t2 = document.styleSheets;
+          if (0 >= t2.length)
+            return H.ioore(t2, 0);
+          styleSheet = H.interceptedTypeCast(t2[0], "$isCssStyleSheet");
+          keyframes = t1.$index(map, "keyframes");
           try {
-            keyframes = J.$index$asx(map, "keyframes");
-            J.insertRule$2$x(styleSheet, "@" + J.substring$1$s(keyframes, 9), 1);
             J.insertRule$2$x(styleSheet, keyframes, 1);
           } catch (exception) {
-            t1 = H.unwrapException(exception);
-            error = t1;
-            P.print(error);
+            H.unwrapException(exception);
           }
 
-          t1 = map;
-          t2 = J.getInterceptor$asx(t1);
-          id = t2.$index(t1, "id");
+          try {
+            J.insertRule$2$x(styleSheet, "@" + J.substring$1$s(keyframes, 9), 1);
+          } catch (exception) {
+            H.unwrapException(exception);
+          }
+
+          id = t1.$index(map, "id");
           element = document.createElement("div", null);
           circle = document.createElement("div", null);
           circle.id = C.JSString_methods.$add("q", id);
           circle.className = "circle";
           J.set$position$x(circle.style, "absolute");
-          J.set$left$x(circle.style, J.$add$ns(J.toString$0(t2.$index(t1, "x")), "px"));
-          J.set$bottom$x(circle.style, J.$add$ns(J.toString$0(t2.$index(t1, "y")), "px"));
+          J.set$left$x(circle.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
+          J.set$bottom$x(circle.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
           $parent = document.createElement("div", null);
           $parent.id = C.JSString_methods.$add("qq", id);
           $parent.className = "parent";
           J.set$position$x($parent.style, "absolute");
-          J.set$left$x($parent.style, J.$add$ns(J.toString$0(t2.$index(t1, "x")), "px"));
-          J.set$bottom$x($parent.style, J.$add$ns(J.toString$0(t2.$index(t1, "y")), "px"));
+          J.set$left$x($parent.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
+          J.set$bottom$x($parent.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
           inner = document.createElement("div", null);
           inner.className = "inner";
           $content = document.createElement("div", null);
           $content.className = "quoinString";
           $parent.appendChild(inner);
           inner.appendChild($content);
-          J.set$backgroundImage$x(element.style, C.JSString_methods.$add("url(", t2.$index(t1, "url")) + ")");
+          J.set$backgroundImage$x(element.style, C.JSString_methods.$add("url(", t1.$index(map, "url")) + ")");
           element.id = id;
-          element.className = J.$add$ns(t2.$index(t1, "type"), " quoin");
-          J.set$animation$x(element.style, t2.$index(t1, "animation"));
+          element.className = J.$add$ns(t1.$index(map, "type"), " quoin");
+          J.set$animation$x(element.style, t1.$index(map, "animation"));
           J.set$position$x(element.style, "absolute");
-          J.set$left$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "x")), "px"));
-          J.set$bottom$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "y")), "px"));
-          J.set$width$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "width")), "px"));
-          J.set$height$x(element.style, J.$add$ns(J.toString$0(t2.$index(t1, "height")), "px"));
+          J.set$left$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
+          J.set$bottom$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
+          J.set$width$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "width")), "px"));
+          J.set$height$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "height")), "px"));
           document.querySelector("#PlayerHolder").appendChild(element);
           document.querySelector("#PlayerHolder").appendChild(circle);
           document.querySelector("#PlayerHolder").appendChild($parent);
@@ -6024,6 +6050,22 @@ var $$ = {};
           }
         }
       }
+    }
+  },
+  streetSocketSetup_closure1: {
+    "^": "Closure:3;",
+    call$1: function(_) {
+      if (!$.reconnect) {
+        $.reconnect = true;
+        return;
+      }
+      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 5), new B.streetSocketSetup__closure());
+    }
+  },
+  streetSocketSetup__closure: {
+    "^": "Closure:6;",
+    call$0: function() {
+      B.streetSocketSetup($.currentStreet.label);
     }
   },
   _setupPlayerSocket_closure: {
@@ -16701,6 +16743,7 @@ $.lastXY = "";
 $.multiplayerServer = "ws://couserver.herokuapp.com/playerUpdate";
 $.streetEventServer = "ws://couserver.herokuapp.com/streetUpdate";
 $.streetSocket = null;
+$.reconnect = true;
 $.showFps = false;
 $.TouchScroller_HORIZONTAL = 0;
 $.TouchScroller_VERTICAL = 1;
