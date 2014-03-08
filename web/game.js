@@ -4119,7 +4119,7 @@ var $$ = {};
   Animation_load_closure: {
     "^": "Closure:3;this_0,c_1,temp_2",
     call$1: function(_) {
-      var styleSheet, stillframe, styleSheet0, base, styleSheet1, idle, styleSheet2, jump, t1, t2, width, height, t3, endPos, exception, frame32;
+      var width, endPos, styleSheet, stillframe, endPos0, styleSheet0, base, styleSheet1, idle, frame32, styleSheet2, jump, t1, t2, height, t3, exception;
       t1 = this.temp_2;
       t2 = J.getInterceptor$x(t1);
       width = t2.get$width(t1);
@@ -4127,25 +4127,17 @@ var $$ = {};
       t1 = this.this_0;
       t2 = t1.animationName;
       if (t2 === "stillframe") {
-        if (typeof width !== "number")
-          return width.$tdiv();
-        t3 = C.JSInt_methods._tdivFast$1(width, 15);
-        t1.width = t3;
+        t1.width = J.$tdiv$n(width, 15);
         t1.height = height;
-        endPos = width - t3;
+        endPos = J.$sub$n(width, J.$tdiv$n(width, 15));
         t3 = document.styleSheets;
         if (0 >= t3.length)
           return H.ioore(t3, 0);
         styleSheet = H.interceptedTypeCast(t3[0], "$isCssStyleSheet");
-        stillframe = "@-webkit-keyframes stillframe { from { background-position: " + C.JSInt_methods.toString$0(endPos) + "px;} to { background-position: -" + C.JSInt_methods.toString$0(endPos) + "px;}}";
         try {
+          stillframe = "@keyframes stillframe { from { background-position: " + J.toString$0(endPos) + "px;} to { background-position: -" + J.toString$0(endPos) + "px;}}";
           J.insertRule$2$x(styleSheet, stillframe, 1);
-        } catch (exception) {
-          H.unwrapException(exception);
-        }
-
-        stillframe = "@keyframes stillframe { from { background-position: " + C.JSInt_methods.toString$0(endPos) + "px;} to { background-position: -" + C.JSInt_methods.toString$0(endPos) + "px;}}";
-        try {
+          stillframe = "@-webkit-keyframes stillframe { from { background-position: " + J.toString$0(endPos) + "px;} to { background-position: -" + J.toString$0(endPos) + "px;}}";
           J.insertRule$2$x(styleSheet, stillframe, 1);
         } catch (exception) {
           H.unwrapException(exception);
@@ -4154,25 +4146,17 @@ var $$ = {};
         t1.animationStyleString = "stillframe .8s steps(1)";
       }
       if (t2 === "base") {
-        if (typeof width !== "number")
-          return width.$tdiv();
-        t3 = C.JSInt_methods._tdivFast$1(width, 15);
-        t1.width = t3;
+        t1.width = J.$tdiv$n(width, 15);
         t1.height = height;
-        endPos = width - t3 * 3;
+        endPos0 = J.$sub$n(width, J.$tdiv$n(width, 15) * 3);
         t3 = document.styleSheets;
         if (0 >= t3.length)
           return H.ioore(t3, 0);
         styleSheet0 = H.interceptedTypeCast(t3[0], "$isCssStyleSheet");
-        base = "@-webkit-keyframes base { from { background-position: 0px;} to { background-position: -" + C.JSInt_methods.toString$0(endPos) + "px;}}";
+        base = "@keyframes base { from { background-position: 0px;} to { background-position: -" + J.toString$0(endPos0) + "px;}}";
         try {
           J.insertRule$2$x(styleSheet0, base, 1);
-        } catch (exception) {
-          H.unwrapException(exception);
-        }
-
-        base = "@keyframes base { from { background-position: 0px;} to { background-position: -" + C.JSInt_methods.toString$0(endPos) + "px;}}";
-        try {
+          base = "@-webkit-keyframes base { from { background-position: 0px;} to { background-position: -" + J.toString$0(endPos0) + "px;}}";
           J.insertRule$2$x(styleSheet0, base, 1);
         } catch (exception) {
           H.unwrapException(exception);
@@ -4181,9 +4165,7 @@ var $$ = {};
         t1.animationStyleString = "base .8s steps(12) infinite";
       }
       if (t2 === "idle") {
-        if (typeof width !== "number")
-          return width.$tdiv();
-        t1.width = C.JSInt_methods._tdivFast$1(width, 29);
+        t1.width = J.$tdiv$n(width, 29);
         if (typeof height !== "number")
           return height.$tdiv();
         t1.height = C.JSInt_methods._tdivFast$1(height, 2);
@@ -4191,15 +4173,10 @@ var $$ = {};
         if (0 >= t3.length)
           return H.ioore(t3, 0);
         styleSheet1 = H.interceptedTypeCast(t3[0], "$isCssStyleSheet");
-        idle = "@-webkit-keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + C.JSInt_methods.toString$0(width) + "px 0px;}}";
+        idle = "@keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + J.toString$0(width) + "px 0px;}}";
         try {
           J.insertRule$2$x(styleSheet1, idle, 1);
-        } catch (exception) {
-          H.unwrapException(exception);
-        }
-
-        idle = "@keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + C.JSInt_methods.toString$0(width) + "px 0px;}}";
-        try {
+          idle = "@-webkit-keyframes idle {0%{background-position: 0px 0px;} 90%{background-position: 0px 0px;} 100%{background-position: -" + J.toString$0(width) + "px 0px;}}";
           J.insertRule$2$x(styleSheet1, idle, 1);
         } catch (exception) {
           H.unwrapException(exception);
@@ -4208,25 +4185,18 @@ var $$ = {};
         t1.animationStyleString = "idle 10s steps(29) infinite";
       }
       if (t2 === "jump") {
-        if (typeof width !== "number")
-          return width.$tdiv();
-        t2 = C.JSInt_methods._tdivFast$1(width, 33);
+        t2 = J.$tdiv$n(width, 33);
         t1.width = t2;
         t1.height = height;
-        frame32 = width - t2;
+        frame32 = J.$sub$n(width, t2);
         t2 = document.styleSheets;
         if (0 >= t2.length)
           return H.ioore(t2, 0);
         styleSheet2 = H.interceptedTypeCast(t2[0], "$isCssStyleSheet");
-        jump = "@-webkit-keyframes jump { from { background-position: 0px;} to { background-position: -" + C.JSInt_methods.toString$0(frame32) + "px;}}";
+        jump = " @keyframes jump { from { background-position: 0px;} to { background-position: -" + J.toString$0(frame32) + "px;}}";
         try {
           J.insertRule$2$x(styleSheet2, jump, 1);
-        } catch (exception) {
-          H.unwrapException(exception);
-        }
-
-        jump = " @keyframes jump { from { background-position: 0px;} to { background-position: -" + C.JSInt_methods.toString$0(frame32) + "px;}}";
-        try {
+          jump = "@-webkit-keyframes jump { from { background-position: 0px;} to { background-position: -" + J.toString$0(frame32) + "px;}}";
           J.insertRule$2$x(styleSheet2, jump, 1);
         } catch (exception) {
           H.unwrapException(exception);
