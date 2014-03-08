@@ -459,7 +459,7 @@ var $$ = {};
       if (typeof index !== "number" || Math.floor(index) !== index)
         throw H.wrapException(new P.ArgumentError(index));
       if (index >= receiver.length || index < 0)
-        throw H.wrapException(new P.RangeError("value " + H.S(index)));
+        throw H.wrapException(P.RangeError$value(index));
       receiver[index] = value;
     },
     $isList: true,
@@ -519,7 +519,7 @@ var $$ = {};
     },
     $add: function(receiver, other) {
       if (typeof other !== "number")
-        throw H.wrapException(new P.ArgumentError(other));
+        throw H.wrapException(P.ArgumentError$(other));
       return receiver + other;
     },
     $sub: function(receiver, other) {
@@ -3358,7 +3358,7 @@ var $$ = {};
   load_audio: function() {
     var c, t1, t2, t3, t4, result;
     c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.mp3", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
+    t1 = new E.Batch([new E.Asset(null, false, "./assets/system/loading.mp3", null), new E.Asset(null, false, "./assets/system/mention.mp3", null), new E.Asset(null, false, "./assets/system/drop.mp3", null), new E.Asset(null, false, "./assets/system/game_loaded.mp3", null)], 0);
     t2 = t1.load$2(0, P.print$closure(), document.querySelector("#LoadStatus2")).then$1(new B.load_audio_closure(c));
     t3 = $.Zone__current;
     t4 = P._registerErrorHandler(new B.load_audio_closure0(c), t3);
@@ -3472,7 +3472,9 @@ var $$ = {};
     intvalue = H.Primitives_parseInt(value, null, null);
     if (intvalue != null) {
       t1 = $.get$ui();
+      t1.currants = intvalue;
       t1.currantMeter.textContent = t1.commaFormatter.format$1(0, intvalue);
+      $.get$localStorage().setItem("currants", value);
       B.updateConsole("Setting currants to " + H.S(value));
     }
   }, "call$1", "setCurrants$closure", 2, 0, 0],
@@ -3836,215 +3838,8 @@ var $$ = {};
     return t1.$eq(keyCode, 222) ? "'" : keyPressed;
   },
   loop: function(dt) {
-    var t1, t2, t3, t4, translateX, camX, translateY, camY, t5, transform, xy, map;
-    t1 = $.CurrentPlayer;
-    t2 = t1.chatBubble;
-    if (t2 != null) {
-      t2 = J.$le$n(t2.timeToLive, 0);
-      t3 = t1.chatBubble;
-      if (t2) {
-        J.remove$0$ax(t3.bubble);
-        t1.chatBubble = null;
-      } else {
-        t3.timeToLive = J.$sub$n(t3.timeToLive, dt);
-        t1.playerCanvas.appendChild(t1.chatBubble.bubble);
-      }
-    }
-    t2 = $.playerInput;
-    if (t2.rightKey) {
-      t1.posX = J.$add$ns(t1.posX, t1.speed * dt);
-      t1.facingRight = true;
-      t1.moving = true;
-    } else if (t2.leftKey) {
-      t1.posX = J.$sub$n(t1.posX, t1.speed * dt);
-      t1.facingRight = false;
-      t1.moving = true;
-    } else
-      t1.moving = false;
-    if ($.playerInput.jumpKey && !t1.jumping) {
-      if (C.C__JSRandom.nextInt$1(4) === 3)
-        t1.yVel = -1200;
-      else
-        t1.yVel = -900;
-      t1.jumping = true;
-    }
-    if (t1.doPhysicsApply) {
-      t2 = t1.yVel - t1.yAccel * dt;
-      t1.yVel = t2;
-      t1.posY = J.$add$ns(t1.posY, t2 * dt);
-    } else {
-      if ($.playerInput.downKey)
-        t1.posY = J.$add$ns(t1.posY, t1.speed * dt);
-      if ($.playerInput.upKey)
-        t1.posY = J.$sub$n(t1.posY, t1.speed * dt);
-    }
-    if (J.$lt$n(t1.posX, 0))
-      t1.posX = 0;
-    t2 = t1.posX;
-    t3 = $.currentStreet.bounds.width;
-    t4 = t1.width;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    if (J.$gt$n(t2, t3 - t4)) {
-      t2 = $.currentStreet.bounds.width;
-      t3 = t1.width;
-      if (typeof t2 !== "number")
-        return t2.$sub();
-      t1.posX = t2 - t3;
-    }
-    t2 = t1.posY;
-    t3 = $.currentStreet.bounds.height;
-    t4 = t1.canvasHeight;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    if (typeof t4 !== "number")
-      return H.iae(t4);
-    if (J.$gt$n(t2, t3 - t4)) {
-      t2 = $.currentStreet.bounds.height;
-      t3 = t1.canvasHeight;
-      if (typeof t2 !== "number")
-        return t2.$sub();
-      if (typeof t3 !== "number")
-        return H.iae(t3);
-      t1.posY = t2 - t3;
-      t1.yVel = 0;
-      t1.jumping = false;
-    }
-    if (J.$lt$n(t1.posY, 0))
-      t1.posY = 0;
-    t2 = t1.moving;
-    if (!t2 && !t1.jumping)
-      t1.currentAnimation = t1.animations.$index(0, "idle");
-    else if (t2 && !t1.jumping)
-      t1.currentAnimation = t1.animations.$index(0, "base");
-    else {
-      t2 = t1.jumping;
-      t3 = t1.animations;
-      if (t2)
-        t1.currentAnimation = t3.$index(0, "jump");
-      else
-        t1.currentAnimation = t3.$index(0, "stillframe");
-    }
-    if (!J.contains$1$asx(J.get$backgroundImage$x(t1.avatar.style), J.get$backgroundImage$x(t1.currentAnimation))) {
-      J.set$backgroundImage$x(t1.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(t1.currentAnimation)) + ")");
-      J.set$width$x(t1.avatar.style, J.toString$0(J.get$width$x(t1.currentAnimation)) + "px");
-      J.set$height$x(t1.avatar.style, J.toString$0(J.get$height$x(t1.currentAnimation)) + "px");
-      J.set$animation$x(t1.avatar.style, t1.currentAnimation.get$animationStyleString());
-      t1.canvasHeight = J.$add$ns(J.get$height$x(t1.currentAnimation), 50);
-    }
-    translateX = t1.posX;
-    t2 = $.get$ui();
-    t3 = t2.gameScreenHeight;
-    t4 = t1.canvasHeight;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    if (typeof t4 !== "number")
-      return H.iae(t4);
-    $.get$camera()._y;
-    t3 = $.currentStreet.bounds.width;
-    t4 = t1.width;
-    if (typeof t3 !== "number")
-      return t3.$sub();
-    t2 = t2.gameScreenWidth;
-    if (typeof t2 !== "number")
-      return t2.$div();
-    if (J.$gt$n(translateX, t3 - t4 / 2 - t2 / 2)) {
-      t2 = $.currentStreet.bounds.width;
-      t3 = $.get$ui().gameScreenWidth;
-      if (typeof t2 !== "number")
-        return t2.$sub();
-      if (typeof t3 !== "number")
-        return H.iae(t3);
-      camX = t2 - t3;
-      translateX = J.$add$ns(J.$sub$n(t1.posX, t2), $.get$ui().gameScreenWidth);
-    } else {
-      t2 = J.$add$ns(t1.posX, t1.width / 2);
-      t3 = $.get$ui().gameScreenWidth;
-      if (typeof t3 !== "number")
-        return t3.$div();
-      if (J.$gt$n(t2, t3 / 2)) {
-        t2 = J.$add$ns(t1.posX, t1.width / 2);
-        t3 = $.get$ui().gameScreenWidth;
-        if (typeof t3 !== "number")
-          return t3.$div();
-        camX = J.$sub$n(t2, t3 / 2);
-        t3 = $.get$ui().gameScreenWidth;
-        if (typeof t3 !== "number")
-          return t3.$div();
-        translateX = t3 / 2 - t1.width / 2;
-      } else
-        camX = 0;
-    }
-    t2 = t1.posY;
-    t3 = t1.canvasHeight;
-    if (typeof t3 !== "number")
-      return t3.$div();
-    t3 = J.$add$ns(t2, t3 / 2);
-    t2 = $.get$ui().gameScreenHeight;
-    if (typeof t2 !== "number")
-      return t2.$div();
-    if (J.$lt$n(t3, t2 / 2)) {
-      translateY = t1.posY;
-      camY = 0;
-    } else {
-      t2 = t1.posY;
-      t3 = $.currentStreet.bounds.height;
-      t4 = t1.canvasHeight;
-      if (typeof t4 !== "number")
-        return t4.$div();
-      if (typeof t3 !== "number")
-        return t3.$sub();
-      t5 = $.get$ui().gameScreenHeight;
-      if (typeof t5 !== "number")
-        return t5.$div();
-      t5 = J.$lt$n(t2, t3 - t4 / 2 - t5 / 2);
-      t4 = $.currentStreet;
-      if (t5) {
-        t2 = t4.bounds.height;
-        t3 = t1.posY;
-        if (typeof t2 !== "number")
-          return t2.$sub();
-        if (typeof t3 !== "number")
-          return H.iae(t3);
-        t4 = t1.canvasHeight;
-        if (typeof t4 !== "number")
-          return t4.$div();
-        t5 = $.get$ui().gameScreenHeight;
-        if (typeof t5 !== "number")
-          return t5.$div();
-        camY = t2 - (t2 - t3 - t4 / 2 + t5 / 2);
-        translateY = t5 / 2 - t4 / 2;
-      } else {
-        t2 = t4.bounds.height;
-        t3 = $.get$ui().gameScreenHeight;
-        if (typeof t2 !== "number")
-          return t2.$sub();
-        if (typeof t3 !== "number")
-          return H.iae(t3);
-        camY = t2 - t3;
-        t4 = t1.posY;
-        if (typeof t4 !== "number")
-          return H.iae(t4);
-        translateY = t3 - (t2 - t4);
-      }
-    }
-    $.get$camera().setCamera$1(J.toString$0(J.$tdiv$n(camX, 1)) + "," + C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camY, 1)));
-    transform = C.JSString_methods.$add("translateZ(0) translateX(" + J.toString$0(translateX) + "px) translateY(", J.toString$0(translateY)) + "px)";
-    t2 = t1.facingRight;
-    t3 = t1.playerName;
-    if (!t2) {
-      transform += " scale(-1,1)";
-      J.set$transform$x(t3.style, "scale(-1,1)");
-      t2 = t1.chatBubble;
-      if (t2 != null)
-        J.set$transform$x(t2.textElement.style, "scale(-1,1)");
-    } else {
-      J.set$transform$x(t3.style, "scale(1,1)");
-      t2 = t1.chatBubble;
-      if (t2 != null)
-        J.set$transform$x(t2.textElement.style, "scale(1,1)");
-    }
-    J.set$transform$x(t1.playerCanvas.style, transform);
+    var t1, xy, map;
+    $.CurrentPlayer.update$1(dt);
     $.otherPlayers.forEach$1(0, new B.loop_closure());
     t1 = $.timeLast + dt;
     $.timeLast = t1;
@@ -4072,6 +3867,24 @@ var $$ = {};
         map.$indexSet(0, "bubbleText", t1.text);
       $.playerSocket.send(C.JsonCodec_null_null.encode$1(map));
     }
+  },
+  streetSocketSetup: function(streetName) {
+    var t1, map;
+    t1 = $.streetSocket;
+    if (t1 != null && t1.readyState === 1) {
+      map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+      map.$indexSet(0, "username", $.get$chat().username);
+      map.$indexSet(0, "streetName", streetName);
+      map.$indexSet(0, "message", "left");
+      $.streetSocket.send(C.JsonCodec_null_null.encode$1(map));
+      $.streetSocket.close();
+    }
+    t1 = W.WebSocket_WebSocket($.streetEventServer, null);
+    $.streetSocket = t1;
+    C.EventStreamProvider_open.forTarget$1(t1).listen$1(new B.streetSocketSetup_closure(streetName));
+    t1 = $.streetSocket;
+    t1.toString;
+    C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B.streetSocketSetup_closure0());
   },
   _setupPlayerSocket: function() {
     var t1 = W.WebSocket_WebSocket($.multiplayerServer, null);
@@ -5343,6 +5156,7 @@ var $$ = {};
       $.get$chat().init$0();
       $.otherPlayers = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       B._setupPlayerSocket();
+      B.streetSocketSetup($.currentStreet.label);
       t1 = B.Player$(null);
       $.CurrentPlayer = t1;
       t1.loadAnimations$0().then$1(new B.main____closure());
@@ -6244,6 +6058,68 @@ var $$ = {};
       J.set$transform$x(otherPlayer.playerCanvas.style, transform);
     }
   },
+  streetSocketSetup_closure: {
+    "^": "Closure:3;streetName_0",
+    call$1: function(_) {
+      var map;
+      if ($.streetSocket.readyState === 1) {
+        map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+        map.$indexSet(0, "username", $.get$chat().username);
+        map.$indexSet(0, "streetName", this.streetName_0);
+        map.$indexSet(0, "message", "joined");
+        $.streetSocket.send(C.JsonCodec_null_null.encode$1(map));
+      }
+    }
+  },
+  streetSocketSetup_closure0: {
+    "^": "Closure:30;",
+    call$1: function($event) {
+      var map, styleSheet, keyframes, error, t1, id, exception, element;
+      map = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
+      if (J.$index$asx(map, "remove") != null) {
+        t1 = "#" + H.S(J.$index$asx(map, "remove"));
+        t1 = document.querySelector(t1) != null;
+      } else
+        t1 = false;
+      if (t1) {
+        t1 = "#" + H.S(J.$index$asx(map, "remove"));
+        J.set$display$x(document.querySelector(t1).style, "none");
+      } else if (J.$index$asx(map, "remove") == null) {
+        id = J.$index$asx(map, "id");
+        t1 = "#" + H.S(id);
+        if (document.querySelector(t1) == null) {
+          t1 = document.styleSheets;
+          if (0 >= t1.length)
+            return H.ioore(t1, 0);
+          styleSheet = H.interceptedTypeCast(t1[0], "$isCssStyleSheet");
+          try {
+            keyframes = J.$index$asx(map, "keyframes");
+            J.insertRule$2$x(styleSheet, keyframes, 1);
+            J.insertRule$2$x(styleSheet, "@" + J.substring$1$s(keyframes, 9), 1);
+          } catch (exception) {
+            t1 = H.unwrapException(exception);
+            error = t1;
+            P.print(error);
+          }
+
+          element = document.createElement("div", null);
+          J.set$backgroundImage$x(element.style, C.JSString_methods.$add("url(", J.$index$asx(map, "url")) + ")");
+          element.id = id;
+          element.className = J.$index$asx(map, "type");
+          J.set$animation$x(element.style, J.$index$asx(map, "animation"));
+          J.set$position$x(element.style, "absolute");
+          J.set$left$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "x")), "px"));
+          J.set$bottom$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "y")), "px"));
+          J.set$width$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "width")), "px"));
+          J.set$height$x(element.style, J.$add$ns(J.toString$0(J.$index$asx(map, "height")), "px"));
+          document.querySelector("#PlayerHolder").appendChild(element);
+        } else {
+          t1 = "#" + H.S(id);
+          J.set$display$x(document.querySelector(t1).style, "block");
+        }
+      }
+    }
+  },
   _setupPlayerSocket_closure: {
     "^": "Closure:30;",
     call$1: function($event) {
@@ -6351,16 +6227,18 @@ var $$ = {};
     }
   },
   UserInterface: {
-    "^": "Object;commaFormatter,gameScreenWidth,gameScreenHeight,nameMeter,currantMeter,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent,currLocation,map",
+    "^": "Object;commaFormatter,gameScreenWidth,gameScreenHeight,nameMeter,currantMeter,currants,imgMeter,titleMeter,artistMeter,sc,jukebox,currentSong,_energymeterImage,_energymeterImageLow,_currEnergyText,_maxEnergyText,_energy,_maxenergy,_emptyAngle,_angleRange,_moodmeterImageLow,_moodmeterImageEmpty,_mood,_maxmood,_currMoodText,_maxMoodText,_moodPercent,currLocation,map",
     init$0: function() {
       C._BeforeUnloadEventStreamProvider_beforeunload.forTarget$1(window).listen$1(new B.UserInterface_init_closure());
       B.resize();
       C.EventStreamProvider_resize.forTarget$1(window).listen$1(new B.UserInterface_init_closure0());
-      B.setCurrants("0");
       B.setEnergy("100");
       B.setMaxEnergy("100");
       B.setMood("100");
       B.setMaxMood("100");
+      if ($.get$localStorage().getItem("currants") != null)
+        this.currants = H.Primitives_parseInt($.get$localStorage().getItem("currants"), null, null);
+      B.setCurrants(J.toString$0(this.currants));
       this.currLocation.textContent = $.currentStreet.label;
     },
     _setEnergy$1: function(newValue) {
@@ -6460,7 +6338,7 @@ var $$ = {};
     }
   },
   Player: {
-    "^": "Object;width>,height>,canvasHeight,speed,posX<,posY,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,doPhysicsApply,playerCanvas,avatar,playerName",
+    "^": "Object;width>,height>,canvasHeight,speed,posX<,posY,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,rand,doPhysicsApply,playerCanvas,avatar,playerName",
     loadAnimations$0: function() {
       var t1, futures;
       t1 = this.animations;
@@ -6471,6 +6349,218 @@ var $$ = {};
       futures = [];
       t1.forEach$1(0, new B.Player_loadAnimations_closure(futures));
       return P.Future_wait(futures, false);
+    },
+    update$1: function(dt) {
+      var t1, t2, t3, translateX, camX, translateY, camY, t4, transform, avatarRect;
+      t1 = this.chatBubble;
+      if (t1 != null) {
+        t1 = J.$le$n(t1.timeToLive, 0);
+        t2 = this.chatBubble;
+        if (t1) {
+          J.remove$0$ax(t2.bubble);
+          this.chatBubble = null;
+        } else {
+          t2.timeToLive = J.$sub$n(t2.timeToLive, dt);
+          this.playerCanvas.appendChild(this.chatBubble.bubble);
+        }
+      }
+      t1 = $.playerInput;
+      if (t1.rightKey) {
+        this.posX = J.$add$ns(this.posX, this.speed * dt);
+        this.facingRight = true;
+        this.moving = true;
+      } else if (t1.leftKey) {
+        this.posX = J.$sub$n(this.posX, this.speed * dt);
+        this.facingRight = false;
+        this.moving = true;
+      } else
+        this.moving = false;
+      if ($.playerInput.jumpKey && !this.jumping) {
+        if (C.C__JSRandom.nextInt$1(4) === 3)
+          this.yVel = -1200;
+        else
+          this.yVel = -900;
+        this.jumping = true;
+      }
+      if (this.doPhysicsApply) {
+        t1 = this.yVel - this.yAccel * dt;
+        this.yVel = t1;
+        this.posY = J.$add$ns(this.posY, t1 * dt);
+      } else {
+        if ($.playerInput.downKey)
+          this.posY = J.$add$ns(this.posY, this.speed * dt);
+        if ($.playerInput.upKey)
+          this.posY = J.$sub$n(this.posY, this.speed * dt);
+      }
+      if (J.$lt$n(this.posX, 0))
+        this.posX = 0;
+      t1 = this.posX;
+      t2 = $.currentStreet.bounds.width;
+      t3 = this.width;
+      if (typeof t2 !== "number")
+        return t2.$sub();
+      if (J.$gt$n(t1, t2 - t3)) {
+        t1 = $.currentStreet.bounds.width;
+        t2 = this.width;
+        if (typeof t1 !== "number")
+          return t1.$sub();
+        this.posX = t1 - t2;
+      }
+      t1 = this.posY;
+      t2 = $.currentStreet.bounds.height;
+      t3 = this.canvasHeight;
+      if (typeof t2 !== "number")
+        return t2.$sub();
+      if (typeof t3 !== "number")
+        return H.iae(t3);
+      if (J.$gt$n(t1, t2 - t3)) {
+        t1 = $.currentStreet.bounds.height;
+        t2 = this.canvasHeight;
+        if (typeof t1 !== "number")
+          return t1.$sub();
+        if (typeof t2 !== "number")
+          return H.iae(t2);
+        this.posY = t1 - t2;
+        this.yVel = 0;
+        this.jumping = false;
+      }
+      if (J.$lt$n(this.posY, 0))
+        this.posY = 0;
+      t1 = this.moving;
+      if (!t1 && !this.jumping)
+        this.currentAnimation = this.animations.$index(0, "idle");
+      else if (t1 && !this.jumping)
+        this.currentAnimation = this.animations.$index(0, "base");
+      else {
+        t1 = this.animations;
+        if (this.jumping)
+          this.currentAnimation = t1.$index(0, "jump");
+        else
+          this.currentAnimation = t1.$index(0, "stillframe");
+      }
+      if (!J.contains$1$asx(J.get$backgroundImage$x(this.avatar.style), J.get$backgroundImage$x(this.currentAnimation))) {
+        J.set$backgroundImage$x(this.avatar.style, C.JSString_methods.$add("url(", J.get$backgroundImage$x(this.currentAnimation)) + ")");
+        J.set$width$x(this.avatar.style, J.toString$0(J.get$width$x(this.currentAnimation)) + "px");
+        J.set$height$x(this.avatar.style, J.toString$0(J.get$height$x(this.currentAnimation)) + "px");
+        J.set$animation$x(this.avatar.style, this.currentAnimation.get$animationStyleString());
+        this.canvasHeight = J.$add$ns(J.get$height$x(this.currentAnimation), 50);
+      }
+      translateX = this.posX;
+      t1 = $.get$ui();
+      t2 = t1.gameScreenHeight;
+      t3 = this.canvasHeight;
+      if (typeof t2 !== "number")
+        return t2.$sub();
+      if (typeof t3 !== "number")
+        return H.iae(t3);
+      $.get$camera()._y;
+      t2 = $.currentStreet.bounds.width;
+      t3 = this.width;
+      if (typeof t2 !== "number")
+        return t2.$sub();
+      t1 = t1.gameScreenWidth;
+      if (typeof t1 !== "number")
+        return t1.$div();
+      if (J.$gt$n(translateX, t2 - t3 / 2 - t1 / 2)) {
+        t1 = $.currentStreet.bounds.width;
+        t2 = $.get$ui().gameScreenWidth;
+        if (typeof t1 !== "number")
+          return t1.$sub();
+        if (typeof t2 !== "number")
+          return H.iae(t2);
+        camX = t1 - t2;
+        translateX = J.$add$ns(J.$sub$n(this.posX, t1), $.get$ui().gameScreenWidth);
+      } else {
+        t1 = J.$add$ns(this.posX, this.width / 2);
+        t2 = $.get$ui().gameScreenWidth;
+        if (typeof t2 !== "number")
+          return t2.$div();
+        if (J.$gt$n(t1, t2 / 2)) {
+          t1 = J.$add$ns(this.posX, this.width / 2);
+          t2 = $.get$ui().gameScreenWidth;
+          if (typeof t2 !== "number")
+            return t2.$div();
+          camX = J.$sub$n(t1, t2 / 2);
+          t2 = $.get$ui().gameScreenWidth;
+          if (typeof t2 !== "number")
+            return t2.$div();
+          translateX = t2 / 2 - this.width / 2;
+        } else
+          camX = 0;
+      }
+      t1 = this.posY;
+      t2 = this.canvasHeight;
+      if (typeof t2 !== "number")
+        return t2.$div();
+      t2 = J.$add$ns(t1, t2 / 2);
+      t1 = $.get$ui().gameScreenHeight;
+      if (typeof t1 !== "number")
+        return t1.$div();
+      if (J.$lt$n(t2, t1 / 2)) {
+        translateY = this.posY;
+        camY = 0;
+      } else {
+        t1 = this.posY;
+        t2 = $.currentStreet.bounds.height;
+        t3 = this.canvasHeight;
+        if (typeof t3 !== "number")
+          return t3.$div();
+        if (typeof t2 !== "number")
+          return t2.$sub();
+        t4 = $.get$ui().gameScreenHeight;
+        if (typeof t4 !== "number")
+          return t4.$div();
+        t4 = J.$lt$n(t1, t2 - t3 / 2 - t4 / 2);
+        t3 = $.currentStreet;
+        if (t4) {
+          t1 = t3.bounds.height;
+          t2 = this.posY;
+          if (typeof t1 !== "number")
+            return t1.$sub();
+          if (typeof t2 !== "number")
+            return H.iae(t2);
+          t3 = this.canvasHeight;
+          if (typeof t3 !== "number")
+            return t3.$div();
+          t4 = $.get$ui().gameScreenHeight;
+          if (typeof t4 !== "number")
+            return t4.$div();
+          camY = t1 - (t1 - t2 - t3 / 2 + t4 / 2);
+          translateY = t4 / 2 - t3 / 2;
+        } else {
+          t1 = t3.bounds.height;
+          t2 = $.get$ui().gameScreenHeight;
+          if (typeof t1 !== "number")
+            return t1.$sub();
+          if (typeof t2 !== "number")
+            return H.iae(t2);
+          camY = t1 - t2;
+          t3 = this.posY;
+          if (typeof t3 !== "number")
+            return H.iae(t3);
+          translateY = t2 - (t1 - t3);
+        }
+      }
+      $.get$camera().setCamera$1(J.toString$0(J.$tdiv$n(camX, 1)) + "," + C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(camY, 1)));
+      transform = C.JSString_methods.$add("translateZ(0) translateX(" + J.toString$0(translateX) + "px) translateY(", J.toString$0(translateY)) + "px)";
+      t1 = this.facingRight;
+      t2 = this.playerName;
+      if (!t1) {
+        transform += " scale(-1,1)";
+        J.set$transform$x(t2.style, "scale(-1,1)");
+        t1 = this.chatBubble;
+        if (t1 != null)
+          J.set$transform$x(t1.textElement.style, "scale(-1,1)");
+      } else {
+        J.set$transform$x(t2.style, "scale(1,1)");
+        t1 = this.chatBubble;
+        if (t1 != null)
+          J.set$transform$x(t1.textElement.style, "scale(1,1)");
+      }
+      J.set$transform$x(this.playerCanvas.style, transform);
+      avatarRect = this.avatar.getBoundingClientRect();
+      t1 = W._FrozenElementList$_wrap(document.querySelectorAll(".currant"), null);
+      t1.forEach$1(t1, new B.Player_update_closure(this, avatarRect));
     },
     Player$1: function($name) {
       var t1;
@@ -6498,7 +6588,8 @@ var $$ = {};
     },
     $isPlayer: true,
     static: {Player$: function($name) {
-        var t1 = new B.Player(null, null, null, null, null, null, null, -2400, false, false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), null, null, true, null, null, null);
+        var t1 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+        t1 = new B.Player(null, null, null, null, null, null, null, -2400, false, false, true, t1, null, null, C.C__JSRandom, true, null, null, null);
         t1.Player$1($name);
         return t1;
       }}
@@ -6507,6 +6598,42 @@ var $$ = {};
     "^": "Closure:37;futures_0",
     call$2: function($name, animation) {
       return this.futures_0.push(J.load$0$x(animation));
+    }
+  },
+  Player_update_closure: {
+    "^": "Closure:26;this_0,avatarRect_1",
+    call$1: function(element) {
+      var t1, currant, t2, t3, t4, dropSound, map;
+      t1 = J.getInterceptor$x(element);
+      currant = t1.getBoundingClientRect$0(element);
+      t2 = $.streetSocket;
+      if (t2 != null)
+        if (t2.readyState === 1) {
+          t2 = this.avatarRect_1;
+          t3 = J.getInterceptor$x(t2);
+          t4 = J.getInterceptor$x(currant);
+          t2 = J.$le$n(t3.get$left(t2), t4.get$right(currant)) && J.$le$n(t4.get$left(currant), t3.get$right(t2)) && J.$le$n(t3.get$top(t2), t4.get$bottom(currant)) && J.$le$n(t4.get$top(currant), t3.get$bottom(t2));
+        } else
+          t2 = false;
+      else
+        t2 = false;
+      if (t2) {
+        if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+          dropSound = $.get$ASSET().$index(0, "drop").get$0();
+          t2 = H.Primitives_parseInt($.get$prevVolume(), null, null);
+          if (typeof t2 !== "number")
+            return t2.$div();
+          J.set$volume$x(dropSound, t2 / 100);
+          dropSound.play();
+        }
+        J.set$display$x(t1.get$style(element), "none");
+        B.setCurrants(J.toString$0(J.$add$ns(J.$add$ns($.get$ui().currants, this.this_0.rand.nextInt$1(4)), 1)));
+        map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+        map.$indexSet(0, "remove", element.id);
+        map.$indexSet(0, "type", "quoin");
+        map.$indexSet(0, "streetName", $.currentStreet.label);
+        $.streetSocket.send(C.JsonCodec_null_null.encode$1(map));
+      }
     }
   },
   Camera: {
@@ -6610,7 +6737,10 @@ var $$ = {};
       var t1, playerHolder;
       t1 = $.get$ASSET().$index(0, streetName).get$0();
       this._data = t1;
-      this.label = J.$index$asx(t1, "label");
+      t1 = J.$index$asx(t1, "label");
+      this.label = t1;
+      if ($.get$chat().username != null)
+        B.streetSocketSetup(t1);
       this.bounds = H.setRuntimeTypeInfo(new P.Rectangle(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l"), J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l")) + J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "r")), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"))), [null]);
       playerHolder = document.querySelector("#PlayerHolder");
       t1 = J.getInterceptor$x(playerHolder);
@@ -11102,7 +11232,7 @@ var $$ = {};
       return this._duration > other.get$_duration();
     },
     $le: function(_, other) {
-      return C.JSNumber_methods.$le(this._duration, other.get$_duration());
+      return this._duration <= other.get$_duration();
     },
     $ge: function(_, other) {
       return C.JSNumber_methods.$ge(this._duration, other.get$_duration());
@@ -11484,6 +11614,11 @@ var $$ = {};
     }
 
   },
+  _JenkinsSmiHash_combine: function(hash, value) {
+    hash = 536870911 & hash + value;
+    hash = 536870911 & hash + ((524287 & hash) << 10 >>> 0);
+    return hash ^ hash >>> 6;
+  },
   _convertNativeToDart_Window: function(win) {
     if (win == null)
       return;
@@ -11732,6 +11867,9 @@ var $$ = {};
     },
     get$innerHtml: function(receiver) {
       return receiver.innerHTML;
+    },
+    getBoundingClientRect$0: function(receiver) {
+      return receiver.getBoundingClientRect();
     },
     get$onChange: function(receiver) {
       return C.EventStreamProvider_change.forElement$1(receiver);
@@ -12078,6 +12216,9 @@ var $$ = {};
   },
   Range: {
     "^": "Interceptor;",
+    getBoundingClientRect$0: function(receiver) {
+      return receiver.getBoundingClientRect();
+    },
     toString$0: function(receiver) {
       return receiver.toString();
     },
@@ -12378,6 +12519,55 @@ var $$ = {};
   _Attr: {
     "^": "Node;name=,value=",
     "%": "Attr"
+  },
+  _ClientRect: {
+    "^": "Interceptor;bottom=,height=,left=,right=,top=,width=",
+    toString$0: function(receiver) {
+      return "Rectangle (" + H.S(receiver.left) + ", " + H.S(receiver.top) + ") " + H.S(receiver.width) + " x " + H.S(receiver.height);
+    },
+    $eq: function(receiver, other) {
+      var t1, t2, t3;
+      if (other == null)
+        return false;
+      t1 = J.getInterceptor$x(other);
+      if (typeof other !== "object" || other === null || !t1.$isRectangle)
+        return false;
+      t2 = receiver.left;
+      t3 = t1.get$left(other);
+      if (t2 == null ? t3 == null : t2 === t3) {
+        t2 = receiver.top;
+        t3 = t1.get$top(other);
+        if (t2 == null ? t3 == null : t2 === t3) {
+          t2 = receiver.width;
+          t3 = t1.get$width(other);
+          if (t2 == null ? t3 == null : t2 === t3) {
+            t2 = receiver.height;
+            t1 = t1.get$height(other);
+            t1 = t2 == null ? t1 == null : t2 === t1;
+          } else
+            t1 = false;
+        } else
+          t1 = false;
+      } else
+        t1 = false;
+      return t1;
+    },
+    get$hashCode: function(receiver) {
+      var t1, t2, t3, t4, hash;
+      t1 = J.get$hashCode$(receiver.left);
+      t2 = J.get$hashCode$(receiver.top);
+      t3 = J.get$hashCode$(receiver.width);
+      t4 = J.get$hashCode$(receiver.height);
+      t4 = W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(W._JenkinsSmiHash_combine(0, t1), t2), t3), t4);
+      hash = 536870911 & t4 + ((67108863 & t4) << 3 >>> 0);
+      hash ^= hash >>> 11;
+      return 536870911 & hash + ((16383 & hash) << 15 >>> 0);
+    },
+    $isRectangle: true,
+    $asRectangle: function() {
+      return [null];
+    },
+    "%": "ClientRect|DOMRect"
   },
   _HTMLFrameSetElement: {
     "^": "HtmlElement;",
@@ -13894,7 +14084,7 @@ var $$ = {};
 }],
 ["dart.math", "dart:math", , P, {
   "^": "",
-  _JenkinsSmiHash_combine: function(hash, value) {
+  _JenkinsSmiHash_combine0: function(hash, value) {
     if (typeof value !== "number")
       return H.iae(value);
     hash = 536870911 & hash + value;
@@ -13960,7 +14150,7 @@ var $$ = {};
       var t1, t2;
       t1 = J.get$hashCode$(this.x);
       t2 = J.get$hashCode$(this.y);
-      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(0, t1), t2));
+      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(0, t1), t2));
     },
     $add: function(_, other) {
       var t1, t2, t3, t4;
@@ -14016,23 +14206,26 @@ var $$ = {};
   },
   _RectangleBase: {
     "^": "Object;",
+    get$right: function(_) {
+      return J.$add$ns(this.get$left(this), this.width);
+    },
+    get$bottom: function(_) {
+      return J.$add$ns(this.get$top(this), this.height);
+    },
     toString$0: function(_) {
       return "Rectangle (" + H.S(this.get$left(this)) + ", " + H.S(this.top) + ") " + H.S(this.width) + " x " + H.S(this.height);
     },
     $eq: function(_, other) {
-      var t1, t2, t3, t4;
+      var t1, t2, t3;
       if (other == null)
         return false;
-      t1 = J.getInterceptor(other);
+      t1 = J.getInterceptor$x(other);
       if (typeof other !== "object" || other === null || !t1.$isRectangle)
         return false;
-      t1 = this.get$left(this);
-      t2 = other.left;
-      if (J.$eq(t1, t2)) {
-        t1 = this.top;
-        t3 = other.top;
-        t4 = J.getInterceptor(t1);
-        t1 = t4.$eq(t1, t3) && J.$eq(J.$add$ns(this.left, this.width), J.$add$ns(t2, other.width)) && J.$eq(t4.$add(t1, this.height), J.$add$ns(t3, other.height));
+      if (J.$eq(this.get$left(this), t1.get$left(other))) {
+        t2 = this.top;
+        t3 = J.getInterceptor(t2);
+        t1 = t3.$eq(t2, t1.get$top(other)) && J.$eq(J.$add$ns(this.left, this.width), t1.get$right(other)) && J.$eq(t3.$add(t2, this.height), t1.get$bottom(other));
       } else
         t1 = false;
       return t1;
@@ -14045,12 +14238,13 @@ var $$ = {};
       t4 = t3.get$hashCode(t2);
       t5 = J.get$hashCode$(J.$add$ns(this.left, this.width));
       t2 = J.get$hashCode$(t3.$add(t2, this.height));
-      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(P._JenkinsSmiHash_combine(0, t1), t4), t5), t2));
+      return P._JenkinsSmiHash_finish(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(P._JenkinsSmiHash_combine0(0, t1), t4), t5), t2));
     }
   },
   Rectangle: {
-    "^": "_RectangleBase;left>,top,width>,height>",
-    $isRectangle: true
+    "^": "_RectangleBase;left>,top>,width>,height>",
+    $isRectangle: true,
+    $asRectangle: null
   }
 }],
 ["dart.typed_data.implementation", "dart:_native_typed_data", , H, {
@@ -15716,17 +15910,17 @@ W.NodeValidator.$isNodeValidator = true;
 W.NodeValidator.$isObject = true;
 J.JSBool.$isbool = true;
 J.JSBool.$isObject = true;
+W.MessageEvent.$isMessageEvent = true;
+W.MessageEvent.$isEvent = true;
+W.MessageEvent.$isObject = true;
+W.CloseEvent.$isEvent = true;
+W.CloseEvent.$isObject = true;
 W.TouchEvent.$isTouchEvent = true;
 W.TouchEvent.$isEvent = true;
 W.TouchEvent.$isObject = true;
 W.KeyboardEvent.$isKeyboardEvent = true;
 W.KeyboardEvent.$isEvent = true;
 W.KeyboardEvent.$isObject = true;
-W.MessageEvent.$isMessageEvent = true;
-W.MessageEvent.$isEvent = true;
-W.MessageEvent.$isObject = true;
-W.CloseEvent.$isEvent = true;
-W.CloseEvent.$isObject = true;
 W.MouseEvent.$isMouseEvent = true;
 W.MouseEvent.$isEvent = true;
 W.MouseEvent.$isObject = true;
@@ -16554,6 +16748,8 @@ $.playerInput = null;
 $.timeLast = 0;
 $.lastXY = "";
 $.multiplayerServer = "ws://couserver.herokuapp.com/playerUpdate";
+$.streetEventServer = "ws://couserver.herokuapp.com/streetUpdate";
+$.streetSocket = null;
 $.showFps = false;
 $.TouchScroller_HORIZONTAL = 0;
 $.TouchScroller_VERTICAL = 1;
@@ -16711,7 +16907,7 @@ Isolate.$lazy($, "ui", "ui", "get$ui", function() {
   t17 = document.querySelector("#Location");
   t18 = document.querySelector("#MapGlyph");
   J.set$innerHtml$x(t11, C.JSInt_methods.toString$0(100));
-  return new B.UserInterface(t1, null, null, t2, t3, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16, t17, t18);
+  return new B.UserInterface(t1, null, null, t2, t3, 0, t4, t5, t6, new Z.SC("7d2a07867f8a3d47d4f059b600b250b1"), t7, null, t8, t9, t10, t11, 100, 100, 10, 120, t12, t13, 100, 100, t14, t15, t16, t17, t18);
 });
 Isolate.$lazy($, "chat", "chat", "get$chat", function() {
   return new B.Chat(false, true, P.LinkedHashMap_LinkedHashMap(null, null, null, null, null), "testUser");
