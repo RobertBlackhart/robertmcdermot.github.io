@@ -3771,8 +3771,10 @@ var $$ = {};
     return t1.$eq(keyCode, 225) ? "alt" : keyPressed;
   },
   loop: function(dt) {
-    var t1, xy, map;
+    var start, t1, xy, map;
+    start = P.DateTime$_now();
     $.CurrentPlayer.update$1(dt);
+    P.print(C.JSNumber_methods.toString$0(C.JSNumber_methods._tdivFast$1(P.DateTime$_now().difference$1(start)._duration, 1000)));
     $.otherPlayers.forEach$1(0, new B.loop_closure());
     t1 = $.timeLast + dt;
     $.timeLast = t1;
