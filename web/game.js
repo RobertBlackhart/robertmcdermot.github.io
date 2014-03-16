@@ -6007,7 +6007,6 @@ var $$ = {};
     call$1: function($event) {
       var styleSheet, keyframes, map, t1, t2, element, exception, id, circle, $parent, inner, $content;
       map = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
-      P.print(map);
       t1 = J.getInterceptor$asx(map);
       if (t1.$index(map, "remove") != null) {
         t2 = "#" + H.S(t1.$index(map, "remove"));
