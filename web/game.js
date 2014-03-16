@@ -4011,6 +4011,10 @@ var $$ = {};
     t2 = J.getInterceptor(t1);
     if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
       t1.render$0();
+    t1 = $.CurrentPlayer;
+    t2 = J.getInterceptor(t1);
+    if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
+      t1.toString;
     $.lastTime = delta;
     C.Window_methods.get$animationFrame(window).then$1(B.gameLoop$closure());
   }, "call$1", "gameLoop$closure", 2, 0, 8],
@@ -6003,6 +6007,7 @@ var $$ = {};
     call$1: function($event) {
       var styleSheet, keyframes, map, t1, t2, element, exception, id, circle, $parent, inner, $content;
       map = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
+      P.print(map);
       t1 = J.getInterceptor$asx(map);
       if (t1.$index(map, "remove") != null) {
         t2 = "#" + H.S(t1.$index(map, "remove"));
@@ -6541,18 +6546,10 @@ var $$ = {};
       var t1, quoinRect, t2, t3, dropSound, amt, quoinText, map;
       t1 = J.getInterceptor$x(element);
       quoinRect = t1.getBoundingClientRect$0(element);
-      t2 = $.streetSocket;
-      if (t2 != null)
-        if (t2.readyState === 1) {
-          t2 = J.getInterceptor$x(avatarRect);
-          t3 = J.getInterceptor$x(quoinRect);
-          t2 = J.$le$n(t2.get$left(avatarRect), t3.get$right(quoinRect)) && J.$le$n(t3.get$left(quoinRect), t2.get$right(avatarRect)) && J.$le$n(t2.get$top(avatarRect), t3.get$bottom(quoinRect)) && J.$le$n(t3.get$top(quoinRect), t2.get$bottom(avatarRect));
-        } else
-          t2 = false;
-      else
-        t2 = false;
-      if (t2) {
-        if (J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
+      t2 = J.getInterceptor$x(avatarRect);
+      t3 = J.getInterceptor$x(quoinRect);
+      if (J.$le$n(t2.get$left(avatarRect), t3.get$right(quoinRect)) && J.$le$n(t3.get$left(quoinRect), t2.get$right(avatarRect)) && J.$le$n(t2.get$top(avatarRect), t3.get$bottom(quoinRect)) && J.$le$n(t3.get$top(quoinRect), t2.get$bottom(avatarRect))) {
+        if ($.get$ASSET().$index(0, "drop") != null && J.$gt$n(H.Primitives_parseInt($.get$prevVolume(), null, null), 0) && $.get$isMuted() === "0") {
           dropSound = $.get$ASSET().$index(0, "drop").get$0();
           t2 = H.Primitives_parseInt($.get$prevVolume(), null, null);
           if (typeof t2 !== "number")
@@ -6566,16 +6563,13 @@ var $$ = {};
         if (t1.get$classes(element).readClasses$0().contains$1(0, "currant")) {
           quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + "\u20a1";
           B.setCurrants(J.toString$0(J.$add$ns($.get$ui()._currants, amt)));
-        }
-        if (t1.get$classes(element).readClasses$0().contains$1(0, "mood")) {
+        } else if (t1.get$classes(element).readClasses$0().contains$1(0, "mood")) {
           quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + " mood";
           B.setMood(J.toString$0(J.$add$ns($.get$ui()._mood, amt)));
-        }
-        if (t1.get$classes(element).readClasses$0().contains$1(0, "energy")) {
+        } else if (t1.get$classes(element).readClasses$0().contains$1(0, "energy")) {
           quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + " energy";
           B.setEnergy(J.toString$0(J.$add$ns($.get$ui()._energy, amt)));
-        }
-        if (t1.get$classes(element).readClasses$0().contains$1(0, "img")) {
+        } else if (t1.get$classes(element).readClasses$0().contains$1(0, "img")) {
           quoinText.textContent = "+" + C.JSInt_methods.toString$0(amt) + " iMG";
           B.setImg(J.toString$0(J.$add$ns($.get$ui()._img, amt)));
         }
@@ -6586,11 +6580,14 @@ var $$ = {};
         P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 2), new B.Player_checkCollision_closure(element));
         P.Timer_Timer(P.Duration$(0, 0, 0, 800, 0, 0), new B.Player_checkCollision_closure0(element));
         J.set$display$x(element.style, "none");
-        map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
-        map.$indexSet(0, "remove", element.id);
-        map.$indexSet(0, "type", "quoin");
-        map.$indexSet(0, "streetName", $.currentStreet.label);
-        $.streetSocket.send(C.JsonCodec_null_null.encode$1(map));
+        t1 = $.streetSocket;
+        if (t1 != null && t1.readyState === 1) {
+          map = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+          map.$indexSet(0, "remove", element.id);
+          map.$indexSet(0, "type", "quoin");
+          map.$indexSet(0, "streetName", $.currentStreet.label);
+          $.streetSocket.send(C.JsonCodec_null_null.encode$1(map));
+        }
       }
     },
     Player$1: function($name) {
@@ -6617,6 +6614,7 @@ var $$ = {};
       $.get$gameScreen().appendChild(this.playerCanvas);
       this.canvasHeight = this.playerCanvas.clientHeight;
     },
+    $isPlayer: true,
     static: {Player$: function($name) {
         var t1 = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
         t1 = new B.Player(null, null, null, null, null, null, null, -2400, false, false, true, t1, null, null, C.C__JSRandom, true, null, null, null);
@@ -6681,6 +6679,7 @@ var $$ = {};
       var c, decosToLoad, t1, t2, deco, t3, assetsToLoad;
       c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
       J.get$children$x($.get$layers()).clear$0(0);
+      J.get$children$x(document.querySelector("#PlayerHolder")).clear$0(0);
       if (J.$index$asx(this._data, "music") != null)
         B.setSong(J.$index$asx(this._data, "music"));
       decosToLoad = [];
