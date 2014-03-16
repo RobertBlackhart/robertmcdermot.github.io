@@ -3801,7 +3801,7 @@ var $$ = {};
       $.playerSocket.send(C.JsonCodec_null_null.encode$1(map));
     }
   },
-  streetSocketSetup: function(streetName) {
+  _setupStreetSocket: function(streetName) {
     var t1, map;
     t1 = $.streetSocket;
     if (t1 != null && t1.readyState === 1) {
@@ -3815,13 +3815,13 @@ var $$ = {};
     }
     t1 = W.WebSocket_WebSocket($.streetEventServer, null);
     $.streetSocket = t1;
-    C.EventStreamProvider_open.forTarget$1(t1).listen$1(new B.streetSocketSetup_closure(streetName));
+    C.EventStreamProvider_open.forTarget$1(t1).listen$1(new B._setupStreetSocket_closure(streetName));
     t1 = $.streetSocket;
     t1.toString;
-    C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B.streetSocketSetup_closure0());
+    C.EventStreamProvider_message.forTarget$1(t1).listen$1(new B._setupStreetSocket_closure0());
     t1 = $.streetSocket;
     t1.toString;
-    C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B.streetSocketSetup_closure1());
+    C.EventStreamProvider_close.forTarget$1(t1).listen$1(new B._setupStreetSocket_closure1());
   },
   _setupPlayerSocket: function() {
     var t1 = W.WebSocket_WebSocket($.multiplayerServer, null);
@@ -3951,15 +3951,18 @@ var $$ = {};
   gameLoop: function(delta) {
     var now, t1, t2, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t3, t4, data;
     B.loop((delta - $.lastTime) / 1000);
-    now = P.DateTime$_now();
-    if (C.JSNumber_methods.compareTo$1(now.millisecondsSinceEpoch, $.get$lastUpdate().millisecondsSinceEpoch) !== 0) {
-      t1 = C.JSNumber_methods._tdivFast$1(now.difference$1($.get$lastUpdate())._duration, 1000);
-      t2 = $.fps;
-      $.fps = t2 + (1000 / t1 - t2) / $.fpsFilter;
-      $.lastUpdate = now;
-      J.set$display$x($.get$fpsDisplay().style, "block");
-      $.get$fpsDisplay().textContent = "fps:" + $.get$twoDigit().format$1(0, $.fps);
-    }
+    if ($.showFps) {
+      now = P.DateTime$_now();
+      if (C.JSNumber_methods.compareTo$1(now.millisecondsSinceEpoch, $.get$lastUpdate().millisecondsSinceEpoch) !== 0) {
+        t1 = C.JSNumber_methods._tdivFast$1(now.difference$1($.get$lastUpdate())._duration, 1000);
+        t2 = $.fps;
+        $.fps = t2 + (1000 / t1 - t2) / $.fpsFilter;
+        $.lastUpdate = now;
+        J.set$display$x($.get$fpsDisplay().style, "block");
+        $.get$fpsDisplay().textContent = "fps:" + $.get$twoDigit().format$1(0, $.fps);
+      }
+    } else
+      J.set$display$x($.get$fpsDisplay().style, "none");
     sec = C.JSNumber_methods.toInt$0(Math.floor(P.DateTime$_now().millisecondsSinceEpoch * 0.001)) - 1238562000;
     year = C.JSNumber_methods.toInt$0(Math.floor(sec / 4435200));
     sec -= year * 4435200;
@@ -3997,9 +4000,9 @@ var $$ = {};
     if (day_of_week < 0 || day_of_week >= 8)
       return H.ioore(t4, day_of_week);
     data = [t1, t3, t2, t4[day_of_week], CurrentTime];
-    J.set$innerHtml$x($.get$currentDay(), data[3]);
-    J.set$innerHtml$x($.get$currentTime(), data[4]);
-    J.set$innerHtml$x($.get$currentDate(), data[2] + " of " + data[1]);
+    $.get$currentDay().textContent = data[3];
+    $.get$currentTime().textContent = data[4];
+    $.get$currentDate().textContent = data[2] + " of " + data[1];
     t1 = $.currentStreet;
     t2 = J.getInterceptor(t1);
     if (typeof t1 === "object" && t1 !== null && !!t2.$isStreet)
@@ -5080,7 +5083,7 @@ var $$ = {};
       $.get$chat().init$0();
       $.otherPlayers = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       B._setupPlayerSocket();
-      B.streetSocketSetup($.currentStreet.label);
+      B._setupStreetSocket($.currentStreet.label);
       t1 = B.Player$(null);
       $.CurrentPlayer = t1;
       t1.loadAnimations$0().then$1(new B.main____closure());
@@ -5982,7 +5985,7 @@ var $$ = {};
       J.set$transform$x(otherPlayer.playerCanvas.style, transform);
     }
   },
-  streetSocketSetup_closure: {
+  _setupStreetSocket_closure: {
     "^": "Closure:3;streetName_0",
     call$1: function(_) {
       var map;
@@ -5995,7 +5998,7 @@ var $$ = {};
       }
     }
   },
-  streetSocketSetup_closure0: {
+  _setupStreetSocket_closure0: {
     "^": "Closure:29;",
     call$1: function($event) {
       var styleSheet, keyframes, map, t1, t2, id, exception, element, circle, $parent, inner, $content;
@@ -6074,20 +6077,20 @@ var $$ = {};
       }
     }
   },
-  streetSocketSetup_closure1: {
+  _setupStreetSocket_closure1: {
     "^": "Closure:3;",
     call$1: function(_) {
       if (!$.reconnect) {
         $.reconnect = true;
         return;
       }
-      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 5), new B.streetSocketSetup__closure());
+      P.Timer_Timer(P.Duration$(0, 0, 0, 0, 0, 5), new B._setupStreetSocket__closure());
     }
   },
-  streetSocketSetup__closure: {
+  _setupStreetSocket__closure: {
     "^": "Closure:6;",
     call$0: function() {
-      B.streetSocketSetup($.currentStreet.label);
+      B._setupStreetSocket($.currentStreet.label);
     }
   },
   _setupPlayerSocket_closure: {
@@ -6755,7 +6758,7 @@ var $$ = {};
       t1 = J.$index$asx(t1, "label");
       this.label = t1;
       if ($.get$chat().username != null)
-        B.streetSocketSetup(t1);
+        B._setupStreetSocket(t1);
       this.bounds = H.setRuntimeTypeInfo(new P.Rectangle(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l"), J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "l")) + J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "r")), J.abs$0$n(J.$index$asx(J.$index$asx(this._data, "dynamic"), "t"))), [null]);
       playerHolder = document.querySelector("#PlayerHolder");
       t1 = J.getInterceptor$x(playerHolder);
