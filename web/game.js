@@ -6419,7 +6419,7 @@ var $$ = {};
       this.facingRight = t1.$index(map, "facingRight");
     },
     update$1: function(dt) {
-      var t1, deficit, t2, x, t3, t4, t5;
+      var t1, deficit, t2, posX, t3, t4, t5;
       t1 = this.timeInMillis + dt;
       this.timeInMillis = t1;
       if (t1 > 1 / this.fps) {
@@ -6448,13 +6448,13 @@ var $$ = {};
           t1 = this.canvas;
           t2 = J.get$left$x(t1.style);
           t2.toString;
-          x = H.Primitives_parseDouble(H.stringReplaceAllUnchecked(t2, "px", ""), null);
+          posX = H.Primitives_parseDouble(H.stringReplaceAllUnchecked(t2, "px", ""), null);
           t2 = this.facingRight;
-          t3 = J.getInterceptor$ns(x);
+          t3 = J.getInterceptor$ns(posX);
           t4 = this.speed;
-          x = t2 === true ? t3.$add(x, t4 * dt) : t3.$sub(x, t4 * dt);
-          if (J.$lt$n(x, 0))
-            x = 0;
+          posX = t2 === true ? t3.$add(posX, t4 * dt) : t3.$sub(posX, t4 * dt);
+          if (J.$lt$n(posX, 0))
+            posX = 0;
           t2 = $.currentStreet.bounds.width;
           t3 = J.getInterceptor$x(t1);
           t4 = t3.get$width(t1);
@@ -6462,16 +6462,22 @@ var $$ = {};
             return t2.$sub();
           if (typeof t4 !== "number")
             return H.iae(t4);
-          if (J.$gt$n(x, t2 - t4)) {
+          if (J.$gt$n(posX, t2 - t4)) {
             t2 = $.currentStreet.bounds.width;
             t3 = t3.get$width(t1);
             if (typeof t2 !== "number")
               return t2.$sub();
             if (typeof t3 !== "number")
               return H.iae(t3);
-            x = t2 - t3;
+            posX = t2 - t3;
           }
-          J.set$left$x(t1.style, J.toString$0(x) + "px");
+          J.set$left$x(t1.style, J.toString$0(posX) + "px");
+          t2 = this.facingRight;
+          t1 = t1.style;
+          if (t2 === true)
+            J.set$transform$x(t1, "scale(1,1) translateZ(0)");
+          else
+            J.set$transform$x(t1, "scale(-1,1) translateZ(0)");
         }
         t1 = this.columnOffset;
         t2 = this.canvas;
@@ -6489,22 +6495,16 @@ var $$ = {};
       }
     },
     render$0: function() {
-      var t1, t2, t3, t4, t5;
+      var t1, t2, t3, t4;
       if (this.dirty) {
         t1 = this.canvas;
         J.getInterceptor$x(t1).get$context2D(t1).clearRect(0, 0, t1.width, t1.height);
-        t2 = C.CanvasElement_methods.get$context2D(t1);
-        t3 = this.img;
-        t4 = this.destRect;
-        t5 = this.sourceRect;
-        t2.toString;
-        t2.drawImage(t3, t5.left, t5.top, t5.width, t5.height, t4.left, t4.top, t4.width, t4.height);
-        t2 = this.facingRight;
-        t1 = t1.style;
-        if (t2 === true)
-          J.set$transform$x(t1, "scale(1,1)");
-        else
-          J.set$transform$x(t1, "scale(-1,1)");
+        t1 = C.CanvasElement_methods.get$context2D(t1);
+        t2 = this.img;
+        t3 = this.destRect;
+        t4 = this.sourceRect;
+        t1.toString;
+        t1.drawImage(t2, t4.left, t4.top, t4.width, t4.height, t3.left, t3.top, t3.width, t3.height);
         this.dirty = false;
       }
     },
