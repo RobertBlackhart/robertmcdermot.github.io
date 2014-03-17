@@ -312,7 +312,7 @@ var $$ = {};
     toString$0: function(receiver) {
       return H.Primitives_objectToString(receiver);
     },
-    "%": "ArrayBuffer|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString|SVGAnimatedTransformList"
+    "%": "ArrayBuffer|CanvasRenderingContext|CanvasRenderingContext2D|DOMError|DOMImplementation|FileError|MediaError|MediaKeyError|Navigator|NavigatorUserMediaError|PositionError|SQLError|SVGAnimatedEnumeration|SVGAnimatedLength|SVGAnimatedLengthList|SVGAnimatedNumber|SVGAnimatedNumberList|SVGAnimatedString|SVGAnimatedTransformList"
   },
   JSBool: {
     "^": "bool/Interceptor;",
@@ -3774,6 +3774,7 @@ var $$ = {};
     var t1, xy, map;
     $.CurrentPlayer.update$1(dt);
     $.otherPlayers.forEach$1(0, new B.loop_closure());
+    $.npcs.forEach$1(0, new B.loop_closure0(dt));
     t1 = $.timeLast + dt;
     $.timeLast = t1;
     if (t1 > 0.03) {
@@ -3888,72 +3889,85 @@ var $$ = {};
     if (otherPlayer != null)
       J.remove$0$ax(otherPlayer);
   },
-  resize: function() {
-    var gameScreen, t1, warningMessage;
-    gameScreen = document.querySelector("#GameScreen");
-    t1 = $.get$ui();
-    t1.gameScreenWidth = gameScreen.clientWidth;
-    t1.gameScreenHeight = gameScreen.clientHeight;
-    warningMessage = document.querySelector("#SizeWarning");
-    t1 = window.innerWidth;
-    if (typeof t1 !== "number")
-      return t1.$lt();
-    if (t1 >= 1308) {
-      t1 = window.innerHeight;
-      if (typeof t1 !== "number")
-        return t1.$lt();
-      t1 = t1 < 325;
-    } else
-      t1 = true;
-    if (t1)
-      warningMessage.hidden = false;
-    else
-      warningMessage.hidden = true;
-    t1 = window.innerWidth;
-    if (typeof t1 !== "number")
-      return t1.$lt();
-    if (t1 < 1308)
-      warningMessage.textContent = "Warning, the window should be at least 1308px wide to display the game well.";
-    t1 = window.innerHeight;
-    if (typeof t1 !== "number")
-      return t1.$lt();
-    if (t1 < 325)
-      warningMessage.textContent = "Warning, the window should be at least 325px high to display the game well.";
-    t1 = window.innerWidth;
-    if (typeof t1 !== "number")
-      return t1.$lt();
-    if (t1 < 1308) {
-      t1 = window.innerHeight;
-      if (typeof t1 !== "number")
-        return t1.$lt();
-      t1 = t1 < 325;
-    } else
-      t1 = false;
-    if (t1)
-      warningMessage.textContent = "Warning, the window should be at least 1308px wide and 325px high to display the game well.";
-  },
-  load_streets: function() {
-    document.querySelector("#LoadStatus").textContent = "Loading Streets";
-    $.get$jsonExtensions().push("street");
-    var c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
-    new E.Asset(null, false, "./assets/streets.json", null).load$0(0).then$1(new B.load_streets_closure(c));
-    return c.future;
-  },
-  setStreetLoadBar: [function(percent) {
-    document.querySelector("#StreetLoadingStatus").textContent = "loading decos...";
-    J.set$width$x(document.querySelector("#MapLoadingBar").style, C.JSInt_methods.toString$0(percent + 1) + "%");
-    if (percent >= 99) {
-      document.querySelector("#StreetLoadingStatus").textContent = "...done";
-      document.querySelector("#MapLoadingScreen").className = "MapLoadingScreen";
-      J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
+  addQuoin: function(map) {
+    var styleSheet, keyframes, t1, exception, id, element, circle, $parent, inner, $content;
+    t1 = document.styleSheets;
+    if (0 >= t1.length)
+      return H.ioore(t1, 0);
+    styleSheet = H.interceptedTypeCast(t1[0], "$isCssStyleSheet");
+    t1 = J.getInterceptor$asx(map);
+    keyframes = t1.$index(map, "keyframes");
+    try {
+      J.insertRule$2$x(styleSheet, keyframes, 1);
+    } catch (exception) {
+      H.unwrapException(exception);
     }
-  }, "call$1", "setStreetLoadBar$closure", 2, 0, 7],
-  gameLoop: [function(delta) {
-    var t1, now, t2, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t3, t4, data;
-    t1 = J.$sub$n(delta, $.lastTime);
-    if (typeof t1 !== "number")
-      return t1.$div();
-    B.loop(t1 / 1000);
+
+    try {
+      J.insertRule$2$x(styleSheet, "@" + J.substring$1$s(keyframes, 9), 1);
+    } catch (exception) {
+      H.unwrapException(exception);
+    }
+
+    id = t1.$index(map, "id");
+    element = document.createElement("div", null);
+    circle = document.createElement("div", null);
+    circle.id = C.JSString_methods.$add("q", id);
+    circle.className = "circle";
+    J.set$position$x(circle.style, "absolute");
+    J.set$left$x(circle.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
+    J.set$bottom$x(circle.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
+    $parent = document.createElement("div", null);
+    $parent.id = C.JSString_methods.$add("qq", id);
+    $parent.className = "parent";
+    J.set$position$x($parent.style, "absolute");
+    J.set$left$x($parent.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
+    J.set$bottom$x($parent.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
+    inner = document.createElement("div", null);
+    inner.className = "inner";
+    $content = document.createElement("div", null);
+    $content.className = "quoinString";
+    $parent.appendChild(inner);
+    inner.appendChild($content);
+    J.set$backgroundImage$x(element.style, C.JSString_methods.$add("url(", t1.$index(map, "url")) + ")");
+    element.id = id;
+    element.className = J.$add$ns(t1.$index(map, "type"), " quoin");
+    J.set$animation$x(element.style, t1.$index(map, "animation"));
+    J.set$position$x(element.style, "absolute");
+    J.set$left$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
+    J.set$bottom$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
+    J.set$width$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "width")), "px"));
+    J.set$height$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "height")), "px"));
+    t1 = element.style;
+    C.CssStyleDeclaration_methods.set$transform(t1, J.$add$ns(J.getInterceptor$x(t1).get$transform(t1), " translateZ(0)"));
+    document.querySelector("#PlayerHolder").appendChild(element);
+    document.querySelector("#PlayerHolder").appendChild(circle);
+    document.querySelector("#PlayerHolder").appendChild($parent);
+  },
+  addNPC: function(map) {
+    var e, t1, t2, t3, img;
+    e = document.createElement("canvas", null);
+    t1 = J.getInterceptor$asx(map);
+    e.id = t1.$index(map, "id");
+    t2 = J.getInterceptor$x(e);
+    t2.set$width(e, t1.$index(map, "width"));
+    t2.set$height(e, t1.$index(map, "height"));
+    J.set$position$x(e.style, "absolute");
+    J.set$left$x(e.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
+    t2 = e.style;
+    t3 = $.currentStreet.bounds.height;
+    if (typeof t3 !== "number")
+      return t3.$sub();
+    J.set$top$x(t2, C.JSNumber_methods.toString$0(t3 - 170) + "px");
+    img = W.ImageElement_ImageElement(null, null, null);
+    t3 = J.getInterceptor$x(img);
+    t3.set$src(img, t1.$index(map, "url"));
+    t3 = t3.get$onLoad(img);
+    H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t3._target, t3._eventType, W._wrapZone(new B.addNPC_closure(map, e, img)), t3._useCapture), [H.getTypeArgumentByIndex(t3, 0)])._tryResume$0();
+    document.querySelector("#PlayerHolder").appendChild(e);
+  },
+  render: function() {
+    var now, t1, t2, sec, year, day_of_year, hour, minute, MonthAndDay, day_of_week, suffix, h, m, ampm, CurrentTime, t3, t4, data;
     if ($.showFps) {
       now = P.DateTime$_now();
       t1 = now.millisecondsSinceEpoch;
@@ -4015,6 +4029,74 @@ var $$ = {};
     t2 = J.getInterceptor(t1);
     if (typeof t1 === "object" && t1 !== null && !!t2.$isPlayer)
       t1.toString;
+    $.npcs.forEach$1(0, new B.render_closure());
+  },
+  resize: function() {
+    var gameScreen, t1, warningMessage;
+    gameScreen = document.querySelector("#GameScreen");
+    t1 = $.get$ui();
+    t1.gameScreenWidth = gameScreen.clientWidth;
+    t1.gameScreenHeight = gameScreen.clientHeight;
+    warningMessage = document.querySelector("#SizeWarning");
+    t1 = window.innerWidth;
+    if (typeof t1 !== "number")
+      return t1.$lt();
+    if (t1 >= 1308) {
+      t1 = window.innerHeight;
+      if (typeof t1 !== "number")
+        return t1.$lt();
+      t1 = t1 < 325;
+    } else
+      t1 = true;
+    if (t1)
+      warningMessage.hidden = false;
+    else
+      warningMessage.hidden = true;
+    t1 = window.innerWidth;
+    if (typeof t1 !== "number")
+      return t1.$lt();
+    if (t1 < 1308)
+      warningMessage.textContent = "Warning, the window should be at least 1308px wide to display the game well.";
+    t1 = window.innerHeight;
+    if (typeof t1 !== "number")
+      return t1.$lt();
+    if (t1 < 325)
+      warningMessage.textContent = "Warning, the window should be at least 325px high to display the game well.";
+    t1 = window.innerWidth;
+    if (typeof t1 !== "number")
+      return t1.$lt();
+    if (t1 < 1308) {
+      t1 = window.innerHeight;
+      if (typeof t1 !== "number")
+        return t1.$lt();
+      t1 = t1 < 325;
+    } else
+      t1 = false;
+    if (t1)
+      warningMessage.textContent = "Warning, the window should be at least 1308px wide and 325px high to display the game well.";
+  },
+  load_streets: function() {
+    document.querySelector("#LoadStatus").textContent = "Loading Streets";
+    $.get$jsonExtensions().push("street");
+    var c = H.setRuntimeTypeInfo(new P._AsyncCompleter(P._Future$(null)), [null]);
+    new E.Asset(null, false, "./assets/streets.json", null).load$0(0).then$1(new B.load_streets_closure(c));
+    return c.future;
+  },
+  setStreetLoadBar: [function(percent) {
+    document.querySelector("#StreetLoadingStatus").textContent = "loading decos...";
+    J.set$width$x(document.querySelector("#MapLoadingBar").style, C.JSInt_methods.toString$0(percent + 1) + "%");
+    if (percent >= 99) {
+      document.querySelector("#StreetLoadingStatus").textContent = "...done";
+      document.querySelector("#MapLoadingScreen").className = "MapLoadingScreen";
+      J.set$opacity$x(document.querySelector("#MapLoadingScreen").style, "0.0");
+    }
+  }, "call$1", "setStreetLoadBar$closure", 2, 0, 7],
+  gameLoop: [function(delta) {
+    var t1 = J.$sub$n(delta, $.lastTime);
+    if (typeof t1 !== "number")
+      return t1.$div();
+    B.loop(t1 / 1000);
+    B.render();
     $.lastTime = delta;
     C.Window_methods.get$animationFrame(window).then$1(B.gameLoop$closure());
   }, "call$1", "gameLoop$closure", 2, 0, 8],
@@ -5086,6 +5168,7 @@ var $$ = {};
       var t1;
       $.get$chat().init$0();
       $.otherPlayers = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
+      $.npcs = P.LinkedHashMap_LinkedHashMap(null, null, null, null, null);
       B._setupPlayerSocket();
       B._setupStreetSocket($.currentStreet.label);
       t1 = B.Player$(null);
@@ -5989,6 +6072,12 @@ var $$ = {};
       J.set$transform$x(otherPlayer.playerCanvas.style, transform);
     }
   },
+  loop_closure0: {
+    "^": "Closure:37;dt_0",
+    call$2: function(id, npc) {
+      return npc.update$1(this.dt_0);
+    }
+  },
   _setupStreetSocket_closure: {
     "^": "Closure:3;streetName_0",
     call$1: function(_) {
@@ -6005,7 +6094,7 @@ var $$ = {};
   _setupStreetSocket_closure0: {
     "^": "Closure:30;",
     call$1: function($event) {
-      var styleSheet, keyframes, map, t1, t2, element, exception, id, circle, $parent, inner, $content;
+      var map, t1, t2, id, element, npc, img;
       map = C.JsonCodec_null_null.decode$1(J.get$data$x($event));
       t1 = J.getInterceptor$asx(map);
       if (t1.$index(map, "remove") != null) {
@@ -6017,63 +6106,38 @@ var $$ = {};
         t1 = "#" + H.S(t1.$index(map, "remove"));
         J.set$display$x(document.querySelector(t1).style, "none");
       } else if (t1.$index(map, "remove") == null) {
-        t2 = "#" + H.S(t1.$index(map, "id"));
+        id = t1.$index(map, "id");
+        t2 = "#" + H.S(id);
         element = document.querySelector(t2);
-        if (element == null) {
-          t2 = document.styleSheets;
-          if (0 >= t2.length)
-            return H.ioore(t2, 0);
-          styleSheet = H.interceptedTypeCast(t2[0], "$isCssStyleSheet");
-          keyframes = t1.$index(map, "keyframes");
-          try {
-            J.insertRule$2$x(styleSheet, keyframes, 1);
-          } catch (exception) {
-            H.unwrapException(exception);
+        if (J.getInterceptor$s(id).startsWith$1(id, "q"))
+          if (element == null)
+            B.addQuoin(map);
+          else if (J.get$display$x(element.style) === "none")
+            J.set$display$x(element.style, "block");
+        if (C.JSString_methods.startsWith$1(id, "n")) {
+          t2 = $.npcs;
+          npc = t2 != null ? t2.$index(0, t1.$index(map, "id")) : null;
+          if (element == null)
+            B.addNPC(map);
+          else if (npc != null) {
+            if (!J.$eq(J.get$src$x(J.get$img$x(npc)), t1.$index(map, "url"))) {
+              img = W.ImageElement_ImageElement(null, null, null);
+              t2 = J.getInterceptor$x(img);
+              t2.set$src(img, t1.$index(map, "url"));
+              t2 = t2.get$onLoad(img);
+              H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t2._target, t2._eventType, W._wrapZone(new B._setupStreetSocket__closure0(map, img)), t2._useCapture), [H.getTypeArgumentByIndex(t2, 0)])._tryResume$0();
+            }
+            npc.facingRight = t1.$index(map, "facingRight");
           }
-
-          try {
-            J.insertRule$2$x(styleSheet, "@" + J.substring$1$s(keyframes, 9), 1);
-          } catch (exception) {
-            H.unwrapException(exception);
-          }
-
-          id = t1.$index(map, "id");
-          element = document.createElement("div", null);
-          circle = document.createElement("div", null);
-          circle.id = C.JSString_methods.$add("q", id);
-          circle.className = "circle";
-          J.set$position$x(circle.style, "absolute");
-          J.set$left$x(circle.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
-          J.set$bottom$x(circle.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
-          $parent = document.createElement("div", null);
-          $parent.id = C.JSString_methods.$add("qq", id);
-          $parent.className = "parent";
-          J.set$position$x($parent.style, "absolute");
-          J.set$left$x($parent.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
-          J.set$bottom$x($parent.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
-          inner = document.createElement("div", null);
-          inner.className = "inner";
-          $content = document.createElement("div", null);
-          $content.className = "quoinString";
-          $parent.appendChild(inner);
-          inner.appendChild($content);
-          J.set$backgroundImage$x(element.style, C.JSString_methods.$add("url(", t1.$index(map, "url")) + ")");
-          element.id = id;
-          element.className = J.$add$ns(t1.$index(map, "type"), " quoin");
-          J.set$animation$x(element.style, t1.$index(map, "animation"));
-          J.set$position$x(element.style, "absolute");
-          J.set$left$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "x")), "px"));
-          J.set$bottom$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "y")), "px"));
-          J.set$width$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "width")), "px"));
-          J.set$height$x(element.style, J.$add$ns(J.toString$0(t1.$index(map, "height")), "px"));
-          t1 = element.style;
-          C.CssStyleDeclaration_methods.set$transform(t1, J.$add$ns(J.getInterceptor$x(t1).get$transform(t1), " translateZ(0)"));
-          document.querySelector("#PlayerHolder").appendChild(element);
-          document.querySelector("#PlayerHolder").appendChild(circle);
-          document.querySelector("#PlayerHolder").appendChild($parent);
-        } else if (J.get$display$x(element.style) === "none")
-          J.set$display$x(element.style, "block");
+        }
       }
+    }
+  },
+  _setupStreetSocket__closure0: {
+    "^": "Closure:3;map_1,img_2",
+    call$1: function(_) {
+      var t1 = this.map_1;
+      $.npcs.$index(0, J.$index$asx(t1, "id")).resetImage$2(this.img_2, t1);
     }
   },
   _setupStreetSocket_closure1: {
@@ -6121,6 +6185,31 @@ var $$ = {};
     "^": "Closure:6;",
     call$0: function() {
       B._setupPlayerSocket();
+    }
+  },
+  addNPC_closure: {
+    "^": "Closure:3;map_0,canvas_1,img_2",
+    call$1: function(_) {
+      var t1, t2, t3, t4, t5, t6, t7, t8;
+      t1 = $.npcs;
+      t2 = this.map_0;
+      t3 = J.getInterceptor$asx(t2);
+      t4 = t3.$index(t2, "id");
+      t5 = this.canvas_1;
+      t6 = this.img_2;
+      t7 = t3.$index(t2, "numRows");
+      t8 = t3.$index(t2, "numColumns");
+      t2 = t3.$index(t2, "numFrames");
+      t3 = new B.NPC(t7, t8, t2, 0, 0, 30, 150, t6, t5, null, null, true, true, 0);
+      t3.NPC$7$fps$numFrames$speed(t5, t6, t7, t8, 30, t2, 150);
+      t1.$indexSet(0, t4, t3);
+      return t3;
+    }
+  },
+  render_closure: {
+    "^": "Closure:37;",
+    call$2: function(id, npc) {
+      return npc.render$0();
     }
   },
   TouchScroller: {
@@ -6315,6 +6404,120 @@ var $$ = {};
     call$0: function() {
       return J.get$classes$x(this.this_0._currMoodText.parentElement).toggle$1("changed");
     }
+  },
+  NPC: {
+    "^": "Object;numRows,numColumns,numFrames,columnOffset,rowOffset,fps,speed,img>,canvas,destRect,sourceRect,dirty,facingRight,timeInMillis",
+    resetImage$2: function(i, map) {
+      var t1;
+      this.img = i;
+      t1 = J.getInterceptor$asx(map);
+      this.numRows = t1.$index(map, "numRows");
+      this.numColumns = t1.$index(map, "numColumns");
+      this.numFrames = t1.$index(map, "numFrames");
+      this.rowOffset = 0;
+      this.columnOffset = 0;
+      this.facingRight = t1.$index(map, "facingRight");
+    },
+    update$1: function(dt) {
+      var t1, deficit, t2, x, t3, t4, t5;
+      t1 = this.timeInMillis + dt;
+      this.timeInMillis = t1;
+      if (t1 > 1 / this.fps) {
+        if (J.$lt$n(this.numFrames, J.$mul$n(this.numColumns, this.numRows)) && this.rowOffset === J.$sub$n(this.numRows, 1)) {
+          deficit = J.$sub$n(J.$mul$n(this.numColumns, this.numRows), this.numFrames);
+          if (this.columnOffset === J.$sub$n(J.$sub$n(this.numColumns, deficit), 1)) {
+            this.columnOffset = 0;
+            this.rowOffset = 0;
+          } else
+            this.columnOffset = this.columnOffset + 1;
+        } else if (this.columnOffset === J.$sub$n(this.numColumns, 1) && this.rowOffset === J.$sub$n(this.numRows, 1)) {
+          this.columnOffset = 0;
+          this.rowOffset = 0;
+        } else if (this.columnOffset === J.$sub$n(this.numColumns, 1)) {
+          this.columnOffset = 0;
+          this.rowOffset = this.rowOffset + 1;
+        } else {
+          t1 = this.columnOffset;
+          t2 = J.$sub$n(this.numColumns, 1);
+          if (typeof t2 !== "number")
+            return H.iae(t2);
+          if (t1 < t2)
+            this.columnOffset = this.columnOffset + 1;
+        }
+        if (J.contains$1$asx(J.get$src$x(this.img), "walk") === true) {
+          t1 = this.canvas;
+          t2 = J.get$left$x(t1.style);
+          t2.toString;
+          x = H.Primitives_parseDouble(H.stringReplaceAllUnchecked(t2, "px", ""), null);
+          t2 = this.facingRight;
+          t3 = J.getInterceptor$ns(x);
+          t4 = this.speed;
+          x = t2 === true ? t3.$add(x, t4 * dt) : t3.$sub(x, t4 * dt);
+          if (J.$lt$n(x, 0))
+            x = 0;
+          t2 = $.currentStreet.bounds.width;
+          t3 = J.getInterceptor$x(t1);
+          t4 = t3.get$width(t1);
+          if (typeof t2 !== "number")
+            return t2.$sub();
+          if (typeof t4 !== "number")
+            return H.iae(t4);
+          if (J.$gt$n(x, t2 - t4)) {
+            t2 = $.currentStreet.bounds.width;
+            t3 = t3.get$width(t1);
+            if (typeof t2 !== "number")
+              return t2.$sub();
+            if (typeof t3 !== "number")
+              return H.iae(t3);
+            x = t2 - t3;
+          }
+          J.set$left$x(t1.style, J.toString$0(x) + "px");
+        }
+        t1 = this.columnOffset;
+        t2 = this.canvas;
+        t3 = J.getInterceptor$x(t2);
+        t4 = t3.get$width(t2);
+        if (typeof t4 !== "number")
+          return H.iae(t4);
+        t5 = this.rowOffset;
+        t2 = t3.get$height(t2);
+        if (typeof t2 !== "number")
+          return H.iae(t2);
+        this.sourceRect = H.setRuntimeTypeInfo(new P.Rectangle(t1 * t4, t5 * t2, t4, t2), [null]);
+        this.dirty = true;
+        this.timeInMillis = 0;
+      }
+    },
+    render$0: function() {
+      var t1, t2, t3, t4, t5;
+      if (this.dirty) {
+        t1 = this.canvas;
+        J.getInterceptor$x(t1).get$context2D(t1).clearRect(0, 0, t1.width, t1.height);
+        t2 = C.CanvasElement_methods.get$context2D(t1);
+        t3 = this.img;
+        t4 = this.destRect;
+        t5 = this.sourceRect;
+        t2.toString;
+        t2.drawImage(t3, t5.left, t5.top, t5.width, t5.height, t4.left, t4.top, t4.width, t4.height);
+        t2 = this.facingRight;
+        t1 = t1.style;
+        if (t2 === true)
+          J.set$transform$x(t1, "scale(1,1)");
+        else
+          J.set$transform$x(t1, "scale(-1,1)");
+        this.dirty = false;
+      }
+    },
+    NPC$7$fps$numFrames$speed: function(canvas, img, numRows, numColumns, fps, numFrames, speed) {
+      var t1, t2;
+      if (J.$eq(this.numFrames, -1))
+        this.numFrames = J.$mul$n(this.numRows, this.numColumns);
+      t1 = this.canvas;
+      t2 = J.getInterceptor$x(t1);
+      this.destRect = H.setRuntimeTypeInfo(new P.Rectangle(0, 0, t2.get$width(t1), t2.get$height(t1)), [null]);
+      this.sourceRect = H.setRuntimeTypeInfo(new P.Rectangle(this.columnOffset, this.rowOffset, t2.get$width(t1), t2.get$height(t1)), [null]);
+    },
+    static: {"^": "NPC_rand"}
   },
   Player: {
     "^": "Object;width>,height>,canvasHeight,speed,posX<,posY,yVel,yAccel,jumping,moving,facingRight,animations,currentAnimation?,chatBubble,rand,doPhysicsApply,playerCanvas,avatar,playerName",
@@ -6541,6 +6744,9 @@ var $$ = {};
       t1 = W._FrozenElementList$_wrap(document.querySelectorAll(".quoin"), null);
       t1.forEach$1(t1, new B.Player_update_closure(this, avatarRect));
     },
+    render$0: function() {
+      return;
+    },
     checkCollision$2: function(avatarRect, element) {
       var t1, quoinRect, t2, t3, dropSound, amt, quoinText, map;
       t1 = J.getInterceptor$x(element);
@@ -6622,7 +6828,7 @@ var $$ = {};
       }}
   },
   Player_loadAnimations_closure: {
-    "^": "Closure:37;futures_0",
+    "^": "Closure:38;futures_0",
     call$2: function($name, animation) {
       return this.futures_0.push(J.load$0$x(animation));
     }
@@ -6670,7 +6876,7 @@ var $$ = {};
         B.updateConsole("error: format must be camera [num],[num]: " + H.S(error));
       }
 
-    }, "call$1", "get$setCamera", 2, 0, 38]
+    }, "call$1", "get$setCamera", 2, 0, 39]
   },
   Street: {
     "^": "Object;label,_data,exits,bounds",
@@ -6910,14 +7116,14 @@ var $$ = {};
     }
   },
   Street_load__closure0: {
-    "^": "Closure:39;this_3",
+    "^": "Closure:40;this_3",
     call$1: function(exit) {
       var t1 = J.getInterceptor$asx(exit);
       this.this_3.exits.$indexSet(0, t1.$index(exit, "label"), t1.$index(exit, "tsid"));
     }
   },
   Street_load__closure1: {
-    "^": "Closure:40;exitsElement_4",
+    "^": "Closure:41;exitsElement_4",
     call$2: function(label, tsid) {
       var exitLabel;
       tsid = J.replaceFirst$2$s(tsid, "L", "G");
@@ -6930,7 +7136,7 @@ var $$ = {};
     }
   },
   Street_render_closure: {
-    "^": "Closure:41;",
+    "^": "Closure:42;",
     call$2: function(transform, canvas) {
       var t1 = J.getInterceptor$x(canvas);
       transform = J.replaceAll$2$s(transform, t1.get$id(canvas), "");
@@ -7586,7 +7792,7 @@ var $$ = {};
       this._sendError$2(error, stackTrace);
     }, function(error) {
       return this.addError$2(error, null);
-    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 42, 12],
+    }, "addError$1", "call$2", "call$1", "get$addError", 2, 2, 43, 12],
     close$0: function(_) {
       var t1, doneFuture;
       t1 = this._state;
@@ -7751,7 +7957,7 @@ var $$ = {};
     }
   },
   Future_wait_closure: {
-    "^": "Closure:43;box_0,eagerError_2,pos_3",
+    "^": "Closure:44;box_0,eagerError_2,pos_3",
     call$1: function(value) {
       var t1, remaining, t2, t3;
       t1 = this.box_0;
@@ -7788,7 +7994,7 @@ var $$ = {};
       t1._asyncCompleteError$2(error, stackTrace);
     }, function(error) {
       return this.completeError$2(error, null);
-    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 42, 12]
+    }, "completeError$1", "call$2", "call$1", "get$completeError", 2, 2, 43, 12]
   },
   _SyncCompleter: {
     "^": "_Completer;future"
@@ -8058,7 +8264,7 @@ var $$ = {};
     }
   },
   _Future__chainFutures_closure0: {
-    "^": "Closure:44;target_1",
+    "^": "Closure:45;target_1",
     call$2: function(error, stackTrace) {
       this.target_1._completeError$2(error, stackTrace);
     },
@@ -8079,7 +8285,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners_handleValueCallback: {
-    "^": "Closure:45;box_1,box_2,listener_3,zone_4",
+    "^": "Closure:46;box_1,box_2,listener_3,zone_4",
     call$0: function() {
       var e, s, t1, t2, t3, exception;
       try {
@@ -8214,7 +8420,7 @@ var $$ = {};
     }
   },
   _Future__propagateToListeners_handleWhenCompleteCallback_closure0: {
-    "^": "Closure:44;box_0,listener_11",
+    "^": "Closure:45;box_0,listener_11",
     call$2: function(error, stackTrace) {
       var t1, t2, t3, completeResult;
       t1 = this.box_0;
@@ -8313,7 +8519,7 @@ var $$ = {};
     }
   },
   Stream_contains__closure0: {
-    "^": "Closure:46;box_0,future_6",
+    "^": "Closure:47;box_0,future_6",
     call$1: function(isMatch) {
       if (isMatch === true)
         P._cancelAndValue(this.box_0.subscription_0, this.future_6, true);
@@ -8653,7 +8859,7 @@ var $$ = {};
       if (handleError == null)
         handleError = P._nullErrorHandler$closure();
       this._onError = P._registerErrorHandler(handleError, this._zone);
-    }, "call$1", "get$onError", 2, 0, 47],
+    }, "call$1", "get$onError", 2, 0, 48],
     onDone$1: function(handleDone) {
       if (handleDone == null)
         handleDone = P._nullDoneHandler$closure();
@@ -9010,7 +9216,7 @@ var $$ = {};
     }
   },
   _cancelAndErrorClosure_closure: {
-    "^": "Closure:48;subscription_0,future_1",
+    "^": "Closure:49;subscription_0,future_1",
     call$2: function(error, stackTrace) {
       return P._cancelAndError(this.subscription_0, this.future_1, error, stackTrace);
     }
@@ -11004,7 +11210,7 @@ var $$ = {};
       }}
   },
   _JsonStringifier_stringifyJsonValue_closure: {
-    "^": "Closure:49;box_0,this_1",
+    "^": "Closure:50;box_0,this_1",
     call$2: function(key, value) {
       var t1, t2, t3;
       t1 = this.box_0;
@@ -11130,7 +11336,7 @@ var $$ = {};
     return P.String_String$fromCharCodes(P.List_List$filled(1, charCode, J.JSInt));
   },
   NoSuchMethodError_toString_closure: {
-    "^": "Closure:50;box_0",
+    "^": "Closure:51;box_0",
     call$2: function(key, value) {
       var t1 = this.box_0;
       if (t1.i_1 > 0)
@@ -11192,7 +11398,7 @@ var $$ = {};
       }}
   },
   DateTime_toString_fourDigits: {
-    "^": "Closure:51;",
+    "^": "Closure:52;",
     call$1: function(n) {
       var absN, sign;
       absN = Math.abs(n);
@@ -11207,7 +11413,7 @@ var $$ = {};
     }
   },
   DateTime_toString_threeDigits: {
-    "^": "Closure:51;",
+    "^": "Closure:52;",
     call$1: function(n) {
       if (n >= 100)
         return "" + n;
@@ -11217,7 +11423,7 @@ var $$ = {};
     }
   },
   DateTime_toString_twoDigits: {
-    "^": "Closure:51;",
+    "^": "Closure:52;",
     call$1: function(n) {
       if (n >= 10)
         return "" + n;
@@ -11233,6 +11439,8 @@ var $$ = {};
       return P.Duration$(0, 0, this._duration - other.get$_duration(), 0, 0, 0);
     },
     $mul: function(_, factor) {
+      if (typeof factor !== "number")
+        return H.iae(factor);
       return P.Duration$(0, 0, C.JSNumber_methods.toInt$0(C.JSNumber_methods.roundToDouble$0(this._duration * factor)), 0, 0, 0);
     },
     $tdiv: function(_, quotient) {
@@ -11284,7 +11492,7 @@ var $$ = {};
       }}
   },
   Duration_toString_sixDigits: {
-    "^": "Closure:51;",
+    "^": "Closure:52;",
     call$1: function(n) {
       if (n >= 100000)
         return H.S(n);
@@ -11300,7 +11508,7 @@ var $$ = {};
     }
   },
   Duration_toString_twoDigits: {
-    "^": "Closure:51;",
+    "^": "Closure:52;",
     call$1: function(n) {
       if (n >= 10)
         return H.S(n);
@@ -11711,7 +11919,10 @@ var $$ = {};
     "%": "HTMLButtonElement"
   },
   CanvasElement: {
-    "^": "HtmlElement;height=,width=",
+    "^": "HtmlElement;height%,width%",
+    get$context2D: function(receiver) {
+      return receiver.getContext("2d");
+    },
     "%": "HTMLCanvasElement"
   },
   CharacterData: {
@@ -11909,7 +12120,7 @@ var $$ = {};
     "%": ";Element"
   },
   EmbedElement: {
-    "^": "HtmlElement;height=,name%,src},type%,width=",
+    "^": "HtmlElement;height%,name%,src%,type%,width%",
     "%": "HTMLEmbedElement"
   },
   ErrorEvent: {
@@ -12004,15 +12215,15 @@ var $$ = {};
     "%": ";XMLHttpRequestEventTarget"
   },
   IFrameElement: {
-    "^": "HtmlElement;height=,name%,src},width=",
+    "^": "HtmlElement;height%,name%,src%,width%",
     "%": "HTMLIFrameElement"
   },
   ImageElement: {
-    "^": "HtmlElement;height=,src},width=",
+    "^": "HtmlElement;height%,src%,width%",
     "%": "HTMLImageElement"
   },
   InputElement: {
-    "^": "HtmlElement;checked%,height=,name%,src},type%,value%,width=",
+    "^": "HtmlElement;checked%,height%,name%,src%,type%,value%,width%",
     $isInputElement: true,
     $isElement: true,
     $isEventTarget: true,
@@ -12056,7 +12267,7 @@ var $$ = {};
     "%": "HTMLMapElement"
   },
   MediaElement: {
-    "^": "HtmlElement;error=,loop},src},volume}",
+    "^": "HtmlElement;error=,loop},src%,volume}",
     loop$1: function($receiver, arg0) {
       return $receiver.loop.call$1(arg0);
     },
@@ -12201,7 +12412,7 @@ var $$ = {};
     "%": "HTMLOListElement"
   },
   ObjectElement: {
-    "^": "HtmlElement;data=,height=,name%,type%,width=",
+    "^": "HtmlElement;data=,height%,name%,type%,width%",
     "%": "HTMLObjectElement"
   },
   OptionElement: {
@@ -12240,7 +12451,7 @@ var $$ = {};
     "%": "Range"
   },
   ScriptElement0: {
-    "^": "HtmlElement;src},type%",
+    "^": "HtmlElement;src%,type%",
     "%": "HTMLScriptElement"
   },
   SelectElement: {
@@ -12255,7 +12466,7 @@ var $$ = {};
     "%": "ShadowRoot"
   },
   SourceElement: {
-    "^": "HtmlElement;src},type%",
+    "^": "HtmlElement;src%,type%",
     "%": "HTMLSourceElement"
   },
   SpeechRecognitionError: {
@@ -12454,7 +12665,7 @@ var $$ = {};
     "%": "TouchList"
   },
   TrackElement: {
-    "^": "HtmlElement;src}",
+    "^": "HtmlElement;src%",
     "%": "HTMLTrackElement"
   },
   UIEvent: {
@@ -12465,7 +12676,7 @@ var $$ = {};
     "%": "FocusEvent|SVGZoomEvent;UIEvent"
   },
   VideoElement: {
-    "^": "MediaElement;height=,width=",
+    "^": "MediaElement;height%,width%",
     "%": "HTMLVideoElement"
   },
   WebSocket: {
@@ -12737,6 +12948,9 @@ var $$ = {};
     },
     set$height: function(receiver, value) {
       this.setProperty$3(receiver, "height", value, "");
+    },
+    get$left: function(receiver) {
+      return this.getPropertyValue$1(receiver, "left");
     },
     set$left: function(receiver, value) {
       this.setProperty$3(receiver, "left", value, "");
@@ -13371,7 +13585,7 @@ var $$ = {};
       return;
     },
     onError$1: [function(_, handleError) {
-    }, "call$1", "get$onError", 2, 0, 47],
+    }, "call$1", "get$onError", 2, 0, 48],
     pause$1: function(_, resumeSignal) {
       if (this._target == null)
         return;
@@ -13848,7 +14062,7 @@ var $$ = {};
     }
   },
   _ValidatingTreeSanitizer_sanitizeTree_walk: {
-    "^": "Closure:52;this_0",
+    "^": "Closure:53;this_0",
     call$1: function(node) {
       var child, nextChild;
       this.this_0.sanitizeNode$1(node);
@@ -14213,6 +14427,8 @@ var $$ = {};
       t1 = this.x;
       if (typeof t1 !== "number")
         return t1.$mul();
+      if (typeof factor !== "number")
+        return H.iae(factor);
       t2 = this.y;
       if (typeof t2 !== "number")
         return t2.$mul();
@@ -14664,7 +14880,7 @@ var $$ = {};
     }
   },
   convertNativeToDart_AcceptStructuredClone_writeSlot: {
-    "^": "Closure:53;copies_3",
+    "^": "Closure:54;copies_3",
     call$2: function(i, x) {
       var t1 = this.copies_3;
       if (i >= t1.length)
@@ -15973,6 +16189,8 @@ P._BufferingStreamSubscription.$is_BufferingStreamSubscription = true;
 P._BufferingStreamSubscription.$is_EventSink = true;
 P._BufferingStreamSubscription.$isStreamSubscription = true;
 P._BufferingStreamSubscription.$isObject = true;
+B.NPC.$isNPC = true;
+B.NPC.$isObject = true;
 W.DivElement.$isDivElement = true;
 W.DivElement.$isElement = true;
 W.DivElement.$isNode = true;
@@ -16230,6 +16448,9 @@ J.get$height$x = function(receiver) {
 J.get$id$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$id(receiver);
 };
+J.get$img$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$img(receiver);
+};
 J.get$innerHtml$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$innerHtml(receiver);
 };
@@ -16244,6 +16465,9 @@ J.get$iterator$ax = function(receiver) {
 };
 J.get$keyCode$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$keyCode(receiver);
+};
+J.get$left$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$left(receiver);
 };
 J.get$length$asx = function(receiver) {
   return J.getInterceptor$asx(receiver).get$length(receiver);
@@ -16280,6 +16504,9 @@ J.get$responseText$x = function(receiver) {
 };
 J.get$single$ax = function(receiver) {
   return J.getInterceptor$ax(receiver).get$single(receiver);
+};
+J.get$src$x = function(receiver) {
+  return J.getInterceptor$x(receiver).get$src(receiver);
 };
 J.get$style$x = function(receiver) {
   return J.getInterceptor$x(receiver).get$style(receiver);
@@ -16486,6 +16713,7 @@ C.C_DynamicRuntimeType = new H.DynamicRuntimeType();
 C.C__DelayedDone = new P._DelayedDone();
 C.C__JSRandom = new P._JSRandom();
 C.C__RootZone = new P._RootZone();
+C.CanvasElement_methods = W.CanvasElement.prototype;
 C.CssStyleDeclaration_methods = W.CssStyleDeclaration.prototype;
 C.Duration_0 = new P.Duration(0);
 C.EventStreamProvider_blur = new W.EventStreamProvider("blur");
@@ -16764,14 +16992,15 @@ $.ui_sounds = null;
 $.Chat__EMOTICONS = null;
 $.consolelistener = null;
 $.playerSocket = null;
-$.otherPlayers = null;
 $.playerInput = null;
 $.timeLast = 0;
 $.lastXY = "";
-$.multiplayerServer = "ws://couserver.herokuapp.com/playerUpdate";
-$.streetEventServer = "ws://couserver.herokuapp.com/streetUpdate";
+$.multiplayerServer = "ws://localhost:8080/playerUpdate";
+$.streetEventServer = "ws://localhost:8080/streetUpdate";
 $.streetSocket = null;
 $.reconnect = true;
+$.otherPlayers = null;
+$.npcs = null;
 $.showFps = false;
 $.fps = 0;
 $.fpsFilter = 50;
@@ -17041,6 +17270,7 @@ init.metadata = [{func: "dynamic__String", args: [J.JSString]},
 {func: "dynamic__String_int", args: [J.JSString, J.JSInt]},
 {func: "dynamic__Timer", args: [P.Timer]},
 {func: "dynamic__String_Player", args: [J.JSString, B.Player]},
+{func: "dynamic__String_NPC", args: [J.JSString, B.NPC]},
 {func: "dynamic__String_Animation", args: [J.JSString, B.Animation]},
 {func: "void__String", void: true, args: [J.JSString]},
 {func: "dynamic__Map", args: [[P.Map, J.JSString, J.JSString]]},
